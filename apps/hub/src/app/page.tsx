@@ -1,6 +1,35 @@
+'use client'
+
 import { Button } from '@cenie/ui'
+import { useAuthContext } from '@cenie/firebase/auth'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import Link from 'next/link'
 
 export default function HubHomePage() {
+  const { user, loading } = useAuthContext()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard')
+    }
+  }, [user, loading, router])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (user) {
+    return null // Will redirect to dashboard
+  }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background to-muted px-4">
       <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -53,12 +82,16 @@ export default function HubHomePage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Button size="lg" className="text-lg px-8">
-            Get Notified
-          </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8">
-            Learn More
-          </Button>
+          <Link href="/auth/signin">
+            <Button size="lg" className="text-lg px-8">
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/auth/signup">
+            <Button variant="outline" size="lg" className="text-lg px-8">
+              Create Account
+            </Button>
+          </Link>
         </div>
 
         <div className="text-sm text-muted-foreground mt-12">

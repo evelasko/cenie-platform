@@ -4,7 +4,7 @@
   "private": true,
   "description": "CENIE Learn - Learning Management System",
   "scripts": {
-    "dev": "next dev --port 3003",
+    "dev": "NODE_OPTIONS='--inspect' next dev --port 3003",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,24 +14,25 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
+    "@cenie/auth-client": "workspace:*",
     "@cenie/design-system": "workspace:*",
+    "@cenie/firebase": "workspace:*",
     "@cenie/ui": "workspace:*",
-    "@supabase/ssr": "^0.0.10",
-    "@supabase/supabase-js": "^2.39.3",
-    "next": "14.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "15.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "14.1.0",
-    "@types/node": "^20.11.0",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0",
-    "postcss": "^8.4.33",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "@next/bundle-analyzer": "15.4.6",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^24.2.1",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "15.4.6",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.9.2"
   }
 }

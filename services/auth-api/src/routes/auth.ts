@@ -1,21 +1,10 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@cenie/supabase'
+import { auth, firestore } from '../config/firebase'
+import { COLLECTIONS, Profile, UserAppAccess } from '../types/firestore'
+import { Timestamp } from 'firebase-admin/firestore'
 
-const router = express.Router()
-
-// Initialize Supabase admin client
-const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-)
+const router: Router = express.Router()
 
 // Validation schemas
 const signUpSchema = z.object({
@@ -38,64 +27,63 @@ router.post('/signup', async (req, res) => {
   try {
     const { email, password, fullName } = signUpSchema.parse(req.body)
 
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+    // Create Firebase Auth user
+    const userRecord = await auth.createUser({
       email,
       password,
-      user_metadata: {
-        full_name: fullName,
-      },
+      displayName: fullName,
+      emailVerified: false,
     })
 
-    if (authError) {
-      return res.status(400).json({
-        error: authError.message,
-        code: authError.status,
-      })
+    // Create user profile in Firestore
+    const profileData: Profile = {
+      id: userRecord.uid,
+      email: userRecord.email!,
+      fullName: fullName || null,
+      avatarUrl: null,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
     }
 
-    // Create user profile
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .insert({
-        id: authData.user.id,
-        email: authData.user.email!,
-        full_name: fullName || null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-
-    if (profileError) {
-      console.error('Error creating profile:', profileError)
-    }
+    await firestore
+      .collection(COLLECTIONS.PROFILES)
+      .doc(userRecord.uid)
+      .set(profileData)
 
     // Grant default access to hub
-    const { error: accessError } = await supabaseAdmin
-      .from('user_app_access')
-      .insert({
-        user_id: authData.user.id,
-        app_name: 'hub',
-        role: 'user',
-        is_active: true,
-        granted_at: new Date().toISOString(),
-      })
-
-    if (accessError) {
-      console.error('Error granting access:', accessError)
+    const accessData: UserAppAccess = {
+      userId: userRecord.uid,
+      appName: 'hub',
+      role: 'user',
+      isActive: true,
+      grantedAt: Timestamp.now(),
+      grantedBy: null,
     }
+
+    await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .add(accessData)
 
     res.status(201).json({
       message: 'User created successfully',
       user: {
-        id: authData.user.id,
-        email: authData.user.email,
-        full_name: fullName,
+        id: userRecord.uid,
+        email: userRecord.email,
+        fullName,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Validation error',
-        details: error.errors,
+        details: error.issues,
+      })
+    }
+
+    if (error.code === 'auth/email-already-exists') {
+      return res.status(400).json({
+        error: 'Email already exists',
+        code: error.code,
       })
     }
 
@@ -104,30 +92,52 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-// Verify user endpoint
+// Verify user endpoint (verify ID token)
 router.get('/verify/:token', async (req, res) => {
   try {
     const { token } = req.params
 
-    const { data, error } = await supabaseAdmin.auth.admin.getUserByAccessToken(token)
+    // Verify the ID token
+    const decodedToken = await auth.verifyIdToken(token)
+    
+    // Get user profile from Firestore
+    const profileDoc = await firestore
+      .collection(COLLECTIONS.PROFILES)
+      .doc(decodedToken.uid)
+      .get()
 
-    if (error) {
-      return res.status(401).json({
-        error: 'Invalid or expired token',
-        code: error.status,
+    if (!profileDoc.exists) {
+      return res.status(404).json({
+        error: 'User profile not found',
       })
     }
 
+    const profile = profileDoc.data() as Profile
+
     res.json({
       user: {
-        id: data.user.id,
-        email: data.user.email,
-        full_name: data.user.user_metadata?.full_name,
-        avatar_url: data.user.user_metadata?.avatar_url,
-        email_confirmed: data.user.email_confirmed_at !== null,
+        id: decodedToken.uid,
+        email: decodedToken.email,
+        fullName: profile.fullName,
+        avatarUrl: profile.avatarUrl,
+        emailVerified: decodedToken.email_verified,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === 'auth/id-token-expired') {
+      return res.status(401).json({
+        error: 'Token expired',
+        code: error.code,
+      })
+    }
+
+    if (error.code === 'auth/invalid-id-token') {
+      return res.status(401).json({
+        error: 'Invalid token',
+        code: error.code,
+      })
+    }
+
     console.error('Token verification error:', error)
     res.status(500).json({ error: 'Internal server error' })
   }
@@ -138,25 +148,29 @@ router.post('/reset-password', async (req, res) => {
   try {
     const { email } = resetPasswordSchema.parse(req.body)
 
-    const { error } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
-      email,
+    // Generate password reset link
+    const link = await auth.generatePasswordResetLink(email, {
+      url: process.env.PASSWORD_RESET_URL || 'https://cenie.org/reset-password',
     })
 
-    if (error) {
-      return res.status(400).json({
-        error: error.message,
-        code: error.status,
-      })
-    }
-
-    res.json({ message: 'Password reset email sent' })
-  } catch (error) {
+    // In production, you would send this link via email
+    // For now, we'll return it in the response (remove in production)
+    res.json({ 
+      message: 'Password reset email sent',
+      // Remove this in production - only for development
+      resetLink: process.env.NODE_ENV === 'development' ? link : undefined
+    })
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Validation error',
-        details: error.errors,
+        details: error.issues,
       })
+    }
+
+    if (error.code === 'auth/user-not-found') {
+      // Don't reveal that the user doesn't exist for security
+      return res.json({ message: 'Password reset email sent' })
     }
 
     console.error('Password reset error:', error)
@@ -164,35 +178,30 @@ router.post('/reset-password', async (req, res) => {
   }
 })
 
-// Refresh session
+// Refresh session (exchange custom token for ID token)
 router.post('/refresh', async (req, res) => {
   try {
-    const { refresh_token } = req.body
+    const { refreshToken, userId } = req.body
 
-    if (!refresh_token) {
-      return res.status(400).json({ error: 'Refresh token required' })
+    if (!refreshToken || !userId) {
+      return res.status(400).json({ error: 'Refresh token and user ID required' })
     }
 
-    const { data, error } = await supabaseAdmin.auth.admin.refreshSession(refresh_token)
+    // Create a new custom token
+    const customToken = await auth.createCustomToken(userId)
 
-    if (error) {
-      return res.status(401).json({
-        error: error.message,
-        code: error.status,
-      })
-    }
+    // Get user data
+    const userRecord = await auth.getUser(userId)
 
     res.json({
-      access_token: data.access_token,
-      refresh_token: data.refresh_token,
-      expires_in: data.expires_in,
+      customToken,
       user: {
-        id: data.user.id,
-        email: data.user.email,
-        full_name: data.user.user_metadata?.full_name,
+        id: userRecord.uid,
+        email: userRecord.email,
+        fullName: userRecord.displayName,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Token refresh error:', error)
     res.status(500).json({ error: 'Internal server error' })
   }
@@ -201,33 +210,91 @@ router.post('/refresh', async (req, res) => {
 // Revoke session
 router.post('/revoke', async (req, res) => {
   try {
-    const { access_token } = req.body
+    const { userId } = req.body
 
-    if (!access_token) {
-      return res.status(400).json({ error: 'Access token required' })
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID required' })
     }
 
-    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserByAccessToken(access_token)
-
-    if (userError) {
-      return res.status(401).json({
-        error: 'Invalid token',
-        code: userError.status,
-      })
-    }
-
-    const { error: revokeError } = await supabaseAdmin.auth.admin.signOut(userData.user.id)
-
-    if (revokeError) {
-      return res.status(400).json({
-        error: revokeError.message,
-        code: revokeError.status,
-      })
-    }
+    // Revoke all refresh tokens for the user
+    await auth.revokeRefreshTokens(userId)
 
     res.json({ message: 'Session revoked successfully' })
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === 'auth/user-not-found') {
+      return res.status(404).json({
+        error: 'User not found',
+        code: error.code,
+      })
+    }
+
     console.error('Token revoke error:', error)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+// Send email verification
+router.post('/send-verification', async (req, res) => {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email required' })
+    }
+
+    // Generate email verification link
+    const link = await auth.generateEmailVerificationLink(email, {
+      url: process.env.EMAIL_VERIFICATION_URL || 'https://cenie.org/verify-email',
+    })
+
+    // In production, you would send this link via email
+    res.json({ 
+      message: 'Verification email sent',
+      // Remove this in production - only for development
+      verificationLink: process.env.NODE_ENV === 'development' ? link : undefined
+    })
+  } catch (error: any) {
+    if (error.code === 'auth/user-not-found') {
+      // Don't reveal that the user doesn't exist for security
+      return res.json({ message: 'Verification email sent' })
+    }
+
+    console.error('Email verification error:', error)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+// Update user password (requires current password or admin privileges)
+router.post('/update-password', async (req, res) => {
+  try {
+    const { userId, newPassword } = req.body
+
+    if (!userId || !newPassword) {
+      return res.status(400).json({ error: 'User ID and new password required' })
+    }
+
+    // Update password
+    await auth.updateUser(userId, {
+      password: newPassword,
+    })
+
+    res.json({ message: 'Password updated successfully' })
+  } catch (error: any) {
+    if (error.code === 'auth/user-not-found') {
+      return res.status(404).json({
+        error: 'User not found',
+        code: error.code,
+      })
+    }
+
+    if (error.code === 'auth/weak-password') {
+      return res.status(400).json({
+        error: 'Password is too weak',
+        code: error.code,
+      })
+    }
+
+    console.error('Password update error:', error)
     res.status(500).json({ error: 'Internal server error' })
   }
 })

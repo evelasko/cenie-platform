@@ -6,10 +6,18 @@ A Turborepo-based monorepo containing the core institutional services for CENIE 
 
 This monorepo contains four main applications that share authentication, billing, and design system:
 
-- **Hub** (`cenie.org`) - Main institutional website and brand anchor
+- **Hub** (`cenie.org`) - Main institutional website, brand anchor, and authentication provider
 - **Editorial** (`editorial.cenie.org`) - Academic publishing platform
 - **Academy** (`academy.cenie.org`) - Education and course platform
 - **Learn** (`learn.cenie.org`) - Learning Management System (LMS)
+
+### Authentication Architecture
+
+All authentication is handled centrally through the Hub application using Firebase Auth:
+- Hub provides API routes at `/api/auth/*` for all authentication operations
+- Other apps communicate with Hub for authentication via the `@cenie/auth-client` package
+- Single Sign-On (SSO) is enabled across all applications
+- Firebase Admin SDK handles server-side authentication in Hub's Next.js API routes
 
 ## 📁 Project Structure
 
@@ -24,15 +32,10 @@ cenie-platform/
 ├── packages/               # Shared internal packages
 │   ├── ui/                # Component library (Shadcn/ui + Radix)
 │   ├── design-system/     # Design tokens and theming
-│   ├── config/            # Shared configurations
-│   ├── supabase/         # Database client and auth
-│   ├── analytics/        # Analytics integration
-│   └── utils/            # Common utilities
-│
-├── services/              # Backend API services
-│   ├── auth-api/         # Authentication service
-│   ├── content-api/      # Content management
-│   └── billing-api/      # Stripe integration
+│   ├── firebase/          # Firebase client SDK and utilities
+│   ├── auth-client/       # Authentication client utilities
+│   ├── supabase/          # Legacy database client (deprecated)
+│   └── utils/             # Common utilities
 │
 └── infrastructure/        # Deployment and IaC
 ```
@@ -41,46 +44,52 @@ cenie-platform/
 
 ### Prerequisites
 
-- Node.js 20+ 
+- Node.js 20+
 - pnpm 9+
 - Git
 
 ### Installation
 
 1. Clone the repository (if not already done):
-```bash
-git clone <repository-url>
-cd CENIE/cenie-platform
-```
+
+    ```bash
+    git clone <repository-url>
+    cd CENIE/cenie-platform
+    ```
 
 2. Install dependencies:
-```bash
-pnpm install
-```
+
+    ```bash
+    pnpm install
+    ```
 
 3. Set up environment variables:
-```bash
-cp .env.example .env.local
-# Edit .env.local with your actual values
-```
 
-4. Set up Supabase:
-   - Create a new Supabase project at https://supabase.com
-   - Copy your project URL and anon key to `.env.local`
-   - Run database migrations (when available)
+    ```bash
+    cp .env.example .env
+    # Edit .env with your actual values
+    ```
+
+4. Set up Firebase:
+   - Create a new Firebase project at <https://console.firebase.google.com>
+   - Enable Authentication and Firestore Database
+   - Generate a service account key for Admin SDK
+   - Copy your Firebase configuration to `.env`
 
 5. Set up Cloudinary (optional):
-   - Create a Cloudinary account at https://cloudinary.com
+   - Create a Cloudinary account at <https://cloudinary.com>
    - Copy your cloud name and API keys to `.env.local`
 
 ### Development
 
 Run all applications in development mode:
+
 ```bash
 pnpm dev
 ```
 
 Run a specific application:
+
 ```bash
 pnpm dev --filter=@cenie/hub
 pnpm dev --filter=@cenie/editorial
@@ -89,19 +98,22 @@ pnpm dev --filter=@cenie/learn
 ```
 
 Applications will be available at:
-- Hub: http://localhost:3000
-- Editorial: http://localhost:3001
-- Academy: http://localhost:3002
-- Learn: http://localhost:3003
+
+- Hub: <http://localhost:3000>
+- Editorial: <http://localhost:3001>
+- Academy: <http://localhost:3002>
+- Learn: <http://localhost:3003>
 
 ### Building
 
 Build all applications:
+
 ```bash
 pnpm build
 ```
 
 Build a specific application:
+
 ```bash
 pnpm build --filter=@cenie/hub
 ```
@@ -109,16 +121,19 @@ pnpm build --filter=@cenie/hub
 ### Testing
 
 Run tests across the monorepo:
+
 ```bash
 pnpm test
 ```
 
 Run linting:
+
 ```bash
 pnpm lint
 ```
 
 Format code:
+
 ```bash
 pnpm format
 ```
@@ -146,6 +161,7 @@ const cssVars = generateCSSVariables(hubTheme)
 ## 🧩 Component Library
 
 Components are built with:
+
 - Radix UI primitives for accessibility
 - Tailwind CSS for styling
 - CVA for variant management
@@ -190,16 +206,19 @@ This monorepo uses pnpm workspaces for efficient dependency management:
 ### Adding Dependencies
 
 To a specific app or package:
+
 ```bash
 pnpm add <package> --filter=@cenie/hub
 ```
 
 To the root:
+
 ```bash
 pnpm add -w <package>
 ```
 
 As a dev dependency:
+
 ```bash
 pnpm add -D <package> --filter=@cenie/ui
 ```
@@ -219,7 +238,7 @@ Required variables for production:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_SECRET_KEY`
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_SECRET_KEY`
 - `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
@@ -236,6 +255,7 @@ Required variables for production:
 ### Common Issues
 
 **Build cache issues:**
+
 ```bash
 pnpm clean
 pnpm install
@@ -245,11 +265,13 @@ pnpm install
 Check that ports 3000-3003 are available or modify port numbers in each app's package.json
 
 **TypeScript errors:**
+
 ```bash
 pnpm type-check
 ```
 
 **Dependency conflicts:**
+
 ```bash
 pnpm install --force
 ```
@@ -264,6 +286,7 @@ pnpm install --force
 ### Commit Convention
 
 We use conventional commits:
+
 - `feat:` New features
 - `fix:` Bug fixes
 - `docs:` Documentation changes
@@ -277,6 +300,7 @@ Copyright © 2024 CENIE. All rights reserved.
 ## 🤝 Support
 
 For issues and questions:
+
 - Create an issue in the repository
 - Contact the development team
 - Check the documentation in `/docs`

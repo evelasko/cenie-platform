@@ -1,25 +1,35 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@cenie/supabase'
+import { firestore } from '../config/firebase'
+import { COLLECTIONS, Profile, UserAppAccess, Subscription, SerializedProfile, SerializedUserAppAccess, SerializedSubscription } from '../types/firestore'
 import { authenticateToken } from '../middleware/auth'
+import { Timestamp } from 'firebase-admin/firestore'
 
-const router = express.Router()
-
-const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-)
+const router: Router = express.Router()
 
 const updateProfileSchema = z.object({
-  full_name: z.string().optional(),
-  avatar_url: z.string().url().optional(),
+  fullName: z.string().optional(),
+  avatarUrl: z.string().url().optional(),
+})
+
+// Helper function to serialize timestamps
+const serializeProfile = (profile: Profile): SerializedProfile => ({
+  ...profile,
+  createdAt: profile.createdAt.toDate().toISOString(),
+  updatedAt: profile.updatedAt.toDate().toISOString(),
+})
+
+const serializeAccess = (access: UserAppAccess): SerializedUserAppAccess => ({
+  ...access,
+  grantedAt: access.grantedAt.toDate().toISOString(),
+})
+
+const serializeSubscription = (subscription: Subscription): SerializedSubscription => ({
+  ...subscription,
+  createdAt: subscription.createdAt.toDate().toISOString(),
+  updatedAt: subscription.updatedAt.toDate().toISOString(),
+  currentPeriodStart: subscription.currentPeriodStart?.toDate().toISOString(),
+  currentPeriodEnd: subscription.currentPeriodEnd?.toDate().toISOString(),
 })
 
 // Get user profile
@@ -27,17 +37,17 @@ router.get('/profile', authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).userId
 
-    const { data: profile, error } = await supabaseAdmin
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
+    const profileDoc = await firestore
+      .collection(COLLECTIONS.PROFILES)
+      .doc(userId)
+      .get()
 
-    if (error) {
+    if (!profileDoc.exists) {
       return res.status(404).json({ error: 'Profile not found' })
     }
 
-    res.json({ profile })
+    const profile = profileDoc.data() as Profile
+    res.json({ profile: serializeProfile(profile) })
   } catch (error) {
     console.error('Get profile error:', error)
     res.status(500).json({ error: 'Internal server error' })
@@ -50,29 +60,36 @@ router.put('/profile', authenticateToken, async (req, res) => {
     const userId = (req as any).userId
     const updates = updateProfileSchema.parse(req.body)
 
-    const { data: profile, error } = await supabaseAdmin
-      .from('profiles')
-      .update({
-        ...updates,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', userId)
-      .select()
-      .single()
-
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to update profile',
-        details: error.message,
-      })
+    const updateData: any = {
+      ...updates,
+      updatedAt: Timestamp.now(),
     }
 
-    res.json({ profile })
+    // Remove undefined values
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === undefined) {
+        delete updateData[key]
+      }
+    })
+
+    await firestore
+      .collection(COLLECTIONS.PROFILES)
+      .doc(userId)
+      .update(updateData)
+
+    // Get updated profile
+    const profileDoc = await firestore
+      .collection(COLLECTIONS.PROFILES)
+      .doc(userId)
+      .get()
+
+    const profile = profileDoc.data() as Profile
+    res.json({ profile: serializeProfile(profile) })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Validation error',
-        details: error.errors,
+        details: error.issues,
       })
     }
 
@@ -86,19 +103,17 @@ router.get('/apps', authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).userId
 
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('is_active', true)
-      .order('granted_at', { ascending: false })
+    const accessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('userId', '==', userId)
+      .where('isActive', '==', true)
+      .orderBy('grantedAt', 'desc')
+      .get()
 
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to fetch app access',
-        details: error.message,
-      })
-    }
+    const access = accessSnapshot.docs.map(doc => {
+      const data = doc.data() as UserAppAccess
+      return serializeAccess({ ...data, id: doc.id })
+    })
 
     res.json({ access })
   } catch (error) {
@@ -113,25 +128,27 @@ router.get('/apps/:appName/access', authenticateToken, async (req, res) => {
     const userId = (req as any).userId
     const { appName } = req.params
 
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('app_name', appName)
-      .eq('is_active', true)
-      .single()
+    const accessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('userId', '==', userId)
+      .where('appName', '==', appName)
+      .where('isActive', '==', true)
+      .limit(1)
+      .get()
 
-    if (error) {
+    if (accessSnapshot.empty) {
       return res.json({
         hasAccess: false,
         role: null,
       })
     }
 
+    const access = accessSnapshot.docs[0].data() as UserAppAccess
+
     res.json({
       hasAccess: true,
       role: access.role,
-      grantedAt: access.granted_at,
+      grantedAt: access.grantedAt.toDate().toISOString(),
     })
   } catch (error) {
     console.error('Check app access error:', error)
@@ -144,18 +161,16 @@ router.get('/subscriptions', authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).userId
 
-    const { data: subscriptions, error } = await supabaseAdmin
-      .from('subscriptions')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+    const subscriptionsSnapshot = await firestore
+      .collection(COLLECTIONS.SUBSCRIPTIONS)
+      .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc')
+      .get()
 
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to fetch subscriptions',
-        details: error.message,
-      })
-    }
+    const subscriptions = subscriptionsSnapshot.docs.map(doc => {
+      const data = doc.data() as Subscription
+      return serializeSubscription({ ...data, id: doc.id })
+    })
 
     res.json({ subscriptions })
   } catch (error) {
@@ -169,20 +184,39 @@ router.delete('/account', authenticateToken, async (req, res) => {
   try {
     const userId = (req as any).userId
 
-    // Delete user data in order (foreign keys first)
-    await supabaseAdmin.from('subscriptions').delete().eq('user_id', userId)
-    await supabaseAdmin.from('user_app_access').delete().eq('user_id', userId)
-    await supabaseAdmin.from('profiles').delete().eq('id', userId)
-    
-    // Delete auth user
-    const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId)
+    // Start a batch operation
+    const batch = firestore.batch()
 
-    if (deleteError) {
-      return res.status(400).json({
-        error: 'Failed to delete account',
-        details: deleteError.message,
-      })
-    }
+    // Delete user subscriptions
+    const subscriptionsSnapshot = await firestore
+      .collection(COLLECTIONS.SUBSCRIPTIONS)
+      .where('userId', '==', userId)
+      .get()
+
+    subscriptionsSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref)
+    })
+
+    // Delete user app access
+    const accessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('userId', '==', userId)
+      .get()
+
+    accessSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref)
+    })
+
+    // Delete user profile
+    const profileRef = firestore.collection(COLLECTIONS.PROFILES).doc(userId)
+    batch.delete(profileRef)
+
+    // Commit the batch
+    await batch.commit()
+
+    // Delete auth user (imported from Firebase Admin)
+    const { auth } = await import('../config/firebase')
+    await auth.deleteUser(userId)
 
     res.json({ message: 'Account deleted successfully' })
   } catch (error) {

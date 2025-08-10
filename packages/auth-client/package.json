@@ -1,0 +1,23 @@
+{
+  "name": "@cenie/auth-client",
+  "version": "0.0.1",
+  "private": true,
+  "description": "CENIE Authentication API Client",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules dist"
+  },
+  "dependencies": {
+    "@cenie/firebase": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint": "^9.33.0",
+    "typescript": "^5.9.2"
+  }
+}

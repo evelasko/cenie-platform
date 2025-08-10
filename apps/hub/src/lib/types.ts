@@ -1,0 +1,56 @@
+import { Timestamp } from 'firebase-admin/firestore'
+
+export interface Profile {
+  id: string
+  email: string
+  fullName?: string | null
+  avatarUrl?: string | null
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+export interface UserAppAccess {
+  id?: string
+  userId: string
+  appName: 'hub' | 'editorial' | 'academy' | 'learn'
+  role: 'viewer' | 'user' | 'editor' | 'admin'
+  isActive: boolean
+  grantedAt: Timestamp
+  grantedBy?: string | null
+}
+
+export interface Subscription {
+  id?: string
+  userId: string
+  stripeCustomerId?: string
+  stripeSubscriptionId?: string
+  status: 'active' | 'canceled' | 'past_due' | 'trialing'
+  currentPeriodStart?: Timestamp
+  currentPeriodEnd?: Timestamp
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+// Collection names
+export const COLLECTIONS = {
+  PROFILES: 'profiles',
+  USER_APP_ACCESS: 'user_app_access',
+  SUBSCRIPTIONS: 'subscriptions',
+} as const
+
+// Helper type for converting Firestore timestamps to ISO strings in API responses
+export type SerializedProfile = Omit<Profile, 'createdAt' | 'updatedAt'> & {
+  createdAt: string
+  updatedAt: string
+}
+
+export type SerializedUserAppAccess = Omit<UserAppAccess, 'grantedAt'> & {
+  grantedAt: string
+}
+
+export type SerializedSubscription = Omit<Subscription, 'createdAt' | 'updatedAt' | 'currentPeriodStart' | 'currentPeriodEnd'> & {
+  createdAt: string
+  updatedAt: string
+  currentPeriodStart?: string
+  currentPeriodEnd?: string
+}

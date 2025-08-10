@@ -1,17 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@cenie/supabase'
-
-const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-)
+import { auth, firestore } from '../config/firebase'
+import { COLLECTIONS, UserAppAccess } from '../types/firestore'
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction) {
   try {
@@ -22,23 +11,36 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
       return res.status(401).json({ error: 'Access token required' })
     }
 
-    const { data: userData, error } = await supabaseAdmin.auth.admin.getUserByAccessToken(token)
+    // Verify Firebase ID token
+    const decodedToken = await auth.verifyIdToken(token)
 
-    if (error) {
+    // Attach user ID and decoded token to request for downstream middleware/routes
+    ;(req as any).userId = decodedToken.uid
+    ;(req as any).user = {
+      uid: decodedToken.uid,
+      email: decodedToken.email,
+      emailVerified: decodedToken.email_verified,
+      customClaims: decodedToken,
+    }
+
+    next()
+  } catch (error: any) {
+    if (error.code === 'auth/id-token-expired') {
       return res.status(401).json({ 
-        error: 'Invalid or expired token',
-        code: error.status 
+        error: 'Token expired',
+        code: error.code 
       })
     }
 
-    // Attach user ID to request for downstream middleware/routes
-    ;(req as any).userId = userData.user.id
-    ;(req as any).user = userData.user
+    if (error.code === 'auth/invalid-id-token') {
+      return res.status(401).json({ 
+        error: 'Invalid token',
+        code: error.code 
+      })
+    }
 
-    next()
-  } catch (error) {
     console.error('Authentication middleware error:', error)
-    res.status(500).json({ error: 'Authentication failed' })
+    res.status(401).json({ error: 'Authentication failed' })
   }
 }
 
@@ -51,15 +53,15 @@ export async function requireAdmin(req: Request, res: Response, next: NextFuncti
     }
 
     // Check if user has admin role in any app
-    const { data: adminAccess, error } = await supabaseAdmin
-      .from('user_app_access')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('role', 'admin')
-      .eq('is_active', true)
+    const adminAccessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('userId', '==', userId)
+      .where('role', '==', 'admin')
+      .where('isActive', '==', true)
       .limit(1)
+      .get()
 
-    if (error || !adminAccess || adminAccess.length === 0) {
+    if (adminAccessSnapshot.empty) {
       return res.status(403).json({ error: 'Admin access required' })
     }
 
@@ -70,7 +72,7 @@ export async function requireAdmin(req: Request, res: Response, next: NextFuncti
   }
 }
 
-export async function requireAppAccess(appName: string) {
+export function requireAppAccess(appName: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = (req as any).userId
@@ -79,22 +81,23 @@ export async function requireAppAccess(appName: string) {
         return res.status(401).json({ error: 'Authentication required' })
       }
 
-      const { data: access, error } = await supabaseAdmin
-        .from('user_app_access')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('app_name', appName)
-        .eq('is_active', true)
-        .single()
+      const accessSnapshot = await firestore
+        .collection(COLLECTIONS.USER_APP_ACCESS)
+        .where('userId', '==', userId)
+        .where('appName', '==', appName)
+        .where('isActive', '==', true)
+        .limit(1)
+        .get()
 
-      if (error || !access) {
+      if (accessSnapshot.empty) {
         return res.status(403).json({ 
           error: `Access denied to ${appName}`,
           code: 'APP_ACCESS_DENIED'
         })
       }
 
-      ;(req as any).userAppAccess = access
+      const access = accessSnapshot.docs[0].data() as UserAppAccess
+      ;(req as any).userAppAccess = { ...access, id: accessSnapshot.docs[0].id }
 
       next()
     } catch (error) {
@@ -104,7 +107,7 @@ export async function requireAppAccess(appName: string) {
   }
 }
 
-export async function requireRole(appName: string, requiredRole: string) {
+export function requireRole(appName: string, requiredRole: string) {
   const roleHierarchy = ['viewer', 'user', 'editor', 'admin']
   const requiredRoleLevel = roleHierarchy.indexOf(requiredRole)
 
@@ -116,21 +119,22 @@ export async function requireRole(appName: string, requiredRole: string) {
         return res.status(401).json({ error: 'Authentication required' })
       }
 
-      const { data: access, error } = await supabaseAdmin
-        .from('user_app_access')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('app_name', appName)
-        .eq('is_active', true)
-        .single()
+      const accessSnapshot = await firestore
+        .collection(COLLECTIONS.USER_APP_ACCESS)
+        .where('userId', '==', userId)
+        .where('appName', '==', appName)
+        .where('isActive', '==', true)
+        .limit(1)
+        .get()
 
-      if (error || !access) {
+      if (accessSnapshot.empty) {
         return res.status(403).json({ 
           error: `Access denied to ${appName}`,
           code: 'APP_ACCESS_DENIED'
         })
       }
 
+      const access = accessSnapshot.docs[0].data() as UserAppAccess
       const userRoleLevel = roleHierarchy.indexOf(access.role)
 
       if (userRoleLevel < requiredRoleLevel) {
@@ -140,7 +144,7 @@ export async function requireRole(appName: string, requiredRole: string) {
         })
       }
 
-      ;(req as any).userAppAccess = access
+      ;(req as any).userAppAccess = { ...access, id: accessSnapshot.docs[0].id }
 
       next()
     } catch (error) {

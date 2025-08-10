@@ -1,3 +1,8 @@
+// Load environment variables first
+import { config } from 'dotenv'
+import path from 'path'
+config({ path: path.resolve(__dirname, '../../..', '.env') })
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'

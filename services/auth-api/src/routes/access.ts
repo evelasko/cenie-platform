@@ -1,99 +1,87 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@cenie/supabase'
+import { firestore } from '../config/firebase'
+import { COLLECTIONS, UserAppAccess, Profile, SerializedUserAppAccess } from '../types/firestore'
 import { authenticateToken, requireAdmin } from '../middleware/auth'
+import { Timestamp } from 'firebase-admin/firestore'
 
-const router = express.Router()
-
-const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  }
-)
+const router: Router = express.Router()
 
 const grantAccessSchema = z.object({
-  user_id: z.string().uuid(),
-  app_name: z.enum(['hub', 'editorial', 'academy', 'learn']),
+  userId: z.string(),
+  appName: z.enum(['hub', 'editorial', 'academy', 'learn']),
   role: z.enum(['viewer', 'user', 'editor', 'admin']).default('user'),
 })
 
 const updateAccessSchema = z.object({
   role: z.enum(['viewer', 'user', 'editor', 'admin']).optional(),
-  is_active: z.boolean().optional(),
+  isActive: z.boolean().optional(),
+})
+
+// Helper function to serialize access
+const serializeAccess = (access: UserAppAccess): SerializedUserAppAccess => ({
+  ...access,
+  grantedAt: access.grantedAt.toDate().toISOString(),
 })
 
 // Grant app access to user (admin only)
 router.post('/grant', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const adminUserId = (req as any).userId
-    const { user_id, app_name, role } = grantAccessSchema.parse(req.body)
+    const { userId, appName, role } = grantAccessSchema.parse(req.body)
 
     // Check if access already exists
-    const { data: existingAccess } = await supabaseAdmin
-      .from('user_app_access')
-      .select('*')
-      .eq('user_id', user_id)
-      .eq('app_name', app_name)
-      .single()
+    const existingAccessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('userId', '==', userId)
+      .where('appName', '==', appName)
+      .limit(1)
+      .get()
 
-    if (existingAccess) {
+    if (!existingAccessSnapshot.empty) {
       // Update existing access
-      const { data: access, error } = await supabaseAdmin
-        .from('user_app_access')
+      const docId = existingAccessSnapshot.docs[0].id
+      
+      await firestore
+        .collection(COLLECTIONS.USER_APP_ACCESS)
+        .doc(docId)
         .update({
           role,
-          is_active: true,
-          granted_by: adminUserId,
-          granted_at: new Date().toISOString(),
+          isActive: true,
+          grantedBy: adminUserId,
+          grantedAt: Timestamp.now(),
         })
-        .eq('user_id', user_id)
-        .eq('app_name', app_name)
-        .select()
-        .single()
 
-      if (error) {
-        return res.status(400).json({
-          error: 'Failed to update access',
-          details: error.message,
-        })
-      }
+      const updatedDoc = await firestore
+        .collection(COLLECTIONS.USER_APP_ACCESS)
+        .doc(docId)
+        .get()
 
-      return res.json({ message: 'Access updated successfully', access })
+      const access = { ...updatedDoc.data() as UserAppAccess, id: docId }
+      return res.json({ message: 'Access updated successfully', access: serializeAccess(access) })
     }
 
     // Create new access
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .insert({
-        user_id,
-        app_name,
-        role,
-        is_active: true,
-        granted_by: adminUserId,
-        granted_at: new Date().toISOString(),
-      })
-      .select()
-      .single()
-
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to grant access',
-        details: error.message,
-      })
+    const accessData: UserAppAccess = {
+      userId,
+      appName,
+      role,
+      isActive: true,
+      grantedBy: adminUserId,
+      grantedAt: Timestamp.now(),
     }
 
-    res.status(201).json({ message: 'Access granted successfully', access })
+    const docRef = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .add(accessData)
+
+    const access = { ...accessData, id: docRef.id }
+    res.status(201).json({ message: 'Access granted successfully', access: serializeAccess(access) })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Validation error',
-        details: error.errors,
+        details: error.issues,
       })
     }
 
@@ -108,26 +96,31 @@ router.put('/:accessId', authenticateToken, requireAdmin, async (req, res) => {
     const { accessId } = req.params
     const updates = updateAccessSchema.parse(req.body)
 
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .update(updates)
-      .eq('id', accessId)
-      .select()
-      .single()
+    const updateData: any = {}
+    if (updates.role !== undefined) updateData.role = updates.role
+    if (updates.isActive !== undefined) updateData.isActive = updates.isActive
 
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to update access',
-        details: error.message,
-      })
+    await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .doc(accessId)
+      .update(updateData)
+
+    const updatedDoc = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .doc(accessId)
+      .get()
+
+    if (!updatedDoc.exists) {
+      return res.status(404).json({ error: 'Access record not found' })
     }
 
-    res.json({ message: 'Access updated successfully', access })
+    const access = { ...updatedDoc.data() as UserAppAccess, id: accessId }
+    res.json({ message: 'Access updated successfully', access: serializeAccess(access) })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Validation error',
-        details: error.errors,
+        details: error.issues,
       })
     }
 
@@ -141,21 +134,22 @@ router.delete('/:accessId', authenticateToken, requireAdmin, async (req, res) =>
   try {
     const { accessId } = req.params
 
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .update({ is_active: false })
-      .eq('id', accessId)
-      .select()
-      .single()
+    await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .doc(accessId)
+      .update({ isActive: false })
 
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to revoke access',
-        details: error.message,
-      })
+    const updatedDoc = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .doc(accessId)
+      .get()
+
+    if (!updatedDoc.exists) {
+      return res.status(404).json({ error: 'Access record not found' })
     }
 
-    res.json({ message: 'Access revoked successfully', access })
+    const access = { ...updatedDoc.data() as UserAppAccess, id: accessId }
+    res.json({ message: 'Access revoked successfully', access: serializeAccess(access) })
   } catch (error) {
     console.error('Revoke access error:', error)
     res.status(500).json({ error: 'Internal server error' })
@@ -168,31 +162,43 @@ router.get('/users/:appName', authenticateToken, requireAdmin, async (req, res) 
     const { appName } = req.params
     const { page = 1, limit = 20 } = req.query
 
-    const offset = (Number(page) - 1) * Number(limit)
+    const pageNum = Number(page)
+    const limitNum = Number(limit)
+    const offset = (pageNum - 1) * limitNum
 
-    const { data: users, error } = await supabaseAdmin
-      .from('user_app_access')
-      .select(`
-        *,
-        profiles (
-          id,
-          email,
-          full_name,
-          avatar_url
-        )
-      `)
-      .eq('app_name', appName)
-      .order('granted_at', { ascending: false })
-      .range(offset, offset + Number(limit) - 1)
+    // Get access records with pagination
+    const accessSnapshot = await firestore
+      .collection(COLLECTIONS.USER_APP_ACCESS)
+      .where('appName', '==', appName)
+      .orderBy('grantedAt', 'desc')
+      .limit(limitNum)
+      .offset(offset)
+      .get()
 
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to fetch users',
-        details: error.message,
+    // Get user profiles for each access record
+    const users = await Promise.all(
+      accessSnapshot.docs.map(async (doc) => {
+        const accessData = doc.data() as UserAppAccess
+        const profileDoc = await firestore
+          .collection(COLLECTIONS.PROFILES)
+          .doc(accessData.userId)
+          .get()
+
+        const profile = profileDoc.exists ? profileDoc.data() as Profile : null
+
+        return {
+          ...serializeAccess({ ...accessData, id: doc.id }),
+          profile: profile ? {
+            id: profile.id,
+            email: profile.email,
+            fullName: profile.fullName,
+            avatarUrl: profile.avatarUrl,
+          } : null,
+        }
       })
-    }
+    )
 
-    res.json({ users, page: Number(page), limit: Number(limit) })
+    res.json({ users, page: pageNum, limit: limitNum })
   } catch (error) {
     console.error('List users error:', error)
     res.status(500).json({ error: 'Internal server error' })
@@ -203,39 +209,66 @@ router.get('/users/:appName', authenticateToken, requireAdmin, async (req, res) 
 router.post('/bulk-grant', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const adminUserId = (req as any).userId
-    const { user_ids, app_name, role = 'user' } = req.body
+    const { userIds, appName, role = 'user' } = req.body
 
-    if (!Array.isArray(user_ids) || user_ids.length === 0) {
-      return res.status(400).json({ error: 'user_ids must be a non-empty array' })
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      return res.status(400).json({ error: 'userIds must be a non-empty array' })
     }
 
-    const accessRecords = user_ids.map(user_id => ({
-      user_id,
-      app_name,
-      role,
-      is_active: true,
-      granted_by: adminUserId,
-      granted_at: new Date().toISOString(),
-    }))
-
-    const { data: access, error } = await supabaseAdmin
-      .from('user_app_access')
-      .upsert(accessRecords, {
-        onConflict: 'user_id,app_name',
-        ignoreDuplicates: false,
-      })
-      .select()
-
-    if (error) {
-      return res.status(400).json({
-        error: 'Failed to bulk grant access',
-        details: error.message,
-      })
+    if (!['hub', 'editorial', 'academy', 'learn'].includes(appName)) {
+      return res.status(400).json({ error: 'Invalid app name' })
     }
+
+    if (!['viewer', 'user', 'editor', 'admin'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role' })
+    }
+
+    const batch = firestore.batch()
+    const accessRecords: SerializedUserAppAccess[] = []
+
+    for (const userId of userIds) {
+      // Check if access already exists
+      const existingAccessSnapshot = await firestore
+        .collection(COLLECTIONS.USER_APP_ACCESS)
+        .where('userId', '==', userId)
+        .where('appName', '==', appName)
+        .limit(1)
+        .get()
+
+      const accessData: UserAppAccess = {
+        userId,
+        appName,
+        role,
+        isActive: true,
+        grantedBy: adminUserId,
+        grantedAt: Timestamp.now(),
+      }
+
+      if (!existingAccessSnapshot.empty) {
+        // Update existing access
+        const docRef = existingAccessSnapshot.docs[0].ref
+        batch.update(docRef, {
+          userId: accessData.userId,
+          appName: accessData.appName,
+          role: accessData.role,
+          isActive: accessData.isActive,
+          grantedBy: accessData.grantedBy,
+          grantedAt: accessData.grantedAt,
+        })
+        accessRecords.push(serializeAccess({ ...accessData, id: docRef.id }))
+      } else {
+        // Create new access
+        const docRef = firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc()
+        batch.set(docRef, accessData)
+        accessRecords.push(serializeAccess({ ...accessData, id: docRef.id }))
+      }
+    }
+
+    await batch.commit()
 
     res.json({
-      message: `Access granted to ${user_ids.length} users`,
-      access,
+      message: `Access granted to ${userIds.length} users`,
+      access: accessRecords,
     })
   } catch (error) {
     console.error('Bulk grant access error:', error)

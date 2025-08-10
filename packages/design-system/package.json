@@ -16,8 +16,8 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
+    "@types/node": "^24.2.1",
+    "eslint": "^9.33.0",
+    "typescript": "^5.9.2"
   }
 }
