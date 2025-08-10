@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: 30 40% 35%;
+  --color-primary-foreground: 0 0% 100%;
+  --color-secondary: 210 40% 96%;
+  --color-secondary-foreground: 222 47% 11%;
+  --color-accent: 30 25% 85%;
+  --color-accent-foreground: 30 40% 20%;
+  --color-background: 0 0% 100%;
+  --color-foreground: 222 47% 11%;
+  --color-muted: 210 40% 96%;
+  --color-muted-foreground: 215 16% 47%;
+  --color-border: 214 32% 91%;
+  --color-input: 214 32% 91%;
+  --color-ring: 30 40% 35%;
+  --color-destructive: 0 84% 60%;
+  --color-destructive-foreground: 0 0% 100%;
+}
+
+body {
+  font-family: var(--font-serif, 'Merriweather', Georgia, serif);
+  background-color: hsl(var(--color-background));
+  color: hsl(var(--color-foreground));
+}
