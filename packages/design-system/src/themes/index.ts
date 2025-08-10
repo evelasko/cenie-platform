@@ -73,25 +73,42 @@ export function getTheme(variant: ThemeVariant): Theme {
 export function generateCSSVariables(theme: Theme): string {
   const vars: string[] = []
   
+  // Color variables - no need for hsl() wrapper in v4
   Object.entries(theme.colors).forEach(([key, value]) => {
-    vars.push(`--color-${key}: ${value};`)
+    const colorKey = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+    vars.push(`--color-${colorKey}: ${value};`)
   })
   
+  // Font family variables
+  Object.entries(theme.typography.fontFamily).forEach(([key, value]) => {
+    vars.push(`--font-${key}: ${value};`)
+  })
+  
+  // Text size variables (using --text prefix for v4)
   Object.entries(theme.typography.fontSize).forEach(([key, value]) => {
-    vars.push(`--font-size-${key}: ${value};`)
+    vars.push(`--text-${key}: ${value};`)
   })
   
+  // Font weight variables
   Object.entries(theme.typography.fontWeight).forEach(([key, value]) => {
     vars.push(`--font-weight-${key}: ${value};`)
   })
   
+  // Line height variables (using --leading prefix for v4)
+  Object.entries(theme.typography.lineHeight).forEach(([key, value]) => {
+    vars.push(`--leading-${key}: ${value};`)
+  })
+  
+  // Spacing variables - v4 doesn't use numbered spacing variables
+  // but we can keep them for custom use
   Object.entries(theme.spacing).forEach(([key, value]) => {
     vars.push(`--spacing-${key}: ${value};`)
   })
   
+  // Radius variables
   Object.entries(theme.radius).forEach(([key, value]) => {
     vars.push(`--radius-${key}: ${value};`)
   })
   
-  return `:root {\n  ${vars.join('\n  ')}\n}`
+  return `@theme {\n  ${vars.join('\n  ')}\n}`
 }

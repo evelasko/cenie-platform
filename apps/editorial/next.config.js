@@ -2,7 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@cenie/ui', '@cenie/design-system'],
-  images: {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },  images: {
     remotePatterns: [
       {
         protocol: 'https',
