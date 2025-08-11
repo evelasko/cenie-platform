@@ -1,55 +1,386 @@
+@import url('https://use.typekit.net/rnn4nzl.css');
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
-  --color-primary: hsl(210, 95%, 50%);
-  --color-primary-foreground: hsl(0, 0%, 100%);
-  --color-secondary: hsl(210, 40%, 96%);
-  --color-secondary-foreground: hsl(222, 47%, 11%);
-  --color-accent: hsl(210, 40%, 90%);
-  --color-accent-foreground: hsl(210, 95%, 30%);
-  --color-background: hsl(0, 0%, 100%);
-  --color-foreground: hsl(222, 47%, 11%);
-  --color-muted: hsl(210, 40%, 96%);
-  --color-muted-foreground: hsl(215, 16%, 47%);
-  --color-border: hsl(214, 32%, 91%);
-  --color-input: hsl(214, 32%, 91%);
-  --color-ring: hsl(210, 95%, 50%);
-  --color-destructive: hsl(0, 84%, 60%);
-  --color-destructive-foreground: hsl(0, 0%, 100%);
-  
-  --font-sans: Inter, system-ui, -apple-system, sans-serif;
-  --font-serif: Merriweather, Georgia, serif;
-  --font-mono: JetBrains Mono, monospace;
-  
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-  
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.75;
-  
-  --radius-none: 0;
-  --radius-sm: 0.125rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-full: 9999px;
+  /* Typography Scale - Golden Ratio Based */
+  --type-scale-ratio: 1.618;
+  --type-base-size: 1rem;
+
+  /* Font Families - Gotham for Academy */
+  --font-display: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* DISPLAY STYLES - Hero sections, major announcements */
+  --type-display-1-size: clamp(3.5rem, 8vw + 1rem, 8rem);
+  --type-display-1-line: 0.9;
+  --type-display-1-tracking: 0.05em;
+  --type-display-1-weight: 800;
+
+  --type-display-2-size: clamp(2.5rem, 6vw + 1rem, 5.5rem);
+  --type-display-2-line: 1;
+  --type-display-2-tracking: 0.03em;
+  --type-display-2-weight: 700;
+
+  /* HEADING STYLES - Progressive hierarchy */
+  --type-heading-1-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
+  --type-heading-1-line: 1.1;
+  --type-heading-1-tracking: 0.02em;
+  --type-heading-1-weight: 700;
+
+  --type-heading-2-size: clamp(1.875rem, 4vw + 0.25rem, 3rem);
+  --type-heading-2-line: 1.15;
+  --type-heading-2-tracking: 0.015em;
+  --type-heading-2-weight: 700;
+
+  --type-heading-3-size: clamp(1.5rem, 3vw + 0.25rem, 2.25rem);
+  --type-heading-3-line: 1.2;
+  --type-heading-3-tracking: 0.01em;
+  --type-heading-3-weight: 700;
+
+  --type-heading-4-size: clamp(1.25rem, 2.5vw + 0.125rem, 1.75rem);
+  --type-heading-4-line: 1.25;
+  --type-heading-4-tracking: 0.005em;
+  --type-heading-4-weight: 700;
+
+  --type-heading-5-size: clamp(1.125rem, 2vw + 0.125rem, 1.375rem);
+  --type-heading-5-line: 1.3;
+  --type-heading-5-tracking: 0;
+  --type-heading-5-weight: 700;
+
+  --type-heading-6-size: clamp(1rem, 1.5vw + 0.125rem, 1.125rem);
+  --type-heading-6-line: 1.35;
+  --type-heading-6-tracking: 0;
+  --type-heading-6-weight: 700;
+
+  /* BODY STYLES - Reading content */
+  --type-body-large-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.375rem);
+  --type-body-large-line: 1.6;
+  --type-body-large-tracking: -0.005em;
+  --type-body-large-weight: 300;
+
+  --type-body-base-size: clamp(1rem, 1vw + 0.5rem, 1.125rem);
+  --type-body-base-line: 1.65;
+  --type-body-base-tracking: 0;
+  --type-body-base-weight: 400;
+
+  --type-body-small-size: clamp(0.875rem, 0.75vw + 0.5rem, 1rem);
+  --type-body-small-line: 1.6;
+  --type-body-small-tracking: 0.005em;
+  --type-body-small-weight: 400;
+
+  /* UI/UTILITY STYLES */
+  --type-lead-size: clamp(1.25rem, 2vw + 0.5rem, 1.625rem);
+  --type-lead-line: 1.5;
+  --type-lead-tracking: -0.01em;
+  --type-lead-weight: 300;
+
+  --type-caption-size: clamp(0.75rem, 0.5vw + 0.375rem, 0.875rem);
+  --type-caption-line: 1.5;
+  --type-caption-tracking: 0.01em;
+  --type-caption-weight: 400;
+
+  --type-overline-size: clamp(0.75rem, 0.25vw + 0.5rem, 0.875rem);
+  --type-overline-line: 1.2;
+  --type-overline-tracking: 0.1em;
+  --type-overline-weight: 700;
+
+  --type-button-size: clamp(0.875rem, 0.5vw + 0.5rem, 1rem);
+  --type-button-line: 1.2;
+  --type-button-tracking: 0.025em;
+  --type-button-weight: 700;
+
+  --type-link-decoration: underline;
+  --type-link-decoration-thickness: 0.0625em;
+  --type-link-underline-offset: 0.125em;
+  --type-link-weight: 400;
+
+  --type-quote-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem);
+  --type-quote-line: 1.45;
+  --type-quote-tracking: -0.005em;
+  --type-quote-weight: 300;
+
+  --type-label-size: clamp(0.875rem, 0.5vw + 0.5rem, 1rem);
+  --type-label-line: 1.4;
+  --type-label-tracking: 0.01em;
+  --type-label-weight: 600;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+:root {
+  --color-background: oklch(1.0000 0 0);
+  --color-foreground: oklch(0.2686 0 0);
+  --color-card: oklch(1.0000 0 0);
+  --color-card-foreground: oklch(0.2686 0 0);
+  --color-popover: oklch(1.0000 0 0);
+  --color-popover-foreground: oklch(0.2686 0 0);
+  --color-primary: oklch(0.588 0.158 241.966);
+  --color-primary-foreground: oklch(1.0000 0 0);
+  --color-secondary: oklch(0.3469 0.0733 234.7352);
+  --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
+  --color-muted: oklch(0.9846 0.0017 247.8389);
+  --color-muted-foreground: oklch(0.5510 0.0234 264.3637);
+  --color-accent: oklch(0.828 0.111 230.318);
+  --color-accent-foreground: oklch(0.3469 0.0733 234.7352);
+  --color-destructive: oklch(0.6368 0.2078 25.3313);
+  --color-destructive-foreground: oklch(1.0000 0 0);
+  --color-border: oklch(0.9276 0.0058 264.5313);
+  --color-input: oklch(0.9276 0.0058 264.5313);
+  --color-ring: oklch(0.588 0.158 241.966);
+  --radius: 0.375rem;
+  --type-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --color-background: oklch(0.2046 0 0);
+  --color-foreground: oklch(0.9219 0 0);
+  --color-card: oklch(0.2686 0 0);
+  --color-card-foreground: oklch(0.9219 0 0);
+  --color-popover: oklch(0.2686 0 0);
+  --color-popover-foreground: oklch(0.9219 0 0);
+  --color-primary: oklch(0.588 0.158 241.966);
+  --color-primary-foreground: oklch(0.8954 0.0304 65.8126);
+  --color-secondary: oklch(0.3469 0.0733 234.7352);
+  --color-secondary-foreground: oklch(0.9219 0 0);
+  --color-muted: oklch(0.2686 0 0);
+  --color-muted-foreground: oklch(0.7155 0 0);
+  --color-accent: oklch(0.2676 0.0336 229.2762);
+  --color-accent-foreground: oklch(0.9635 0.0341 183.0511);
+  --color-destructive: oklch(0.6368 0.2078 25.3313);
+  --color-destructive-foreground: oklch(1.0000 0 0);
+  --color-border: oklch(0.3715 0 0);
+  --color-input: oklch(0.3715 0 0);
+  --color-ring: oklch(0.588 0.158 241.966);
+}
+
+@theme inline {
+  --font-sans: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "aglet-mono", ui-monospace, monospace;
+  --font-serif: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-card-foreground);
+  --color-popover: var(--color-popover);
+  --color-popover-foreground: var(--color-popover-foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-destructive: var(--color-destructive);
+  --color-destructive-foreground: var(--color-destructive-foreground);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Typography Utility Classes */
+@layer utilities {
+  /* Display Styles */
+  .type-display-1 {
+    font-family: var(--font-display);
+    font-size: var(--type-display-1-size);
+    line-height: var(--type-display-1-line);
+    letter-spacing: var(--type-display-1-tracking);
+    font-weight: var(--type-display-1-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  .type-display-2 {
+    font-family: var(--font-display);
+    font-size: var(--type-display-2-size);
+    line-height: var(--type-display-2-line);
+    letter-spacing: var(--type-display-2-tracking);
+    font-weight: var(--type-display-2-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  /* Heading Styles */
+  .type-heading-1 {
+    font-family: var(--font-display);
+    font-size: var(--type-heading-1-size);
+    line-height: var(--type-heading-1-line);
+    letter-spacing: var(--type-heading-1-tracking);
+    font-weight: var(--type-heading-1-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  .type-heading-2 {
+    font-family: var(--font-display);
+    font-size: var(--type-heading-2-size);
+    line-height: var(--type-heading-2-line);
+    letter-spacing: var(--type-heading-2-tracking);
+    font-weight: var(--type-heading-2-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  .type-heading-3 {
+    font-family: var(--font-display);
+    font-size: var(--type-heading-3-size);
+    line-height: var(--type-heading-3-line);
+    letter-spacing: var(--type-heading-3-tracking);
+    font-weight: var(--type-heading-3-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-heading-4 {
+    font-family: var(--font-display);
+    font-size: var(--type-heading-4-size);
+    line-height: var(--type-heading-4-line);
+    letter-spacing: var(--type-heading-4-tracking);
+    font-weight: var(--type-heading-4-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-heading-5 {
+    font-family: var(--font-body);
+    font-size: var(--type-heading-5-size);
+    line-height: var(--type-heading-5-line);
+    letter-spacing: var(--type-heading-5-tracking);
+    font-weight: var(--type-heading-5-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-heading-6 {
+    font-family: var(--font-body);
+    font-size: var(--type-heading-6-size);
+    line-height: var(--type-heading-6-line);
+    letter-spacing: var(--type-heading-6-tracking);
+    font-weight: var(--type-heading-6-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Body Styles */
+  .type-body-large {
+    font-family: var(--font-body);
+    font-size: var(--type-body-large-size);
+    line-height: var(--type-body-large-line);
+    letter-spacing: var(--type-body-large-tracking);
+    font-weight: var(--type-body-large-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-body-base {
+    font-family: var(--font-body);
+    font-size: var(--type-body-base-size);
+    line-height: var(--type-body-base-line);
+    letter-spacing: var(--type-body-base-tracking);
+    font-weight: var(--type-body-base-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-body-small {
+    font-family: var(--font-body);
+    font-size: var(--type-body-small-size);
+    line-height: var(--type-body-small-line);
+    letter-spacing: var(--type-body-small-tracking);
+    font-weight: var(--type-body-small-weight);
+    transition: var(--type-transition);
+  }
+
+  /* UI/Utility Styles */
+  .type-lead {
+    font-family: var(--font-body);
+    font-size: var(--type-lead-size);
+    line-height: var(--type-lead-line);
+    letter-spacing: var(--type-lead-tracking);
+    font-weight: var(--type-lead-weight);
+    transition: var(--type-transition);
+  }
+
+  .type-caption {
+    font-family: var(--font-body);
+    font-size: var(--type-caption-size);
+    line-height: var(--type-caption-line);
+    letter-spacing: var(--type-caption-tracking);
+    font-weight: var(--type-caption-weight);
+    opacity: 0.8;
+    transition: var(--type-transition);
+  }
+
+  .type-overline {
+    font-family: var(--font-body);
+    font-size: var(--type-overline-size);
+    line-height: var(--type-overline-line);
+    letter-spacing: var(--type-overline-tracking);
+    font-weight: var(--type-overline-weight);
+    text-transform: uppercase;
+    opacity: 0.75;
+    transition: var(--type-transition);
+  }
+
+  .type-button {
+    font-family: var(--font-body);
+    font-size: var(--type-button-size);
+    line-height: var(--type-button-line);
+    letter-spacing: var(--type-button-tracking);
+    font-weight: var(--type-button-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  .type-link {
+    font-weight: var(--type-link-weight);
+    text-decoration: var(--type-link-decoration);
+    text-decoration-thickness: var(--type-link-decoration-thickness);
+    text-underline-offset: var(--type-link-underline-offset);
+    transition: var(--type-transition);
+  }
+
+  .type-link:hover {
+    opacity: 0.7;
+    text-decoration-thickness: 0.125em;
+  }
+
+  .type-quote {
+    font-family: var(--font-body);
+    font-size: var(--type-quote-size);
+    line-height: var(--type-quote-line);
+    letter-spacing: var(--type-quote-tracking);
+    font-weight: var(--type-quote-weight);
+    font-style: italic;
+    transition: var(--type-transition);
+  }
+
+  .type-label {
+    font-family: var(--font-body);
+    font-size: var(--type-label-size);
+    line-height: var(--type-label-line);
+    letter-spacing: var(--type-label-tracking);
+    font-weight: var(--type-label-weight);
+    transition: var(--type-transition);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-size: var(--type-body-base-size);
+    line-height: var(--type-body-base-line);
+    letter-spacing: var(--type-body-base-tracking);
+    font-weight: var(--type-body-base-weight);
+    transition: var(--type-transition);
+    
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-variant-ligatures: common-ligatures;
+  }
 }
