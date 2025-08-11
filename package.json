@@ -20,7 +20,8 @@
     "test:e2e": "turbo test:e2e",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo build --filter=!@cenie/hub --filter=!@cenie/editorial --filter=!@cenie/academy --filter=!@cenie/learn && changeset publish"
+    "release": "turbo build --filter=!@cenie/hub --filter=!@cenie/editorial --filter=!@cenie/academy --filter=!@cenie/learn && changeset publish",
+    "sync-content": "npx sync-directory  ../docs/web-content contents"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
