@@ -25,6 +25,9 @@ export function initializeAdminApp() {
 
 export async function verifyIdTokenServer(idToken: string) {
   const app = initializeAdminApp()
+  if (!app) {
+    throw new Error('Firebase Admin app not initialized')
+  }
   const auth = app.auth()
   
   try {

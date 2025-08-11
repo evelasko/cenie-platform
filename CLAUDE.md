@@ -132,12 +132,62 @@ Single Sign-On across all subdomains:
 - Shared types in package exports
 
 ### Environment Variables
-Required for production:
+
+#### Configuration Structure
+- **Root `.env`**: Contains shared variables (Supabase, Cloudinary, Stripe)
+- **App-specific `.env.local`**: Contains Firebase configuration for each app
+
+#### Setting up Firebase for Apps
+Each app has its own Firebase project configuration:
+
+1. **Copy template files**:
+   ```bash
+   # For each app, copy the example file to .env.local
+   cp apps/hub/.env.local.example apps/hub/.env.local
+   cp apps/editorial/.env.local.example apps/editorial/.env.local
+   cp apps/academy/.env.local.example apps/academy/.env.local
+   cp apps/agency/.env.local.example apps/agency/.env.local
+   ```
+
+2. **Configure Firebase variables** in each app's `.env.local`:
+   ```bash
+   # Client-side Firebase config (exposed to browser)
+   NEXT_PUBLIC_FIREBASE_API_KEY=your-app-specific-api-key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-app-project-id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-app.firebasestorage.app
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
+
+   # Server-side Firebase Admin SDK
+   FIREBASE_PROJECT_ID=your-app-project-id
+   FIREBASE_CLIENT_EMAIL=your-service-account@your-app.iam.gserviceaccount.com
+   FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nyour-private-key\n-----END PRIVATE KEY-----"
+   ```
+
+#### Required Shared Variables (Root `.env`)
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` 
 - `SUPABASE_SECRET_KEY`
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_SECRET_KEY`
+
+#### Port Configuration
+Each app runs on its designated port:
+- Hub: `http://localhost:3000`
+- Editorial: `http://localhost:3001`  
+- Academy: `http://localhost:3002`
+- Agency: `http://localhost:3003`
+
+#### Turbo Integration
+Turbo automatically:
+- Watches `.env.local` files for changes (configured in `turbo.json`)
+- Includes environment variables in build caching
+- Supports app-specific environment variable isolation
 
 ### Testing Approach
 - Unit tests run via `pnpm test`

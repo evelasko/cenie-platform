@@ -12,7 +12,8 @@
       "Bash(rm:*)",
       "Bash(pnpm lint:*)",
       "Bash(chmod:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }

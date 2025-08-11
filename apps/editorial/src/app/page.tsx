@@ -6,7 +6,7 @@ export default function EditorialHomePage() {
       <div className="max-w-4xl mx-auto text-center space-y-8">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold text-primary">
-            CENIE Editorial
+            CENIE Editorial - {process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-light">
             Academic Publishing Platform

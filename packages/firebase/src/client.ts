@@ -34,7 +34,8 @@ export function getFirebaseConfig(): FirebaseConfig {
   
   if (missingFields.length > 0) {
     console.error('Missing Firebase configuration. Please set the following environment variables:', missingFields.map(f => `NEXT_PUBLIC_FIREBASE_${f.toUpperCase().replace(/([A-Z])/g, '_$1').replace(/^_/, '')}`).join(', '))
-    throw new Error(`Missing required Firebase config: ${missingFields.join(', ')}. Please check your .env file and ensure all NEXT_PUBLIC_FIREBASE_* variables are set.`)
+    console.error('Make sure to create a .env.local file in your app directory with the Firebase configuration specific to your app.')
+    throw new Error(`Missing required Firebase config: ${missingFields.join(', ')}. Please check your app's .env.local file and ensure all NEXT_PUBLIC_FIREBASE_* variables are set.`)
   }
 
   return config
