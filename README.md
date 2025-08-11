@@ -14,6 +14,7 @@ This monorepo contains four main applications that share authentication, billing
 ### Authentication Architecture
 
 All authentication is handled centrally through the Hub application using Firebase Auth:
+
 - Hub provides API routes at `/api/auth/*` for all authentication operations
 - Other apps communicate with Hub for authentication via the `@cenie/auth-client` package
 - Single Sign-On (SSO) is enabled across all applications
@@ -21,7 +22,7 @@ All authentication is handled centrally through the Hub application using Fireba
 
 ## 📁 Project Structure
 
-```
+```text
 cenie-platform/
 ├── apps/                    # Next.js applications
 │   ├── hub/                # Main website (cenie.org)
