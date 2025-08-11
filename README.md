@@ -9,7 +9,7 @@ This monorepo contains four main applications that share authentication, billing
 - **Hub** (`cenie.org`) - Main institutional website, brand anchor, and authentication provider
 - **Editorial** (`editorial.cenie.org`) - Academic publishing platform
 - **Academy** (`academy.cenie.org`) - Education and course platform
-- **Learn** (`learn.cenie.org`) - Learning Management System (LMS)
+- **Agency** (`agency.cenie.org`) - Automation services and software catalog
 
 ### Authentication Architecture
 
@@ -28,7 +28,7 @@ cenie-platform/
 │   ├── hub/                # Main website (cenie.org)
 │   ├── editorial/          # Publishing platform
 │   ├── academy/            # Education platform
-│   └── learn/              # LMS platform
+│   └── agency/             # Automation services platform
 │
 ├── packages/               # Shared internal packages
 │   ├── ui/                # Component library (Shadcn/ui + Radix)
@@ -95,7 +95,7 @@ Run a specific application:
 pnpm dev --filter=@cenie/hub
 pnpm dev --filter=@cenie/editorial
 pnpm dev --filter=@cenie/academy
-pnpm dev --filter=@cenie/learn
+pnpm dev --filter=@cenie/agency
 ```
 
 Applications will be available at:
@@ -103,7 +103,7 @@ Applications will be available at:
 - Hub: <http://localhost:3000>
 - Editorial: <http://localhost:3001>
 - Academy: <http://localhost:3002>
-- Learn: <http://localhost:3003>
+- Agency: <http://localhost:3003>
 
 ### Building
 
@@ -148,7 +148,7 @@ The platform uses a token-based design system with runtime theming:
   - Hub: Default CENIE branding
   - Editorial: Warm browns, serif typography
   - Academy: Blues, modern sans-serif
-  - Learn: Inherits Academy with adjustments
+  - Agency: Modern tech-focused theme
 
 ### Using the Design System
 

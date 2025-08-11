@@ -2,9 +2,9 @@ import './globals.css'
 import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CENIE Learn - Learning Management System',
-  description: 'Comprehensive LMS for tracking progress, managing educational content, and facilitating interactive learning experiences.',
-  keywords: 'LMS, learning management, progress tracking, education, interactive learning, CENIE',
+  title: 'CENIE Agency - Automation Services & Software Solutions',
+  description: 'Digital transformation partner specializing in automation solutions, custom software development, and AI-powered systems.',
+  keywords: 'automation, software development, AI solutions, APIs, digital transformation, custom apps, CENIE',
 }
 
 export default function RootLayout({

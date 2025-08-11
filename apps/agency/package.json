@@ -1,10 +1,10 @@
 {
-  "name": "@cenie/learn",
+  "name": "@cenie/agency",
   "version": "0.1.0",
   "private": true,
-  "description": "CENIE Learn - Learning Management System",
+  "description": "CENIE Agency - Automation services and software catalog",
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev --port 3003",
+    "dev": "NODE_OPTIONS='--inspect=9232' next dev --port 3003",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -6,14 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Running Applications
 ```bash
-# Run all apps concurrently (Hub:3000, Editorial:3001, Academy:3002, Learn:3003)
+# Run all apps concurrently (Hub:3000, Editorial:3001, Academy:3002, Agency:3003)
 pnpm dev
 
 # Run specific application
 pnpm dev --filter=@cenie/hub
 pnpm dev --filter=@cenie/editorial
 pnpm dev --filter=@cenie/academy
-pnpm dev --filter=@cenie/learn
+pnpm dev --filter=@cenie/agency
 
 # Run specific service
 pnpm dev --filter=@cenie/auth-api
@@ -89,7 +89,7 @@ All applications are Next.js 15 apps using:
 - Base tokens for CENIE brand
 - Theme variants per application
 - Runtime CSS variable generation
-- Each app has customized theme (Hub: default, Editorial: warm/serif, Academy/Learn: blue/modern)
+- Each app has customized theme (Hub: default, Editorial: warm/serif, Academy: blue/modern, Agency: tech-focused)
 
 **@cenie/supabase** - Authentication and database:
 - Supabase client configuration

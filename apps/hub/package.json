@@ -4,7 +4,7 @@
   "private": true,
   "description": "CENIE Hub - Main platform website",
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev --port 3000",
+    "dev": "NODE_OPTIONS='--inspect=9230' next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
