@@ -11,8 +11,8 @@ const oauthSignInSchema = z.object({
   isNewUser: z.boolean().optional(),
   userData: z.object({
     email: z.string().email(),
-    fullName: z.string().optional(),
-    photoURL: z.string().optional(),
+    fullName: z.string().nullable().optional(),
+    photoURL: z.string().nullable().optional(),
     providerId: z.string(),
     additionalUserInfo: z.object({
       profile: z.record(z.string(), z.any()).optional(),
