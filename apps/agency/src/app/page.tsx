@@ -1,5 +1,4 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Separator, Tabs, TabsContent, TabsList, TabsTrigger } from '@cenie/ui'
-import Link from 'next/link'
 import { Briefcase, Zap, Brain, Rocket, Target, Code2, Users, Award, ChevronRight, Mail, Phone, Calendar } from 'lucide-react'
 
 export default function AgencyHomePage() {

@@ -1,5 +1,4 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Separator, Tabs, TabsContent, TabsList, TabsTrigger } from '@cenie/ui'
-import Link from 'next/link'
 import { GraduationCap, BookOpen, Users, Award, TrendingUp, Laptop, Brain, Target, CheckCircle, Bell, Mail, Linkedin } from 'lucide-react'
 
 export default function AcademyHomePage() {
