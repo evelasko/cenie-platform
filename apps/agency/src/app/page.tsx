@@ -1,7 +1,32 @@
+'use client'
+
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Separator, Tabs, TabsContent, TabsList, TabsTrigger } from '@cenie/ui'
 import { Briefcase, Zap, Brain, Rocket, Target, Code2, Users, Award, ChevronRight, Mail, Phone, Calendar } from 'lucide-react'
+import { useAuth } from '@cenie/firebase/auth'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function AgencyHomePage() {
+  const { user, loading } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard')
+    }
+  }, [user, loading, router])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-background">
       <div className="container mx-auto px-4 py-16 max-w-7xl">

@@ -29,7 +29,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -41,13 +41,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <h1 className="text-3xl font-bold text-gray-900">
-                Editorial Dashboard
+                Academy Dashboard
               </h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -57,7 +57,7 @@ export default function DashboardPage() {
               <Button 
                 onClick={handleSignOut}
                 variant="outline"
-                className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                className="border-blue-300 text-blue-700 hover:bg-blue-50"
               >
                 Sign Out
               </Button>
@@ -68,7 +68,7 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white overflow-hidden shadow-lg rounded-lg border border-orange-100">
+          <div className="bg-white overflow-hidden shadow-lg rounded-lg border border-blue-100">
             <div className="px-4 py-5 sm:p-6">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Authentication Details
@@ -122,7 +122,7 @@ export default function DashboardPage() {
                     Provider
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.providerId || 'Unknown'}
+                    {user.providerData?.[0]?.providerId || 'Unknown'}
                   </dd>
                 </div>
                 
@@ -131,8 +131,8 @@ export default function DashboardPage() {
                     Last Sign In
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.lastLoginAt 
-                      ? new Date(user.lastLoginAt).toLocaleString() 
+                    {user.metadata?.lastSignInTime 
+                      ? new Date(user.metadata.lastSignInTime).toLocaleString() 
                       : 'Unknown'}
                   </dd>
                 </div>
@@ -140,26 +140,26 @@ export default function DashboardPage() {
             </div>
           </div>
           
-          <div className="mt-6 bg-white overflow-hidden shadow-lg rounded-lg border border-orange-100">
+          <div className="mt-6 bg-white overflow-hidden shadow-lg rounded-lg border border-blue-100">
             <div className="px-4 py-5 sm:p-6">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Welcome to Editorial
+                Welcome to Academy
               </h2>
               <div className="prose max-w-none">
                 <p className="text-gray-600 mb-4">
-                  📚 Welcome to the CENIE Editorial platform - your academic publishing workspace.
+                  🎓 Welcome to the CENIE Academy - your learning and development platform.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Here you can manage manuscripts, coordinate peer reviews, and collaborate with 
-                  authors and reviewers in the academic publishing process.
+                  Here you can access courses, track your learning progress, and develop new skills 
+                  in AI, innovation, and emerging technologies.
                 </p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-4">
-                  <h3 className="text-sm font-medium text-orange-800 mb-2">Next Steps:</h3>
-                  <ul className="text-sm text-orange-700 space-y-1">
-                    <li>• Set up your editorial profile</li>
-                    <li>• Review assigned manuscripts</li>
-                    <li>• Manage peer review workflows</li>
-                    <li>• Coordinate with editorial team</li>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                  <h3 className="text-sm font-medium text-blue-800 mb-2">Next Steps:</h3>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Browse available courses</li>
+                    <li>• Track your learning progress</li>
+                    <li>• Earn certificates and badges</li>
+                    <li>• Join learning communities</li>
                   </ul>
                 </div>
               </div>
