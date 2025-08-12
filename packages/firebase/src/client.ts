@@ -43,7 +43,7 @@ export function getFirebaseConfig(): FirebaseConfig {
         case 'messagingSenderId': return 'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'
         case 'appId': return 'NEXT_PUBLIC_FIREBASE_APP_ID'
         case 'measurementId': return 'NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID'
-        default: return `NEXT_PUBLIC_FIREBASE_${field.toUpperCase()}`
+        default: return `NEXT_PUBLIC_FIREBASE_${(field as string).toUpperCase()}`
       }
     })
     

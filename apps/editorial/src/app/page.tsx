@@ -1,10 +1,31 @@
+'use client'
+
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Separator, Tabs, TabsContent, TabsList, TabsTrigger } from '@cenie/ui'
-import Link from 'next/link'
 import { BookOpen, Globe, Search, FileText, Users, Library, BarChart3, Languages, PenTool, CheckCircle, Mail, Twitter, Linkedin } from 'lucide-react'
+import { useAuth } from '@cenie/firebase/auth'
+import { Navbar } from '../components/navbar'
 
 export default function EditorialHomePage() {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen bg-gradient-to-b from-background via-accent/10 to-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-foreground mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-accent/10 to-background">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-b from-background via-accent/10 to-background">
       <div className="container mx-auto px-4 py-16 max-w-7xl">
         <div className="text-center mb-16 space-y-6">
           <Badge variant="outline" className="mb-4">
@@ -391,12 +412,25 @@ export default function EditorialHomePage() {
           <p className="text-lg font-medium text-muted-foreground italic">
             Bridging Research and Innovation
           </p>
+
+          {user && (
+            <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="flex items-center gap-2 text-green-800">
+                <CheckCircle className="h-5 w-5" />
+                <span className="font-medium">Welcome to CENIE Editorial!</span>
+              </div>
+              <p className="text-green-700 mt-2">
+                You are successfully authenticated. This content is only visible to signed-in users.
+              </p>
+            </div>
+          )}
           
           <p className="text-sm text-muted-foreground">
             © 2024 CENIE Editorial. All rights reserved.
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
