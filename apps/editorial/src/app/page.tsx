@@ -3,10 +3,19 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Separator, Tabs, TabsContent, TabsList, TabsTrigger } from '@cenie/ui'
 import { BookOpen, Globe, Search, FileText, Users, Library, BarChart3, Languages, PenTool, CheckCircle, Mail, Twitter, Linkedin } from 'lucide-react'
 import { useAuth } from '@cenie/firebase/auth'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { Navbar } from '../components/navbar'
 
 export default function EditorialHomePage() {
   const { user, loading } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard')
+    }
+  }, [user, loading, router])
 
   if (loading) {
     return (
