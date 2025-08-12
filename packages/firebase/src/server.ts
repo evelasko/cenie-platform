@@ -7,7 +7,7 @@ let adminApp: admin.app.App | undefined
 export function initializeAdminApp() {
   if (!adminApp) {
     const existingApps = admin.apps
-    if (existingApps.length > 0) {
+    if (existingApps.length > 0 && existingApps[0]) {
       adminApp = existingApps[0]
     } else {
       adminApp = admin.initializeApp({
@@ -23,7 +23,7 @@ export function initializeAdminApp() {
   return adminApp
 }
 
-export async function verifyIdTokenServer(idToken: string) {
+export async function verifyIdTokenServer(idToken: string): Promise<admin.auth.DecodedIdToken | null> {
   const app = initializeAdminApp()
   if (!app) {
     throw new Error('Firebase Admin app not initialized')
@@ -41,6 +41,9 @@ export async function verifyIdTokenServer(idToken: string) {
 
 export async function createSessionCookie(idToken: string, expiresIn = 60 * 60 * 24 * 14 * 1000) {
   const app = initializeAdminApp()
+  if (!app) {
+    throw new Error('Firebase Admin app not initialized')
+  }
   const auth = app.auth()
   
   try {
@@ -52,8 +55,11 @@ export async function createSessionCookie(idToken: string, expiresIn = 60 * 60 *
   }
 }
 
-export async function verifySessionCookie(sessionCookie: string) {
+export async function verifySessionCookie(sessionCookie: string): Promise<admin.auth.DecodedIdToken | null> {
   const app = initializeAdminApp()
+  if (!app) {
+    throw new Error('Firebase Admin app not initialized')
+  }
   const auth = app.auth()
   
   try {
@@ -65,7 +71,7 @@ export async function verifySessionCookie(sessionCookie: string) {
   }
 }
 
-export async function getServerSession() {
+export async function getServerSession(): Promise<admin.auth.DecodedIdToken | null> {
   const cookieStore = await cookies()
   const sessionCookie = cookieStore.get('session')
   

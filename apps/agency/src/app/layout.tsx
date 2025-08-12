@@ -1,5 +1,8 @@
 import './globals.css'
+
 import { type Metadata } from 'next'
+
+import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: 'CENIE Agency - Automation Services & Software Solutions',
@@ -15,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

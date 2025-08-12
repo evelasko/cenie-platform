@@ -9,6 +9,7 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./auth": "./src/auth/index.ts",
+    "./analytics": "./src/analytics/index.ts",
     "./server": "./src/server.ts",
     "./middleware": "./src/middleware.ts"
   },

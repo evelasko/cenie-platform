@@ -33,9 +33,34 @@ export function getFirebaseConfig(): FirebaseConfig {
   const missingFields = requiredFields.filter(field => !config[field])
   
   if (missingFields.length > 0) {
-    console.error('Missing Firebase configuration. Please set the following environment variables:', missingFields.map(f => `NEXT_PUBLIC_FIREBASE_${f.toUpperCase().replace(/([A-Z])/g, '_$1').replace(/^_/, '')}`).join(', '))
-    console.error('Make sure to create a .env.local file in your app directory with the Firebase configuration specific to your app.')
-    throw new Error(`Missing required Firebase config: ${missingFields.join(', ')}. Please check your app's .env.local file and ensure all NEXT_PUBLIC_FIREBASE_* variables are set.`)
+    // Map field names to their corresponding environment variable names
+    const envVarNames = missingFields.map(field => {
+      switch (field) {
+        case 'apiKey': return 'NEXT_PUBLIC_FIREBASE_API_KEY'
+        case 'authDomain': return 'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN'
+        case 'projectId': return 'NEXT_PUBLIC_FIREBASE_PROJECT_ID'
+        case 'storageBucket': return 'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'
+        case 'messagingSenderId': return 'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'
+        case 'appId': return 'NEXT_PUBLIC_FIREBASE_APP_ID'
+        case 'measurementId': return 'NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID'
+        default: return `NEXT_PUBLIC_FIREBASE_${field.toUpperCase()}`
+      }
+    })
+    
+    console.error('Missing Firebase configuration. Please set the following environment variables:')
+    console.error(`Missing: ${envVarNames.join(', ')}`)
+    console.error('Shared variables (root .env): API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID')
+    console.error('App-specific variables (.env.local): APP_ID, MEASUREMENT_ID, APP_NAME')
+    console.error('Current environment variables:')
+    console.error(`- API_KEY: ${process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? '✓' : '✗'}`)
+    console.error(`- AUTH_DOMAIN: ${process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ? '✓' : '✗'}`)
+    console.error(`- PROJECT_ID: ${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ? '✓' : '✗'}`)
+    console.error(`- STORAGE_BUCKET: ${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ? '✓' : '✗'}`)
+    console.error(`- MESSAGING_SENDER_ID: ${process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ? '✓' : '✗'}`)
+    console.error(`- APP_ID: ${process.env.NEXT_PUBLIC_FIREBASE_APP_ID ? '✓' : '✗'}`)
+    console.error(`- APP_NAME: ${process.env.NEXT_PUBLIC_APP_NAME ? '✓' : '✗'}`)
+    
+    throw new Error(`Missing required Firebase config: ${missingFields.join(', ')}. Please check your environment variables.`)
   }
 
   return config

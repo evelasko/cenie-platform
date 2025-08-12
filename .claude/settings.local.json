@@ -13,7 +13,10 @@
       "Bash(pnpm lint:*)",
       "Bash(chmod:*)",
       "Bash(mv:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(pnpm list:*)"
     ],
     "deny": []
   }

@@ -32,3 +32,28 @@ export interface SessionData {
   isLoading: boolean
   error: AuthError | null
 }
+
+// Analytics Types
+export interface AnalyticsEventParams {
+  [key: string]: string | number | boolean
+}
+
+export interface CustomEventParams extends AnalyticsEventParams {
+  app_name: string
+  [key: string]: string | number | boolean
+}
+
+export interface AnalyticsConfig {
+  appName: string
+  enableDebug?: boolean
+  measurementId?: string
+}
+
+export type AnalyticsSeverity = 'low' | 'medium' | 'high'
+
+export interface AnalyticsError {
+  message: string
+  context: string
+  severity: AnalyticsSeverity
+  stack?: string
+}
