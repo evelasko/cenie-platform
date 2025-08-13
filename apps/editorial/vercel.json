@@ -1,0 +1,52 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "cenie-editorial",
+  "buildCommand": "cd ../.. && pnpm build --filter=@cenie/editorial",
+  "devCommand": "cd ../.. && pnpm dev --filter=@cenie/editorial",
+  "installCommand": "cd ../.. && pnpm install",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "rootDirectory": "apps/editorial",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/editorial/ packages/ services/",
+  "projectSettings": {
+    "framework": "nextjs",
+    "devCommand": "pnpm dev",
+    "buildCommand": "pnpm build",
+    "outputDirectory": ".next"
+  },
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_NAME": "editorial",
+    "NEXT_PUBLIC_APP_URL": "https://editorial.cenie.org"
+  }
+}

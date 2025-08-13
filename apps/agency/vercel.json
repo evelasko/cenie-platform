@@ -1,0 +1,52 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "cenie-agency",
+  "buildCommand": "cd ../.. && pnpm build --filter=@cenie/agency",
+  "devCommand": "cd ../.. && pnpm dev --filter=@cenie/agency",
+  "installCommand": "cd ../.. && pnpm install",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "rootDirectory": "apps/agency",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/agency/ packages/ services/",
+  "projectSettings": {
+    "framework": "nextjs",
+    "devCommand": "pnpm dev",
+    "buildCommand": "pnpm build",
+    "outputDirectory": ".next"
+  },
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_NAME": "agency",
+    "NEXT_PUBLIC_APP_URL": "https://agency.cenie.org"
+  }
+}
