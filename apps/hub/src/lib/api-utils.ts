@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server'
 import { ZodError } from 'zod'
-import { Profile, UserAppAccess, Subscription, SerializedProfile, SerializedUserAppAccess, SerializedSubscription } from './types'
+import { type Profile, type UserAppAccess, type Subscription, type SerializedProfile, type SerializedUserAppAccess, type SerializedSubscription } from './types'
 
 export function createErrorResponse(error: string, status: number = 400) {
   return NextResponse.json({ error }, { status })
 }
 
-export function createSuccessResponse(data: any, status: number = 200) {
+export function createSuccessResponse(data: unknown, status: number = 200) {
   return NextResponse.json(data, { status })
 }
 
-export function handleApiError(error: any) {
+export function handleApiError(error: unknown) {
   console.error('API Error:', error)
   
   if (error instanceof ZodError) {
@@ -48,8 +48,8 @@ export function serializeSubscription(subscription: Subscription): SerializedSub
 
 export async function parseRequestBody<T>(request: Request): Promise<T> {
   try {
-    return await request.json()
-  } catch (error) {
+    return (await request.json()) as T
+  } catch {
     throw new Error('Invalid JSON body')
   }
 }

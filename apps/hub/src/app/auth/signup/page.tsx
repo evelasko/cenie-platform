@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { 
-  signUp, 
-  signInWithGoogle, 
+import {
+  getOAuthRedirectResult,
   signInWithApple,
-  getOAuthRedirectResult
+  signInWithGoogle,
+  signUp,
+  type User,
 } from '@cenie/firebase/auth'
 import { Button } from '@cenie/ui'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState, useCallback } from 'react'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -21,71 +22,8 @@ export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  // Check for OAuth redirect results on component mount
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getOAuthRedirectResult()
-        if (result) {
-          await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || 'oauth')
-        }
-      } catch (error: any) {
-        console.error('OAuth redirect error:', error)
-        setError(error.message || 'OAuth sign-up failed')
-      }
-    }
 
-    handleRedirectResult()
-  }, [])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!email || !password || !confirmPassword) {
-      setError('Please fill in all required fields')
-      return
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      return
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-
-    try {
-      await signUp(email, password, displayName || undefined)
-      
-      // Sign up successful, you might want to show a verification message
-      // For now, we'll redirect to dashboard
-      router.push('/dashboard')
-    } catch (error: any) {
-      console.error('Sign up error:', error)
-      
-      let errorMessage = 'Sign up failed'
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'An account with this email already exists'
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Please enter a valid email address'
-      } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'Password is too weak. Please choose a stronger password'
-      } else if (error.code === 'auth/operation-not-allowed') {
-        errorMessage = 'Email/password accounts are not enabled'
-      }
-      
-      setError(errorMessage)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleOAuthSuccess = async (user: any, isNewUser: boolean, provider: string) => {
+  const handleOAuthSuccess = useCallback(async (user: User, isNewUser: boolean, provider: string) => {
     try {
       // Get ID token to authenticate with our API
       const idToken = await user.getIdToken()
@@ -114,11 +52,11 @@ export default function SignUpPage() {
       }
 
       router.push('/dashboard')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('OAuth success handling error:', error)
       setError('Failed to complete sign-up. Please try again.')
     }
-  }
+  }, [router])
 
   const handleOAuthSignUp = async (provider: 'google' | 'apple') => {
     try {
@@ -136,16 +74,79 @@ export default function SignUpPage() {
 
       await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || provider + '.com')
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`${provider} sign-up error:`, error)
       
-      if (error.code === 'auth/account-exists-with-different-credential') {
+      if (error instanceof Object && 'code' in error && error.code === 'auth/account-exists-with-different-credential') {
         setError('An account with this email already exists. Please sign in instead.')
       } else {
-        setError(error.message || `${provider} sign-up failed`)
+        setError(error instanceof Error ? error.message : `${provider} sign-up failed`)
       }
     } finally {
       setOauthLoading(null)
+    }
+  }
+  // Check for OAuth redirect results on component mount
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getOAuthRedirectResult()
+        if (result) {
+          await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || 'oauth')
+        }
+      } catch (error: unknown) {
+        console.error('OAuth redirect error:', error)
+        setError(error instanceof Error ? error.message : 'OAuth sign-up failed')
+      }
+    }
+
+    handleRedirectResult().catch(console.error)
+  }, [handleOAuthSuccess])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!email || !password || !confirmPassword) {
+      setError('Please fill in all required fields')
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    try {
+      await signUp(email, password, displayName || undefined)
+      
+      // Sign up successful, you might want to show a verification message
+      // For now, we'll redirect to dashboard
+      router.push('/dashboard')
+    } catch (error: unknown) {
+      console.error('Sign up error:', error)
+      let errorMessage = 'Sign up failed'
+      if (error && typeof error === 'object' && 'code' in error) {
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'An account with this email already exists'
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Please enter a valid email address'
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password is too weak. Please choose a stronger password'
+      } else if (error.code === 'auth/operation-not-allowed') {
+        errorMessage = 'Email/password accounts are not enabled'
+      }
+    }
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -167,7 +168,7 @@ export default function SignUpPage() {
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={(e) => {handleSubmit(e).catch(console.error)}}>
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-md p-4">
               <p className="text-red-800 text-sm">{error}</p>
@@ -268,7 +269,7 @@ export default function SignUpPage() {
           <div className="mt-6 grid grid-cols-1 gap-3">
             {/* Google Sign-Up Button */}
             <Button
-              onClick={() => handleOAuthSignUp('google')}
+              onClick={() => {handleOAuthSignUp('google').catch(console.error)}}
               disabled={loading || oauthLoading !== null}
               variant="outline"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
@@ -284,7 +285,7 @@ export default function SignUpPage() {
 
             {/* Apple Sign-Up Button */}
             <Button
-              onClick={() => handleOAuthSignUp('apple')}
+              onClick={() => {handleOAuthSignUp('apple').catch(console.error)}}
               disabled={loading || oauthLoading !== null}
               variant="outline"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-black text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"

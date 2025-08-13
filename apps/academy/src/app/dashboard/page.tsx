@@ -41,13 +41,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <h1 className="text-3xl font-bold text-gray-900">
-                Academy Dashboard
+                CENIE Dashboard
               </h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -55,9 +55,8 @@ export default function DashboardPage() {
                 Welcome, {user.displayName || user.email}
               </span>
               <Button 
-                onClick={handleSignOut}
+                onClick={() => {handleSignOut().catch(console.error)}}
                 variant="outline"
-                className="border-blue-300 text-blue-700 hover:bg-blue-50"
               >
                 Sign Out
               </Button>
@@ -68,7 +67,7 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white overflow-hidden shadow-lg rounded-lg border border-blue-100">
+          <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Authentication Details
@@ -122,7 +121,7 @@ export default function DashboardPage() {
                     Provider
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.providerData?.[0]?.providerId || 'Unknown'}
+                    {user.providerId}
                   </dd>
                 </div>
                 
@@ -131,37 +130,26 @@ export default function DashboardPage() {
                     Last Sign In
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.metadata?.lastSignInTime 
-                      ? new Date(user.metadata.lastSignInTime).toLocaleString() 
-                      : 'Unknown'}
+                    {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'Unknown'}
                   </dd>
                 </div>
               </dl>
             </div>
           </div>
           
-          <div className="mt-6 bg-white overflow-hidden shadow-lg rounded-lg border border-blue-100">
+          <div className="mt-6 bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Welcome to Academy
+                Next Steps
               </h2>
-              <div className="prose max-w-none">
+              <div className="prose">
                 <p className="text-gray-600 mb-4">
-                  🎓 Welcome to the CENIE Academy - your learning and development platform.
+                  🎉 Congratulations! Your Firebase authentication is working correctly.
                 </p>
-                <p className="text-gray-600 mb-4">
-                  Here you can access courses, track your learning progress, and develop new skills 
-                  in AI, innovation, and emerging technologies.
+                <p className="text-gray-600">
+                  You can now integrate this authentication system with your auth-api service
+                  to manage user profiles, app access, and other user-related data.
                 </p>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-                  <h3 className="text-sm font-medium text-blue-800 mb-2">Next Steps:</h3>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li>• Browse available courses</li>
-                    <li>• Track your learning progress</li>
-                    <li>• Earn certificates and badges</li>
-                    <li>• Join learning communities</li>
-                  </ul>
-                </div>
               </div>
             </div>
           </div>

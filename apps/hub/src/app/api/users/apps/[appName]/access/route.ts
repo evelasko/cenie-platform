@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { getAdminFirestore } from '../../../../../../lib/firebase-admin'
-import { COLLECTIONS, UserAppAccess } from '../../../../../../lib/types'
+import { COLLECTIONS, type UserAppAccess } from '../../../../../../lib/types'
 import { authenticateRequest } from '../../../../../../lib/auth-middleware'
 import { createErrorResponse, createSuccessResponse, handleApiError } from '../../../../../../lib/api-utils'
 

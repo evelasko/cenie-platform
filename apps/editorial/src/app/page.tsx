@@ -2,20 +2,20 @@ import { type Metadata } from 'next'
 import EditorialComingSoon from './coming-soon'
 
 export const metadata: Metadata = {
-  title: 'CENIE Editorial | AI-Enhanced Academic Publishing for the Performing Arts | Coming Soon',
-  description: 'Launching September 2025. CENIE Editorial is a digital-first academic press for theatre and performance studies, offering AI-native publications, Spanish translations, and rigorous peer review to accelerate research and teaching.',
-  keywords: 'academic publishing, performing arts, theatre studies, dance studies, performance studies, AI in research, scholarly publishing, Spanish translation, digital humanities, peer review, open access, RAG, large language models',
+  title: 'CENIE Editorial | Edición académica mejorada con IA para las artes escénicas | Próximamente',
+  description: 'Lanzamiento en septiembre de 2025. CENIE Editorial es una imprenta académica digital para estudios de teatro y performance, que ofrece publicaciones nativas, traducciones al español y una rigurosa revisión por pares para acelerar la investigación y la enseñanza.',
+  keywords: 'edición académica, artes escénicas, estudios teatrales, estudios de danza, estudios de interpretación, IA en la investigación, edición académica, traducción al español, humanidades digitales, revisión por pares, acceso abierto, GAR, grandes modelos lingüísticos',
   authors: [{ name: 'CENIE Editorial' }],
   creator: 'CENIE Editorial',
   publisher: 'CENIE Editorial',
   robots: 'index, follow',
   openGraph: {
-    title: 'CENIE Editorial | AI-Enhanced Academic Publishing for the Performing Arts | Coming Soon',
-    description: 'Launching September 2025. CENIE Editorial is a digital-first academic press for theatre and performance studies, offering AI-native publications, Spanish translations, and rigorous peer review.',
+    title: 'CENIE Editorial | Edición académica mejorada con IA para las artes escénicas | Próximamente',
+    description: 'Lanzamiento en septiembre de 2025. CENIE Editorial es una imprenta académica digital para estudios de teatro y performance, que ofrece publicaciones nativas, traducciones al español y una rigurosa revisión por pares.',
     url: 'https://editorial.cenie.org',
     siteName: 'CENIE Editorial',
     type: 'website',
-    locale: 'en_US',
+    locale: 'es_ES',
   },
   alternates: {
     canonical: 'https://editorial.cenie.org',

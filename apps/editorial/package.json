@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@cenie/auth-client": "workspace:*",
-    "@cenie/design-system": "workspace:*",
     "@cenie/firebase": "workspace:*",
     "@cenie/ui": "workspace:*",
     "firebase": "^11.1.0",

@@ -39,7 +39,7 @@ export default function EditorialComingSoon() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 type-body-base text-muted-foreground">Loading...</p>
+          <p className="mt-4 type-body-base text-muted-foreground">Cargando...</p>
         </div>
       </div>
     )
@@ -64,24 +64,24 @@ export default function EditorialComingSoon() {
         <div className="relative container mx-auto px-4 text-center">
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
-              <p className="type-overline text-primary mb-4">The Future of Performing Arts Scholarship is Coming</p>
+              <p className="type-overline text-primary mb-4">Llega el futuro de las becas para las artes escénicas</p>
               <h1 className="type-display-1 mb-4 text-foreground">
                 CENIE Editorial
               </h1>
               <h2 className="type-heading-2 mb-8 text-muted-foreground">
-                AI-Enhanced Academic Publishing for the Performing Arts
+                Edición académica mejorada con IA para las artes escénicas
               </h2>
             </div>
             
             <div className="flex items-center justify-center gap-2 mb-8 animate-fade-in-up delay-200">
               <Calendar className="h-5 w-5 text-primary animate-bounce" />
-              <p className="type-heading-4 text-primary font-bold">Launching September 2025</p>
+              <p className="type-heading-4 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
             </div>
             
             <div className="animate-fade-in-up delay-400">
               <p className="type-lead mb-12 text-muted-foreground max-w-4xl mx-auto">
-                A new digital-first academic press is coming. We're pairing rigorous peer review with AI-native technology 
-                to make research in theatre, dance, and performance studies more discoverable, accessible, and powerful.
+                Llega una nueva prensa académica digital. Estamos combinando una rigurosa revisión por pares con tecnología nativa de IA 
+                para hacer que la investigación en estudios de teatro, danza y performance sea más descubrible, accesible y potente.
               </p>
             </div>
 
@@ -91,17 +91,17 @@ export default function EditorialComingSoon() {
                 <CardHeader className="pb-4">
                   <CardTitle className="type-heading-5 flex items-center gap-2 justify-center">
                     <Mail className="h-5 w-5" />
-                    Be the First to Know
+                    Sea el primero en saberlo
                   </CardTitle>
                   <CardDescription className="type-body-small">
-                    Sign up for launch updates, exclusive previews, and an invitation to our pilot program
+                    Inscríbase para recibir actualizaciones sobre el lanzamiento, avances exclusivos y una invitación a nuestro programa piloto
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {subscribed ? (
                     <div className="flex items-center gap-2 justify-center text-green-600">
                       <CheckCircle className="h-5 w-5" />
-                      <span className="type-body-base font-medium">Thank you for subscribing!</span>
+                      <span className="type-body-base font-medium">¡Gracias por suscribirse!</span>
                     </div>
                   ) : (
                     <form onSubmit={handleSubscribe} className="flex gap-2">
@@ -109,12 +109,12 @@ export default function EditorialComingSoon() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
+                        placeholder="Introduzca su dirección de correo electrónico"
                         className="flex-1 px-3 py-2 rounded-md border border-input bg-background type-body-base"
                         required
                       />
                       <Button type="submit" className="type-button">
-                        Notify Me
+                        Notifíqueme
                       </Button>
                     </form>
                   )}
@@ -129,16 +129,16 @@ export default function EditorialComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="type-heading-1 mb-6">A New Era for Research and Teaching</h2>
+            <h2 className="type-heading-1 mb-6">Una nueva era para la investigación y la enseñanza</h2>
             <div className="max-w-4xl mx-auto">
               <p className="type-lead text-muted-foreground mb-8">
-                CENIE Editorial is the publishing arm of the Centre for Research and Innovation in Performing Arts (CENIE). 
-                We are built to address critical gaps in academic publishing. We deliver high-quality monographs, anthologies, 
-                and translational scholarship optimized for the way modern research happens.
+                CENIE Editorial es el brazo editorial del Centro de Investigación e Innovación en Artes Escénicas (CENIE). 
+                Estamos construidos para abordar las lagunas críticas en la publicación académica. Entregamos monografías, antologías, 
+                y erudición traslacional de alta calidad optimizadas para la forma en que se produce la investigación moderna.
               </p>
               <p className="type-body-large text-muted-foreground">
-                Our mission is to accelerate the dissemination of knowledge by making content uniquely structured for AI-powered discovery, 
-                while expanding access for the Spanish-speaking scholarly community.
+                Nuestra misión es acelerar la difusión del conocimiento haciendo que los contenidos estén estructurados de forma única para el descubrimiento impulsado por la IA, 
+                al tiempo que se amplía el acceso para la comunidad académica hispanohablante.
               </p>
             </div>
           </div>
@@ -149,54 +149,54 @@ export default function EditorialComingSoon() {
       <section className="py-20 bg-gradient-to-r from-muted/20 to-accent/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="type-heading-1 mb-6">Our Solution: Scholarship, Reimagined</h2>
+            <h2 className="type-heading-1 mb-6">Nuestra solución: Becas, reimaginadas</h2>
             <p className="type-lead text-muted-foreground max-w-3xl mx-auto">
-              CENIE Editorial provides a credible, modern alternative to traditional publishers, 
-              optimized for discovery, pedagogy, and long-term preservation.
+              CENIE Editorial ofrece una alternativa creíble y moderna a las editoriales tradicionales, 
+              optimizada para el descubrimiento, la pedagogía y la conservación a largo plazo.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <Card className="p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
-                <CardTitle className="type-heading-6">AI-Native Discovery</CardTitle>
+                <CardTitle className="type-heading-6">Descubrimiento nativo de la IA</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Find exactly what you need in seconds with our Context Model Protocol.
+                  Encuentre exactamente lo que necesita en cuestión de segundos con nuestro Protocolo de modelos contextuales.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
-                <CardTitle className="type-heading-6">Spanish-Language Access</CardTitle>
+                <CardTitle className="type-heading-6">Acceso en español</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Curated translations filling major knowledge gaps in performance studies.
+                  Traducciones curadas que cubren importantes lagunas de conocimiento en los estudios sobre el rendimiento.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
-                <CardTitle className="type-heading-6">Rigorous Standards</CardTitle>
+                <CardTitle className="type-heading-6">Normas rigurosas</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Double-blind peer review with full library readiness and DOIs.
+                  Revisión por pares doble ciego con disponibilidad completa de la biblioteca y DOI.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
-                <CardTitle className="type-heading-6">Secure RAG Integration</CardTitle>
+                <CardTitle className="type-heading-6">Integración segura de RAG</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Institution-grade APIs for your own AI workflows.
+                  API de calidad institucional para sus propios flujos de trabajo de IA.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -208,13 +208,13 @@ export default function EditorialComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="type-heading-1 mb-6">The Countdown has Begun</h2>
+            <h2 className="type-heading-1 mb-6">La cuenta atrás ha comenzado</h2>
             <div className="flex items-center justify-center gap-2 mb-8">
               <Calendar className="h-6 w-6 text-primary" />
-              <p className="type-heading-3 text-primary font-bold">Launching September 2025</p>
+              <p className="type-heading-3 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
             </div>
             <p className="type-lead mb-12 text-muted-foreground">
-              Don't miss the launch of a platform that will redefine academic publishing in the performing arts.
+              No se pierda el lanzamiento de una plataforma que redefinirá la publicación académica en las artes escénicas.
             </p>
             
             <Button size="lg" className="type-button" onClick={() => {
@@ -222,7 +222,7 @@ export default function EditorialComingSoon() {
               emailInput?.focus()
             }}>
               <Mail className="mr-2 h-4 w-4" />
-              Keep Me Updated
+              Manténgame al día
             </Button>
           </div>
         </div>
@@ -231,7 +231,7 @@ export default function EditorialComingSoon() {
       {/* Footer */}
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 text-center">
-          <p className="type-caption text-muted-foreground">© 2024 CENIE Editorial. All Rights Reserved.</p>
+          <p className="type-caption text-muted-foreground">© 2024 CENIE Editorial. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

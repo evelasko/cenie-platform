@@ -48,8 +48,8 @@ Please check your FIREBASE_PRIVATE_KEY in apps/hub/.env.local`)
           projectId: process.env.FIREBASE_PROJECT_ID!,
           storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         })
-      } catch (error: any) {
-        if (error.message?.includes('PEM formatted message')) {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.message?.includes('PEM formatted message')) {
           throw new Error(`Failed to parse Firebase private key. 
 
 Common solutions:

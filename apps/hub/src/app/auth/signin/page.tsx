@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
   signIn, 
@@ -9,7 +9,9 @@ import {
   getOAuthRedirectResult,
   handleAccountExistsError,
   linkPendingCredential,
-  OAuthError
+  OAuthError,
+  AuthCredential,
+  User
 } from '@cenie/firebase/auth'
 import { Button } from '@cenie/ui'
 import Link from 'next/link'
@@ -23,62 +25,11 @@ export default function SignInPage() {
   const [accountLinkingInfo, setAccountLinkingInfo] = useState<{
     email: string
     existingProviders: string[]
-    pendingCredential: any
+    pendingCredential: AuthCredential | null
   } | null>(null)
   const router = useRouter()
 
-  // Check for OAuth redirect results on component mount
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getOAuthRedirectResult()
-        if (result) {
-          await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || 'oauth')
-        }
-      } catch (error: any) {
-        console.error('OAuth redirect error:', error)
-        setError(error.message || 'OAuth sign-in failed')
-      }
-    }
-
-    handleRedirectResult()
-  }, [])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!email || !password) {
-      setError('Please enter both email and password')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-
-    try {
-      await signIn(email, password)
-      router.push('/dashboard')
-    } catch (error: any) {
-      console.error('Sign in error:', error)
-      
-      let errorMessage = 'Sign in failed'
-      if (error.code === 'auth/invalid-credential') {
-        errorMessage = 'Invalid email or password'
-      } else if (error.code === 'auth/user-not-found') {
-        errorMessage = 'No account found with this email'
-      } else if (error.code === 'auth/wrong-password') {
-        errorMessage = 'Incorrect password'
-      } else if (error.code === 'auth/too-many-requests') {
-        errorMessage = 'Too many failed attempts. Please try again later'
-      }
-      
-      setError(errorMessage)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleOAuthSuccess = async (user: any, isNewUser: boolean, provider: string) => {
+  const handleOAuthSuccess = useCallback(async (user: User, isNewUser: boolean, provider: string) => {
     try {
       // Get ID token to authenticate with our API
       const idToken = await user.getIdToken()
@@ -107,11 +58,11 @@ export default function SignInPage() {
       }
 
       router.push('/dashboard')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('OAuth success handling error:', error)
       setError('Failed to complete sign-in. Please try again.')
     }
-  }
+  }, [router])
 
   const handleOAuthSignIn = async (provider: 'google' | 'apple') => {
     try {
@@ -130,20 +81,20 @@ export default function SignInPage() {
 
       await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || provider + '.com')
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`${provider} sign-in error:`, error)
       
       // Handle account exists with different credential error
-      if (error.code === 'auth/account-exists-with-different-credential') {
+      if (error instanceof Object && 'code' in error && error.code === 'auth/account-exists-with-different-credential') {
         try {
           const linkingInfo = await handleAccountExistsError(error as OAuthError)
           setAccountLinkingInfo(linkingInfo)
           setError(`An account already exists with this email. You can sign in with: ${linkingInfo.existingProviders.join(', ')}`)
-        } catch (linkError: any) {
+        } catch (linkError: unknown) {
           setError('Account linking failed. Please try signing in with your original method.')
         }
       } else {
-        setError(error.message || `${provider} sign-in failed`)
+        setError(error instanceof Error ? error.message : `${provider} sign-in failed`)
       }
     } finally {
       setOauthLoading(null)
@@ -176,8 +127,62 @@ export default function SignInPage() {
       } else {
         setError('Please sign in with one of your existing providers first, then link the new account.')
       }
-    } catch (error: any) {
-      setError('Account linking failed: ' + (error.message || 'Please try again'))
+    } catch (error: unknown) {
+      setError('Account linking failed: ' + (error instanceof Error ? error.message : 'Please try again'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Check for OAuth redirect results on component mount
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getOAuthRedirectResult()
+        if (result) {
+          await handleOAuthSuccess(result.user, result.isNewUser, result.additionalUserInfo?.providerId || 'oauth')
+        }
+      } catch (error: unknown) {
+        console.error('OAuth redirect error:', error)
+        setError(error instanceof Error ? error.message : 'OAuth sign-in failed')
+      }
+    }
+
+    handleRedirectResult().catch(console.error)
+  }, [
+    handleOAuthSuccess,
+  ])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!email || !password) {
+      setError('Please enter both email and password')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    try {
+      await signIn(email, password)
+      router.push('/dashboard')
+    } catch (error: unknown) {
+      console.error('Sign in error:', error)
+      
+      let errorMessage = 'Sign in failed'
+      if (error instanceof Object && 'code' in error) {
+      if (error.code === 'auth/invalid-credential') {
+        errorMessage = 'Invalid email or password'
+      } else if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email'
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password'
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed attempts. Please try again later'
+      }
+    }
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

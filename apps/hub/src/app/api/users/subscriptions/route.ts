@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
-import { COLLECTIONS, Subscription } from '../../../../lib/types'
+import { COLLECTIONS, type Subscription } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
 import { createErrorResponse, createSuccessResponse, handleApiError, serializeSubscription } from '../../../../lib/api-utils'
 

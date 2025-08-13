@@ -122,7 +122,7 @@ export default function DashboardPage() {
                     Provider
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.providerData?.[0]?.providerId || 'Unknown'}
+                    {user.providerId || 'Unknown'}
                   </dd>
                 </div>
                 
@@ -131,8 +131,8 @@ export default function DashboardPage() {
                     Last Sign In
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {user.metadata?.lastSignInTime 
-                      ? new Date(user.metadata.lastSignInTime).toLocaleString() 
+                    {user.lastLoginAt 
+                      ? new Date(user.lastLoginAt).toLocaleString() 
                       : 'Unknown'}
                   </dd>
                 </div>

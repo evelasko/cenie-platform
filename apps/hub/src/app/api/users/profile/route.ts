@@ -1,14 +1,14 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { z } from 'zod'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
-import { COLLECTIONS, Profile } from '../../../../lib/types'
+import { COLLECTIONS, type Profile } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
 import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody, serializeProfile } from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const updateProfileSchema = z.object({
   fullName: z.string().optional(),
-  avatarUrl: z.string().url().optional(),
+  avatarUrl: z.url().optional(),
 })
 
 // Get user profile
@@ -54,7 +54,7 @@ export async function PUT(request: NextRequest) {
 
     const firestore = getAdminFirestore()
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       ...updates,
       updatedAt: Timestamp.now(),
     }

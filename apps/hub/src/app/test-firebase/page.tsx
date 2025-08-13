@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import { getFirebaseConfig } from '@cenie/firebase/client'
+import { type FirebaseConfig } from 'packages/firebase/src'
+import { useState } from 'react'
 
 export default function TestFirebasePage() {
-  const [config, setConfig] = useState<any>(null)
+  const [config, setConfig] = useState<FirebaseConfig | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const testFirebaseConfig = () => {
@@ -12,8 +13,8 @@ export default function TestFirebasePage() {
       const firebaseConfig = getFirebaseConfig()
       setConfig(firebaseConfig)
       setError(null)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
       setConfig(null)
     }
   }

@@ -1,16 +1,17 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import {
-  signInWithGoogle,
-  signInWithApple,
+  type AuthCredential,
   getOAuthRedirectResult,
   handleAccountExistsError,
   linkPendingCredential,
-  OAuthSignInResult,
-  OAuthError,
+  type OAuthError,
+  type OAuthSignInResult,
+  signInWithApple,
+  signInWithGoogle,
 } from '@cenie/firebase/auth'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 
 interface UseOAuthOptions {
   redirectTo?: string
@@ -21,7 +22,7 @@ interface UseOAuthOptions {
 interface AccountLinkingInfo {
   email: string
   existingProviders: string[]
-  pendingCredential: any
+  pendingCredential: unknown
 }
 
 export function useOAuth(options: UseOAuthOptions = {}) {
@@ -33,26 +34,6 @@ export function useOAuth(options: UseOAuthOptions = {}) {
   const [error, setError] = useState<string | null>(null)
   const [accountLinkingInfo, setAccountLinkingInfo] = useState<AccountLinkingInfo | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-
-  // Check for OAuth redirect results on component mount
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getOAuthRedirectResult()
-        if (result) {
-          await handleOAuthSuccess(result)
-        }
-      } catch (error: any) {
-        console.error('OAuth redirect error:', error)
-        const errorMessage = error.message || 'OAuth authentication failed'
-        setError(errorMessage)
-        onError?.(errorMessage)
-      }
-    }
-
-    handleRedirectResult()
-  }, [onError])
-
   const handleOAuthSuccess = useCallback(async (result: OAuthSignInResult) => {
     try {
       // Get ID token to authenticate with our API
@@ -78,8 +59,8 @@ export function useOAuth(options: UseOAuthOptions = {}) {
       })
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Failed to complete OAuth authentication')
+        const errorData: Record<string, unknown> = await response.json().catch(() => ({}))
+        throw new Error(`Failed to complete OAuth authentication: ${errorData.error || 'Unknown error'}`)
       }
 
       await response.json()
@@ -98,13 +79,32 @@ export function useOAuth(options: UseOAuthOptions = {}) {
         router.push(redirectTo)
       }, 1000)
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('OAuth success handling error:', error)
       const errorMessage = 'Failed to complete authentication. Please try again.'
       setError(errorMessage)
       onError?.(errorMessage)
     }
   }, [router, redirectTo, onSuccess, onError])
+  // Check for OAuth redirect results on component mount
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getOAuthRedirectResult()
+        if (result) {
+          await handleOAuthSuccess(result)
+        }
+      } catch (error: unknown) {
+        console.error('OAuth redirect error:', error)
+        const errorMessage = error instanceof Error ? error.message : 'OAuth authentication failed'
+        setError(errorMessage)
+        onError?.(errorMessage)
+      }
+    }
+
+    handleRedirectResult().catch(console.error)
+  }, [onError, handleOAuthSuccess])
+
 
   const signInWithProvider = useCallback(async (provider: 'google' | 'apple') => {
     try {
@@ -127,24 +127,24 @@ export function useOAuth(options: UseOAuthOptions = {}) {
 
       await handleOAuthSuccess(result)
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`${provider} OAuth error:`, error)
       
       // Handle account exists with different credential error
-      if (error.code === 'auth/account-exists-with-different-credential') {
+      if (error instanceof Object && 'code' in error && error.code === 'auth/account-exists-with-different-credential') {
         try {
           const linkingInfo = await handleAccountExistsError(error as OAuthError)
           setAccountLinkingInfo(linkingInfo)
           const errorMessage = `An account already exists with this email (${linkingInfo.email}). You can sign in with: ${linkingInfo.existingProviders.join(', ')}`
           setError(errorMessage)
           onError?.(errorMessage)
-        } catch (linkError: any) {
+        } catch (linkError: unknown) {
           const errorMessage = 'Account linking failed. Please try signing in with your original method.'
           setError(errorMessage)
           onError?.(errorMessage)
         }
       } else {
-        const errorMessage = error.message || `${provider} authentication failed`
+        const errorMessage = error instanceof Error ? error.message : `${provider} authentication failed`
         setError(errorMessage)
         onError?.(errorMessage)
       }
@@ -176,7 +176,7 @@ export function useOAuth(options: UseOAuthOptions = {}) {
         
         // Then link the pending credential
         if (accountLinkingInfo.pendingCredential) {
-          await linkPendingCredential(accountLinkingInfo.pendingCredential)
+          await linkPendingCredential(accountLinkingInfo.pendingCredential as AuthCredential)
         }
         
         setSuccessMessage('Accounts linked successfully!')
@@ -191,8 +191,8 @@ export function useOAuth(options: UseOAuthOptions = {}) {
         setError('Please sign in with one of your existing providers first, then link the new account.')
         return false
       }
-    } catch (error: any) {
-      const errorMessage = 'Account linking failed: ' + (error.message || 'Please try again')
+    } catch (error: unknown) {
+      const errorMessage = 'Account linking failed: ' + (error instanceof Error ? error.message : 'Please try again')
       setError(errorMessage)
       onError?.(errorMessage)
       return false

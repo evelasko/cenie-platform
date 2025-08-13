@@ -55,7 +55,7 @@ export default function DashboardPage() {
                 Welcome, {user.displayName || user.email}
               </span>
               <Button 
-                onClick={handleSignOut}
+                onClick={() => {handleSignOut().catch(console.error)}}
                 variant="outline"
               >
                 Sign Out

@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from '@cenie/ui'
 import { AlertTriangle, LinkIcon, Mail } from 'lucide-react'
+import { useState } from 'react'
 
 interface OAuthErrorHandlerProps {
   error: string | null
   accountLinkingInfo?: {
     email: string
     existingProviders: string[]
-    pendingCredential: any
+    pendingCredential: unknown
   } | null
   onLinkAccount?: () => void
   onRetry?: () => void

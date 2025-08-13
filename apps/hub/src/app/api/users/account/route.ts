@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'

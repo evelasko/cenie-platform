@@ -36,10 +36,10 @@ function SignInForm() {
       
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
-      const hasAccess = await hubAuth.checkAppAccess(idToken, 'agency')
+      const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
       
       if (!hasAccess) {
-        setError('You do not have access to the Agency app. Please contact your administrator.')
+        setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
@@ -77,10 +77,10 @@ function SignInForm() {
       
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
-      const hasAccess = await hubAuth.checkAppAccess(idToken, 'agency')
+      const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
       
       if (!hasAccess) {
-        setError('You do not have access to the Agency app. Please contact your administrator.')
+        setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
@@ -107,10 +107,10 @@ function SignInForm() {
       
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
-      const hasAccess = await hubAuth.checkAppAccess(idToken, 'agency')
+      const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
       
       if (!hasAccess) {
-        setError('You do not have access to the Agency app. Please contact your administrator.')
+        setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
@@ -127,14 +127,14 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg border">
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-            Sign in to Agency
+            Sign in to Editorial
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Creative & Consulting Platform
+            Academic Publishing Platform
           </p>
         </div>
         
@@ -158,7 +158,7 @@ function SignInForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
                 placeholder="Enter your email"
               />
             </div>
@@ -175,7 +175,7 @@ function SignInForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
                 placeholder="Enter your password"
               />
             </div>
@@ -185,7 +185,7 @@ function SignInForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
@@ -206,7 +206,7 @@ function SignInForm() {
               onClick={handleGoogleSignIn}
               disabled={loading}
               variant="outline"
-              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -222,7 +222,7 @@ function SignInForm() {
               onClick={handleAppleSignIn}
               disabled={loading}
               variant="outline"
-              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
@@ -234,13 +234,13 @@ function SignInForm() {
 
         <div className="text-center">
           <p className="mt-2 text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="/sign-up" className="font-medium text-purple-600 hover:text-purple-500">
+            Don&apos;t have an account?{' '}
+            <a href="/sign-up" className="font-medium text-orange-600 hover:text-orange-500">
               Sign up here
             </a>
           </p>
           <p className="mt-2 text-sm text-gray-600">
-            <a href="/forgot-password" className="font-medium text-purple-600 hover:text-purple-500">
+            <a href="/forgot-password" className="font-medium text-orange-600 hover:text-orange-500">
               Forgot your password?
             </a>
           </p>

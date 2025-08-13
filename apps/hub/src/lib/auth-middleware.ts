@@ -1,13 +1,13 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { getAdminAuth, getAdminFirestore } from './firebase-admin'
-import { COLLECTIONS, UserAppAccess } from './types'
+import { COLLECTIONS, type UserAppAccess } from './types'
 
 export interface AuthenticatedRequest extends NextRequest {
   userId?: string
-  user?: any
+  user?: unknown
 }
 
-export async function authenticateRequest(request: NextRequest): Promise<{ userId: string; user: any } | { error: string; status: number }> {
+export async function authenticateRequest(request: NextRequest): Promise<{ userId: string; user: unknown } | { error: string; status: number }> {
   try {
     const authHeader = request.headers.get('authorization')
     const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN
@@ -29,12 +29,12 @@ export async function authenticateRequest(request: NextRequest): Promise<{ userI
         customClaims: decodedToken,
       }
     }
-  } catch (error: any) {
-    if (error.code === 'auth/id-token-expired') {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message.includes('auth/id-token-expired')) {
       return { error: 'Token expired', status: 401 }
     }
 
-    if (error.code === 'auth/invalid-id-token') {
+    if (error instanceof Error && error.message.includes('auth/invalid-id-token')) {
       return { error: 'Invalid token', status: 401 }
     }
 
