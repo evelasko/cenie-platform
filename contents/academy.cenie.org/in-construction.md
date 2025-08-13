@@ -1,65 +1,48 @@
-# CENIE Academy - Under Construction
+---
+title: "CENIE Academy | Empowering Artists | Launching September 2025"
+description: "The CENIE Academy is coming in September 2025! A specialized school for performing artists to master technology, finance, and business. Sign up for exclusive updates."
+keywords: "CENIE Academy, performing arts training, artist professional development, arts and technology, financial literacy for artists, theatre management courses, digital arts education, arts entrepreneurship"
+canonical_url: "https://academy.cenie.org"
+---
 
-## SEO Metadata
-**Title:** CENIE Academy - Advanced AI & Innovation Education Platform | Coming Soon  
-**Description:** CENIE Academy is launching soon with cutting-edge courses in artificial intelligence, innovation management, and digital transformation. Join our waitlist for early access.  
-**Keywords:** AI education, innovation training, CENIE Academy, artificial intelligence courses, digital transformation learning, professional development  
-**Canonical URL:** https://academy.cenie.org  
+## **The Next Stage of Your Career Begins Here.**
+
+## **CENIE Academy: Where Artistry Meets Opportunity.**
+
+**Launching September 2025**
 
 ---
 
-## Welcome to CENIE Academy
+In today's digital world, artistic talent is just the beginning. The CENIE Academy is a groundbreaking new institution for the modern performing artist, designed to arm you with the essential skills in **technology, finance, and business management** needed to build a thriving, sustainable career.
 
-### Shaping Tomorrow's Innovators Through Advanced AI Education
+We believe artists shouldn't just survive—they should flourish.
 
-We're building something extraordinary. CENIE Academy will be your premier destination for cutting-edge education in artificial intelligence, innovation management, and digital transformation.
+### **Why CENIE Academy? Transform Your Craft and Career**
 
----
+Our curriculum is practical, project-based, and designed specifically for the learning styles of creative professionals. We empower you to:
 
-## What's Coming
+* **Master Technology for Your Art:** From AI-powered creative tools and digital marketing to web development and data analysis, learn to leverage technology to amplify your creative voice and reach.
+* **Achieve Financial Self-Sufficiency:** Gain practical, real-world knowledge in personal finance, arts funding, project budgeting, and grant writing. Take control of your financial future.
+* **Lead with Confidence:** Develop the entrepreneurial and management skills to produce, market, and lead your own artistic ventures. Turn your creative vision into a successful reality.
 
-### 🎓 Expert-Led Courses
-- **AI Fundamentals & Applications**
-- **Innovation Strategy & Management** 
-- **Digital Transformation Leadership**
-- **Machine Learning for Business**
-- **Emerging Technologies Workshop**
+### **A Glimpse Into Our Core Curriculum**
 
-### 🌟 Premium Features
-- Interactive learning experiences
-- Real-world case studies and projects
-- Industry expert mentorship
-- Professional certification programs
-- Global community of innovators
+* **Information Technology for Artists:** Unlocking digital creativity and marketing savvy.
+* **Financial Literacy for Artists:** Building financial stability and funding your work.
+* **Theatre Production and Management:** The business behind the curtain.
 
 ---
 
-## Be Among the First
+### **Be the First to Know.**
 
-### Get Early Access
-Join our exclusive waitlist and be the first to experience CENIE Academy when we launch.
+The future of performing arts education is on its way. Sign up for exclusive updates, early enrollment information, and a first look at our groundbreaking courses.
 
-**[Join Waitlist]** | **[Notify Me]**
+**[Email Subscription Form Placeholder]**
 
-### Stay Connected
-- **Email Updates:** Latest course announcements and launch news
-- **Priority Access:** First access to enrollment when we open
-- **Exclusive Content:** Preview materials and early bird discounts
+*Enter your email address to receive launch notifications.*
 
 ---
 
-## Contact & Updates
+**Follow Our Journey**
 
-**Have Questions?**  
-Reach out to us at academy@cenie.org
-
-**Follow Our Progress:**  
-- LinkedIn: @CENIEAcademy
-- Twitter: @CENIE_Academy
-
----
-
-**Expected Launch:** Q2 2024  
-**Status:** Final development phase
-
-*Part of the CENIE Innovation Ecosystem*
+[Link to Twitter] | [Link to Instagram] | [Link to LinkedIn]

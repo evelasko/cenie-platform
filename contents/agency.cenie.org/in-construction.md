@@ -1,82 +1,54 @@
-# CENIE Agency - Under Construction
+---
+title: "CENIE Automation Agency | AI for the Performing Arts - Coming Soon"
+description: "Launching September 2025. The CENIE Automation Agency offers bespoke AI and automation consulting to solve operational challenges for the performing arts industry. Sign up for exclusive updates."
+keywords: "performing arts technology, theatre automation, AI for arts, machine learning for theatre, production scheduling software, arts administration tools, CENIE"
+canonical_url: "https://agency.cenie.org"
+---
 
-## SEO Metadata
-**Title:** CENIE Agency - AI-Powered Innovation Consulting & Strategy | Coming Soon  
-**Description:** CENIE Agency delivers cutting-edge AI consulting and innovation strategy services. Partner with experts to accelerate your digital transformation journey.  
-**Keywords:** AI consulting, innovation strategy, digital transformation consulting, CENIE Agency, artificial intelligence services, business innovation  
-**Canonical URL:** https://agency.cenie.org  
+## **The Future of Production is Almost Here.**
+
+## **CENIE Automation Agency**
+
+### **Launching September 2025**
+
+The **CENIE Automation Agency** is a new advisory service dedicated to solving the unique operational challenges of the performing arts. We are a team of expert practitioners with a deep understanding of both the intricacies of production and the power of artificial intelligence.
+
+Our mission is to free arts professionals from administrative burdens so they can focus on what truly matters: **the art.**
 
 ---
 
-## Welcome to CENIE Agency
+## **What We Do: Bespoke Automation for the Arts**
 
-### Your Strategic Partner in AI-Driven Innovation
+Tired of wrestling with complex schedules, tight budgets, and repetitive paperwork? We build custom solutions to streamline your most critical workflows.
 
-We're crafting the future of innovation consulting. CENIE Agency will deliver world-class AI consulting and strategic innovation services to transform your business.
+* **Intelligent Scheduling & Logistics:** We design systems that optimize rehearsal schedules, manage resources, and resolve conflicts instantly, saving you dozens of hours per production.
+* **Dynamic Budgeting & Scenario Planning:** Our interactive models allow you to explore "what-if" scenarios in minutes, helping you de-risk financial decisions and prevent overruns.
+* **Effortless Administrative Automation:** We automate the generation of reports, stakeholder updates, and other essential communications, empowering your team to focus on higher-value work.
 
----
-
-## Our Expertise
-
-### 🚀 Innovation Strategy
-- **AI Implementation Roadmaps**
-- **Digital Transformation Planning**
-- **Innovation Framework Development**
-- **Technology Assessment & Selection**
-- **Change Management Excellence**
-
-### 🎯 Consulting Services  
-- Strategic AI integration
-- Process optimization and automation
-- Innovation culture development  
-- Technology stack modernization
-- Performance measurement systems
+> "Our service allows arts professionals to **offload their most tedious operational burdens** so they can focus on their creative work."
 
 ---
 
-## Coming Soon
+## **A New Kind of Partnership**
 
-### Premium Consulting Solutions
-Our team of industry experts is preparing comprehensive services designed to accelerate your innovation journey.
+We are more than just technologists; we are collaborators with a passion for the arts. Our founder's unique expertise in both theatrical processes and AI development ensures every solution is:
 
-### Ready to Transform?
-**[Schedule Consultation]** | **[Get Early Access]**
-
-### Partner With Us
-- **Strategic Planning:** Custom AI and innovation roadmaps
-- **Implementation Support:** End-to-end project management
-- **Training & Development:** Team capability building
-- **Ongoing Advisory:** Continuous optimization support
+* **Technically Robust:** Built on cutting-edge, reliable technology.
+* **Artistically Sensitive:** Designed with a deep respect for the creative process.
+* **Pragmatically Grounded:** Focused on solving real-world production needs.
 
 ---
 
-## Stay Informed
+## **Be the First to Know**
 
-### Be the First to Know
-Join our professional network for exclusive updates and early access to our consulting services.
+The curtain rises in **September 2025**.
 
-**[Join Network]** | **[Request Information]**
+Join our exclusive mailing list for early access, case studies, and insights into the future of arts management.
 
-### Professional Updates
-- **Industry Insights:** Latest trends and best practices
-- **Case Studies:** Real transformation success stories  
-- **Early Access:** Priority booking for consulting services
-- **Exclusive Events:** Invitation-only innovation workshops
+**[Sign Up for Updates]**
+
+*We respect your privacy and will only send relevant information about the CENIE Automation Agency.*
 
 ---
 
-## Connect With Our Team
-
-**Ready to Discuss Your Project?**  
-Contact us at consulting@cenie.org
-
-**Professional Network:**  
-- LinkedIn: @CENIEAgency
-- Industry Events: Speaker bureau available
-
----
-
-**Launch Date:** Q1 2024  
-**Status:** Team onboarding and methodology finalization
-
-*Part of the CENIE Innovation Ecosystem*
+*A core division of the **Centre for Research and Innovation in Performing Arts (CENIE)***.
