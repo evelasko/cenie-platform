@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
+
 import { verifySessionCookie } from './server'
 
 export async function withAuth(
   request: NextRequest,
-  handler?: (request: NextRequest, user: any) => NextResponse | Promise<NextResponse>
+  handler?: (request: NextRequest, user: unknown) => NextResponse | Promise<NextResponse>
 ) {
   const sessionCookie = request.cookies.get('session')
   
@@ -36,7 +37,7 @@ export function createAuthMiddleware(config?: {
     
     // Check if path is public
     const isPublicPath = publicPaths.some(publicPath => 
-      path === publicPath || path.startsWith(publicPath + '/')
+      path === publicPath || path.startsWith(`${publicPath  }/`)
     )
     
     if (isPublicPath) {

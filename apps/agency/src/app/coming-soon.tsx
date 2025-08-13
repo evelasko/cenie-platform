@@ -201,7 +201,7 @@ export default function AgencyComingSoon() {
           <div className="text-center max-w-4xl mx-auto">
             <Quote className="h-12 w-12 text-primary mx-auto mb-6" />
             <blockquote className="type-quote text-foreground mb-8">
-              "Nuestro servicio permite a los profesionales del arte <strong>descargar sus cargas operativas más tediosas</strong> para que puedan centrarse en su trabajo creativo."
+              &quot;Nuestro servicio permite a los profesionales del arte <strong>descargar sus cargas operativas más tediosas</strong> para que puedan centrarse en su trabajo creativo.&quot;
             </blockquote>
           </div>
         </div>

@@ -24,6 +24,7 @@ export interface AuthError {
   code: string
   message: string
   email?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   credential?: any
 }
 

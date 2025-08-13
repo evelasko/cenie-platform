@@ -14,7 +14,7 @@ export class CenieAuthClient implements AuthApiClient {
 
   async getAuthHeaders(): Promise<Record<string, string>> {
     const token = await getIdToken()
-    return token ? { Authorization: `Bearer ${token}` } : {}
+    return (token != null) ? { Authorization: `Bearer ${token}` } : {}
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -31,7 +31,7 @@ export class CenieAuthClient implements AuthApiClient {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'Request failed' }))
-      throw new Error(error.error || `Request failed: ${response.status}`)
+      throw new Error(error.error ?? `Request failed: ${response.status}`)
     }
 
     return response.json()
@@ -152,5 +152,5 @@ export const authClient = new CenieAuthClient()
 
 // Hook for getting the auth client with custom base URL
 export function useAuthClient(baseUrl?: string) {
-  return baseUrl ? new CenieAuthClient(baseUrl) : authClient
+  return (baseUrl != null) ? new CenieAuthClient(baseUrl) : authClient
 }

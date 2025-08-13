@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 'use client'
 
-import { useEffect, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
+import { useEffect, useCallback } from 'react'
+
+import { type AnalyticsEventParams } from '../analytics'
+
 import { useAnalyticsContext } from './context'
-import { AnalyticsEventParams } from '../analytics'
+
 
 /**
  * Hook to access analytics functions

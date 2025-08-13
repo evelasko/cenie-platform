@@ -1,9 +1,10 @@
 'use client'
 
+import { onAuthStateChanged, type User } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-import { onAuthStateChanged, User } from 'firebase/auth'
+
 import { getFirebaseAuth } from '../client'
-import { AuthUser } from '../types'
+import { type AuthUser } from '../types'
 
 export function useAuth() {
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -16,6 +17,7 @@ export function useAuth() {
       
       const unsubscribe = onAuthStateChanged(
         auth,
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         async (firebaseUser: User | null) => {
           if (firebaseUser) {
             const authUser: AuthUser = {
@@ -70,7 +72,7 @@ export function useIdToken() {
     const refreshToken = async () => {
       try {
         const auth = getFirebaseAuth()
-        const currentUser = auth.currentUser
+        const {currentUser} = auth
         
         if (currentUser) {
           const token = await currentUser.getIdToken()
@@ -86,9 +88,10 @@ export function useIdToken() {
       }
     }
 
-    refreshToken()
+    refreshToken().catch(console.error)
 
     // Refresh token every 50 minutes (tokens expire after 1 hour)
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const interval = setInterval(refreshToken, 50 * 60 * 1000)
 
     return () => clearInterval(interval)

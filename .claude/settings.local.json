@@ -18,7 +18,9 @@
       "Bash(true)",
       "Bash(pnpm list:*)",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "Bash(turbo lint:*)",
+      "Bash(pnpm turbo lint:*)"
     ],
     "deny": []
   }

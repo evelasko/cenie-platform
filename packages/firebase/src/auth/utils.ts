@@ -8,19 +8,22 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  User,
+  type User,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   GoogleAuthProvider,
   OAuthProvider,
-  AuthCredential,
-  UserCredential,
-  AuthError,
+  type AuthCredential,
+  type UserCredential,
+  type AuthError,
   linkWithCredential,
   fetchSignInMethodsForEmail,
 } from 'firebase/auth'
+
 import { getFirebaseAuth } from '../client'
+
+export type { AuthCredential, AuthError, User }
 
 export async function signIn(email: string, password: string) {
   const auth = getFirebaseAuth()
@@ -110,7 +113,7 @@ export interface OAuthSignInResult {
   credential: AuthCredential | null
   isNewUser: boolean
   additionalUserInfo?: {
-    profile?: Record<string, any>
+    profile?: Record<string, unknown>
     providerId: string
     username?: string
   }
@@ -155,7 +158,9 @@ export async function signInWithGoogle(useRedirect = false): Promise<OAuthSignIn
     return {
       user: result.user,
       credential,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       isNewUser: (result as any).additionalUserInfo?.isNewUser ?? false,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       additionalUserInfo: (result as any).additionalUserInfo || undefined
     }
   } catch (error) {
@@ -197,7 +202,9 @@ export async function signInWithApple(useRedirect = false): Promise<OAuthSignInR
     return {
       user: result.user,
       credential,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       isNewUser: (result as any).additionalUserInfo?.isNewUser ?? false,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       additionalUserInfo: (result as any).additionalUserInfo || undefined
     }
   } catch (error) {
@@ -220,7 +227,7 @@ export async function getOAuthRedirectResult(): Promise<OAuthSignInResult | null
 
     // Determine the provider and get appropriate credential
     let credential: AuthCredential | null = null
-    const providerId = result.providerId
+    const {providerId} = result
 
     if (providerId === 'google.com') {
       credential = GoogleAuthProvider.credentialFromResult(result)
@@ -231,7 +238,9 @@ export async function getOAuthRedirectResult(): Promise<OAuthSignInResult | null
     return {
       user: result.user,
       credential,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       isNewUser: (result as any).additionalUserInfo?.isNewUser ?? false,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       additionalUserInfo: (result as any).additionalUserInfo || undefined
     }
   } catch (error) {
@@ -281,10 +290,14 @@ export async function linkWithOAuthProvider(
       ? GoogleAuthProvider.credentialFromResult(result)
       : OAuthProvider.credentialFromResult(result)
     
+    if (!result) {
+      throw new Error('No result from linkWithPopup or linkWithRedirect')
+    }
     return {
       user: result.user,
       credential,
       isNewUser: false, // Linking existing account
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       additionalUserInfo: (result as any).additionalUserInfo || undefined
     }
   } catch (error) {
@@ -306,7 +319,7 @@ export async function handleAccountExistsError(
     throw error
   }
 
-  const email = error.email
+  const {email} = error
   if (!email) {
     throw new Error('No email found in error')
   }

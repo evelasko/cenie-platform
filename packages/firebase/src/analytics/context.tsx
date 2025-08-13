@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { Analytics } from 'firebase/analytics'
-import { initializeAnalytics, getAppName, AnalyticsEventParams } from '../analytics'
+import { type Analytics } from 'firebase/analytics'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+
+import { initializeAnalytics, getAppName, type AnalyticsEventParams } from '../analytics'
 
 interface AnalyticsContextType {
   analytics: Analytics | null
@@ -49,7 +51,7 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
       }
     }
 
-    initialize()
+    initialize().catch(console.error)
 
     return () => {
       mounted = false

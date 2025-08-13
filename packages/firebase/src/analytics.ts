@@ -1,6 +1,7 @@
-import { getAnalytics, Analytics, logEvent as firebaseLogEvent, isSupported } from 'firebase/analytics'
+import { getAnalytics, type Analytics, logEvent as firebaseLogEvent, isSupported } from 'firebase/analytics'
+
 import { initializeFirebase } from './client'
-import { AnalyticsEventParams, CustomEventParams } from './types'
+import { type AnalyticsEventParams, type CustomEventParams } from './types'
 
 // Re-export types for easier importing
 export type { AnalyticsEventParams, CustomEventParams }
@@ -8,12 +9,23 @@ export type { AnalyticsEventParams, CustomEventParams }
 let analytics: Analytics | undefined
 
 /**
+ * Check if code is running on the client side
+ */
+function isClient(): boolean {
+  try {
+    return typeof globalThis !== 'undefined' && typeof globalThis.window !== 'undefined'
+  } catch {
+    return false
+  }
+}
+
+/**
  * Initialize Firebase Analytics with app context
  * SSR-safe - only initializes on client side
  */
 export async function initializeAnalytics(): Promise<Analytics | null> {
   // Only initialize on client side
-  if (typeof window === 'undefined') {
+  if (!isClient()) {
     return null
   }
 
@@ -58,7 +70,7 @@ export async function logEvent(
     
     if (!analyticsInstance) {
       // Fallback for server-side or unsupported environments
-      console.debug('[Analytics]', eventName, { ...eventParams, app_name: getAppName() })
+      console.warn('[Analytics]', eventName, { ...eventParams, app_name: getAppName() })
       return
     }
 
@@ -71,7 +83,7 @@ export async function logEvent(
     
     // Debug logging in development
     if (process.env.NODE_ENV === 'development') {
-      console.debug('[Analytics]', eventName, customParams)
+      console.warn('[Analytics]', eventName, customParams)
     }
   } catch (error) {
     console.error('Error logging analytics event:', error)

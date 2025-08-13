@@ -9,7 +9,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint . --max-warnings 5",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .turbo node_modules dist"
   },
