@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "monorepo": true,
   "buildCommand": "pnpm build",
   "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
@@ -16,7 +15,10 @@
     "enabled": true,
     "autoAlias": false
   },
-  "regions": ["iad1", "sfo1"],
+  "regions": [
+    "iad1",
+    "sfo1"
+  ],
   "functions": {
     "app/**": {
       "maxDuration": 30
@@ -31,7 +33,7 @@
           "value": "SAMEORIGIN"
         },
         {
-          "key": "X-Content-Type-Options", 
+          "key": "X-Content-Type-Options",
           "value": "nosniff"
         },
         {
