@@ -70,7 +70,7 @@ export default function AcademyComingSoon() {
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
               <h1 className="type-display-1 mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                La próxima etapa de su carrera comienza aquí
+                La próxima etapa de tu carrera comienza aquí
               </h1>
               <h2 className="type-heading-2 mb-8 text-foreground">
                 Academia CENIE: Donde el arte se encuentra con la oportunidad

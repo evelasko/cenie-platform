@@ -64,7 +64,7 @@ export default function EditorialComingSoon() {
         <div className="relative container mx-auto px-4 text-center">
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
-              <p className="type-overline text-primary mb-4">Llega el futuro de las becas para las artes escénicas</p>
+              <p className="type-overline text-primary mb-4">Llega el futuro del conocimientopara las artes escénicas</p>
               <h1 className="type-display-1 mb-4 text-foreground">
                 CENIE Editorial
               </h1>

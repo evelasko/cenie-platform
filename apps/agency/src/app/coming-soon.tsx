@@ -72,7 +72,7 @@ export default function AgencyComingSoon() {
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
               <h1 className="type-display-1 mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                El futuro de la producción está casi aquí.
+                ¡El futuro de la producción está casi aquí!
               </h1>
               <h2 className="type-heading-1 mb-8 text-foreground">
                 Agencia de Automatización del CENIE
