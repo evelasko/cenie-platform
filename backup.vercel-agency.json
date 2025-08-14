@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm turbo build --filter=@cenie/agency",
-  "installCommand": "pnpm install",
-  "outputDirectory": "apps/agency/.next",
-  "framework": "nextjs"
-}

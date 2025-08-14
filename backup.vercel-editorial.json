@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm turbo build --filter=@cenie/editorial",
-  "installCommand": "pnpm install",
-  "outputDirectory": "apps/editorial/.next",
-  "framework": "nextjs"
-}
