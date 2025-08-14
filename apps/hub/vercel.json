@@ -1,13 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "cenie-hub",
   "buildCommand": "cd ../.. && pnpm build --filter=@cenie/hub",
   "devCommand": "cd ../.. && pnpm dev --filter=@cenie/hub",
   "installCommand": "cd ../.. && pnpm install",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "rootDirectory": "apps/hub",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/hub/ packages/ services/",
   "projectSettings": {
     "framework": "nextjs",

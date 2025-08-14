@@ -42,7 +42,6 @@
     "dev:editorial": "turbo dev --filter=@cenie/editorial",
     "dev:academy": "turbo dev --filter=@cenie/academy",
     "dev:agency": "turbo dev --filter=@cenie/agency",
-    "vercel:setup": "echo 'Run this command in each app directory: vercel link' && echo 'Then set up environment variables using VERCEL_ENV_SETUP.md'",
     "ci:check": "pnpm lint && pnpm type-check && pnpm test"
   },
   "devDependencies": {

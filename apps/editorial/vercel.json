@@ -1,13 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "cenie-editorial",
   "buildCommand": "cd ../.. && pnpm build --filter=@cenie/editorial",
   "devCommand": "cd ../.. && pnpm dev --filter=@cenie/editorial",
   "installCommand": "cd ../.. && pnpm install",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "rootDirectory": "apps/editorial",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/editorial/ packages/ services/",
   "projectSettings": {
     "framework": "nextjs",

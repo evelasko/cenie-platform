@@ -1,4 +1,4 @@
-const HUB_API_URL = process.env.NEXT_PUBLIC_HUB_API_URL || 'http://localhost:3000/api'
+const HUB_API_URL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_HUB_API_URL : 'http://localhost:3000/api'
 
 export interface SignUpData {
   email: string

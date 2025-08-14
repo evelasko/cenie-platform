@@ -1,13 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "cenie-academy",
   "buildCommand": "cd ../.. && pnpm build --filter=@cenie/academy",
   "devCommand": "cd ../.. && pnpm dev --filter=@cenie/academy",
   "installCommand": "cd ../.. && pnpm install",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "rootDirectory": "apps/academy",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/academy/ packages/ services/",
   "projectSettings": {
     "framework": "nextjs",
@@ -47,6 +45,6 @@
   ],
   "env": {
     "NEXT_PUBLIC_APP_NAME": "academy",
-    "NEXT_PUBLIC_APP_URL": "https://academy.cenie.org"
+    "NEXT_PUBLIC_APP_URL": "https://academia.cenie.org"
   }
 }

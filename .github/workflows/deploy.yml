@@ -195,7 +195,7 @@ jobs:
         working-directory: apps/academy
         env:
           NEXT_PUBLIC_APP_NAME: academy
-          NEXT_PUBLIC_APP_URL: ${{ github.ref == 'refs/heads/main' && 'https://academy.cenie.org' || 'https://academy-preview.cenie.org' }}
+          NEXT_PUBLIC_APP_URL: ${{ github.ref == 'refs/heads/main' && 'https://academia.cenie.org' || 'https://academia-preview.cenie.org' }}
 
       - name: Deploy to Vercel
         run: vercel deploy ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
@@ -233,7 +233,7 @@ jobs:
         working-directory: apps/agency
         env:
           NEXT_PUBLIC_APP_NAME: agency
-          NEXT_PUBLIC_APP_URL: ${{ github.ref == 'refs/heads/main' && 'https://agency.cenie.org' || 'https://agency-preview.cenie.org' }}
+          NEXT_PUBLIC_APP_URL: ${{ github.ref == 'refs/heads/main' && 'https://agencia.cenie.org' || 'https://agencia-preview.cenie.org' }}
 
       - name: Deploy to Vercel
         run: vercel deploy ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --prebuilt --token=${{ secrets.VERCEL_TOKEN }}

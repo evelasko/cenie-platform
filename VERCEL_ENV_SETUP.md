@@ -119,7 +119,7 @@ FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nyour_academy_private_key\n---
 
 # App Configuration
 NEXT_PUBLIC_APP_NAME=academy
-NEXT_PUBLIC_APP_URL=https://academy.cenie.org
+NEXT_PUBLIC_APP_URL=https://academia.cenie.org
 ```
 
 ##### Agency App (`cenie-agency` project)
@@ -141,7 +141,7 @@ FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nyour_agency_private_key\n----
 
 # App Configuration
 NEXT_PUBLIC_APP_NAME=agency
-NEXT_PUBLIC_APP_URL=https://agency.cenie.org
+NEXT_PUBLIC_APP_URL=https://agencia.cenie.org
 ```
 
 ## GitHub Secrets Configuration
