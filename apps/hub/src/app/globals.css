@@ -1,18 +1,19 @@
 @import url('https://use.typekit.net/rnn4nzl.css');
 @import "tailwindcss";
+@import "../ui/theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Typography Scale - Golden Ratio Based */
+  /* Typography Scale - Golden Ratio Based (Legacy) */
   --type-scale-ratio: 1.618;
   --type-base-size: 1rem;
 
-  /* Font Families - Gotham for Hub */
+  /* Font Families - Gotham for Hub (Updated from Subframe) */
   --font-display: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* DISPLAY STYLES - Hero sections, major announcements */
+  /* LEGACY DISPLAY STYLES - Hero sections, major announcements (Backwards Compatibility) */
   --type-display-1-size: clamp(3.5rem, 8vw + 1rem, 8rem);
   --type-display-1-line: 0.9;
   --type-display-1-tracking: 0.05em;
@@ -23,7 +24,7 @@
   --type-display-2-tracking: 0.03em;
   --type-display-2-weight: 700;
 
-  /* HEADING STYLES - Progressive hierarchy */
+  /* LEGACY HEADING STYLES - Progressive hierarchy (Backwards Compatibility) */
   --type-heading-1-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
   --type-heading-1-line: 1.1;
   --type-heading-1-tracking: 0.02em;
@@ -54,7 +55,7 @@
   --type-heading-6-tracking: 0;
   --type-heading-6-weight: 700;
 
-  /* BODY STYLES - Reading content */
+  /* LEGACY BODY STYLES - Reading content (Backwards Compatibility) */
   --type-body-large-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.375rem);
   --type-body-large-line: 1.6;
   --type-body-large-tracking: -0.005em;
@@ -70,7 +71,7 @@
   --type-body-small-tracking: 0.005em;
   --type-body-small-weight: 400;
 
-  /* UI/UTILITY STYLES */
+  /* LEGACY UI/UTILITY STYLES (Backwards Compatibility) */
   --type-lead-size: clamp(1.25rem, 2vw + 0.5rem, 1.625rem);
   --type-lead-line: 1.5;
   --type-lead-tracking: -0.01em;
@@ -105,58 +106,244 @@
   --type-label-line: 1.4;
   --type-label-tracking: 0.01em;
   --type-label-weight: 600;
+
+  /* NEW SUBFRAME TYPOGRAPHY SYSTEM - Responsive (Primary) */
+  /* Main Headings */
+  --text-heading-1-size: clamp(3.5rem, 8vw + 1rem, 7.375rem); /* 118px max */
+  --text-heading-1-line-height: clamp(3.5rem, 8vw + 1rem, 7.0625rem); /* 113px max */
+  --text-heading-1-letter-spacing: -0.05em;
+  --text-heading-1-font-weight: 400;
+
+  --text-heading-2-size: clamp(2.5rem, 6vw + 1rem, 6.1875rem); /* 99px max */
+  --text-heading-2-line-height: clamp(2.75rem, 5vw + 1rem, 4.8125rem); /* 77px max */
+  --text-heading-2-letter-spacing: -0.025em;
+  --text-heading-2-font-weight: 500;
+
+  --text-heading-3-size: clamp(1.875rem, 4vw + 0.5rem, 3.125rem); /* 50px max */
+  --text-heading-3-line-height: clamp(2rem, 4vw + 0.5rem, 3.4375rem); /* 55px max */
+  --text-heading-3-letter-spacing: -0.05em;
+  --text-heading-3-font-weight: 400;
+
+  --text-heading-4-size: clamp(1.25rem, 2.5vw + 0.25rem, 1.375rem); /* 22px max */
+  --text-heading-4-line-height: clamp(1.5rem, 2.5vw + 0.25rem, 1.75rem); /* 28px max */
+  --text-heading-4-letter-spacing: -0.025em;
+  --text-heading-4-font-weight: 400;
+
+  /* Display Text Variants */
+  --text-display-text-extra-large-size: clamp(2.25rem, 5vw + 0.5rem, 3.875rem); /* 62px max */
+  --text-display-text-extra-large-line-height: clamp(2.5rem, 4vw + 0.5rem, 3.4375rem); /* 55px max */
+  --text-display-text-extra-large-letter-spacing: -0.025em;
+  --text-display-text-extra-large-font-weight: 500;
+
+  --text-display-text-large-size: clamp(1.75rem, 3.5vw + 0.25rem, 2.75rem); /* 44px max */
+  --text-display-text-large-line-height: clamp(1.875rem, 3.5vw + 0.25rem, 2.75rem); /* 44px max */
+  --text-display-text-large-letter-spacing: -0.025em;
+  --text-display-text-large-font-weight: 500;
+
+  --text-display-text-medium-size: clamp(1.25rem, 2vw + 0.25rem, 1.625rem); /* 26px max */
+  --text-display-text-medium-line-height: clamp(1.375rem, 2vw + 0.25rem, 1.75rem); /* 28px max */
+  --text-display-text-medium-letter-spacing: -0.025em;
+  --text-display-text-medium-font-weight: 400;
+
+  --text-display-text-small-size: clamp(1.125rem, 1.5vw + 0.125rem, 1.375rem); /* 22px max */
+  --text-display-text-small-line-height: clamp(1.25rem, 1.5vw + 0.125rem, 1.5rem); /* 24px max */
+  --text-display-text-small-letter-spacing: -0.025em;
+  --text-display-text-small-font-weight: 400;
+
+  /* Body Text */
+  --text-body-large-size: clamp(1.0625rem, 1.25vw + 0.125rem, 1.125rem); /* 18px max */
+  --text-body-large-line-height: clamp(1.375rem, 1.5vw + 0.125rem, 1.5rem); /* 24px max */
+  --text-body-large-letter-spacing: -0.025em;
+  --text-body-large-font-weight: 400;
+
+  --text-body-size: clamp(0.9375rem, 1vw + 0.125rem, 1rem); /* 16px max */
+  --text-body-line-height: clamp(1.25rem, 1.25vw + 0.125rem, 1.375rem); /* 22px max */
+  --text-body-letter-spacing: 0em;
+  --text-body-font-weight: 300;
+
+  --text-body-small-size: clamp(0.875rem, 0.75vw + 0.125rem, 1rem); /* 16px max */
+  --text-body-small-line-height: clamp(1rem, 0.75vw + 0.125rem, 1rem); /* 16px max */
+  --text-body-small-letter-spacing: -0.025em;
+  --text-body-small-font-weight: 400;
+
+  --text-body-bold-size: clamp(0.8125rem, 0.75vw + 0.125rem, 0.875rem); /* 14px max */
+  --text-body-bold-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-body-bold-letter-spacing: 0em;
+  --text-body-bold-font-weight: 600;
+
+  /* Utility Text */
+  --text-subheader-size: clamp(1.25rem, 2.5vw + 0.25rem, 1.875rem); /* 30px max */
+  --text-subheader-line-height: clamp(1.375rem, 2.5vw + 0.25rem, 1.875rem); /* 30px max */
+  --text-subheader-letter-spacing: -0.025em;
+  --text-subheader-font-weight: 300;
+
+  --text-overtitle-size: clamp(1.0625rem, 1.25vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-overtitle-line-height: clamp(1.25rem, 1.25vw + 0.125rem, 1.375rem); /* 22px max */
+  --text-overtitle-letter-spacing: 0em;
+  --text-overtitle-font-weight: 400;
+
+  --text-subtitle-size: clamp(0.8125rem, 0.75vw + 0.125rem, 0.875rem); /* 14px max */
+  --text-subtitle-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-subtitle-letter-spacing: -0.025em;
+  --text-subtitle-font-weight: 400;
+
+  --text-overline-size: clamp(0.9375rem, 1vw + 0.125rem, 1rem); /* 16px max */
+  --text-overline-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-overline-letter-spacing: -0.025em;
+  --text-overline-font-weight: 400;
+
+  --text-caption-size: clamp(1.25rem, 2.5vw + 0.25rem, 1.875rem); /* 30px max */
+  --text-caption-line-height: clamp(1rem, 0.75vw + 0.125rem, 1rem); /* 16px max */
+  --text-caption-letter-spacing: -0.025em;
+  --text-caption-font-weight: 400;
+
+  --text-caption-small-size: clamp(0.75rem, 0.5vw + 0.125rem, 0.75rem); /* 12px max */
+  --text-caption-small-line-height: clamp(1rem, 0.75vw + 0.125rem, 1rem); /* 16px max */
+  --text-caption-small-letter-spacing: 0em;
+  --text-caption-small-font-weight: 300;
+
+  /* Button Text */
+  --text-button-large-size: clamp(1.125rem, 1.5vw + 0.125rem, 1.375rem); /* 22px max */
+  --text-button-large-line-height: clamp(1.25rem, 1.5vw + 0.125rem, 1.375rem); /* 22px max */
+  --text-button-large-letter-spacing: -0.025em;
+  --text-button-large-font-weight: 400;
+
+  --text-button-medium-size: clamp(0.9375rem, 1vw + 0.125rem, 1rem); /* 16px max */
+  --text-button-medium-line-height: clamp(1rem, 1vw + 0.125rem, 1rem); /* 16px max */
+  --text-button-medium-letter-spacing: 0em;
+  --text-button-medium-font-weight: 500;
+
+  --text-button-small-size: clamp(0.75rem, 0.5vw + 0.125rem, 0.75rem); /* 12px max */
+  --text-button-small-line-height: clamp(0.75rem, 0.5vw + 0.125rem, 0.75rem); /* 12px max */
+  --text-button-small-letter-spacing: -0.025em;
+  --text-button-small-font-weight: 400;
+
+  --text-text-button-size: clamp(1.0625rem, 1.25vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-text-button-line-height: clamp(1.375rem, 1.5vw + 0.125rem, 1.5rem); /* 24px max */
+  --text-text-button-letter-spacing: -0.025em;
+  --text-text-button-font-weight: 400;
+
+  /* Monospace */
+  --text-monospace-body-size: clamp(0.8125rem, 0.75vw + 0.125rem, 0.875rem); /* 14px max */
+  --text-monospace-body-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-monospace-body-letter-spacing: 0em;
+  --text-monospace-body-font-weight: 400;
 }
 
 :root {
-  --color-background: oklch(1.0000 0 0);
-  --color-foreground: oklch(0.2686 0 0);
-  --color-card: oklch(1.0000 0 0);
-  --color-card-foreground: oklch(0.2686 0 0);
-  --color-popover: oklch(1.0000 0 0);
-  --color-popover-foreground: oklch(0.2686 0 0);
-  --color-primary: oklch(0.6463 0.1730 49.0150);
-  --color-primary-foreground: oklch(1.0000 0 0);
-  --color-secondary: oklch(0.3469 0.0733 234.7352);
-  --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
-  --color-muted: oklch(0.9846 0.0017 247.8389);
-  --color-muted-foreground: oklch(0.5510 0.0234 264.3637);
-  --color-accent: oklch(0.9752 0.0069 219.5594);
-  --color-accent-foreground: oklch(0.3469 0.0733 234.7352);
-  --color-destructive: oklch(0.6368 0.2078 25.3313);
-  --color-destructive-foreground: oklch(1.0000 0 0);
-  --color-border: oklch(0.9276 0.0058 264.5313);
-  --color-input: oklch(0.9276 0.0058 264.5313);
-  --color-ring: oklch(0.7686 0.1647 70.0804);
+  /* Updated Colors from Subframe Theme */
+  --color-background: rgb(245, 245, 245); /* --color-default-background */
+  --color-foreground: rgb(10, 10, 10); /* --color-default-font */
+  --color-card: rgb(255, 255, 255); /* --color-neutral-950 */
+  --color-card-foreground: rgb(10, 10, 10); /* --color-default-font */
+  --color-popover: rgb(255, 255, 255); /* --color-neutral-950 */
+  --color-popover-foreground: rgb(10, 10, 10); /* --color-default-font */
+  --color-primary: rgb(247, 104, 8); /* --color-brand-primary */
+  --color-primary-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-secondary: rgb(163, 163, 163); /* --color-neutral-500 */
+  --color-secondary-foreground: rgb(10, 10, 10); /* --color-default-font */
+  --color-muted: rgb(231, 231, 231); /* --color-neutral-background */
+  --color-muted-foreground: rgb(104, 104, 104); /* --color-subtext-color */
+  --color-accent: rgb(229, 229, 229); /* --color-neutral-700 */
+  --color-accent-foreground: rgb(10, 10, 10); /* --color-default-font */
+  --color-destructive: rgb(233, 61, 130); /* --color-error-600 */
+  --color-destructive-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-border: rgb(163, 163, 163); /* --color-neutral-border */
+  --color-input: rgb(212, 212, 212); /* --color-neutral-600 */
+  --color-ring: rgb(247, 104, 8); /* --color-brand-primary */
+  
+  /* Brand Colors from Subframe */
+  --color-brand-50: rgb(57, 26, 3);
+  --color-brand-100: rgb(68, 31, 4);
+  --color-brand-200: rgb(79, 35, 5);
+  --color-brand-300: rgb(95, 42, 6);
+  --color-brand-400: rgb(118, 50, 5);
+  --color-brand-500: rgb(148, 62, 0);
+  --color-brand-600: rgb(247, 104, 8);
+  --color-brand-700: rgb(255, 128, 43);
+  --color-brand-800: rgb(255, 139, 62);
+  --color-brand-900: rgb(254, 234, 221);
+  
+  /* Neutral Colors from Subframe */
+  --color-neutral-0: rgb(10, 10, 10);
+  --color-neutral-50: rgb(23, 23, 23);
+  --color-neutral-100: rgb(38, 38, 38);
+  --color-neutral-200: rgb(64, 64, 64);
+  --color-neutral-300: rgb(82, 82, 82);
+  --color-neutral-350: rgb(104, 104, 104);
+  --color-neutral-400: rgb(115, 115, 115);
+  --color-neutral-500: rgb(163, 163, 163);
+  --color-neutral-600: rgb(212, 212, 212);
+  --color-neutral-700: rgb(229, 229, 229);
+  --color-neutral-750: rgb(231, 231, 231);
+  --color-neutral-800: rgb(245, 245, 245);
+  --color-neutral-900: rgb(250, 250, 250);
+  --color-neutral-950: rgb(255, 255, 255);
+  
+  /* Status Colors from Subframe */
+  --color-error-600: rgb(233, 61, 130);
+  --color-warning-600: rgb(255, 178, 36);
+  --color-success-600: rgb(70, 167, 88);
+  
   --radius: 0.375rem;
   --type-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
-  --color-background: oklch(0.2046 0 0);
-  --color-foreground: oklch(0.9219 0 0);
-  --color-card: oklch(0.2686 0 0);
-  --color-card-foreground: oklch(0.9219 0 0);
-  --color-popover: oklch(0.2686 0 0);
-  --color-popover-foreground: oklch(0.9219 0 0);
-  --color-primary: oklch(0.6463 0.1730 49.0150);
-  --color-primary-foreground: oklch(0.8954 0.0304 65.8126);
-  --color-secondary: oklch(0.3469 0.0733 234.7352);
-  --color-secondary-foreground: oklch(0.9219 0 0);
-  --color-muted: oklch(0.2686 0 0);
-  --color-muted-foreground: oklch(0.7155 0 0);
-  --color-accent: oklch(0.2676 0.0336 229.2762);
-  --color-accent-foreground: oklch(0.9635 0.0341 183.0511);
-  --color-destructive: oklch(0.6368 0.2078 25.3313);
-  --color-destructive-foreground: oklch(1.0000 0 0);
-  --color-border: oklch(0.3715 0 0);
-  --color-input: oklch(0.3715 0 0);
-  --color-ring: oklch(0.7686 0.1647 70.0804);
+  /* Dark Mode Colors - Inverted Subframe Theme */
+  --color-background: rgb(10, 10, 10); /* --color-neutral-0 */
+  --color-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-card: rgb(23, 23, 23); /* --color-neutral-50 */
+  --color-card-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-popover: rgb(23, 23, 23); /* --color-neutral-50 */
+  --color-popover-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-primary: rgb(247, 104, 8); /* --color-brand-primary */
+  --color-primary-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-secondary: rgb(82, 82, 82); /* --color-neutral-300 */
+  --color-secondary-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-muted: rgb(38, 38, 38); /* --color-neutral-100 */
+  --color-muted-foreground: rgb(163, 163, 163); /* --color-neutral-500 */
+  --color-accent: rgb(64, 64, 64); /* --color-neutral-200 */
+  --color-accent-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-destructive: rgb(233, 61, 130); /* --color-error-600 */
+  --color-destructive-foreground: rgb(255, 255, 255); /* --color-default-font-light */
+  --color-border: rgb(82, 82, 82); /* --color-neutral-300 */
+  --color-input: rgb(64, 64, 64); /* --color-neutral-200 */
+  --color-ring: rgb(247, 104, 8); /* --color-brand-primary */
 }
 
 @theme inline {
+  /* Updated Font Families - Gotham for all text */
   --font-sans: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "aglet-mono", ui-monospace, monospace;
   --font-serif: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Subframe Font Family Overrides - Replace Outfit with Gotham */
+  --font-caption: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-caption-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-bold: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-3: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-2: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-1: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-monospace-body: "aglet-mono", ui-monospace, monospace;
+  --font-subheader: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-extra-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-overline: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-subtitle: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-overtitle: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text-button: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-4: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-medium: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-medium: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Color Variables */
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
   --color-card: var(--color-card);
@@ -176,6 +363,8 @@
   --color-border: var(--color-border);
   --color-input: var(--color-input);
   --color-ring: var(--color-ring);
+  
+  /* Radius Variables */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -184,7 +373,223 @@
 
 /* Typography Utility Classes */
 @layer utilities {
-  /* Display Styles */
+  /* NEW SUBFRAME TYPOGRAPHY CLASSES - Primary */
+  
+  /* Main Headings */
+  .text-heading-1 {
+    font-family: var(--font-heading-1);
+    font-size: var(--text-heading-1-size);
+    line-height: var(--text-heading-1-line-height);
+    letter-spacing: var(--text-heading-1-letter-spacing);
+    font-weight: var(--text-heading-1-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-heading-2 {
+    font-family: var(--font-heading-2);
+    font-size: var(--text-heading-2-size);
+    line-height: var(--text-heading-2-line-height);
+    letter-spacing: var(--text-heading-2-letter-spacing);
+    font-weight: var(--text-heading-2-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-heading-3 {
+    font-family: var(--font-heading-3);
+    font-size: var(--text-heading-3-size);
+    line-height: var(--text-heading-3-line-height);
+    letter-spacing: var(--text-heading-3-letter-spacing);
+    font-weight: var(--text-heading-3-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-heading-4 {
+    font-family: var(--font-heading-4);
+    font-size: var(--text-heading-4-size);
+    line-height: var(--text-heading-4-line-height);
+    letter-spacing: var(--text-heading-4-letter-spacing);
+    font-weight: var(--text-heading-4-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Display Text Variants */
+  .text-display-text-extra-large {
+    font-family: var(--font-display-text-extra-large);
+    font-size: var(--text-display-text-extra-large-size);
+    line-height: var(--text-display-text-extra-large-line-height);
+    letter-spacing: var(--text-display-text-extra-large-letter-spacing);
+    font-weight: var(--text-display-text-extra-large-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-display-text-large {
+    font-family: var(--font-display-text-large);
+    font-size: var(--text-display-text-large-size);
+    line-height: var(--text-display-text-large-line-height);
+    letter-spacing: var(--text-display-text-large-letter-spacing);
+    font-weight: var(--text-display-text-large-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-display-text-medium {
+    font-family: var(--font-display-text-medium);
+    font-size: var(--text-display-text-medium-size);
+    line-height: var(--text-display-text-medium-line-height);
+    letter-spacing: var(--text-display-text-medium-letter-spacing);
+    font-weight: var(--text-display-text-medium-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-display-text-small {
+    font-family: var(--font-display-text-small);
+    font-size: var(--text-display-text-small-size);
+    line-height: var(--text-display-text-small-line-height);
+    letter-spacing: var(--text-display-text-small-letter-spacing);
+    font-weight: var(--text-display-text-small-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Body Text */
+  .text-body-large {
+    font-family: var(--font-body-large);
+    font-size: var(--text-body-large-size);
+    line-height: var(--text-body-large-line-height);
+    letter-spacing: var(--text-body-large-letter-spacing);
+    font-weight: var(--text-body-large-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-line-height);
+    letter-spacing: var(--text-body-letter-spacing);
+    font-weight: var(--text-body-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-body-small {
+    font-family: var(--font-body-small);
+    font-size: var(--text-body-small-size);
+    line-height: var(--text-body-small-line-height);
+    letter-spacing: var(--text-body-small-letter-spacing);
+    font-weight: var(--text-body-small-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-body-bold {
+    font-family: var(--font-body-bold);
+    font-size: var(--text-body-bold-size);
+    line-height: var(--text-body-bold-line-height);
+    letter-spacing: var(--text-body-bold-letter-spacing);
+    font-weight: var(--text-body-bold-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Utility Text */
+  .text-subheader {
+    font-family: var(--font-subheader);
+    font-size: var(--text-subheader-size);
+    line-height: var(--text-subheader-line-height);
+    letter-spacing: var(--text-subheader-letter-spacing);
+    font-weight: var(--text-subheader-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-overtitle {
+    font-family: var(--font-overtitle);
+    font-size: var(--text-overtitle-size);
+    line-height: var(--text-overtitle-line-height);
+    letter-spacing: var(--text-overtitle-letter-spacing);
+    font-weight: var(--text-overtitle-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-subtitle {
+    font-family: var(--font-subtitle);
+    font-size: var(--text-subtitle-size);
+    line-height: var(--text-subtitle-line-height);
+    letter-spacing: var(--text-subtitle-letter-spacing);
+    font-weight: var(--text-subtitle-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-overline {
+    font-family: var(--font-overline);
+    font-size: var(--text-overline-size);
+    line-height: var(--text-overline-line-height);
+    letter-spacing: var(--text-overline-letter-spacing);
+    font-weight: var(--text-overline-font-weight);
+    text-transform: uppercase;
+    transition: var(--type-transition);
+  }
+
+  .text-caption {
+    font-family: var(--font-caption);
+    font-size: var(--text-caption-size);
+    line-height: var(--text-caption-line-height);
+    letter-spacing: var(--text-caption-letter-spacing);
+    font-weight: var(--text-caption-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-caption-small {
+    font-family: var(--font-caption-small);
+    font-size: var(--text-caption-small-size);
+    line-height: var(--text-caption-small-line-height);
+    letter-spacing: var(--text-caption-small-letter-spacing);
+    font-weight: var(--text-caption-small-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Button Text */
+  .text-button-large {
+    font-family: var(--font-button-large);
+    font-size: var(--text-button-large-size);
+    line-height: var(--text-button-large-line-height);
+    letter-spacing: var(--text-button-large-letter-spacing);
+    font-weight: var(--text-button-large-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-button-medium {
+    font-family: var(--font-button-medium);
+    font-size: var(--text-button-medium-size);
+    line-height: var(--text-button-medium-line-height);
+    letter-spacing: var(--text-button-medium-letter-spacing);
+    font-weight: var(--text-button-medium-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-button-small {
+    font-family: var(--font-button-small);
+    font-size: var(--text-button-small-size);
+    line-height: var(--text-button-small-line-height);
+    letter-spacing: var(--text-button-small-letter-spacing);
+    font-weight: var(--text-button-small-font-weight);
+    transition: var(--type-transition);
+  }
+
+  .text-text-button {
+    font-family: var(--font-text-button);
+    font-size: var(--text-text-button-size);
+    line-height: var(--text-text-button-line-height);
+    letter-spacing: var(--text-text-button-letter-spacing);
+    font-weight: var(--text-text-button-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* Monospace */
+  .text-monospace-body {
+    font-family: var(--font-monospace-body);
+    font-size: var(--text-monospace-body-size);
+    line-height: var(--text-monospace-body-line-height);
+    letter-spacing: var(--text-monospace-body-letter-spacing);
+    font-weight: var(--text-monospace-body-font-weight);
+    transition: var(--type-transition);
+  }
+
+  /* LEGACY DISPLAY STYLES - Backwards Compatibility */
   .type-display-1 {
     font-family: var(--font-display);
     font-size: var(--type-display-1-size);
@@ -205,7 +610,7 @@
     transition: var(--type-transition);
   }
 
-  /* Heading Styles */
+  /* LEGACY HEADING STYLES - Backwards Compatibility */
   .type-heading-1 {
     font-family: var(--font-display);
     font-size: var(--type-heading-1-size);
@@ -262,7 +667,7 @@
     transition: var(--type-transition);
   }
 
-  /* Body Styles */
+  /* LEGACY BODY STYLES - Backwards Compatibility */
   .type-body-large {
     font-family: var(--font-body);
     font-size: var(--type-body-large-size);
@@ -290,7 +695,7 @@
     transition: var(--type-transition);
   }
 
-  /* UI/Utility Styles */
+  /* LEGACY UI/UTILITY STYLES - Backwards Compatibility */
   .type-lead {
     font-family: var(--font-body);
     font-size: var(--type-lead-size);

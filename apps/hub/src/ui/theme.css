@@ -1,0 +1,241 @@
+@theme {
+  /* Colors */
+  --color-brand-50: rgb(57, 26, 3);
+  --color-brand-100: rgb(68, 31, 4);
+  --color-brand-200: rgb(79, 35, 5);
+  --color-brand-300: rgb(95, 42, 6);
+  --color-brand-400: rgb(118, 50, 5);
+  --color-brand-500: rgb(148, 62, 0);
+  --color-brand-600: rgb(247, 104, 8);
+  --color-brand-700: rgb(255, 128, 43);
+  --color-brand-800: rgb(255, 139, 62);
+  --color-brand-900: rgb(254, 234, 221);
+  --color-neutral-0: rgb(10, 10, 10);
+  --color-neutral-50: rgb(23, 23, 23);
+  --color-neutral-100: rgb(38, 38, 38);
+  --color-neutral-200: rgb(64, 64, 64);
+  --color-neutral-300: rgb(82, 82, 82);
+  --color-neutral-350: rgb(104, 104, 104);
+  --color-neutral-400: rgb(115, 115, 115);
+  --color-neutral-500: rgb(163, 163, 163);
+  --color-neutral-600: rgb(212, 212, 212);
+  --color-neutral-700: rgb(229, 229, 229);
+  --color-neutral-750: rgb(231, 231, 231);
+  --color-neutral-800: rgb(245, 245, 245);
+  --color-neutral-900: rgb(250, 250, 250);
+  --color-neutral-950: rgb(255, 255, 255);
+  --color-error-50: rgb(60, 24, 39);
+  --color-error-100: rgb(72, 26, 45);
+  --color-error-200: rgb(84, 27, 51);
+  --color-error-300: rgb(100, 29, 59);
+  --color-error-400: rgb(128, 29, 69);
+  --color-error-500: rgb(174, 25, 85);
+  --color-error-600: rgb(233, 61, 130);
+  --color-error-700: rgb(240, 79, 136);
+  --color-error-800: rgb(247, 97, 144);
+  --color-error-900: rgb(254, 236, 244);
+  --color-warning-50: rgb(52, 28, 0);
+  --color-warning-100: rgb(63, 34, 0);
+  --color-warning-200: rgb(74, 41, 0);
+  --color-warning-300: rgb(87, 51, 0);
+  --color-warning-400: rgb(105, 63, 5);
+  --color-warning-500: rgb(130, 78, 0);
+  --color-warning-600: rgb(255, 178, 36);
+  --color-warning-700: rgb(255, 203, 71);
+  --color-warning-800: rgb(241, 161, 13);
+  --color-warning-900: rgb(254, 243, 221);
+  --color-success-50: rgb(19, 40, 25);
+  --color-success-100: rgb(22, 48, 29);
+  --color-success-200: rgb(25, 57, 33);
+  --color-success-300: rgb(29, 68, 39);
+  --color-success-400: rgb(36, 85, 48);
+  --color-success-500: rgb(47, 110, 59);
+  --color-success-600: rgb(70, 167, 88);
+  --color-success-700: rgb(85, 180, 103);
+  --color-success-800: rgb(99, 193, 116);
+  --color-success-900: rgb(229, 251, 235);
+  --color-brand-primary: rgb(247, 104, 8);
+  --color-default-font: rgb(10, 10, 10);
+  --color-subtext-color: rgb(104, 104, 104);
+  --color-neutral-border: rgb(163, 163, 163);
+  --color-black: rgb(10, 10, 10);
+  --color-default-background: rgb(245, 245, 245);
+  --color-default-font-light: rgb(255, 255, 255);
+  --color-neutral-background: rgb(231, 231, 231);
+
+  /* Fonts */
+  --text-caption: 30px;
+  --text-caption--font-weight: 400;
+  --text-caption--letter-spacing: -0.025em;
+  --text-caption--line-height: 16px;
+  --text-caption-small: 12px;
+  --text-caption-small--font-weight: 300;
+  --text-caption-small--letter-spacing: 0em;
+  --text-caption-small--line-height: 16px;
+  --text-body: 16px;
+  --text-body--font-weight: 300;
+  --text-body--letter-spacing: 0em;
+  --text-body--line-height: 22px;
+  --text-body-bold: 14px;
+  --text-body-bold--font-weight: 600;
+  --text-body-bold--letter-spacing: 0em;
+  --text-body-bold--line-height: 20px;
+  --text-heading-3: 50px;
+  --text-heading-3--font-weight: 400;
+  --text-heading-3--letter-spacing: -0.05em;
+  --text-heading-3--line-height: 55px;
+  --text-heading-2: 99px;
+  --text-heading-2--font-weight: 500;
+  --text-heading-2--letter-spacing: -0.025em;
+  --text-heading-2--line-height: 77px;
+  --text-heading-1: 118px;
+  --text-heading-1--font-weight: 400;
+  --text-heading-1--letter-spacing: -0.05em;
+  --text-heading-1--line-height: 113px;
+  --text-monospace-body: 14px;
+  --text-monospace-body--font-weight: 400;
+  --text-monospace-body--letter-spacing: 0em;
+  --text-monospace-body--line-height: 20px;
+  --text-subheader: 30px;
+  --text-subheader--font-weight: 300;
+  --text-subheader--letter-spacing: -0.025em;
+  --text-subheader--line-height: 30px;
+  --text-display-text-extra-large: 62px;
+  --text-display-text-extra-large--font-weight: 500;
+  --text-display-text-extra-large--letter-spacing: -0.025em;
+  --text-display-text-extra-large--line-height: 55px;
+  --text-display-text-large: 44px;
+  --text-display-text-large--font-weight: 500;
+  --text-display-text-large--letter-spacing: -0.025em;
+  --text-display-text-large--line-height: 44px;
+  --text-display-text-small: 22px;
+  --text-display-text-small--font-weight: 400;
+  --text-display-text-small--letter-spacing: -0.025em;
+  --text-display-text-small--line-height: 24px;
+  --text-overline: 16px;
+  --text-overline--font-weight: 400;
+  --text-overline--letter-spacing: -0.025em;
+  --text-overline--line-height: 20px;
+  --text-subtitle: 14px;
+  --text-subtitle--font-weight: 400;
+  --text-subtitle--letter-spacing: -0.025em;
+  --text-subtitle--line-height: 20px;
+  --text-overtitle: 20px;
+  --text-overtitle--font-weight: 400;
+  --text-overtitle--letter-spacing: 0em;
+  --text-overtitle--line-height: 22px;
+  --text-button-small: 12px;
+  --text-button-small--font-weight: 400;
+  --text-button-small--letter-spacing: -0.025em;
+  --text-button-small--line-height: 12px;
+  --text-body-large: 18px;
+  --text-body-large--font-weight: 400;
+  --text-body-large--letter-spacing: -0.025em;
+  --text-body-large--line-height: 24px;
+  --text-button-large: 22px;
+  --text-button-large--font-weight: 400;
+  --text-button-large--letter-spacing: -0.025em;
+  --text-button-large--line-height: 22px;
+  --text-body-small: 16px;
+  --text-body-small--font-weight: 400;
+  --text-body-small--letter-spacing: -0.025em;
+  --text-body-small--line-height: 16px;
+  --text-text-button: 20px;
+  --text-text-button--font-weight: 400;
+  --text-text-button--letter-spacing: -0.025em;
+  --text-text-button--line-height: 24px;
+  --text-heading-4: 22px;
+  --text-heading-4--font-weight: 400;
+  --text-heading-4--letter-spacing: -0.025em;
+  --text-heading-4--line-height: 28px;
+  --text-display-text-medium: 26px;
+  --text-display-text-medium--font-weight: 400;
+  --text-display-text-medium--letter-spacing: -0.025em;
+  --text-display-text-medium--line-height: 28px;
+  --text-button-medium: 16px;
+  --text-button-medium--font-weight: 500;
+  --text-button-medium--letter-spacing: 0em;
+  --text-button-medium--line-height: 16px;
+
+  /* Font families */
+  --font-caption: Outfit;
+  --font-caption-small: Outfit;
+  --font-body: Outfit;
+  --font-body-bold: Outfit;
+  --font-heading-3: Outfit;
+  --font-heading-2: Outfit;
+  --font-heading-1: Outfit;
+  --font-monospace-body: monospace;
+  --font-subheader: Outfit;
+  --font-display-text-extra-large: Outfit;
+  --font-display-text-large: Outfit;
+  --font-display-text-small: Outfit;
+  --font-overline: Outfit;
+  --font-subtitle: Outfit;
+  --font-overtitle: Outfit;
+  --font-button-small: Outfit;
+  --font-body-large: Outfit;
+  --font-button-large: Outfit;
+  --font-body-small: Outfit;
+  --font-text-button: Outfit;
+  --font-heading-4: Outfit;
+  --font-display-text-medium: Outfit;
+  --font-button-medium: Outfit;
+
+  /* Box shadows */
+  --shadow-sm: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  --shadow-default: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0px 4px 16px -2px rgba(0, 0, 0, 0.08),
+    0px 2px 4px -1px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0px 12px 32px -4px rgba(0, 0, 0, 0.08),
+    0px 4px 8px -2px rgba(0, 0, 0, 0.08);
+  --shadow-overlay: 0px 12px 32px -4px rgba(0, 0, 0, 0.08),
+    0px 4px 8px -2px rgba(0, 0, 0, 0.08);
+
+  /* Border radiuses */
+  --radius-sm: 8px;
+  --radius-md: 18px;
+  --radius-DEFAULT: 18px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-112: 28rem;
+  --spacing-144: 36rem;
+  --spacing-192: 48rem;
+  --spacing-256: 64rem;
+  --spacing-320: 80rem;
+}
+
+/* Container */
+@utility container {
+  padding-left: 16px;
+  padding-right: 16px;
+
+  @media (width >= theme(--breakpoint-sm)) {
+    padding-left: calc((100vw + 16px - 640px) / 2);
+    padding-right: calc((100vw + 16px - 640px) / 2);
+  }
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-left: calc((100vw + 16px - 768px) / 2);
+    padding-right: calc((100vw + 16px - 768px) / 2);
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    padding-left: calc((100vw + 16px - 1024px) / 2);
+    padding-right: calc((100vw + 16px - 1024px) / 2);
+  }
+
+  @media (width >= theme(--breakpoint-xl)) {
+    padding-left: calc((100vw + 16px - 1280px) / 2);
+    padding-right: calc((100vw + 16px - 1280px) / 2);
+  }
+
+  @media (width >= theme(--breakpoint-2xl)) {
+    padding-left: calc((100vw + 16px - 1536px) / 2);
+    padding-right: calc((100vw + 16px - 1536px) / 2);
+  }
+}
+
+@custom-variant mobile (@media (max-width: 767px));
