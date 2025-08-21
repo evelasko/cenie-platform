@@ -1,5 +1,12 @@
 import { type Timestamp } from 'firebase-admin/firestore'
 
+export interface NavigationItem {
+  label: string
+  href: string
+  icon?: React.ReactNode
+  items?: NavigationItem[]
+}
+
 export interface Profile {
   id: string
   email: string

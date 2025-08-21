@@ -1,5 +1,14 @@
 import './globals.css'
 import { Providers } from './providers'
+import NavBar from '../components/navigation/NavBar'
+
+const navigationItems = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Contact', href: '/contact' },
+]
 
 export default function RootLayout({
   children,
@@ -10,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <Providers>
-          {children}
+          <NavBar items={navigationItems} />
+          <main className="pt-16">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
