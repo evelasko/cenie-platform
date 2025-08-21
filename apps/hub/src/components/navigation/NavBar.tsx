@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'motion/react'
 import { type NavigationItem } from "../../lib/types"
+import BurgerButton from '../buttons/BurgerButton'
 import clsx from 'clsx'
 
 interface NavBarProps {
@@ -135,37 +136,7 @@ export default function NavBar({ items }: NavBarProps) {
 
             {/* Hamburger Menu Button - Always visible */}
             <div className="flex items-center pl-8">
-              <button
-                onClick={toggleMenu}
-                className={clsx(
-                  "relative w-8 h-8 flex flex-col justify-center items-center rounded-sm group",
-                  "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                )}
-                aria-label="Toggle menu"
-              >
-                <span
-                  className={clsx(
-                    "absolute block h-0.5 w-6 transition-all duration-300 ease-in-out",
-                    "bg-[color:var(--color-nav-text)] group-hover:bg-[color:var(--color-nav-hover)]",
-                    {
-                      "rotate-45 bg-[color:var(--color-nav-hover)]": isMenuOpen,
-                      "-translate-y-1": !isMenuOpen
-                    }
-                  )}
-                  style={{ transformOrigin: 'center' }}
-                />
-                <span
-                  className={clsx(
-                    "absolute block h-0.5 w-6 transition-all duration-300 ease-in-out",
-                    "bg-[color:var(--color-nav-text)] group-hover:bg-[color:var(--color-nav-hover)]",
-                    {
-                      "-rotate-45 bg-[color:var(--color-nav-hover)]": isMenuOpen,
-                      "translate-y-1": !isMenuOpen
-                    }
-                  )}
-                  style={{ transformOrigin: 'center' }}
-                />
-              </button>
+              <BurgerButton isOpen={isMenuOpen} onClick={toggleMenu} width={90} />
             </div>
           </div>
         </div>

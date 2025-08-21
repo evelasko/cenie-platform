@@ -432,8 +432,9 @@
     font-size: var(--text-display-text-large-size);
     line-height: var(--text-display-text-large-line-height);
     /* letter-spacing: var(--text-display-text-large-letter-spacing); */
-    letter-spacing: -0.5em;
-    font-weight: var(--text-display-text-large-font-weight);
+    letter-spacing: -0.05em;
+    /* font-weight: var(--text-display-text-large-font-weight); */
+    font-weight: 600;
     transition: var(--type-transition);
   }
 
