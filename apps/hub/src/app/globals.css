@@ -367,6 +367,7 @@
   /* Navigation specific colors */
   --color-nav-text: var(--color-default-font);
   --color-nav-hover: var(--color-brand-primary);
+  --color-nav-background: rgb(255, 255, 255);
   
   /* Radius Variables */
   --radius-sm: calc(var(--radius) - 4px);

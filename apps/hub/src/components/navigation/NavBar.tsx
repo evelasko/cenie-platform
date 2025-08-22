@@ -12,74 +12,87 @@ interface NavBarProps {
   items: NavigationItem[]
 }
 
-// Animation variants
+// Animation variants for the drawer container
 const drawerVariants = {
   hidden: {
-    y: -100,
+    height: 0,
     opacity: 0,
   },
   visible: {
-    y: 0,
+    height: 'auto',
     opacity: 1,
     transition: {
-      type: "spring" as const,
-      stiffness: 300,
-      damping: 30,
+      height: {
+        duration: 0.4,
+        ease: [0.4, 0.0, 0.6, 1]
+      },
+      opacity: {
+        duration: 0.3,
+        ease: [0.4, 0.0, 0.2, 1],
+        delay: 0.1
+      },
       staggerChildren: 0.1,
-      delayChildren: 0.2,
+      delayChildren: 0.3,
     }
   },
   exit: {
-    y: -100,
+    height: 0,
     opacity: 0,
     transition: {
-      type: "spring" as const,
-      stiffness: 300,
-      damping: 30,
+      height: {
+        duration: 0.3,
+        ease: [0.4, 0.0, 1, 1],
+        delay: 0.1
+      },
+      opacity: {
+        duration: 0.2,
+        ease: [0.4, 0.0, 1, 1]
+      },
       staggerChildren: 0.05,
       staggerDirection: -1,
     }
   }
 }
 
-const itemVariants = {
+// Animation variants for individual menu items
+const menuItemVariants = {
   hidden: {
-    y: -20,
     opacity: 0,
+    y: -15,
   },
   visible: {
-    y: 0,
     opacity: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 25,
-    }
+    y: 0,
   },
   exit: {
-    y: -10,
     opacity: 0,
-    transition: {
-      duration: 0.2,
-    }
+    y: -10,
   }
 }
 
-const backdropVariants = {
+// Animation variants for the footer
+const footerVariants = {
   hidden: {
     opacity: 0,
+    y: -10,
   },
   visible: {
     opacity: 1,
-    transition: {
-      duration: 0.3,
-    }
+    y: 0,
   },
   exit: {
     opacity: 0,
-    transition: {
-      duration: 0.2,
-    }
+    y: -10,
+  }
+}
+
+// Animation variants for desktop nav items fade
+const desktopNavVariants = {
+  visible: {
+    opacity: 1,
+  },
+  hidden: {
+    opacity: 0,
   }
 }
 
@@ -96,11 +109,20 @@ export default function NavBar({ items }: NavBarProps) {
 
   return (
     <>
-      {/* Main Navigation Bar */}
-      <nav className={clsx("fixed top-0 left-0 right-0 z-50 backdrop-blur-md", {
-        "bg-background": !isMenuOpen,
-        "bg-background/80": isMenuOpen
-      })}>
+      {/* Fixed Navbar - Always 64px height */}
+      <motion.nav 
+        className={clsx(
+          "fixed top-0 left-0 right-0 z-50 backdrop-blur-md h-16",
+          // isMenuOpen ? "bg-background" : "bg-background/75"
+        )}
+        animate={{
+          backgroundColor: isMenuOpen ? "var(--color-nav-background)" : "color-mix(in srgb, var(--color-nav-background) 70%, transparent)"
+        }}
+        transition={{
+          duration: 0.3,
+          ease: [0.4, 0.0, 0.2, 1]
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -116,8 +138,16 @@ export default function NavBar({ items }: NavBarProps) {
               </Link>
             </div>
 
-            {/* Desktop Navigation Items - Hidden on mobile */}
-            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
+            {/* Desktop Navigation Items - Hidden on mobile, fade on drawer open */}
+            <motion.div 
+              className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1"
+              variants={desktopNavVariants}
+              animate={isMenuOpen ? "hidden" : "visible"}
+              transition={{
+                duration: 0.3,
+                ease: [0.4, 0.0, 0.2, 1],
+              }}
+            >
               <div className="flex items-center justify-evenly w-full max-w-2xl">
                 {items.map((item, index) => (
                   <Link
@@ -132,70 +162,61 @@ export default function NavBar({ items }: NavBarProps) {
                   </Link>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Hamburger Menu Button - Always visible */}
             <div className="flex items-center pl-8">
-              <BurgerButton isOpen={isMenuOpen} onClick={toggleMenu} width={90} />
+              <BurgerButton isOpen={isMenuOpen} onClick={toggleMenu} width={90} height={32} />
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* Menu Drawer - Framer Motion Implementation */}
-      <AnimatePresence>
+      {/* Drawer Container - Positioned below navbar */}
+      <AnimatePresence mode="wait">
         {isMenuOpen && (
-          <>
-            {/* Backdrop - starts below navbar */}
-            <motion.div 
-              className="fixed z-40 bg-black/50 backdrop-blur-sm"
-              onClick={closeMenu}
-              style={{ 
-                top: '64px', 
-                left: '0', 
-                right: '0', 
-                bottom: '0' 
-              }}
-              variants={backdropVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            />
-            
-                      {/* Drawer Content - Expands downward from navbar */}
-          <motion.div 
-            className="fixed top-16 left-0 right-0 z-50 bg-background"
+          <motion.div
+            key="drawer"
+            className="fixed top-16 left-0 right-0 z-40 bg-[color:var(--color-nav-background)] overflow-hidden"
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
-              <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                {/* Navigation Items */}
-                <div className="py-8">
-                  <motion.div className="space-y-8">
-                    {items.map((item, index) => (
-                      <motion.div
-                        key={index}
-                        variants={itemVariants}
+            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+              {/* Navigation Items */}
+              <div className="py-8">
+                <motion.div className="space-y-8">
+                  {items.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      variants={menuItemVariants}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={closeMenu}
+                        className={clsx(
+                          "block text-display-text-extra-large whitespace-nowrap transition-colors duration-300 ease-in-out",
+                          "text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]"
+                        )}
                       >
-                        <Link
-                          href={item.href}
-                          onClick={closeMenu}
-                          className={clsx(
-                            "block text-display-text-extra-large whitespace-nowrap transition-colors duration-300 ease-in-out",
-                            "text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]"
-                          )}
-                        >
-                          {item.label}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
 
-                              {/* Footer */}
-              <div className="pt-12 pb-8">
+              {/* Footer */}
+              <motion.div 
+                className="pt-12 pb-8"
+                variants={footerVariants}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.4, 0.0, 0.2, 1],
+                  delay: 0.1,
+                }}
+              >
                 {/* Single Row Footer */}
                 <div className="flex justify-between items-center text-caption-small text-muted-foreground">
                   <a 
@@ -235,10 +256,9 @@ export default function NavBar({ items }: NavBarProps) {
                     © {new Date().getFullYear()} CENIE
                   </span>
                 </div>
-              </div>
-              </div>
-            </motion.div>
-          </>
+              </motion.div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
