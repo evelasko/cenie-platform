@@ -20,6 +20,7 @@
     "@subframe/core": "^1.145.0",
     "clsx": "^2.1.1",
     "firebase-admin": "^13.4.0",
+    "framer-motion": "^12.23.12",
     "lucide-react": "^0.539.0",
     "motion": "^12.23.12",
     "next": "15.4.6",
