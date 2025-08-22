@@ -369,11 +369,7 @@
   --color-nav-hover: var(--color-brand-primary);
   --color-nav-background: rgb(255, 255, 255);
   
-  /* Radius Variables */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Radius Variables are set in theme.css */
 }
 
 /* Typography Utility Classes */
@@ -777,6 +773,115 @@
   }
 }
 
+.page-wrapper {
+  padding-top: 4rem; /* pt-16 */
+  padding-left: 0.25rem; /* px-1 */
+  padding-right: 0.25rem; /* px-1 */
+}
+
+@media (min-width: 768px) {
+  .page-wrapper {
+    padding-left: 0.375rem; /* md:px-1.5 */
+    padding-right: 0.375rem; /* md:px-1.5 */
+  }
+  
+  .hero-height-mobile {
+    height: calc(100vh - 4rem - 0.375rem); /* Override with desktop height at md breakpoint */
+  }
+}
+
+
+.dark-section {
+  width: 100%;
+  background-color: var(--color-neutral-50);
+  color: white;
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-section__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: brightness(0.7);
+}
+
+.dark-section__shine-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/media/graphics/shine.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  /* mix-blend-mode: screen; */
+  filter: brightness(1.2);
+  z-index: 1;
+}
+
+.dark-section__noise-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/media/graphics/noise.png');
+  background-repeat: repeat;
+  background-size: auto;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  filter: brightness(0.9);
+  z-index: 2;
+  animation: noise-animation 0.3s infinite;
+}
+
+.dark-section__content {
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes noise-animation {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5px, -5px);
+  }
+  20% {
+    transform: translate(-10px, 5px);
+  }
+  30% {
+    transform: translate(5px, -10px);
+  }
+  40% {
+    transform: translate(-5px, 15px);
+  }
+  50% {
+    transform: translate(-10px, 5px);
+  }
+  60% {
+    transform: translate(15px, 0px);
+  }
+  70% {
+    transform: translate(0px, 10px);
+  }
+  80% {
+    transform: translate(-15px, 0px);
+  }
+  90% {
+    transform: translate(10px, 5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -813,6 +918,15 @@
 /* Custom animations for navbar drawer - now handled by Framer Motion */
 
 @layer utilities {
+  /* MediaHero height utilities */
+  .hero-height-mobile {
+    height: calc(100vh - 4rem - 0.25rem); /* Account for mt-16 (4rem) and pb-1 (0.25rem) */
+  }
+  
+  .hero-height-desktop {
+    height: calc(100vh - 4rem - 0.375rem); /* Account for mt-16 (4rem) and pb-1.5 (0.375rem) */
+  }
+  
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
   }

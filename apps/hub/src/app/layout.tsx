@@ -20,9 +20,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <Providers>
           <NavBar items={navigationItems} />
-          <main className="pt-16">
             {children}
-          </main>
         </Providers>
       </body>
     </html>
