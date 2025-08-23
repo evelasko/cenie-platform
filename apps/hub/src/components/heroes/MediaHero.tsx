@@ -29,8 +29,8 @@ export default function MediaHero({ backgroundVideo, backgroundClassName, childr
         <motion.div 
             ref={containerRef}
             className={clsx(
-                "flex flex-col items-center justify-center rounded-[var(--radius-lg)] w-full pb-1 relative hero-height-mobile",
-                backgroundVideo && "bg-amber-800",
+                "flex flex-col items-center justify-center rounded-[var(--radius-lg)] w-full pb-1 relative hero-height-mobile z-40",
+                backgroundVideo,
                 backgroundClassName,
             )}
             style={{
@@ -44,7 +44,7 @@ export default function MediaHero({ backgroundVideo, backgroundClassName, childr
             {/* Background layer that respects padding */}
             {backgroundVideo && (
                 <div 
-                    className="absolute inset-0 rounded-[var(--radius-lg)]"
+                    className="absolute inset-0 rounded-[var(--radius-lg)] z-10"
                     style={{
                         backgroundImage: `url(${backgroundVideo})`,
                         backgroundSize: 'cover',
@@ -55,7 +55,7 @@ export default function MediaHero({ backgroundVideo, backgroundClassName, childr
             )}
             
             {/* Content layer */}
-            <div className="flex flex-col items-center justify-center relative z-10">
+            <div className="flex flex-col items-center justify-center relative z-30">
                 {children}
             </div>
         </motion.div>
