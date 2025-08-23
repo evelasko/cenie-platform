@@ -11,7 +11,7 @@ This sitemap is based primarily on Gladys's outcome-focused navigation structure
 
 ### 1. Elevate Your Skills
 
-**URL:** `/skills/`  
+**URL:** `/learn/`  
 **Target Audiences:** Performing Artists, Educators  
 **CENIE Initiatives:** Academy, Training Exchange Hub  
 **Value Proposition:** Professional development and specialized education
