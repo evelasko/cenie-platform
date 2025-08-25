@@ -38,28 +38,23 @@ export default function ImageCard({
 
   return (
     <div className={clsx(
-        "w-full h-full group radius-lg",
+        "w-full h-full group radius-lg cursor-pointer",
         className,
-        // Cursor behavior
-        "cursor-pointer",
-        // Frame background and padding for framed variant
-        variant === 'framed' && "bg-white p-1 transition-all md:group-hover:p-0",
-        variant === 'framed' && animationDetails,
-        // Small screen tap animations (only when onClick is undefined)
-        !onClick && isMobileActive && variant === 'framed' && "max-md:p-0"
+        // Background: white for framed variant, transparent for clean variant
+        variant === 'framed' && "bg-white"
       )}
       onClick={handleClick}
       >
-      {/* Image Container - grows to fill the frame as padding reduces */}
+      {/* Image Container - scales from 99% to 100% to create frame effect */}
       <div className={clsx(
         "relative w-full h-full radius-lg overflow-hidden transition-all",
         animationDetails,
-        // For framed variant: scale up just enough to fill the frame without overflow
-        variant === 'framed' && "scale-100 md:group-hover:scale-[1.018]",
+        // Scale animation for framed variant: smaller initially, full size on hover
+        variant === 'framed' && "scale-[0.99] md:group-hover:scale-100",
         // Small screen tap animations (only when onClick is undefined)
-        !onClick && isMobileActive && variant === 'framed' && "max-md:scale-[1.018]"
+        !onClick && isMobileActive && variant === 'framed' && "max-md:scale-100"
       )}>
-        {/* Image Layer */}
+        {/* Image */}
         <div className={clsx(
             "absolute inset-0 transition-all",
             animationDetails,
