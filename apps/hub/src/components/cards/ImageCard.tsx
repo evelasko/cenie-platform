@@ -38,31 +38,35 @@ export default function ImageCard({
 
   return (
     <div className={clsx(
-        "w-full h-full group transition-all radius-lg",
+        "w-full h-full group radius-lg",
         className,
         // Cursor behavior
         "cursor-pointer",
-        // Large screen hover animations (md:group-hover)
-        variant === 'framed' && "bg-white p-1 md:group-hover:p-0",
+        // Frame background and padding for framed variant
+        variant === 'framed' && "bg-white p-1 transition-all md:group-hover:p-0",
         variant === 'framed' && animationDetails,
         // Small screen tap animations (only when onClick is undefined)
         !onClick && isMobileActive && variant === 'framed' && "max-md:p-0"
       )}
       onClick={handleClick}
       >
-      {/* Image Container */}
-      <div className="relative w-full h-full radius-lg overflow-hidden">
+      {/* Image Container - grows to fill the frame as padding reduces */}
+      <div className={clsx(
+        "relative w-full h-full radius-lg overflow-hidden transition-all",
+        animationDetails,
+        // For framed variant: scale up just enough to fill the frame without overflow
+        variant === 'framed' && "scale-100 md:group-hover:scale-[1.018]",
+        // Small screen tap animations (only when onClick is undefined)
+        !onClick && isMobileActive && variant === 'framed' && "max-md:scale-[1.018]"
+      )}>
         {/* Image Layer */}
         <div className={clsx(
-            "absolute transition-all",
+            "absolute inset-0 transition-all",
             animationDetails,
-            // Large screen hover animations (md:group-hover)
-            variant === 'framed' 
-              ? "inset-0 md:group-hover:-inset-1 md:group-hover:scale-[1.13] md:group-hover:blur-[7px]"
-              : "inset-0 md:group-hover:scale-[1.13] md:group-hover:blur-[7px]",
+            // Image scale and blur effects (same for both variants)
+            "md:group-hover:scale-[1.13] md:group-hover:blur-[7px]",
             // Small screen tap animations (only when onClick is undefined)
-            !onClick && isMobileActive && variant === 'framed' && "max-md:-inset-1 max-md:scale-[1.13] max-md:blur-[7px]",
-            !onClick && isMobileActive && variant === 'clean' && "max-md:scale-[1.13] max-md:blur-[7px]"
+            !onClick && isMobileActive && "max-md:scale-[1.13] max-md:blur-[7px]"
         )}>
           <Image 
             src={src} 
