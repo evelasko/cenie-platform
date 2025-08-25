@@ -74,18 +74,32 @@ export default function DarkSection({ children, customClass }: { children: React
             "bg-[rgb(10,10,10)] text-white", // Dark background matching HTML inspiration
             customClass
         )}>
-            {/* Shine background layer */}
-            <div 
-                className="absolute inset-0 z-10 radius-lg"
-                style={{
-                    backgroundImage: "url('/media/graphics/shine.jpg')",
-                    backgroundSize: "100% 100%",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    filter: "brightness(1.35)", // Matching HTML inspiration
-                    pointerEvents: "none",
-                }}
-            />
+            {/* Shine background layer - Responsive images */}
+            <div className="absolute inset-0 z-10 radius-lg overflow-hidden pointer-events-none">
+                <picture>
+                    <source 
+                        media="(max-width: 640px)" 
+                        srcSet="/media/graphics/shine-512.jpg"
+                    />
+                    <source 
+                        media="(max-width: 1024px)" 
+                        srcSet="/media/graphics/shine-1024.jpg"
+                    />
+                    <source 
+                        media="(min-width: 1025px)" 
+                        srcSet="/media/graphics/shine-1912.jpg"
+                    />
+                    <img 
+                        src="/media/graphics/shine.jpg"
+                        alt="Dark gradient background"
+                        className="absolute inset-0 w-full h-full object-fill radius-lg"
+                        style={{
+                            filter: "brightness(1.35)",
+                            pointerEvents: "none",
+                        }}
+                    />
+                </picture>
+            </div>
             
             {/* Dark overlay for better contrast */}
             <div className="absolute inset-0 radius-lg bg-black/40 z-15 pointer-events-none" />
