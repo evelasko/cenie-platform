@@ -53,7 +53,7 @@ const ButtonThemedRoot = React.forwardRef<
   return (
     <button
       className={SubframeUtils.twClassNames(
-        "group/ce063fb1 flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-brand-600 px-3 py-1.5 hover:bg-brand-500 active:bg-brand-600 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200",
+        "group/ce063fb1 flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-brand-600 px-3 py-1.5 hover:bg-brand-500 hover:text-white active:bg-brand-600 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200",
         {
           "h-6 w-auto flex-row flex-nowrap gap-1 px-2 py-0": size === "small",
           "h-auto w-auto rounded-full px-8 py-5": size === "large",
@@ -85,11 +85,11 @@ const ButtonThemedRoot = React.forwardRef<
       {icon ? (
         <SubframeCore.IconWrapper
           className={SubframeUtils.twClassNames(
-            "text-body font-body text-black group-disabled/ce063fb1:text-neutral-400",
+            "text-body text-black group-disabled/ce063fb1:text-neutral-400",
             {
               hidden: loading,
-              "text-body font-body": size === "small",
-              "text-heading-3 font-heading-3": size === "large",
+              "text-body-small": size === "small",
+              "text-heading-3": size === "large",
               "text-black": variant === "inverse",
               "text-error-700":
                 variant === "destructive-tertiary" ||
@@ -100,6 +100,7 @@ const ButtonThemedRoot = React.forwardRef<
                 variant === "neutral-primary",
               "text-brand-700":
                 variant === "brand-tertiary" || variant === "brand-secondary",
+              "group-hover/ce063fb1:text-white": variant === "brand-primary",
             }
           )}
         >
@@ -114,11 +115,10 @@ const ButtonThemedRoot = React.forwardRef<
       >
         <SubframeCore.Loader
           className={SubframeUtils.twClassNames(
-            "text-caption font-caption text-black group-disabled/ce063fb1:text-neutral-400",
+            "text-body text-black group-disabled/ce063fb1:text-neutral-400",
             {
-              "inline-block font-['Inter'] text-[12px] font-[400] leading-[20px] tracking-normal":
-                loading,
-              "text-caption font-caption": size === "small",
+              "text-body": loading,
+              "text-body-small": size === "small",
               "text-error-700":
                 variant === "destructive-tertiary" ||
                 variant === "destructive-secondary",
@@ -128,6 +128,7 @@ const ButtonThemedRoot = React.forwardRef<
                 variant === "neutral-primary",
               "text-brand-700":
                 variant === "brand-tertiary" || variant === "brand-secondary",
+              "group-hover/ce063fb1:text-white": variant === "brand-primary",
             }
           )}
         />
@@ -135,11 +136,11 @@ const ButtonThemedRoot = React.forwardRef<
       {children ? (
         <span
           className={SubframeUtils.twClassNames(
-            "whitespace-nowrap font-['Outfit'] text-[14px] font-[400] leading-[14px] tracking-tight text-black group-disabled/ce063fb1:text-neutral-400",
+            "whitespace-nowrap text-button-medium text-black group-disabled/ce063fb1:text-neutral-400",
             {
               hidden: loading,
-              "text-caption-small font-caption-small": size === "small",
-              "text-button-large font-button-large": size === "large",
+              "text-button-small": size === "small",
+              "text-button-large": size === "large",
               "text-black": variant === "inverse",
               "text-error-700":
                 variant === "destructive-tertiary" ||
@@ -150,6 +151,7 @@ const ButtonThemedRoot = React.forwardRef<
                 variant === "neutral-primary",
               "text-brand-700":
                 variant === "brand-tertiary" || variant === "brand-secondary",
+              "group-hover/ce063fb1:text-white": variant === "brand-primary",
             }
           )}
         >
@@ -159,10 +161,10 @@ const ButtonThemedRoot = React.forwardRef<
       {iconRight ? (
         <SubframeCore.IconWrapper
           className={SubframeUtils.twClassNames(
-            "text-body-small font-body-small text-black pl-4 group-disabled/ce063fb1:text-neutral-400",
+            "text-body text-black pl-4 group-disabled/ce063fb1:text-neutral-400",
             {
-              "text-body font-body": size === "small",
-              "hidden text-heading-3 font-heading-3": size === "large",
+              "text-body-small": size === "small",
+              "hidden text-heading-3": size === "large",
               "text-black": variant === "inverse",
               "text-error-700":
                 variant === "destructive-tertiary" ||
@@ -173,6 +175,7 @@ const ButtonThemedRoot = React.forwardRef<
                 variant === "neutral-primary",
               "text-brand-700":
                 variant === "brand-tertiary" || variant === "brand-secondary",
+              "group-hover/ce063fb1:text-white": variant === "brand-primary",
             }
           )}
         >

@@ -8,6 +8,10 @@ import BottomBlurFrame from '../components/decorations/BottomBlurFrame'
 import { motion, useScroll, useTransform, easeOut } from "framer-motion"
 import { useRef } from 'react'
 import clsx from 'clsx'
+import ImageCard from '../components/cards/ImageCard'
+import TinyTitle from '../components/elements/TinyTitle'
+import OverImageContent from '../components/elements/OverImageContent'
+import NoiseOverlay from '../components/decorations/NoiseOverlay'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -87,7 +91,47 @@ export default function HubHomePage() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </p>
     </MarginBlock>
+    <MarginBlock header={(<TinyTitle text="Who we are" />)}>
+      <p className='text-display-text-large'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </p>
+    </MarginBlock>
+    <div className="flex flex-col gap-2 w-full">
+      <div className="w-[40%] aspect-[4/3]">
+    <ImageCard src="/media/images/image-1.jpg" alt="Image 1">
+      <div className="text-center w-full h-full flex items-center justify-center">
+        <h2 className="text-heading-3 text-white">
+          Lorem ipsum
+        </h2>
+      </div>
+    </ImageCard>
+    </div>
+    </div>
+    <MarginBlock header={(<TinyTitle text="What we do" />)}>
+      <p className='text-display-text-large'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </p>
+    </MarginBlock>
+    <NoiseOverlay 
+      className="w-full aspect-[4/3] md:aspect-[4/3] max-md:aspect-[3/4] radius-lg z-30"
+      contentAboveNoise={
+        <OverImageContent 
+          heading="Success Story"
+          details="Maria, a contemporary dancer from Madrid, increased her annual income from $28,000 to $42,000 within 18 months of completing CENIE's technology and business literacy programs. She now teaches internationally via digital platforms and has launched her own online choreography studio."
+          ctaTitle="Start your transformation"
+          ctaButtonLabel="Visit our Skills Section"
+          onClick={() => { console.log('clicked') }}
+        />
+      }
+    >
+      <ImageCard src="/media/images/image-1.jpg" alt="Image 1" variant="clean" diableContentAnimation />
+    </NoiseOverlay>
   </div>
+  <MarginBlock header={(<TinyTitle text="What we do" />)}>
+      <p className='text-display-text-large'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+      </p>
+    </MarginBlock>
   
   {/* Bottom Blur Frame Component */}
   <BottomBlurFrame />

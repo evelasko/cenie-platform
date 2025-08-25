@@ -4,7 +4,14 @@ import clsx from "clsx"
 import { motion, useScroll, useTransform, easeIn, easeInOut } from "framer-motion"
 import { useRef } from "react"
 
-export default function MediaHero({ backgroundVideo, backgroundClassName, children }: { backgroundVideo?: string, backgroundClassName?: string, children: React.ReactNode }) {
+interface MediaHeroProps {
+    backgroundVideo?: string;
+    backgroundClassName?: string;
+    children: React.ReactNode;
+    backgroundVideoPoster?: string;
+}
+
+export default function MediaHero({ backgroundVideo, backgroundClassName, children, backgroundVideoPoster }: MediaHeroProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     
     // Track page scroll progress instead of component position
@@ -29,7 +36,7 @@ export default function MediaHero({ backgroundVideo, backgroundClassName, childr
         <motion.div 
             ref={containerRef}
             className={clsx(
-                "flex flex-col items-center justify-center rounded-[var(--radius-lg)] w-full pb-1 relative hero-height-mobile z-40",
+                "flex flex-col items-center justify-center radius-lg w-full pb-1 relative hero-height-mobile z-40",
                 backgroundVideo,
                 backgroundClassName,
             )}
@@ -41,17 +48,23 @@ export default function MediaHero({ backgroundVideo, backgroundClassName, childr
                 transformOrigin: "center center"
             }}
         >
-            {/* Background layer that respects padding */}
+            {/* Background video layer */}
             {backgroundVideo && (
-                <div 
-                    className="absolute inset-0 rounded-[var(--radius-lg)] z-10"
+                <video
+                    className="absolute inset-0 radius-lg z-10 w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster={backgroundVideoPoster}
+                    preload="auto"
                     style={{
-                        backgroundImage: `url(${backgroundVideo})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'top',
-                        backgroundRepeat: 'no-repeat'
+                        backgroundColor: 'var(--color-neutral-50)'
                     }}
-                />
+                >
+                    <source src={backgroundVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
             )}
             
             {/* Content layer */}
