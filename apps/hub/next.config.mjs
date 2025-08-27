@@ -1,5 +1,10 @@
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Load environment variables from root .env file
 config({ path: resolve(__dirname, '../../.env') })
