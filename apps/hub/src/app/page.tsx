@@ -50,7 +50,7 @@ export default function HubHomePage() {
         className={clsx(
           'h-[calc(100vh-4rem)] mt-16 px-1 md:px-1.5',
           'bg-gradient-to-b from-[var(--color-nav-background)] to-background',
-          'z-10'
+          'z-[5]'
         )}
       >
         <MediaHero backgroundVideo="/media/videos/smoke-fall.mp4" backgroundClassName="mb-1">
@@ -67,7 +67,7 @@ export default function HubHomePage() {
       </div>
       <motion.div
         id="revealer-content"
-        className="z-5"
+        className="z-[1]"
         ref={containerRef}
         style={{
           y: translateY,
