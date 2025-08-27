@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
   "semi": false,
   "singleQuote": true,
   "tabWidth": 2,
@@ -8,5 +9,27 @@
   "endOfLine": "lf",
   "bracketSpacing": true,
   "bracketSameLine": false,
-  "jsxSingleQuote": false
+  "jsxSingleQuote": false,
+  "useTabs": false,
+  "quoteProps": "as-needed",
+  "overrides": [
+    {
+      "files": ["*.md", "*.mdx"],
+      "options": {
+        "proseWrap": "preserve"
+      }
+    },
+    {
+      "files": ["*.json", ".prettierrc", ".eslintrc"],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": ["*.yaml", "*.yml"],
+      "options": {
+        "parser": "yaml"
+      }
+    }
+  ]
 }

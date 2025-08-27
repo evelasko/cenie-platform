@@ -1,8 +1,10 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
-export default [
+/** @type {import('eslint').Linter.Config[]} */
+const eslintConfig = [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -52,6 +54,8 @@ export default [
       'prefer-const': 'error',
     },
   },
+  // Prettier integration - must be last to override conflicting rules
+  eslintConfigPrettier,
   {
     ignores: [
       'node_modules',
@@ -69,3 +73,5 @@ export default [
     ],
   },
 ];
+
+export default eslintConfig;
