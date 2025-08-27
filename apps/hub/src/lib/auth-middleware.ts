@@ -7,7 +7,9 @@ export interface AuthenticatedRequest extends NextRequest {
   user?: unknown
 }
 
-export async function authenticateRequest(request: NextRequest): Promise<{ userId: string; user: unknown } | { error: string; status: number }> {
+export async function authenticateRequest(
+  request: NextRequest
+): Promise<{ userId: string; user: unknown } | { error: string; status: number }> {
   try {
     const authHeader = request.headers.get('authorization')
     const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN
@@ -27,7 +29,7 @@ export async function authenticateRequest(request: NextRequest): Promise<{ userI
         email: decodedToken.email,
         emailVerified: decodedToken.email_verified,
         customClaims: decodedToken,
-      }
+      },
     }
   } catch (error: unknown) {
     if (error instanceof Error && error.message.includes('auth/id-token-expired')) {
@@ -43,7 +45,9 @@ export async function authenticateRequest(request: NextRequest): Promise<{ userI
   }
 }
 
-export async function requireAdmin(userId: string): Promise<{ success: boolean; error?: string; status?: number }> {
+export async function requireAdmin(
+  userId: string
+): Promise<{ success: boolean; error?: string; status?: number }> {
   try {
     if (!userId) {
       return { success: false, error: 'Authentication required', status: 401 }
@@ -70,7 +74,10 @@ export async function requireAdmin(userId: string): Promise<{ success: boolean; 
   }
 }
 
-export async function requireAppAccess(userId: string, appName: string): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
+export async function requireAppAccess(
+  userId: string,
+  appName: string
+): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
   try {
     if (!userId) {
       return { success: false, error: 'Authentication required', status: 401 }
@@ -86,10 +93,10 @@ export async function requireAppAccess(userId: string, appName: string): Promise
       .get()
 
     if (accessSnapshot.empty) {
-      return { 
-        success: false, 
-        error: `Access denied to ${appName}`, 
-        status: 403 
+      return {
+        success: false,
+        error: `Access denied to ${appName}`,
+        status: 403,
       }
     }
 
@@ -101,7 +108,11 @@ export async function requireAppAccess(userId: string, appName: string): Promise
   }
 }
 
-export async function requireRole(userId: string, appName: string, requiredRole: string): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
+export async function requireRole(
+  userId: string,
+  appName: string,
+  requiredRole: string
+): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
   const roleHierarchy = ['viewer', 'user', 'editor', 'admin']
   const requiredRoleLevel = roleHierarchy.indexOf(requiredRole)
 
@@ -120,10 +131,10 @@ export async function requireRole(userId: string, appName: string, requiredRole:
       .get()
 
     if (accessSnapshot.empty) {
-      return { 
-        success: false, 
-        error: `Access denied to ${appName}`, 
-        status: 403 
+      return {
+        success: false,
+        error: `Access denied to ${appName}`,
+        status: 403,
       }
     }
 
@@ -134,7 +145,7 @@ export async function requireRole(userId: string, appName: string, requiredRole:
       return {
         success: false,
         error: `Insufficient permissions. Required: ${requiredRole}, Current: ${access.role}`,
-        status: 403
+        status: 403,
       }
     }
 

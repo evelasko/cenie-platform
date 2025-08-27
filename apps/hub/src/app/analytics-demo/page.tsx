@@ -1,6 +1,11 @@
 'use client'
 
-import { useAnalytics, usePageTracking, useUserTracking, useErrorTracking } from '@cenie/firebase/analytics'
+import {
+  useAnalytics,
+  usePageTracking,
+  useUserTracking,
+  useErrorTracking,
+} from '@cenie/firebase/analytics'
 import { useEffect, useState } from 'react'
 
 export default function AnalyticsDemoPage() {
@@ -8,7 +13,7 @@ export default function AnalyticsDemoPage() {
   const { trackClick, trackFormSubmission, trackSearch } = useUserTracking()
   const { trackError } = useErrorTracking()
   const [eventCount, setEventCount] = useState(0)
-  
+
   // Enable automatic page tracking
   usePageTracking(true, (pathname) => `Demo Page - ${pathname}`)
 
@@ -23,7 +28,7 @@ export default function AnalyticsDemoPage() {
       button_type: 'primary',
       event_count: eventCount + 1,
     })
-    setEventCount(prev => prev + 1)
+    setEventCount((prev) => prev + 1)
   }
 
   const handlePageView = async () => {
@@ -57,30 +62,36 @@ export default function AnalyticsDemoPage() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Firebase Analytics Demo</h1>
-      
+
       <div className="mb-4">
-        <p className="text-lg mb-2">App Name: <strong>{appName}</strong></p>
-        <p className="text-lg mb-4">Analytics Ready: <strong>{isReady ? '✅' : '❌'}</strong></p>
-        <p className="text-lg mb-4">Events Logged: <strong>{eventCount}</strong></p>
+        <p className="text-lg mb-2">
+          App Name: <strong>{appName}</strong>
+        </p>
+        <p className="text-lg mb-4">
+          Analytics Ready: <strong>{isReady ? '✅' : '❌'}</strong>
+        </p>
+        <p className="text-lg mb-4">
+          Events Logged: <strong>{eventCount}</strong>
+        </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="p-4 border rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Basic Analytics</h2>
           <div className="space-y-2">
-            <button 
+            <button
               onClick={handleCustomEvent}
               className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Log Custom Event
             </button>
-            <button 
+            <button
               onClick={handlePageView}
               className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Log Page View
             </button>
-            <button 
+            <button
               onClick={handleUserAction}
               className="w-full px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
             >
@@ -92,25 +103,25 @@ export default function AnalyticsDemoPage() {
         <div className="p-4 border rounded-lg">
           <h2 className="text-xl font-semibold mb-4">Advanced Tracking</h2>
           <div className="space-y-2">
-            <button 
+            <button
               onClick={handleClickTracking}
               className="w-full px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
             >
               Track Click Event
             </button>
-            <button 
+            <button
               onClick={handleFormTracking}
               className="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
             >
               Track Form Submission
             </button>
-            <button 
+            <button
               onClick={handleSearchTracking}
               className="w-full px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600"
             >
               Track Search Event
             </button>
-            <button 
+            <button
               onClick={handleErrorTracking}
               className="w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
             >
@@ -123,7 +134,9 @@ export default function AnalyticsDemoPage() {
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-semibold mb-2">Implementation Notes</h2>
         <ul className="text-sm text-gray-600 space-y-1">
-          <li>• All events automatically include the app_name dimension for Google Analytics filtering</li>
+          <li>
+            • All events automatically include the app_name dimension for Google Analytics filtering
+          </li>
           <li>• Page tracking is enabled automatically via usePageTracking hook</li>
           <li>• Analytics is SSR-safe and only initializes on the client side</li>
           <li>• Debug logging is enabled in development mode</li>

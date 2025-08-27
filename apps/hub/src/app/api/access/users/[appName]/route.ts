@@ -2,7 +2,12 @@ import { NextRequest } from 'next/server'
 import { getAdminFirestore } from '../../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess, Profile } from '../../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError, serializeAccess } from '../../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  serializeAccess,
+} from '../../../../../lib/api-utils'
 
 // List all users with app access (admin only)
 export async function GET(
@@ -11,13 +16,13 @@ export async function GET(
 ) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
 
     const { userId } = authResult
-    
+
     // Check admin privileges
     const adminCheck = await requireAdmin(userId)
     if (!adminCheck.success) {
@@ -50,16 +55,18 @@ export async function GET(
           .doc(accessData.userId)
           .get()
 
-        const profile = profileDoc.exists ? profileDoc.data() as Profile : null
+        const profile = profileDoc.exists ? (profileDoc.data() as Profile) : null
 
         return {
           ...serializeAccess({ ...accessData, id: doc.id }),
-          profile: profile ? {
-            id: profile.id,
-            email: profile.email,
-            fullName: profile.fullName,
-            avatarUrl: profile.avatarUrl,
-          } : null,
+          profile: profile
+            ? {
+                id: profile.id,
+                email: profile.email,
+                fullName: profile.fullName,
+                avatarUrl: profile.avatarUrl,
+              }
+            : null,
         }
       })
     )

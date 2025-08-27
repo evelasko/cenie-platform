@@ -3,7 +3,13 @@ import { z } from 'zod'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess } from '../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody, serializeAccess } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+  serializeAccess,
+} from '../../../../lib/api-utils'
 
 const updateAccessSchema = z.object({
   role: z.enum(['viewer', 'user', 'editor', 'admin']).optional(),
@@ -17,13 +23,13 @@ export async function PUT(
 ) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
 
     const { userId } = authResult
-    
+
     // Check admin privileges
     const adminCheck = await requireAdmin(userId)
     if (!adminCheck.success) {
@@ -40,24 +46,18 @@ export async function PUT(
     if (updates.role !== undefined) updateData.role = updates.role
     if (updates.isActive !== undefined) updateData.isActive = updates.isActive
 
-    await firestore
-      .collection(COLLECTIONS.USER_APP_ACCESS)
-      .doc(accessId)
-      .update(updateData)
+    await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(accessId).update(updateData)
 
-    const updatedDoc = await firestore
-      .collection(COLLECTIONS.USER_APP_ACCESS)
-      .doc(accessId)
-      .get()
+    const updatedDoc = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(accessId).get()
 
     if (!updatedDoc.exists) {
       return createErrorResponse('Access record not found', 404)
     }
 
-    const access = { ...updatedDoc.data() as UserAppAccess, id: accessId }
-    return createSuccessResponse({ 
-      message: 'Access updated successfully', 
-      access: serializeAccess(access) 
+    const access = { ...(updatedDoc.data() as UserAppAccess), id: accessId }
+    return createSuccessResponse({
+      message: 'Access updated successfully',
+      access: serializeAccess(access),
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -75,13 +75,13 @@ export async function DELETE(
 ) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
 
     const { userId } = authResult
-    
+
     // Check admin privileges
     const adminCheck = await requireAdmin(userId)
     if (!adminCheck.success) {
@@ -96,19 +96,16 @@ export async function DELETE(
       .doc(accessId)
       .update({ isActive: false })
 
-    const updatedDoc = await firestore
-      .collection(COLLECTIONS.USER_APP_ACCESS)
-      .doc(accessId)
-      .get()
+    const updatedDoc = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(accessId).get()
 
     if (!updatedDoc.exists) {
       return createErrorResponse('Access record not found', 404)
     }
 
-    const access = { ...updatedDoc.data() as UserAppAccess, id: accessId }
-    return createSuccessResponse({ 
-      message: 'Access revoked successfully', 
-      access: serializeAccess(access) 
+    const access = { ...(updatedDoc.data() as UserAppAccess), id: accessId }
+    return createSuccessResponse({
+      message: 'Access revoked successfully',
+      access: serializeAccess(access),
     })
   } catch (error) {
     return handleApiError(error)

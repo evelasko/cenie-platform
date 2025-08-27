@@ -1,4 +1,4 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * Alert — https://app.subframe.com/library?component=Alert_3a65613d-d546-467c-80f4-aaba6a7edcd5
@@ -10,38 +10,37 @@
  * Text Field — https://app.subframe.com/library?component=Text+Field_be48ca43-f8e7-4c0e-8870-d219ea11abfe
  */
 
-import React from "react";
-import * as SubframeCore from "@subframe/core";
-import * as SubframeUtils from "../utils";
+import React from 'react'
+import * as SubframeCore from '@subframe/core'
+import * as SubframeUtils from '../utils'
 
 interface FullscreenDialogRootProps
   extends React.ComponentProps<typeof SubframeCore.FullScreenDialog.Root> {
-  children?: React.ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  className?: string;
+  children?: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  className?: string
 }
 
-const FullscreenDialogRoot = React.forwardRef<
-  HTMLDivElement,
-  FullscreenDialogRootProps
->(function FullscreenDialogRoot(
-  { children, className, ...otherProps }: FullscreenDialogRootProps,
-  ref
-) {
-  return children ? (
-    <SubframeCore.FullScreenDialog.Root asChild={true} {...otherProps}>
-      <div
-        className={SubframeUtils.twClassNames(
-          "flex h-full w-full flex-col items-start bg-default-background",
-          className
-        )}
-        ref={ref}
-      >
-        {children}
-      </div>
-    </SubframeCore.FullScreenDialog.Root>
-  ) : null;
-});
+const FullscreenDialogRoot = React.forwardRef<HTMLDivElement, FullscreenDialogRootProps>(
+  function FullscreenDialogRoot(
+    { children, className, ...otherProps }: FullscreenDialogRootProps,
+    ref
+  ) {
+    return children ? (
+      <SubframeCore.FullScreenDialog.Root asChild={true} {...otherProps}>
+        <div
+          className={SubframeUtils.twClassNames(
+            'flex h-full w-full flex-col items-start bg-default-background',
+            className
+          )}
+          ref={ref}
+        >
+          {children}
+        </div>
+      </SubframeCore.FullScreenDialog.Root>
+    ) : null
+  }
+)
 
-export const FullscreenDialog = FullscreenDialogRoot;
+export const FullscreenDialog = FullscreenDialogRoot

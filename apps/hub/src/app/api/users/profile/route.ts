@@ -3,7 +3,13 @@ import { z } from 'zod'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, type Profile } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody, serializeProfile } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+  serializeProfile,
+} from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const updateProfileSchema = z.object({
@@ -15,7 +21,7 @@ const updateProfileSchema = z.object({
 export async function GET(request: NextRequest) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
@@ -23,10 +29,7 @@ export async function GET(request: NextRequest) {
     const { userId } = authResult
     const firestore = getAdminFirestore()
 
-    const profileDoc = await firestore
-      .collection(COLLECTIONS.PROFILES)
-      .doc(userId)
-      .get()
+    const profileDoc = await firestore.collection(COLLECTIONS.PROFILES).doc(userId).get()
 
     if (!profileDoc.exists) {
       return createErrorResponse('Profile not found', 404)
@@ -43,7 +46,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
@@ -60,22 +63,16 @@ export async function PUT(request: NextRequest) {
     }
 
     // Remove undefined values
-    Object.keys(updateData).forEach(key => {
+    Object.keys(updateData).forEach((key) => {
       if (updateData[key] === undefined) {
         delete updateData[key]
       }
     })
 
-    await firestore
-      .collection(COLLECTIONS.PROFILES)
-      .doc(userId)
-      .update(updateData)
+    await firestore.collection(COLLECTIONS.PROFILES).doc(userId).update(updateData)
 
     // Get updated profile
-    const profileDoc = await firestore
-      .collection(COLLECTIONS.PROFILES)
-      .doc(userId)
-      .get()
+    const profileDoc = await firestore.collection(COLLECTIONS.PROFILES).doc(userId).get()
 
     const profile = profileDoc.data() as Profile
     return createSuccessResponse({ profile: serializeProfile(profile) })

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * Bold navbar — https://app.subframe.com/library?component=Bold+navbar_8be1b160-02db-4f5b-b7d6-f3c2c8ede9d6
@@ -6,15 +6,15 @@
  * Link Button — https://app.subframe.com/library?component=Link+Button_a4ee726a-774c-4091-8c49-55b659356024
  */
 
-import React from "react";
-import * as SubframeUtils from "../utils";
-import { Button } from "./Button";
-import { LinkButton } from "./LinkButton";
+import React from 'react'
+import * as SubframeUtils from '../utils'
+import { Button } from './Button'
+import { LinkButton } from './LinkButton'
 
 interface NavItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
-  selected?: boolean;
-  className?: string;
+  children?: React.ReactNode
+  selected?: boolean
+  className?: string
 }
 
 const NavItem = React.forwardRef<HTMLDivElement, NavItemProps>(function NavItem(
@@ -24,8 +24,8 @@ const NavItem = React.forwardRef<HTMLDivElement, NavItemProps>(function NavItem(
   return (
     <div
       className={SubframeUtils.twClassNames(
-        "group/b8f2fb75 flex h-8 cursor-pointer flex-col items-center justify-center gap-4 rounded-full px-4",
-        { "bg-brand-200": selected },
+        'group/b8f2fb75 flex h-8 cursor-pointer flex-col items-center justify-center gap-4 rounded-full px-4',
+        { 'bg-brand-200': selected },
         className
       )}
       ref={ref}
@@ -37,22 +37,19 @@ const NavItem = React.forwardRef<HTMLDivElement, NavItemProps>(function NavItem(
         </span>
       ) : null}
     </div>
-  );
-});
+  )
+})
 
 interface BoldNavbarRootProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
+  className?: string
 }
 
 const BoldNavbarRoot = React.forwardRef<HTMLDivElement, BoldNavbarRootProps>(
-  function BoldNavbarRoot(
-    { className, ...otherProps }: BoldNavbarRootProps,
-    ref
-  ) {
+  function BoldNavbarRoot({ className, ...otherProps }: BoldNavbarRootProps, ref) {
     return (
       <div
         className={SubframeUtils.twClassNames(
-          "flex w-full max-w-[1280px] flex-wrap items-center gap-4",
+          'flex w-full max-w-[1280px] flex-wrap items-center gap-4',
           className
         )}
         ref={ref}
@@ -76,10 +73,10 @@ const BoldNavbarRoot = React.forwardRef<HTMLDivElement, BoldNavbarRootProps>(
           <Button>Sign up</Button>
         </div>
       </div>
-    );
+    )
   }
-);
+)
 
 export const BoldNavbar = Object.assign(BoldNavbarRoot, {
   NavItem,
-});
+})

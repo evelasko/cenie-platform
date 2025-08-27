@@ -1,8 +1,8 @@
-const path = require('path')
-const dotenv = require('dotenv')
+import { resolve } from 'path'
+import { config } from 'dotenv'
 
 // Load environment variables from root .env file
-dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+config({ path: resolve(__dirname, '../../.env') })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -39,4 +39,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default nextConfig

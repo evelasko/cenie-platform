@@ -3,7 +3,13 @@ import { z } from 'zod'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess } from '../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody, serializeAccess } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+  serializeAccess,
+} from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const grantAccessSchema = z.object({
@@ -16,13 +22,13 @@ const grantAccessSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
 
     const { userId: adminUserId } = authResult
-    
+
     // Check admin privileges
     const adminCheck = await requireAdmin(adminUserId)
     if (!adminCheck.success) {
@@ -45,26 +51,20 @@ export async function POST(request: NextRequest) {
     if (!existingAccessSnapshot.empty) {
       // Update existing access
       const docId = existingAccessSnapshot.docs[0].id
-      
-      await firestore
-        .collection(COLLECTIONS.USER_APP_ACCESS)
-        .doc(docId)
-        .update({
-          role,
-          isActive: true,
-          grantedBy: adminUserId,
-          grantedAt: Timestamp.now(),
-        })
 
-      const updatedDoc = await firestore
-        .collection(COLLECTIONS.USER_APP_ACCESS)
-        .doc(docId)
-        .get()
+      await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(docId).update({
+        role,
+        isActive: true,
+        grantedBy: adminUserId,
+        grantedAt: Timestamp.now(),
+      })
 
-      const access = { ...updatedDoc.data() as UserAppAccess, id: docId }
-      return createSuccessResponse({ 
-        message: 'Access updated successfully', 
-        access: serializeAccess(access) 
+      const updatedDoc = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(docId).get()
+
+      const access = { ...(updatedDoc.data() as UserAppAccess), id: docId }
+      return createSuccessResponse({
+        message: 'Access updated successfully',
+        access: serializeAccess(access),
       })
     }
 
@@ -78,15 +78,16 @@ export async function POST(request: NextRequest) {
       grantedAt: Timestamp.now(),
     }
 
-    const docRef = await firestore
-      .collection(COLLECTIONS.USER_APP_ACCESS)
-      .add(accessData)
+    const docRef = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).add(accessData)
 
     const access = { ...accessData, id: docRef.id }
-    return createSuccessResponse({ 
-      message: 'Access granted successfully', 
-      access: serializeAccess(access) 
-    }, 201)
+    return createSuccessResponse(
+      {
+        message: 'Access granted successfully',
+        access: serializeAccess(access),
+      },
+      201
+    )
   } catch (error) {
     if (error instanceof z.ZodError) {
       return createErrorResponse('Validation error', 400)

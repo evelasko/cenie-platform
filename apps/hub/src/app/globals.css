@@ -1,6 +1,6 @@
 @import url('https://use.typekit.net/rnn4nzl.css');
-@import "tailwindcss";
-@import "../ui/theme.css";
+@import 'tailwindcss';
+@import '../ui/theme.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -10,8 +10,8 @@
   --type-base-size: 1rem;
 
   /* Font Families - Gotham for Hub (Updated from Subframe) */
-  --font-display: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* LEGACY DISPLAY STYLES - Hero sections, major announcements (Backwards Compatibility) */
   --type-display-1-size: clamp(3.5rem, 8vw + 1rem, 8rem);
@@ -131,7 +131,11 @@
 
   /* Display Text Variants */
   --text-display-text-extra-large-size: clamp(2.25rem, 5vw + 0.5rem, 3.875rem); /* 62px max */
-  --text-display-text-extra-large-line-height: clamp(2.75rem, 4.5vw + 0.5rem, 3.75rem); /* 60px max */
+  --text-display-text-extra-large-line-height: clamp(
+    2.75rem,
+    4.5vw + 0.5rem,
+    3.75rem
+  ); /* 60px max */
   --text-display-text-extra-large-letter-spacing: -0.025em;
   --text-display-text-extra-large-font-weight: 500;
 
@@ -251,7 +255,7 @@
   --color-border: rgb(163, 163, 163); /* --color-neutral-border */
   --color-input: rgb(212, 212, 212); /* --color-neutral-600 */
   --color-ring: rgb(247, 104, 8); /* --color-brand-primary */
-  
+
   /* Brand Colors from Subframe */
   --color-brand-50: rgb(57, 26, 3);
   --color-brand-100: rgb(68, 31, 4);
@@ -263,7 +267,7 @@
   --color-brand-700: rgb(255, 128, 43);
   --color-brand-800: rgb(255, 139, 62);
   --color-brand-900: rgb(254, 234, 221);
-  
+
   /* Neutral Colors from Subframe */
   --color-neutral-0: rgb(10, 10, 10);
   --color-neutral-50: rgb(23, 23, 23);
@@ -279,12 +283,12 @@
   --color-neutral-800: rgb(245, 245, 245);
   --color-neutral-900: rgb(250, 250, 250);
   --color-neutral-950: rgb(255, 255, 255);
-  
+
   /* Status Colors from Subframe */
   --color-error-600: rgb(233, 61, 130);
   --color-warning-600: rgb(255, 178, 36);
   --color-success-600: rgb(70, 167, 88);
-  
+
   --radius: 0.375rem;
   --type-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -314,35 +318,35 @@
 
 @theme inline {
   /* Updated Font Families - Gotham for all text */
-  --font-sans: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "aglet-mono", ui-monospace, monospace;
-  --font-serif: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  
+  --font-sans: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'aglet-mono', ui-monospace, monospace;
+  --font-serif: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+
   /* Subframe Font Family Overrides - Replace Outfit with Gotham */
-  --font-caption: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-caption-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body-bold: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading-3: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading-2: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading-1: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-monospace-body: "aglet-mono", ui-monospace, monospace;
-  --font-subheader: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display-text-extra-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display-text-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display-text-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-overline: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-subtitle: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-overtitle: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-button-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-button-large: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body-small: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-text-button: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading-4: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display-text-medium: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-button-medium: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  
+  --font-caption: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-caption-small: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-bold: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-3: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-2: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-1: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-monospace-body: 'aglet-mono', ui-monospace, monospace;
+  --font-subheader: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-extra-large: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-large: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-small: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-overline: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-subtitle: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-overtitle: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-small: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-large: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-large: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body-small: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text-button: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-4: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display-text-medium: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-button-medium: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+
   /* Color Variables */
   --color-background: var(--color-default-background);
   --color-foreground: var(--color-default-font);
@@ -363,19 +367,19 @@
   --color-border: var(--color-border);
   --color-input: var(--color-input);
   --color-ring: var(--color-ring);
-  
+
   /* Navigation specific colors */
   --color-nav-text: var(--color-default-font);
   --color-nav-hover: var(--color-brand-primary);
   --color-nav-background: rgb(255, 255, 255);
-  
+
   /* Radius Variables are set in theme.css */
 }
 
 /* Typography Utility Classes */
 @layer utilities {
   /* NEW SUBFRAME TYPOGRAPHY CLASSES - Primary */
-  
+
   /* Main Headings */
   .text-heading-1 {
     font-family: var(--font-heading-1);
@@ -797,14 +801,11 @@
     padding-left: 0.375rem; /* md:px-1.5 */
     padding-right: 0.375rem; /* md:px-1.5 */
   }
-  
+
   .hero-height-mobile {
     height: calc(100vh - 4rem - 0.375rem); /* Override with desktop height at md breakpoint */
   }
 }
-
-
-
 
 @layer base {
   * {
@@ -818,7 +819,7 @@
     letter-spacing: var(--type-body-base-tracking);
     font-weight: var(--type-body-base-weight);
     transition: var(--type-transition);
-    
+
     /* Improve text rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -846,61 +847,61 @@
   .hero-height-mobile {
     height: calc(100vh - 4rem - 0.25rem); /* Account for mt-16 (4rem) and pb-1 (0.25rem) */
   }
-  
+
   .hero-height-desktop {
     height: calc(100vh - 4rem - 0.375rem); /* Account for mt-16 (4rem) and pb-1.5 (0.375rem) */
   }
-  
+
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
   }
-  
+
   .delay-100 {
     animation-delay: 100ms;
   }
-  
+
   .delay-200 {
     animation-delay: 200ms;
   }
-  
+
   .delay-300 {
     animation-delay: 300ms;
   }
-  
+
   .delay-400 {
     animation-delay: 400ms;
   }
-  
+
   .delay-500 {
     animation-delay: 500ms;
   }
-  
+
   .delay-600 {
     animation-delay: 600ms;
   }
-  
+
   .delay-700 {
     animation-delay: 700ms;
   }
-  
+
   .delay-800 {
     animation-delay: 800ms;
   }
-  
+
   .delay-1000 {
     animation-delay: 1000ms;
   }
-  
+
   .delay-2000 {
     animation-delay: 2000ms;
   }
-  
+
   /* Custom opacity values for ImageCard */
   .opacity-15 {
     opacity: 0.15;
   }
-  
+
   .opacity-20 {
-    opacity: 0.20;
+    opacity: 0.2;
   }
 }

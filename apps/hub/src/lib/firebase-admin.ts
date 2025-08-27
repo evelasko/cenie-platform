@@ -10,11 +10,17 @@ export function initializeFirebaseAdmin() {
       adminApp = existingApps[0]
     } else {
       // Validate required environment variables
-      const requiredEnvVars = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY']
-      const missingVars = requiredEnvVars.filter(varName => !process.env[varName])
+      const requiredEnvVars = [
+        'FIREBASE_PROJECT_ID',
+        'FIREBASE_CLIENT_EMAIL',
+        'FIREBASE_PRIVATE_KEY',
+      ]
+      const missingVars = requiredEnvVars.filter((varName) => !process.env[varName])
 
       if (missingVars.length > 0) {
-        throw new Error(`Missing required Firebase environment variables: ${missingVars.join(', ')}\n\nPlease add these to your apps/hub/.env.local file:\n- FIREBASE_PROJECT_ID\n- FIREBASE_CLIENT_EMAIL\n- FIREBASE_PRIVATE_KEY`)
+        throw new Error(
+          `Missing required Firebase environment variables: ${missingVars.join(', ')}\n\nPlease add these to your apps/hub/.env.local file:\n- FIREBASE_PROJECT_ID\n- FIREBASE_CLIENT_EMAIL\n- FIREBASE_PRIVATE_KEY`
+        )
       }
 
       // Parse private key - handle both escaped and unescaped formats
@@ -23,7 +29,7 @@ export function initializeFirebaseAdmin() {
       if (privateKey.includes('\\n')) {
         privateKey = privateKey.replace(/\\n/g, '\n')
       }
-      
+
       // Ensure proper PEM format
       if (!privateKey.startsWith('-----BEGIN PRIVATE KEY-----')) {
         throw new Error(`Invalid Firebase private key format. 

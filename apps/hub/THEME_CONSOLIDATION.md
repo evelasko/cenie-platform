@@ -1,21 +1,25 @@
 # Theme Consolidation Summary
 
 ## Overview
+
 Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main global CSS file (`src/app/globals.css`), creating a responsive typography system while maintaining backwards compatibility.
 
 ## Key Changes
 
 ### 1. Responsive Typography System
+
 - **NEW**: Added responsive typography using Subframe font sizes with `clamp()` for progressive hierarchy
 - **Font Classes**: All Subframe typography classes now have responsive scaling from mobile to desktop
 - **Primary Classes**: Use `text-*` prefix (e.g., `text-heading-1`, `text-body-large`, `text-display-text-large`)
 
 ### 2. Font Family Fixes
+
 - **Fixed**: Replaced all `Outfit` font references with `Gotham` throughout the system
 - **Override**: Added font family overrides in `@theme inline` to ensure Gotham is used consistently
 - **Monospace**: Maintained `aglet-mono` for monospace text
 
 ### 3. Color System Update
+
 - **Updated**: All colors now use Subframe theme colors in RGB format
 - **Brand Colors**: Added complete brand color palette (50-900 scale)
 - **Neutral Colors**: Added complete neutral color palette (0-950 scale)
@@ -23,6 +27,7 @@ Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main 
 - **Dark Mode**: Updated dark mode colors using inverted Subframe palette
 
 ### 4. Backwards Compatibility
+
 - **Legacy Classes**: All existing `type-*` classes marked as "Legacy - Backwards Compatibility"
 - **Preserved**: Original typography variables and classes remain functional
 - **Migration Path**: Existing code continues to work while new code can use Subframe classes
@@ -30,6 +35,7 @@ Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main 
 ## Typography Class Usage
 
 ### Primary Subframe Classes (Use These)
+
 ```css
 /* Main Headings - Responsive */
 .text-heading-1        /* 118px max, responsive */
@@ -68,6 +74,7 @@ Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main 
 ```
 
 ### Legacy Classes (Backwards Compatibility)
+
 ```css
 /* These remain for existing code */
 .type-display-1, .type-display-2
@@ -80,22 +87,24 @@ Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main 
 ## Color Usage
 
 ### Brand Colors
+
 ```css
---color-brand-primary: rgb(247, 104, 8)  /* Primary brand orange */
---color-brand-50 through --color-brand-900  /* Complete scale */
+--color-brand-primary: rgb(247, 104, 8) /* Primary brand orange */ --color-brand-50 through
+  --color-brand-900 /* Complete scale */;
 ```
 
 ### Neutral Colors
+
 ```css
---color-neutral-0: rgb(10, 10, 10)      /* Darkest */
---color-neutral-950: rgb(255, 255, 255) /* Lightest */
+--color-neutral-0: rgb(10, 10, 10) /* Darkest */ --color-neutral-950: rgb(255, 255, 255)
+  /* Lightest */;
 ```
 
 ### Status Colors
+
 ```css
---color-error-600: rgb(233, 61, 130)
---color-warning-600: rgb(255, 178, 36)
---color-success-600: rgb(70, 167, 88)
+--color-error-600: rgb(233, 61, 130) --color-warning-600: rgb(255, 178, 36)
+  --color-success-600: rgb(70, 167, 88);
 ```
 
 ## Migration Strategy
@@ -108,6 +117,7 @@ Successfully consolidated the Subframe theme (`src/ui/theme.css`) with the main 
 ## Responsive Behavior
 
 All new typography classes use `clamp()` for fluid scaling:
+
 - **Mobile**: Minimum sizes for readability
 - **Desktop**: Maximum sizes for impact
 - **Viewport-based**: Smooth scaling between breakpoints
@@ -116,6 +126,7 @@ All new typography classes use `clamp()` for fluid scaling:
 ## Font Loading
 
 The system loads:
+
 - **Gotham**: Primary font for all text (replaces Outfit)
 - **Aglet Mono**: Monospace font for code
 - **Adobe Fonts**: Loaded via `@import url('https://use.typekit.net/rnn4nzl.css')`

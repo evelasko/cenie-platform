@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server'
 import { ZodError } from 'zod'
-import { type Profile, type UserAppAccess, type Subscription, type SerializedProfile, type SerializedUserAppAccess, type SerializedSubscription } from './types'
+import {
+  type Profile,
+  type UserAppAccess,
+  type Subscription,
+  type SerializedProfile,
+  type SerializedUserAppAccess,
+  type SerializedSubscription,
+} from './types'
 
 export function createErrorResponse(error: string, status: number = 400) {
   return NextResponse.json({ error }, { status })
@@ -12,11 +19,11 @@ export function createSuccessResponse(data: unknown, status: number = 200) {
 
 export function handleApiError(error: unknown) {
   console.error('API Error:', error)
-  
+
   if (error instanceof ZodError) {
     return createErrorResponse('Validation error', 400)
   }
-  
+
   return createErrorResponse('Internal server error', 500)
 }
 

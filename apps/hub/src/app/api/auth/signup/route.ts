@@ -2,7 +2,12 @@ import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, Profile, UserAppAccess } from '../../../../lib/types'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+} from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const signUpSchema = z.object({
@@ -37,10 +42,7 @@ export async function POST(request: NextRequest) {
       updatedAt: Timestamp.now(),
     }
 
-    await firestore
-      .collection(COLLECTIONS.PROFILES)
-      .doc(userRecord.uid)
-      .set(profileData)
+    await firestore.collection(COLLECTIONS.PROFILES).doc(userRecord.uid).set(profileData)
 
     // Grant default access to hub
     const accessData: UserAppAccess = {
@@ -52,18 +54,19 @@ export async function POST(request: NextRequest) {
       grantedBy: null,
     }
 
-    await firestore
-      .collection(COLLECTIONS.USER_APP_ACCESS)
-      .add(accessData)
+    await firestore.collection(COLLECTIONS.USER_APP_ACCESS).add(accessData)
 
-    return createSuccessResponse({
-      message: 'User created successfully',
-      user: {
-        id: userRecord.uid,
-        email: userRecord.email,
-        fullName,
+    return createSuccessResponse(
+      {
+        message: 'User created successfully',
+        user: {
+          id: userRecord.uid,
+          email: userRecord.email,
+          fullName,
+        },
       },
-    }, 201)
+      201
+    )
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return createErrorResponse('Validation error', 400)

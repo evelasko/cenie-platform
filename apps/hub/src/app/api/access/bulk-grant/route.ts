@@ -3,7 +3,13 @@ import { z } from 'zod'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess, SerializedUserAppAccess } from '../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody, serializeAccess } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+  serializeAccess,
+} from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const bulkGrantSchema = z.object({
@@ -16,13 +22,13 @@ const bulkGrantSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
 
     const { userId: adminUserId } = authResult
-    
+
     // Check admin privileges
     const adminCheck = await requireAdmin(adminUserId)
     if (!adminCheck.success) {

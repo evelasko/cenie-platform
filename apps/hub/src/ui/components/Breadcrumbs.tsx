@@ -1,17 +1,17 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * Breadcrumbs — https://app.subframe.com/library?component=Breadcrumbs_8898334b-a66f-4ee8-8bd1-afcfa8e37cc0
  */
 
-import React from "react";
-import { FeatherChevronRight } from "@subframe/core";
-import * as SubframeUtils from "../utils";
+import React from 'react'
+import { FeatherChevronRight } from '@subframe/core'
+import * as SubframeUtils from '../utils'
 
 interface ItemProps extends React.HTMLAttributes<HTMLSpanElement> {
-  children?: React.ReactNode;
-  active?: boolean;
-  className?: string;
+  children?: React.ReactNode
+  active?: boolean
+  className?: string
 }
 
 const Item = React.forwardRef<HTMLSpanElement, ItemProps>(function Item(
@@ -21,8 +21,8 @@ const Item = React.forwardRef<HTMLSpanElement, ItemProps>(function Item(
   return children ? (
     <span
       className={SubframeUtils.twClassNames(
-        "group/bbdc1640 line-clamp-1 cursor-pointer break-words text-body font-body text-subtext-color hover:text-default-font",
-        { "text-default-font": active },
+        'group/bbdc1640 line-clamp-1 cursor-pointer break-words text-body font-body text-subtext-color hover:text-default-font',
+        { 'text-default-font': active },
         className
       )}
       ref={ref}
@@ -30,56 +30,45 @@ const Item = React.forwardRef<HTMLSpanElement, ItemProps>(function Item(
     >
       {children}
     </span>
-  ) : null;
-});
+  ) : null
+})
 
-interface DividerProps
-  extends React.ComponentProps<typeof FeatherChevronRight> {
-  className?: string;
+interface DividerProps extends React.ComponentProps<typeof FeatherChevronRight> {
+  className?: string
 }
 
-const Divider = React.forwardRef<
-  React.ElementRef<typeof FeatherChevronRight>,
-  DividerProps
->(function Divider({ className, ...otherProps }: DividerProps, ref) {
-  return (
-    <FeatherChevronRight
-      className={SubframeUtils.twClassNames(
-        "text-body font-body text-subtext-color",
-        className
-      )}
-      ref={ref}
-      {...otherProps}
-    />
-  );
-});
+const Divider = React.forwardRef<React.ElementRef<typeof FeatherChevronRight>, DividerProps>(
+  function Divider({ className, ...otherProps }: DividerProps, ref) {
+    return (
+      <FeatherChevronRight
+        className={SubframeUtils.twClassNames('text-body font-body text-subtext-color', className)}
+        ref={ref}
+        {...otherProps}
+      />
+    )
+  }
+)
 
 interface BreadcrumbsRootProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
-  className?: string;
+  children?: React.ReactNode
+  className?: string
 }
 
 const BreadcrumbsRoot = React.forwardRef<HTMLDivElement, BreadcrumbsRootProps>(
-  function BreadcrumbsRoot(
-    { children, className, ...otherProps }: BreadcrumbsRootProps,
-    ref
-  ) {
+  function BreadcrumbsRoot({ children, className, ...otherProps }: BreadcrumbsRootProps, ref) {
     return children ? (
       <div
-        className={SubframeUtils.twClassNames(
-          "flex items-center gap-2",
-          className
-        )}
+        className={SubframeUtils.twClassNames('flex items-center gap-2', className)}
         ref={ref}
         {...otherProps}
       >
         {children}
       </div>
-    ) : null;
+    ) : null
   }
-);
+)
 
 export const Breadcrumbs = Object.assign(BreadcrumbsRoot, {
   Item,
   Divider,
-});
+})

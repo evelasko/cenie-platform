@@ -2,7 +2,12 @@ import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS } from '../../../../lib/types'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+} from '../../../../lib/api-utils'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
 import { Timestamp } from 'firebase-admin/firestore'
 
@@ -43,13 +48,15 @@ export async function POST(request: NextRequest) {
       await profileRef.update({
         updatedAt: Timestamp.now(),
         // Update avatar if provider has one and user doesn't have one already
-        ...(userRecord.photoURL && !profileDoc.data()!.avatarUrl && { 
-          avatarUrl: userRecord.photoURL 
-        }),
+        ...(userRecord.photoURL &&
+          !profileDoc.data()!.avatarUrl && {
+            avatarUrl: userRecord.photoURL,
+          }),
         // Update display name if provider has one and user doesn't have one already
-        ...(userRecord.displayName && !profileDoc.data()!.fullName && { 
-          fullName: userRecord.displayName 
-        }),
+        ...(userRecord.displayName &&
+          !profileDoc.data()!.fullName && {
+            fullName: userRecord.displayName,
+          }),
       })
     }
 
@@ -63,10 +70,9 @@ export async function POST(request: NextRequest) {
         emailVerified: userRecord.emailVerified,
       },
     })
-
   } catch (error: any) {
     console.error('Account linking error:', error)
-    
+
     if (error instanceof z.ZodError) {
       return createErrorResponse('Invalid request data', 400)
     }
@@ -94,17 +100,16 @@ export async function GET(request: NextRequest) {
     try {
       // Get user by email to check existing providers
       const userRecord = await auth.getUserByEmail(email)
-      
+
       // Extract provider information from user record
-      const providers = userRecord.providerData.map(provider => provider.providerId)
-      
+      const providers = userRecord.providerData.map((provider) => provider.providerId)
+
       return createSuccessResponse({
         email,
         exists: true,
         providers,
         emailVerified: userRecord.emailVerified,
       })
-
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         return createSuccessResponse({
@@ -116,7 +121,6 @@ export async function GET(request: NextRequest) {
       }
       throw error
     }
-
   } catch (error: any) {
     return handleApiError(error)
   }

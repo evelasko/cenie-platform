@@ -1,189 +1,176 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * ButtonThemed — https://app.subframe.com/library?component=ButtonThemed_ce063fb1-3b73-4e18-acd4-8c028ea584eb
  */
 
-import React from "react";
-import * as SubframeCore from "@subframe/core";
-import { FeatherCircleSmall } from "@subframe/core";
-import * as SubframeUtils from "../utils";
+import React from 'react'
+import * as SubframeCore from '@subframe/core'
+import { FeatherCircleSmall } from '@subframe/core'
+import * as SubframeUtils from '../utils'
 
-interface ButtonThemedRootProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonThemedRootProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?:
-    | "brand-primary"
-    | "brand-secondary"
-    | "brand-tertiary"
-    | "neutral-primary"
-    | "neutral-secondary"
-    | "neutral-tertiary"
-    | "destructive-primary"
-    | "destructive-secondary"
-    | "destructive-tertiary"
-    | "inverse";
-  size?: "large" | "medium" | "small";
-  children?: React.ReactNode;
-  icon?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  loading?: boolean;
-  buttonball?: React.ReactNode;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
+    | 'brand-primary'
+    | 'brand-secondary'
+    | 'brand-tertiary'
+    | 'neutral-primary'
+    | 'neutral-secondary'
+    | 'neutral-tertiary'
+    | 'destructive-primary'
+    | 'destructive-secondary'
+    | 'destructive-tertiary'
+    | 'inverse'
+  size?: 'large' | 'medium' | 'small'
+  children?: React.ReactNode
+  icon?: React.ReactNode
+  iconRight?: React.ReactNode
+  loading?: boolean
+  buttonball?: React.ReactNode
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  className?: string
 }
 
-const ButtonThemedRoot = React.forwardRef<
-  HTMLButtonElement,
-  ButtonThemedRootProps
->(function ButtonThemedRoot(
-  {
-    variant = "brand-primary",
-    size = "medium",
-    children,
-    icon = null,
-    iconRight = <FeatherCircleSmall />,
-    loading = false,
-    buttonball = null,
-    className,
-    type = "button",
-    ...otherProps
-  }: ButtonThemedRootProps,
-  ref
-) {
-  return (
-    <button
-      className={SubframeUtils.twClassNames(
-        "group/ce063fb1 flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-brand-600 px-3 py-1.5 hover:bg-brand-500 hover:text-white active:bg-brand-600 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200",
-        {
-          "h-6 w-auto flex-row flex-nowrap gap-1 px-2 py-0": size === "small",
-          "h-auto w-auto rounded-full px-8 py-5": size === "large",
-          "bg-transparent hover:bg-[#ffffff29] active:bg-[#ffffff3d]":
-            variant === "inverse",
-          "bg-transparent hover:bg-error-50 active:bg-error-100":
-            variant === "destructive-tertiary",
-          "bg-error-50 hover:bg-error-100 active:bg-error-50":
-            variant === "destructive-secondary",
-          "bg-error-600 hover:bg-error-500 active:bg-error-600":
-            variant === "destructive-primary",
-          "bg-transparent hover:bg-neutral-100 active:bg-neutral-200":
-            variant === "neutral-tertiary",
-          "border border-solid border-neutral-border bg-default-background hover:bg-neutral-50 active:bg-default-background":
-            variant === "neutral-secondary",
-          "bg-neutral-100 hover:bg-neutral-200 active:bg-neutral-100":
-            variant === "neutral-primary",
-          "bg-transparent hover:bg-brand-50 active:bg-brand-100":
-            variant === "brand-tertiary",
-          "bg-brand-50 hover:bg-brand-100 active:bg-brand-50":
-            variant === "brand-secondary",
-        },
-        className
-      )}
-      ref={ref}
-      type={type}
-      {...otherProps}
-    >
-      {icon ? (
-        <SubframeCore.IconWrapper
-          className={SubframeUtils.twClassNames(
-            "text-body text-black group-disabled/ce063fb1:text-neutral-400",
-            {
-              hidden: loading,
-              "text-body-small": size === "small",
-              "text-heading-3": size === "large",
-              "text-black": variant === "inverse",
-              "text-error-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-neutral-700":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary",
-              "text-brand-700":
-                variant === "brand-tertiary" || variant === "brand-secondary",
-              "group-hover/ce063fb1:text-white": variant === "brand-primary",
-            }
-          )}
-        >
-          {icon}
-        </SubframeCore.IconWrapper>
-      ) : null}
-      <div
+const ButtonThemedRoot = React.forwardRef<HTMLButtonElement, ButtonThemedRootProps>(
+  function ButtonThemedRoot(
+    {
+      variant = 'brand-primary',
+      size = 'medium',
+      children,
+      icon = null,
+      iconRight = <FeatherCircleSmall />,
+      loading = false,
+      buttonball = null,
+      className,
+      type = 'button',
+      ...otherProps
+    }: ButtonThemedRootProps,
+    ref
+  ) {
+    return (
+      <button
         className={SubframeUtils.twClassNames(
-          "hidden h-4 w-4 flex-none items-center justify-center gap-2",
-          { flex: loading, "h-3 w-3 flex-none": size === "small" }
+          'group/ce063fb1 flex cursor-pointer items-center justify-center gap-2 rounded-md border-none bg-brand-600 px-3 py-1.5 hover:bg-brand-500 hover:text-white active:bg-brand-600 disabled:cursor-default disabled:bg-neutral-200 hover:disabled:cursor-default hover:disabled:bg-neutral-200 active:disabled:cursor-default active:disabled:bg-neutral-200',
+          {
+            'h-6 w-auto flex-row flex-nowrap gap-1 px-2 py-0': size === 'small',
+            'h-auto w-auto rounded-full px-8 py-5': size === 'large',
+            'bg-transparent hover:bg-[#ffffff29] active:bg-[#ffffff3d]': variant === 'inverse',
+            'bg-transparent hover:bg-error-50 active:bg-error-100':
+              variant === 'destructive-tertiary',
+            'bg-error-50 hover:bg-error-100 active:bg-error-50':
+              variant === 'destructive-secondary',
+            'bg-error-600 hover:bg-error-500 active:bg-error-600':
+              variant === 'destructive-primary',
+            'bg-transparent hover:bg-neutral-100 active:bg-neutral-200':
+              variant === 'neutral-tertiary',
+            'border border-solid border-neutral-border bg-default-background hover:bg-neutral-50 active:bg-default-background':
+              variant === 'neutral-secondary',
+            'bg-neutral-100 hover:bg-neutral-200 active:bg-neutral-100':
+              variant === 'neutral-primary',
+            'bg-transparent hover:bg-brand-50 active:bg-brand-100': variant === 'brand-tertiary',
+            'bg-brand-50 hover:bg-brand-100 active:bg-brand-50': variant === 'brand-secondary',
+          },
+          className
         )}
+        ref={ref}
+        type={type}
+        {...otherProps}
       >
-        <SubframeCore.Loader
+        {icon ? (
+          <SubframeCore.IconWrapper
+            className={SubframeUtils.twClassNames(
+              'text-body text-black group-disabled/ce063fb1:text-neutral-400',
+              {
+                hidden: loading,
+                'text-body-small': size === 'small',
+                'text-heading-3': size === 'large',
+                'text-black': variant === 'inverse',
+                'text-error-700':
+                  variant === 'destructive-tertiary' || variant === 'destructive-secondary',
+                'text-neutral-700':
+                  variant === 'neutral-tertiary' ||
+                  variant === 'neutral-secondary' ||
+                  variant === 'neutral-primary',
+                'text-brand-700': variant === 'brand-tertiary' || variant === 'brand-secondary',
+                'group-hover/ce063fb1:text-white': variant === 'brand-primary',
+              }
+            )}
+          >
+            {icon}
+          </SubframeCore.IconWrapper>
+        ) : null}
+        <div
           className={SubframeUtils.twClassNames(
-            "text-body text-black group-disabled/ce063fb1:text-neutral-400",
-            {
-              "text-body": loading,
-              "text-body-small": size === "small",
-              "text-error-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-neutral-700":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary",
-              "text-brand-700":
-                variant === "brand-tertiary" || variant === "brand-secondary",
-              "group-hover/ce063fb1:text-white": variant === "brand-primary",
-            }
-          )}
-        />
-      </div>
-      {children ? (
-        <span
-          className={SubframeUtils.twClassNames(
-            "whitespace-nowrap text-button-medium text-black group-disabled/ce063fb1:text-neutral-400",
-            {
-              hidden: loading,
-              "text-button-small": size === "small",
-              "text-button-large": size === "large",
-              "text-black": variant === "inverse",
-              "text-error-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-neutral-700":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary",
-              "text-brand-700":
-                variant === "brand-tertiary" || variant === "brand-secondary",
-              "group-hover/ce063fb1:text-white": variant === "brand-primary",
-            }
+            'hidden h-4 w-4 flex-none items-center justify-center gap-2',
+            { flex: loading, 'h-3 w-3 flex-none': size === 'small' }
           )}
         >
-          {children}
-        </span>
-      ) : null}
-      {iconRight ? (
-        <SubframeCore.IconWrapper
-          className={SubframeUtils.twClassNames(
-            "text-body text-black pl-4 group-disabled/ce063fb1:text-neutral-400",
-            {
-              "text-body-small": size === "small",
-              "hidden text-heading-3": size === "large",
-              "text-black": variant === "inverse",
-              "text-error-700":
-                variant === "destructive-tertiary" ||
-                variant === "destructive-secondary",
-              "text-neutral-700":
-                variant === "neutral-tertiary" ||
-                variant === "neutral-secondary" ||
-                variant === "neutral-primary",
-              "text-brand-700":
-                variant === "brand-tertiary" || variant === "brand-secondary",
-              "group-hover/ce063fb1:text-white": variant === "brand-primary",
-            }
-          )}
-        >
-          {iconRight}
-        </SubframeCore.IconWrapper>
-      ) : null}
-    </button>
-  );
-});
+          <SubframeCore.Loader
+            className={SubframeUtils.twClassNames(
+              'text-body text-black group-disabled/ce063fb1:text-neutral-400',
+              {
+                'text-body': loading,
+                'text-body-small': size === 'small',
+                'text-error-700':
+                  variant === 'destructive-tertiary' || variant === 'destructive-secondary',
+                'text-neutral-700':
+                  variant === 'neutral-tertiary' ||
+                  variant === 'neutral-secondary' ||
+                  variant === 'neutral-primary',
+                'text-brand-700': variant === 'brand-tertiary' || variant === 'brand-secondary',
+                'group-hover/ce063fb1:text-white': variant === 'brand-primary',
+              }
+            )}
+          />
+        </div>
+        {children ? (
+          <span
+            className={SubframeUtils.twClassNames(
+              'whitespace-nowrap text-button-medium text-black group-disabled/ce063fb1:text-neutral-400',
+              {
+                hidden: loading,
+                'text-button-small': size === 'small',
+                'text-button-large': size === 'large',
+                'text-black': variant === 'inverse',
+                'text-error-700':
+                  variant === 'destructive-tertiary' || variant === 'destructive-secondary',
+                'text-neutral-700':
+                  variant === 'neutral-tertiary' ||
+                  variant === 'neutral-secondary' ||
+                  variant === 'neutral-primary',
+                'text-brand-700': variant === 'brand-tertiary' || variant === 'brand-secondary',
+                'group-hover/ce063fb1:text-white': variant === 'brand-primary',
+              }
+            )}
+          >
+            {children}
+          </span>
+        ) : null}
+        {iconRight ? (
+          <SubframeCore.IconWrapper
+            className={SubframeUtils.twClassNames(
+              'text-body text-black pl-4 group-disabled/ce063fb1:text-neutral-400',
+              {
+                'text-body-small': size === 'small',
+                'hidden text-heading-3': size === 'large',
+                'text-black': variant === 'inverse',
+                'text-error-700':
+                  variant === 'destructive-tertiary' || variant === 'destructive-secondary',
+                'text-neutral-700':
+                  variant === 'neutral-tertiary' ||
+                  variant === 'neutral-secondary' ||
+                  variant === 'neutral-primary',
+                'text-brand-700': variant === 'brand-tertiary' || variant === 'brand-secondary',
+                'group-hover/ce063fb1:text-white': variant === 'brand-primary',
+              }
+            )}
+          >
+            {iconRight}
+          </SubframeCore.IconWrapper>
+        ) : null}
+      </button>
+    )
+  }
+)
 
-export const ButtonThemed = ButtonThemedRoot;
+export const ButtonThemed = ButtonThemedRoot

@@ -1,34 +1,33 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * Link Button — https://app.subframe.com/library?component=Link+Button_a4ee726a-774c-4091-8c49-55b659356024
  */
 
-import React from "react";
-import * as SubframeCore from "@subframe/core";
-import * as SubframeUtils from "../utils";
+import React from 'react'
+import * as SubframeCore from '@subframe/core'
+import * as SubframeUtils from '../utils'
 
-interface LinkButtonRootProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "brand" | "neutral" | "inverse";
-  size?: "large" | "medium" | "small";
-  icon?: React.ReactNode;
-  children?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
+interface LinkButtonRootProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'brand' | 'neutral' | 'inverse'
+  size?: 'large' | 'medium' | 'small'
+  icon?: React.ReactNode
+  children?: React.ReactNode
+  iconRight?: React.ReactNode
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  className?: string
 }
 
 const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
   function LinkButtonRoot(
     {
-      variant = "neutral",
-      size = "medium",
+      variant = 'neutral',
+      size = 'medium',
       icon = null,
       children,
       iconRight = null,
       className,
-      type = "button",
+      type = 'button',
       ...otherProps
     }: LinkButtonRootProps,
     ref
@@ -36,8 +35,8 @@ const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
     return (
       <button
         className={SubframeUtils.twClassNames(
-          "group/a4ee726a flex cursor-pointer items-center gap-1 border-none bg-transparent",
-          { "flex-row flex-nowrap gap-1": size === "large" },
+          'group/a4ee726a flex cursor-pointer items-center gap-1 border-none bg-transparent',
+          { 'flex-row flex-nowrap gap-1': size === 'large' },
           className
         )}
         ref={ref}
@@ -47,14 +46,12 @@ const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
         {icon ? (
           <SubframeCore.IconWrapper
             className={SubframeUtils.twClassNames(
-              "text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400",
+              'text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400',
               {
-                "text-caption font-caption": size === "small",
-                "text-heading-3 font-heading-3": size === "large",
-                "text-black group-hover/a4ee726a:text-black":
-                  variant === "inverse",
-                "text-brand-700 group-hover/a4ee726a:text-brand-700":
-                  variant === "brand",
+                'text-caption font-caption': size === 'small',
+                'text-heading-3 font-heading-3': size === 'large',
+                'text-black group-hover/a4ee726a:text-black': variant === 'inverse',
+                'text-brand-700 group-hover/a4ee726a:text-brand-700': variant === 'brand',
               }
             )}
           >
@@ -64,14 +61,12 @@ const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
         {children ? (
           <span
             className={SubframeUtils.twClassNames(
-              "text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-hover/a4ee726a:underline group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:no-underline",
+              'text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-hover/a4ee726a:underline group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:no-underline',
               {
-                "text-caption font-caption": size === "small",
-                "text-heading-3 font-heading-3": size === "large",
-                "text-black group-hover/a4ee726a:text-black":
-                  variant === "inverse",
-                "text-brand-700 group-hover/a4ee726a:text-brand-700":
-                  variant === "brand",
+                'text-caption font-caption': size === 'small',
+                'text-heading-3 font-heading-3': size === 'large',
+                'text-black group-hover/a4ee726a:text-black': variant === 'inverse',
+                'text-brand-700 group-hover/a4ee726a:text-brand-700': variant === 'brand',
               }
             )}
           >
@@ -81,14 +76,12 @@ const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
         {iconRight ? (
           <SubframeCore.IconWrapper
             className={SubframeUtils.twClassNames(
-              "text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400",
+              'text-body font-body text-neutral-700 group-hover/a4ee726a:text-brand-700 group-disabled/a4ee726a:text-neutral-400 group-hover/a4ee726a:group-disabled/a4ee726a:text-neutral-400',
               {
-                "text-caption font-caption": size === "small",
-                "text-heading-3 font-heading-3": size === "large",
-                "text-black group-hover/a4ee726a:text-black":
-                  variant === "inverse",
-                "text-brand-700 group-hover/a4ee726a:text-brand-700":
-                  variant === "brand",
+                'text-caption font-caption': size === 'small',
+                'text-heading-3 font-heading-3': size === 'large',
+                'text-black group-hover/a4ee726a:text-black': variant === 'inverse',
+                'text-brand-700 group-hover/a4ee726a:text-brand-700': variant === 'brand',
               }
             )}
           >
@@ -96,8 +89,8 @@ const LinkButtonRoot = React.forwardRef<HTMLButtonElement, LinkButtonRootProps>(
           </SubframeCore.IconWrapper>
         ) : null}
       </button>
-    );
+    )
   }
-);
+)
 
-export const LinkButton = LinkButtonRoot;
+export const LinkButton = LinkButtonRoot

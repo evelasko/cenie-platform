@@ -2,13 +2,17 @@ import { type NextRequest } from 'next/server'
 import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
-import { createErrorResponse, createSuccessResponse, handleApiError } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+} from '../../../../lib/api-utils'
 
 // Delete user account
 export async function DELETE(request: NextRequest) {
   try {
     const authResult = await authenticateRequest(request)
-    
+
     if ('error' in authResult) {
       return createErrorResponse(authResult.error, authResult.status)
     }
@@ -26,7 +30,7 @@ export async function DELETE(request: NextRequest) {
       .where('userId', '==', userId)
       .get()
 
-    subscriptionsSnapshot.docs.forEach(doc => {
+    subscriptionsSnapshot.docs.forEach((doc) => {
       batch.delete(doc.ref)
     })
 
@@ -36,7 +40,7 @@ export async function DELETE(request: NextRequest) {
       .where('userId', '==', userId)
       .get()
 
-    accessSnapshot.docs.forEach(doc => {
+    accessSnapshot.docs.forEach((doc) => {
       batch.delete(doc.ref)
     })
 

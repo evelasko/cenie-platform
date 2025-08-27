@@ -55,7 +55,10 @@ export type SerializedUserAppAccess = Omit<UserAppAccess, 'grantedAt'> & {
   grantedAt: string
 }
 
-export type SerializedSubscription = Omit<Subscription, 'createdAt' | 'updatedAt' | 'currentPeriodStart' | 'currentPeriodEnd'> & {
+export type SerializedSubscription = Omit<
+  Subscription,
+  'createdAt' | 'updatedAt' | 'currentPeriodStart' | 'currentPeriodEnd'
+> & {
   createdAt: string
   updatedAt: string
   currentPeriodStart?: string

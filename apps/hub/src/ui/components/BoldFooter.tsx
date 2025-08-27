@@ -1,4 +1,4 @@
-"use client";
+'use client'
 /*
  * Documentation:
  * Bold footer — https://app.subframe.com/library?component=Bold+footer_e35cb674-a3fb-4906-9ea1-3241dc9704d3
@@ -6,27 +6,24 @@
  * Link Button — https://app.subframe.com/library?component=Link+Button_a4ee726a-774c-4091-8c49-55b659356024
  */
 
-import React from "react";
-import { FeatherTwitter } from "@subframe/core";
-import { FeatherGithub } from "@subframe/core";
-import { FeatherSlack } from "@subframe/core";
-import * as SubframeUtils from "../utils";
-import { IconButton } from "./IconButton";
-import { LinkButton } from "./LinkButton";
+import React from 'react'
+import { FeatherTwitter } from '@subframe/core'
+import { FeatherGithub } from '@subframe/core'
+import { FeatherSlack } from '@subframe/core'
+import * as SubframeUtils from '../utils'
+import { IconButton } from './IconButton'
+import { LinkButton } from './LinkButton'
 
 interface BoldFooterRootProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string;
+  className?: string
 }
 
 const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
-  function BoldFooterRoot(
-    { className, ...otherProps }: BoldFooterRootProps,
-    ref
-  ) {
+  function BoldFooterRoot({ className, ...otherProps }: BoldFooterRootProps, ref) {
     return (
       <div
         className={SubframeUtils.twClassNames(
-          "flex w-full flex-col items-center justify-center gap-6 border-t border-solid border-neutral-100 px-6 py-24",
+          'flex w-full flex-col items-center justify-center gap-6 border-t border-solid border-neutral-100 px-6 py-24',
           className
         )}
         ref={ref}
@@ -102,15 +99,14 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
               © Subframe 2024
             </span>
             <span className="font-['Montserrat'] text-[14px] font-[500] leading-[20px] text-subtext-color text-center">
-              Subframe is an intergalactic financial services company registered
-              with the Cosmic Union. It is authorized in most galaxies, subject
-              to local laws and regulations.
+              Subframe is an intergalactic financial services company registered with the Cosmic
+              Union. It is authorized in most galaxies, subject to local laws and regulations.
             </span>
           </div>
         </div>
       </div>
-    );
+    )
   }
-);
+)
 
-export const BoldFooter = BoldFooterRoot;
+export const BoldFooter = BoldFooterRoot

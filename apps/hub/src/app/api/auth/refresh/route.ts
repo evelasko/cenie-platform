@@ -1,7 +1,12 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { getAdminAuth } from '../../../../lib/firebase-admin'
-import { createErrorResponse, createSuccessResponse, handleApiError, parseRequestBody } from '../../../../lib/api-utils'
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  handleApiError,
+  parseRequestBody,
+} from '../../../../lib/api-utils'
 
 const refreshSchema = z.object({
   refreshToken: z.string(),
