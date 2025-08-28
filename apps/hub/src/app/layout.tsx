@@ -3,11 +3,11 @@ import { Providers } from './providers'
 import NavBar from '../components/navigation/NavBar'
 
 const navigationItems = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Resources', href: '/resources' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'learn', href: '/aprende' },
+  { label: 'innovate', href: '/innovate' },
+  { label: 'optimize', href: '/optimize' },
+  { label: 'insights', href: '/insights' },
+  { label: 'about', href: '/about' },
 ]
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

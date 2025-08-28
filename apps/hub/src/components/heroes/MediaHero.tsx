@@ -165,7 +165,7 @@ export default function MediaHero({
       </div>
 
       {/* Content layer */}
-      <div className="flex flex-col items-center justify-center relative z-[5]">{children}</div>
+      <div className="relative w-full z-[5]">{children}</div>
 
       {/* Noise flicker animation keyframes (same as NoiseOverlay) */}
       <style jsx>{`

@@ -428,6 +428,16 @@
     transition: var(--type-transition);
   }
 
+  .text-hero-quote {
+    font-family: var(--font-display-text-extra-large);
+    font-size: var(--text-display-text-large-size);
+    line-height: calc(var(--text-display-text-large-line-height) * 1.1);
+    /* letter-spacing: var(--text-display-text-extra-large-letter-spacing); */
+    letter-spacing: -0.05em;
+    font-weight: var(--font-weight-medium);
+    transition: var(--type-transition);
+  }
+
   .text-display-text-large {
     font-family: var(--font-display-text-large);
     font-size: var(--text-display-text-large-size);
@@ -435,7 +445,7 @@
     /* letter-spacing: var(--text-display-text-large-letter-spacing); */
     letter-spacing: -0.05em;
     /* font-weight: var(--text-display-text-large-font-weight); */
-    font-weight: 600;
+    font-weight: 800;
     transition: var(--type-transition);
   }
 

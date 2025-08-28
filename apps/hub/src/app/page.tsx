@@ -16,6 +16,7 @@ import { BrandAccordion } from '../ui/components/BrandAccordion'
 import { ButtonThemed } from '../ui/components/ButtonThemed'
 import { FeatherArrowUpRight } from '@subframe/core'
 import { FeatherCircleSmall } from '@subframe/core'
+import Image from 'next/image'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -39,7 +40,7 @@ export default function HubHomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll()
   const rangeEnd = 1.8
-  const translateY = useTransform(scrollYProgress, [0, rangeEnd], [-150, -50], { ease: easeOut })
+  const translateY = useTransform(scrollYProgress, [0, rangeEnd], [-250, 350], { ease: easeOut })
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1], { ease: easeOut })
   const opacity = useTransform(scrollYProgress, [0, 0.1], [0, 1], { ease: easeOut })
 
@@ -53,15 +54,54 @@ export default function HubHomePage() {
           'z-[5]'
         )}
       >
-        <MediaHero backgroundVideo="/media/videos/smoke-fall.mp4" backgroundClassName="mb-1">
-          <div className="text-center">
-            <h1 className="text-heading-1 text-white">The Future of Performing Arts</h1>
+        <MediaHero backgroundVideo="/media/videos/hub-hero-loop.mp4" backgroundClassName="mb-1">
+          <div id="logo-type" className="text-center relative w-full p-1.5 lg:p-1">
+            <div className="w-full aspect-[4/1] flex items-end justify-end">
+              <div className="w-1/2 text-right text-display-text-small pr-1">
+                <p className="text-white opacity-80 uppercase tracking-[0.2em] leading-[1.6em] text-[10px] lg:text-[16px]">
+                  centro de
+                  <br />
+                  investigaciones
+                  <br />
+                  escénicas
+                </p>
+              </div>
+            </div>
+            {/* Blank space with 4:1 aspect ratio */}
+            <div className="relative w-full aspect-[4/1]">
+              {/* Container for image with 4:1 aspect ratio */}
+              <Image
+                className="opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] filter-[brightness(1.5)]"
+                src="/media/brand/logo-type-white.svg"
+                alt="CENIE Logo"
+                fill
+              />
+            </div>
           </div>
-          <div className="text-center pb-16 text-white">
-            <p className="text-heading-3 max-w-3xl mx-auto">
-              A comprehensive ecosystem empowering performing artists and organizations with
-              AI-powered tools, specialized education, and collaborative platforms.
-            </p>
+          <div className="w-full h-full items-start content-start grid grid-cols-4 pt-4 px-8">
+            <div className="col-span-1"></div>
+            <div className="col-span-3 text-left mix-blend-exclusion">
+              <p className="text-hero-quote text-white/80">
+                Transform your artistic career with technology that amplifies, never replaces, human
+                creativity
+              </p>
+            </div>
+            <div className="col-span-1 flex items-end justify-end pt-12 pr-4 lg:pr-8">
+              <div className="animate-bounce">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="opacity-80">
+                  <path
+                    d="M12 4L12 20M12 20L18 14M12 20L6 14"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="col-span-3 pt-12 text-left">
+              <p className="text-text-button text-white/80">discover how</p>
+            </div>
           </div>
         </MediaHero>
       </div>
@@ -146,9 +186,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Academy for Specialized Education"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -160,7 +203,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Academy for Specialized Education"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2">
@@ -176,7 +219,7 @@ export default function HubHomePage() {
                     <ButtonThemed
                       variant="brand-secondary"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     >
                       VISIT THE ACADEMY
                     </ButtonThemed>
@@ -188,9 +231,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Creative Development Hub"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -202,7 +248,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417577/shared/ug6zq2m8ghszl3x4dmng.webp"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Creative Development Hub"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
@@ -218,7 +264,7 @@ export default function HubHomePage() {
                     <ButtonThemed
                       variant="brand-secondary"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     >
                       VISIT THE HUB
                     </ButtonThemed>
@@ -230,9 +276,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Training Exchange Network"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -244,7 +293,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417582/shared/ugxgqzv603gmmspskhah.jpg"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Training Exchange Network"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
@@ -259,7 +308,7 @@ export default function HubHomePage() {
                     <ButtonThemed
                       variant="brand-secondary"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     >
                       VISIT THE HUB
                     </ButtonThemed>
@@ -271,9 +320,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Software Suite"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -285,7 +337,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417577/shared/ug6zq2m8ghszl3x4dmng.webp"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Software Suite"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
@@ -301,7 +353,7 @@ export default function HubHomePage() {
                       variant="brand-tertiary"
                       size="small"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     />
                   </div>
                   <div className="flex w-full items-center gap-2 border-b border-solid border-neutral-border">
@@ -318,7 +370,7 @@ export default function HubHomePage() {
                       variant="brand-tertiary"
                       size="small"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     />
                   </div>
                   <div className="flex w-full items-center gap-2">
@@ -333,7 +385,7 @@ export default function HubHomePage() {
                       variant="brand-tertiary"
                       size="small"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     />
                   </div>
                   <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-transparent px-2 py-2" />
@@ -344,9 +396,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Automation Agency"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -358,7 +413,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Automation Agency"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start">
@@ -373,7 +428,7 @@ export default function HubHomePage() {
                     <ButtonThemed
                       variant="brand-secondary"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     >
                       VISIT THE AGENCY
                     </ButtonThemed>
@@ -385,9 +440,12 @@ export default function HubHomePage() {
                   <div className="flex w-full items-center gap-2 px-3 py-4">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start">
                       <div className="flex items-start">
-                        <img
-                          className="hidden max-w-[144px] grow shrink-0 basis-0 rounded-md"
-                          src="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                        <Image
+                          width={144}
+                          height={144}
+                          className="hidden grow shrink-0 basis-0 rounded-md"
+                          src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
+                          alt="Academic Publishing Division"
                         />
                         <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
                       </div>
@@ -399,7 +457,7 @@ export default function HubHomePage() {
                     <BrandAccordion.Chevron />
                   </div>
                 }
-                headerImage="https://res.cloudinary.com/subframe/image/upload/v1711417580/shared/zp8qzxs8z5zoyd4r6tti.jpg"
+                headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
                 headerText="Academic Publishing Division"
               >
                 <div className="flex w-full grow shrink-0 basis-0 flex-col items-start">
@@ -414,7 +472,7 @@ export default function HubHomePage() {
                     <ButtonThemed
                       variant="brand-secondary"
                       iconRight={<FeatherArrowUpRight />}
-                      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {}}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
                     >
                       VISIT THE EDITORIAL
                     </ButtonThemed>
