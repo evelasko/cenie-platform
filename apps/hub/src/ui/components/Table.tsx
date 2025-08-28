@@ -10,7 +10,7 @@
 import React from 'react'
 import * as SubframeCore from '@subframe/core'
 import * as SubframeUtils from '../utils'
-import { DropdownMenu } from './DropdownMenu'
+// import { DropdownMenu } from './DropdownMenu'
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   children?: React.ReactNode

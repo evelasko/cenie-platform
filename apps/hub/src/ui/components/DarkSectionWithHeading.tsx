@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import * as SubframeCore from '@subframe/core'
+// import * as SubframeCore from '@subframe/core'
 import { FeatherPlus } from '@subframe/core'
 import * as SubframeUtils from '../utils'
 import { IconWithBackground } from './IconWithBackground'
