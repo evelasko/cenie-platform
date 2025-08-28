@@ -17,6 +17,8 @@ import { ButtonThemed } from '../ui/components/ButtonThemed'
 import { FeatherArrowUpRight } from '@subframe/core'
 import { FeatherCircleSmall } from '@subframe/core'
 import Image from 'next/image'
+import Spacer from '../components/layouts/Spacer'
+import LightSection from '../components/layouts/LightSection'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -39,13 +41,14 @@ import Image from 'next/image'
 export default function HubHomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll()
-  const rangeEnd = 1.8
-  const translateY = useTransform(scrollYProgress, [0, rangeEnd], [-250, 350], { ease: easeOut })
+  const rangeEnd = 1.5
+  const translateY = useTransform(scrollYProgress, [0, rangeEnd], [-250, 650], { ease: easeOut })
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1], { ease: easeOut })
   const opacity = useTransform(scrollYProgress, [0, 0.1], [0, 1], { ease: easeOut })
 
   return (
     <>
+      {/* Hero Section */}
       <div
         id="revealer"
         className={clsx(
@@ -127,6 +130,107 @@ export default function HubHomePage() {
         </MarginBlock>
       </motion.div>
       <div className="page-wrapper">
+        {/* Page Content */}
+        <Spacer />
+        <LightSection>
+          <div className="content-wrapper flex flex-col lg:flex-row w-full lg:items-stretch gap-6 lg:gap-8">
+            {/* Text Content Column */}
+            <div className="w-full lg:w-[80%] flex flex-col items-start gap-4">
+              <span className="text-display-text-large text-default-font pb-4 lg:pb-8">
+                Performing artists and organizations are navigating unprecedented challenges:
+              </span>
+
+              {/* Challenge List */}
+              <div className="flex flex-col gap-4 w-full">
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Economic uncertainty
+                      <span className="text-subtext-color">
+                        {' '}
+                        with traditional funding models under pressure
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Technology gaps
+                      <span className="text-subtext-color">
+                        {' '}
+                        that separate artists from new opportunities
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Educational limitations
+                      <span className="text-subtext-color"> in business and digital literacy</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Fragmented resources
+                      <span className="text-subtext-color">
+                        {' '}
+                        across training, creation, and production
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Language barriers
+                      <span className="text-subtext-color">
+                        {' '}
+                        limiting access to cutting-edge methodologies
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 px-2 py-2">
+                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
+                  <div className="flex flex-col gap-1">
+                    <div className="text-display-text-small text-default-font">
+                      Operational inefficiencies
+                      <span className="text-subtext-color">
+                        {' '}
+                        in production and talent management
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Image Column */}
+            <div className="w-full lg:w-1/2 relative aspect-video lg:flex lg:flex-col">
+              <Image
+                className="radius-md object-cover lg:h-full lg:flex-1"
+                fill
+                alt="CENIE workspace"
+                src="/media/images/image-1.jpg"
+              />
+            </div>
+          </div>
+        </LightSection>
+        <Spacer />
         <DarkSection>
           <div className="flex flex-col items-center p-36 justify-center h-124">
             <p className="text-display-text-large">
