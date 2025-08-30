@@ -18,10 +18,11 @@ import { FeatherArrowUpRight } from '@subframe/core'
 import { FeatherCircleSmall } from '@subframe/core'
 import Image from 'next/image'
 import Spacer from '../components/layouts/Spacer'
-import LightSection from '../components/layouts/LightSection'
 import { StepCard } from '../ui/components/StepCard'
 import { Button } from '../ui/components/Button'
 import { AccordionFaq } from '../ui/components/AccordionFaq'
+import { BulletList } from '../ui/components/BulletList'
+import { BulletListItem } from '../ui/components/BulletListItem'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -43,22 +44,85 @@ import { AccordionFaq } from '../ui/components/AccordionFaq'
 
 export default function HubHomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const revealerRef = useRef<HTMLDivElement>(null)
+
+  // Use global scroll progress for slower-than-scroll animation
   const { scrollYProgress } = useScroll()
-  const rangeEnd = 1.5
-  const translateY = useTransform(scrollYProgress, [0, rangeEnd], [-250, 700], { ease: easeOut })
-  const scale = useTransform(scrollYProgress, [0, 0.25], [0.75, 1], { ease: easeOut })
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [0, 1], { ease: easeOut })
+
+  // Define scroll stages for slower reveal animation (80% of scroll to complete)
+  const scrollStages = {
+    initial: 0, // 0% - Animation starts
+    active: 0.3, // 30% - Main transition begins
+    complete: 0.8, // 80% - Reveal completes, content centered
+    normal: 1.0, // 100% - Normal scrolling
+  }
+
+  // REVEALER ANIMATIONS (the hero component that moves away)
+  // Scale animations: X axis subtle compression, Y axis moderate compression
+  const revealerScaleX = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.complete],
+    [1, 0.55],
+    { ease: easeOut }
+  )
+  const revealerScaleY = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.complete],
+    [1, 0.5],
+    { ease: easeOut }
+  )
+
+  // Translation: Move revealer up and out of viewport
+  const revealerTranslateY = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.complete],
+    [0, -400], // Move further up to ensure complete exit
+    { ease: easeInOut }
+  )
+
+  // REVEALER-CONTENT ANIMATIONS (the content that gets revealed)
+  // Translation: Start above center, end at center when revealer exits
+  const contentTranslateY = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.complete],
+    [-150, 750], // Start slightly above, end centered
+    { ease: easeOut }
+  )
+
+  // Scale: Subtle zoom-in effect during reveal
+  const contentScale = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.active],
+    [0.85, 1],
+    { ease: easeOut }
+  )
+
+  // Opacity: Fade in during initial stage
+  const contentOpacity = useTransform(
+    scrollYProgress,
+    [scrollStages.initial, scrollStages.initial + 0.15], // Quick fade-in
+    [0, 1],
+    { ease: easeOut }
+  )
 
   return (
     <>
       {/* Hero Section */}
-      <div
+      <motion.div
         id="revealer"
+        ref={revealerRef}
         className={clsx(
           'h-[calc(100vh-4rem)] mt-16 px-1 md:px-1.5',
           'bg-gradient-to-b from-[var(--color-nav-background)] to-background',
           'z-[5]'
         )}
+        style={{
+          scaleX: revealerScaleX,
+          scaleY: revealerScaleY,
+          y: revealerTranslateY,
+          transformOrigin: 'center center',
+          willChange: 'transform',
+        }}
       >
         <MediaHero backgroundVideo="/media/videos/hub-hero-loop.mp4" backgroundClassName="mb-1">
           <div id="logo-type" className="text-center relative w-full p-1.5 lg:p-1">
@@ -110,24 +174,24 @@ export default function HubHomePage() {
             </div>
           </div>
         </MediaHero>
-      </div>
+      </motion.div>
       <motion.div
         id="revealer-content"
         className="z-[1]"
         ref={containerRef}
         style={{
-          y: translateY,
-          scale,
-          opacity,
+          y: contentTranslateY,
+          scale: contentScale,
+          opacity: contentOpacity,
+          willChange: 'transform, opacity',
         }}
       >
         <MarginBlock header={<div />}>
-          <p className="text-display-text-extra-large">
-            We&#39;re not just another technology company:{' '}
+          <p className="text-hero-quote">
+            No somos otra app:{' '}
             <span className="text-subtext-color">
-              CENIE is the first comprehensive ecosystem specifically designed by and for the
-              performing arts community, combining deep artistic expertise with cutting-edge
-              technological innovation.
+              CENIE es un ecosistema diseñado por y para la comunidad artística que combina el
+              conocimiento del arte con la innovación tecnológica de vanguardia.
             </span>
           </p>
         </MarginBlock>
@@ -145,82 +209,49 @@ export default function HubHomePage() {
               </span>
 
               {/* Challenge List */}
-              <div className="flex flex-col gap-4 w-full">
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Economic uncertainty
-                      <span className="text-subtext-color">
-                        {' '}
-                        with traditional funding models under pressure
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              <BulletList>
+                <BulletListItem>
+                  Economic uncertainty
+                  <span className="text-subtext-color">
+                    {' '}
+                    with traditional funding models under pressure
+                  </span>
+                </BulletListItem>
 
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Technology gaps
-                      <span className="text-subtext-color">
-                        {' '}
-                        that separate artists from new opportunities
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <BulletListItem>
+                  Technology gaps
+                  <span className="text-subtext-color">
+                    {' '}
+                    that separate artists from new opportunities
+                  </span>
+                </BulletListItem>
 
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Educational limitations
-                      <span className="text-subtext-color"> in business and digital literacy</span>
-                    </div>
-                  </div>
-                </div>
+                <BulletListItem>
+                  Educational limitations
+                  <span className="text-subtext-color"> in business and digital literacy</span>
+                </BulletListItem>
 
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Fragmented resources
-                      <span className="text-subtext-color">
-                        {' '}
-                        across training, creation, and production
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <BulletListItem>
+                  Fragmented resources
+                  <span className="text-subtext-color">
+                    {' '}
+                    across training, creation, and production
+                  </span>
+                </BulletListItem>
 
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Language barriers
-                      <span className="text-subtext-color">
-                        {' '}
-                        limiting access to cutting-edge methodologies
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <BulletListItem>
+                  Language barriers
+                  <span className="text-subtext-color">
+                    {' '}
+                    limiting access to cutting-edge methodologies
+                  </span>
+                </BulletListItem>
 
-                <div className="flex items-start gap-3 px-2 py-2">
-                  <FeatherCircleSmall className="text-display-text-small text-default-font mt-1 flex-shrink-0" />
-                  <div className="flex flex-col gap-1">
-                    <div className="text-display-text-small text-default-font">
-                      Operational inefficiencies
-                      <span className="text-subtext-color">
-                        {' '}
-                        in production and talent management
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <BulletListItem>
+                  Operational inefficiencies
+                  <span className="text-subtext-color"> in production and talent management</span>
+                </BulletListItem>
+              </BulletList>
             </div>
 
             {/* Image Column */}
@@ -246,9 +277,9 @@ export default function HubHomePage() {
         <Spacer />
         {/* Solutions ================================================ */}
         <section id="solutions">
-          <DarkSection>
+          <DarkSection customClass="py-12 lg:py-32">
             <>
-              <MarginBlock header={<TinyTitle text="What we do" />}>
+              <MarginBlock header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" />}>
                 <h2 className="text-heading-2">Solutions.</h2>
               </MarginBlock>
               <div className="content-wrapper">
@@ -564,20 +595,18 @@ export default function HubHomePage() {
           <MarginBlock header={<TinyTitle text="Success Story" />}>
             <div className="flex flex-col items-start gap-6 pr-6 pt-6 pb-12">
               <div className="flex flex-wrap items-start gap-2">
-                <span className="text-display-text-extra-large font-display-text-extra-large text-default-font mobile:text-display-text-large mobile:font-display-text-large">
+                <span className="text-display-text-extra-large text-default-font">
                   For performing artists:
                 </span>
-                <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
+                <span className="text-display-text-extra-large text-subtext-color">
                   Elevate Your Skills &amp; Career Potential
                 </span>
               </div>
-              <span className="text-body-large font-body-large text-default-font">
+              <div className="text-body">
                 The Opportunity: Artists who embrace technology and business literacy see an average
                 40% increase in income and 90% improvement in career sustainability.
-              </span>
-              <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                how we help:
-              </span>
+              </div>
+              <span className="text-display-text-extra-large text-subtext-color">how we help:</span>
             </div>
           </MarginBlock>
           <div className="w-full items-start gap-1 grid grid-cols-2 content-wrapper">

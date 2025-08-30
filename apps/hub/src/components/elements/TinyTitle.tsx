@@ -1,16 +1,25 @@
 import { Plus } from 'lucide-react'
 import { IconWithBackground } from '../../ui'
+import * as SubframeUtils from '../../ui/utils'
 
-export default function TinyTitle({ text, icon }: { text: string; icon?: React.ReactNode }) {
+export default function TinyTitle({
+  text,
+  icon,
+  className,
+}: {
+  text: string
+  icon?: React.ReactNode
+  className?: string
+}) {
   return (
-    <div className="flex w-full items-start">
+    <div className={SubframeUtils.twClassNames('flex w-full items-start', className)}>
       <IconWithBackground
         variant="dark"
         size="x-small"
-        icon={icon || <Plus size={15} />}
+        icon={icon || <Plus className="size-3 lg:size-4" />}
         square={false}
       />
-      <span className="text-subtitle ml-1.5 pt-[2px]">{text}</span>
+      <span className="text-subtitle ml-1.5 pt-[0px] lg:pt-[1px]">{text}</span>
     </div>
   )
 }

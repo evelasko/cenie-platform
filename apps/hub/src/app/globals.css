@@ -186,7 +186,7 @@
   --text-overtitle-letter-spacing: 0em;
   --text-overtitle-font-weight: 400;
 
-  --text-subtitle-size: clamp(0.8125rem, 0.75vw + 0.125rem, 0.875rem); /* 14px max */
+  --text-subtitle-size: clamp(0.6rem, 0.75vw + 0.2rem, 0.875rem); /* 14px max */
   --text-subtitle-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
   --text-subtitle-letter-spacing: -0.025em;
   --text-subtitle-font-weight: 400;

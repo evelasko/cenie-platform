@@ -84,6 +84,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
       </div>
       <div className="flex w-full items-start gap-6 px-2 py-2">
         {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img className="w-14 flex-none rounded-sm aspect-square object-cover" src={image} />
         ) : null}
         {label ? (
