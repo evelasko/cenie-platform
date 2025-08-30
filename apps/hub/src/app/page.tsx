@@ -187,7 +187,7 @@ export default function HubHomePage() {
         }}
       >
         <MarginBlock header={<div />}>
-          <p className="text-hero-quote">
+          <p className="text-display-text-extra-large text-default-font">
             No somos otra app:{' '}
             <span className="text-subtext-color">
               CENIE es un ecosistema diseñado por y para la comunidad artística que combina el
@@ -204,7 +204,7 @@ export default function HubHomePage() {
           <div className="content-wrapper flex flex-col lg:flex-row w-full lg:items-stretch gap-6 lg:gap-8">
             {/* Text Content Column */}
             <div className="w-full lg:w-[80%] flex flex-col items-start gap-4">
-              <span className="text-display-text-large text-default-font pb-4 lg:pb-8">
+              <span className="text-display-text-extra-large text-default-font pb-4 lg:pb-8">
                 Performing artists and organizations are navigating unprecedented challenges:
               </span>
 
@@ -609,7 +609,7 @@ export default function HubHomePage() {
               <span className="text-display-text-extra-large text-subtext-color">how we help:</span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Master essential technology skills through specific training programs"
@@ -654,7 +654,7 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Access state-of-the-art innovation labs and residency programs"
@@ -700,7 +700,7 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Streamline productions with qAderno's collaborative management platform"
@@ -746,7 +746,7 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Publish through our AI-enhanced academic division with global reach"
