@@ -4,7 +4,6 @@
 import MediaHero from '../components/heroes/MediaHero'
 import MarginBlock from '../components/layouts/MarginBlock'
 import DarkSection from '../components/layouts/DarkSection'
-import BottomBlurFrame from '../components/decorations/BottomBlurFrame'
 import { motion, useScroll, useTransform, easeOut, easeInOut } from 'framer-motion'
 import { useRef } from 'react'
 import clsx from 'clsx'
@@ -116,13 +115,13 @@ export default function HubHomePage() {
           'bg-gradient-to-b from-[var(--color-nav-background)] to-background',
           'z-[5]'
         )}
-        style={{
-          scaleX: revealerScaleX,
-          scaleY: revealerScaleY,
-          y: revealerTranslateY,
-          transformOrigin: 'center center',
-          willChange: 'transform',
-        }}
+        // style={{
+        //   scaleX: revealerScaleX,
+        //   scaleY: revealerScaleY,
+        //   y: revealerTranslateY,
+        //   transformOrigin: 'center center',
+        //   willChange: 'transform',
+        // }}
       >
         <MediaHero backgroundVideo="/media/videos/hub-hero-loop.mp4" backgroundClassName="mb-1">
           <div id="logo-type" className="text-center relative w-full p-1.5 lg:p-1">
@@ -179,12 +178,12 @@ export default function HubHomePage() {
         id="revealer-content"
         className="z-[1]"
         ref={containerRef}
-        style={{
-          y: contentTranslateY,
-          scale: contentScale,
-          opacity: contentOpacity,
-          willChange: 'transform, opacity',
-        }}
+        // style={{
+        //   y: contentTranslateY,
+        //   scale: contentScale,
+        //   opacity: contentOpacity,
+        //   willChange: 'transform, opacity',
+        // }}
       >
         <MarginBlock header={<div />}>
           <p className="text-display-text-extra-large text-default-font">
@@ -782,7 +781,7 @@ export default function HubHomePage() {
         <Spacer />
         {/* FAQ ===================================================== */}
         <section id="faq">
-          <div className="w-full flex-wrap items-start gap-2 px-2 py-2 grid grid-cols-2 content-wrapper">
+          <div className="w-full flex-wrap items-start gap-2 px-2 py-2 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <div className="flex flex-col items-start gap-2">
               <span className="text-heading-2 font-heading-2 text-default-font">FAQ.</span>
               <div className="flex h-12 w-full flex-none flex-col items-center gap-2 bg-transparent" />
@@ -799,7 +798,7 @@ export default function HubHomePage() {
                 <AccordionFaq
                   trigger={
                     <div className="flex w-full items-center gap-2 px-3 py-2">
-                      <span className="grow shrink-0 basis-0 text-display-text-small font-display-text-small text-default-font">
+                      <span className="grow shrink-0 basis-0 text-display-text-small">
                         Who is CENIE designed for?
                       </span>
                       <AccordionFaq.Chevron />
@@ -808,7 +807,7 @@ export default function HubHomePage() {
                   defaultOpen={true}
                 >
                   <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-4">
-                    <span className="text-body-large font-body-large text-subtext-color">
+                    <span className="text-body-large text-subtext-color">
                       CENIE serves four primary audiences: performing artists seeking professional
                       development, creative professionals looking to innovate with technology,
                       industry professionals needing operational optimization, and
@@ -928,8 +927,6 @@ export default function HubHomePage() {
           </p>
         </MarginBlock>
       </div>
-      {/* Bottom Blur Frame Component */}
-      <BottomBlurFrame />
     </>
   )
 }
