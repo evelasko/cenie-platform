@@ -88,7 +88,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
       <div className="flex w-full flex-row gap-4 px-2 py-2 flex-1 min-h-0">
         {/* Text content - appears first on mobile, second on desktop */}
         {label ? (
-          <div className="order-2 flex-1 min-w-0 text-body-large">
+          <div className="order-2 flex-1 min-w-0 text-body-large lg:!text-body-small">
             <span className="break-words">{label}</span>
           </div>
         ) : null}

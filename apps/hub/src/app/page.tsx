@@ -608,26 +608,30 @@ export default function HubHomePage() {
               <span className="text-display-text-extra-large text-subtext-color">how we help:</span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Master essential technology skills through specific training programs"
               variant="step-1"
+              className="lg:h-full"
             />
             <StepCard
               image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
               label="Access AI-powered tools that enhance your creative process"
               variant="step-2"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
               label="Develop business acumen for freelance success and entrepreneurship"
               variant="step-3"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
               label="Connect with a global community of forward-thinking artists"
               variant="step-4"
+              className="lg:h-full"
             />
           </div>
         </section>
@@ -653,26 +657,30 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Access state-of-the-art innovation labs and residency programs"
               variant="step-1"
+              className="lg:h-full"
             />
             <StepCard
               image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
               label="Use Stoomp's AI video analysis to refine performances with precision"
               variant="step-2"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
               label="Integrate emerging technologies into your artistic practice"
               variant="step-3"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
               label="Collaborate with technologists who understand artistic vision"
               variant="step-4"
+              className="lg:h-full"
             />
           </div>
         </section>
@@ -699,26 +707,30 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Streamline productions with qAderno's collaborative management platform"
               variant="step-1"
+              className="lg:h-full"
             />
             <StepCard
               image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
               label="Accelerate casting and talent discovery through Platea's matching algorithms"
               variant="step-2"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
               label="Implement custom AI automation for repetitive administrative tasks"
               variant="step-3"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
               label="Receive strategic consulting for digital transformation"
               variant="step-4"
+              className="lg:h-full"
             />
           </div>
         </section>
@@ -745,26 +757,30 @@ export default function HubHomePage() {
               </span>
             </div>
           </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 content-wrapper">
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
             <StepCard
               image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
               label="Publish through our AI-enhanced academic division with global reach"
               variant="step-1"
+              className="lg:h-full"
             />
             <StepCard
               image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
               label="Access comprehensive methodology libraries and research databases"
               variant="step-2"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
               label="Contribute to developing AI-ready content models for performing arts"
               variant="step-3"
+              className="lg:h-full"
             />
             <StepCard
               image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
               label="Connect with researchers worldwide through our sharing platform"
               variant="step-4"
+              className="lg:h-full"
             />
           </div>
           <MarginBlock header={<div />}>
