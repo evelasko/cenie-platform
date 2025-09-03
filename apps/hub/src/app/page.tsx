@@ -278,8 +278,14 @@ export default function HubHomePage() {
         <section id="solutions">
           <DarkSection customClass="py-12 lg:py-32">
             <>
-              <MarginBlock header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" />}>
+              <MarginBlock
+                header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" variant="light" />}
+              >
                 <h2 className="text-heading-2">Solutions.</h2>
+                <p className="pt-8 text-body md:!text-body-large">
+                  CENIE addresses these challenges through an integrated ecosystem of seven
+                  initiatives that work seamlessly together:
+                </p>
               </MarginBlock>
               <div className="content-wrapper">
                 <BrandAccordion
@@ -298,7 +304,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Academy for Specialized Education
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -308,8 +314,8 @@ export default function HubHomePage() {
                   headerText="Academy for Specialized Education"
                 >
                   <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2">
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                      <span className="text-body-large font-body-large text-subtext-color">
+                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 pb-2">
+                      <span className="text-body md:!text-body-large  text-neutral-500">
                         Professional development courses in technology, finance, and business skills
                         specifically designed for performing artists. Bridge the gap between
                         traditional arts training and modern career requirements.
@@ -343,7 +349,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Creative Development Hub
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -388,7 +394,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Training Exchange Network
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -432,7 +438,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Software Suite
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -512,7 +518,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Automation Agency
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -556,7 +562,7 @@ export default function HubHomePage() {
                         </div>
                         <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
                         <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Accordion header
+                          Academic Publishing Division
                         </span>
                       </div>
                       <BrandAccordion.Chevron />
@@ -634,6 +640,28 @@ export default function HubHomePage() {
               className="lg:h-full"
             />
           </div>
+          <div className="py-12" />
+          <NoiseOverlay
+            className="w-full aspect-[4/3] md:aspect-[4/3] max-md:aspect-[3/4] radius-lg z-30"
+            contentAboveNoise={
+              <OverImageContent
+                heading="Success Story"
+                details="Maria, a contemporary dancer from Madrid, increased her annual income from $28,000 to $42,000 within 18 months of completing CENIE's technology and business literacy programs. She now teaches internationally via digital platforms and has launched her own online choreography studio."
+                ctaTitle="Start your transformation"
+                ctaButtonLabel="Visit our Skills Section"
+                onClick={() => {
+                  console.log('clicked')
+                }}
+              />
+            }
+          >
+            <ImageCard
+              src="/media/images/image-1.jpg"
+              alt="Image 1"
+              variant="clean"
+              diableContentAnimation
+            />
+          </NoiseOverlay>
         </section>
         <Spacer />
         {/* Success Story for Creatives ============================== */}
@@ -916,27 +944,7 @@ export default function HubHomePage() {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
           </p>
         </MarginBlock>
-        <NoiseOverlay
-          className="w-full aspect-[4/3] md:aspect-[4/3] max-md:aspect-[3/4] radius-lg z-30"
-          contentAboveNoise={
-            <OverImageContent
-              heading="Success Story"
-              details="Maria, a contemporary dancer from Madrid, increased her annual income from $28,000 to $42,000 within 18 months of completing CENIE's technology and business literacy programs. She now teaches internationally via digital platforms and has launched her own online choreography studio."
-              ctaTitle="Start your transformation"
-              ctaButtonLabel="Visit our Skills Section"
-              onClick={() => {
-                console.log('clicked')
-              }}
-            />
-          }
-        >
-          <ImageCard
-            src="/media/images/image-1.jpg"
-            alt="Image 1"
-            variant="clean"
-            diableContentAnimation
-          />
-        </NoiseOverlay>
+
         <MarginBlock header={<TinyTitle text="What we do" />}>
           <p className="text-display-text-large">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.

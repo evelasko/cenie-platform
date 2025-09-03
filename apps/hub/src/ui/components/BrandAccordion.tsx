@@ -9,6 +9,7 @@ import * as SubframeCore from '@subframe/core'
 import { FeatherPlus } from '@subframe/core'
 import { FeatherMinus } from '@subframe/core'
 import * as SubframeUtils from '../utils'
+import Image from 'next/image'
 
 interface ChevronProps extends React.ComponentProps<typeof SubframeCore.Collapsible.Chevron> {
   boolean?: boolean
@@ -121,9 +122,22 @@ const BrandAccordionRoot = React.forwardRef<HTMLDivElement, BrandAccordionRootPr
             ) : null}
           </Trigger>
           <Content>
+            {/* Main content section - only visible when accordion is open */}
             {children ? (
-              <div className="flex w-full grow shrink-0 basis-0 flex-col items-start group-data-[state=open]/08273c8e:border-b group-data-[state=open]/08273c8e:border-solid group-data-[state=open]/08273c8e:border-neutral-border">
-                {children}
+              <div className="hidden group-data-[state=open]/08273c8e:flex w-full !flex-row items-start gap-4 px-3 py-4 group-data-[state=open]/08273c8e:border-b group-data-[state=open]/08273c8e:border-solid group-data-[state=open]/08273c8e:border-neutral-border">
+                {headerImage && (
+                  <div className="w-[20%] lg:w-[10%] aspect-square flex-shrink-0">
+                    <Image
+                      width={144}
+                      height={144}
+                      className="w-full h-full rounded-sm md:rounded-md object-cover"
+                      src={headerImage}
+                      alt={typeof headerText === 'string' ? headerText : 'Header image'}
+                    />
+                  </div>
+                )}
+                {/* Content takes up remaining space beside the image */}
+                <div className="flex-1 flex flex-col items-start">{children}</div>
               </div>
             ) : null}
           </Content>

@@ -44,7 +44,7 @@ export default function OverImageContent({
           <FeatherPlus className="text-display-text-small font-display-text-small text-default-font-light" />
         </div>
         {detailsNode ?? (
-          <span className="text-display-text-medium font-display-text-medium text-neutral-border">
+          <span className="text-display-text-small lg:!text-display-text-medium font-display-text-small lg:!font-display-text-medium text-neutral-border">
             {details ?? ''}
           </span>
         )}
