@@ -1,12 +1,62 @@
-# Revolutionize Your Creative Process with AI-Enhanced Artistic Tools
+# Innovate Your Art: Technology as a Creative Partner
 
-## How Performing Artists Can Integrate Cutting-Edge Technology to Push Creative Boundaries and Transform Artistic Expression
+**Go beyond the limits of traditional creation. Discover AI-powered tools, collaborative innovation programs, and a new framework for integrating technology to amplify your unique artistic voice.**
 
-The future of performing arts is being written today by artists who embrace technology as a creative collaborator rather than a threat. These pioneers are discovering that artificial intelligence, advanced video analysis, and digital innovation tools don't replace human creativity—they amplify it exponentially.
+The next great leap in the performing arts will not come from an algorithm. It will come from a visionary artist who learns to use algorithms as a new kind of collaborator.
 
-**The opportunity has never been greater.** While some artists resist technological change, visionary creators are using AI tools for choreographers and directors, performance analysis software, and creative technology labs to develop unprecedented artistic expressions and build competitive advantages that traditional methods simply cannot match.
+For too long, technology and art have been seen as opposing forces. But the most exciting frontier of creation lies at their intersection. AI, advanced video analysis, and interactive digital tools are not threats to human creativity—they are the most powerful artistic tools to emerge in a generation, waiting for a master to wield them.
 
-**CENIE's Innovation Platform** positions you at the forefront of this transformation, providing access to cutting-edge creative tools, collaborative innovation spaces, and the expert guidance needed to integrate technology meaningfully into your artistic practice.
+The **CENIE Innovation Pathway** is your entry into this new world. We provide access to groundbreaking tools, a framework for meaningful experimentation, and a community of fellow pioneers dedicated to defining the future of performance.
+
+## Our Innovation Ecosystem
+
+We've designed a three-part ecosystem to support your creative journey, whether you're taking your first steps with technology or are ready to build a revolutionary new work.
+
+1. Stoomp: The AI-Powered Performance Analysis Platform
+  *See your work with new eyes.*
+  Stoomp is our flagship software suite, designed to move performance analysis from subjective intuition to objective insight. Trained on thousands of hours of performance, it helps you refine technique, enhance ensemble work, and track artistic growth with unprecedented clarity.
+[Discover Stoomp](stoomp.net)
+
+2. Creative Innovation Programs
+  *A new model for artistic research & development.*
+  This is our framework for fostering groundbreaking work. Through a combination of focused workshops, collaborative labs, and future residency programs, we provide artists with the structure, mentorship, and resources needed to experiment with emerging technologies in a creatively rigorous environment.
+[Explore Our Programs](/innovate/programs)
+
+3. Technology Integration Services
+  *Expert guidance for your creative vision.*
+  For artists and organizations with a specific project in mind, our team provides strategic consulting and hands-on support. We help you navigate the complexities of digital transformation, from integrating AI into a new work to optimizing your creative workflow.
+[Learn About Our Services](/innovate/services)
+
+## The CENIE Philosophy: Amplifying the Artist
+
+We don't believe in "technology for technology's sake." Our entire innovation philosophy is built on one question: How can this tool serve the art?
+
+- **Human-Centered AI**: Our tools are designed as partners, not replacements. They suggest, analyze, and reveal patterns, but the artist always remains the author.
+- **Process Over Product**: We value the "what if?" more than the "what is." Our programs are designed to encourage experimentation and courageous failure as essential parts of the innovative process.
+- **Authenticity First**: We guide artists to integrate technology in a way that feels true to their unique voice and vision, avoiding gimmicks and preserving the core of their artistic identity.
+
+## Who is This For?
+
+The Innovation Pathway is designed for the curious, the courageous, and the creators who are not satisfied with the status quo.
+
+- This is for you if... you are a choreographer who wonders if an AI could help you break through a creative block.
+- This is for you if... you are a director who wants to understand how data analysis can improve your ensemble's timing and cohesion.
+- This is for you if... you are a performer who wants to use objective feedback to accelerate your technical mastery.
+- This is for you if... you are an organization ready to build a culture of innovation that will define your work for the next decade.
+
+**Ready to Explore the Future of Creation?**
+
+**🚀 Take Your First Step: Try Stoomp for Free**
+*Experience the power of AI-enhanced video analysis firsthand with a full-featured 30-day trial of our flagship platform.*
+[Start Your Free Stoomp Trial](stoomp.net/trial)
+
+**🔬 Get Inspired: Attend Our "Art & AI" Workshop**
+*Join our free monthly online workshop where we demonstrate the latest creative tools and showcase innovative works from artists in our network.*
+[Register for the Free Workshop](/innovate/workshop)
+
+
+---
+## Deprecated Content
 
 ## The Future of Creative Development is Here
 

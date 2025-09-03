@@ -1,4 +1,60 @@
-# Access Cutting-Edge Research in Performing Arts & Technology
+# Advance the Frontier of Performing Arts Knowledge
+
+**Discover a new ecosystem for scholarship where rigorous research, innovative technology, and practical application converge. This is the future of how performing arts knowledge is created, shared, and utilized.**
+
+For too long, vital research in the performing arts has been locked away in static journals, trapped behind institutional paywalls, and disconnected from the artists and educators who need it most. The pace of artistic innovation has outstripped the speed of scholarly communication.
+
+**The CENIE Insights Pathway** is designed to change that.
+
+We are building a digital-first platform that makes scholarly work more accessible, more discoverable, and more impactful. We connect researchers, practitioners, and innovators in a dynamic exchange of ideas, fostering the collaborative spirit needed to shape the future of our field.
+
+## A New Paradigm for a New Era
+
+Whether you are here to consume knowledge, contribute your own research, or find proven methodologies for your practice, we have a dedicated path for you.
+
+1. Explore Our Digital Library
+  *For the researcher, the student, and the curious artist.*
+  Dive into our growing collection of digital-first publications. Our open-access articles, case studies, and multimedia-rich research are designed for the modern scholar, accessible anywhere, anytime.
+  [Browse Open Access Articles](/articles/)
+
+2. Publish Your Research with Us
+  *For the scholar and practitioner-researcher ready to share their work.*
+  Move beyond the limitations of traditional publishing. We offer a peer-reviewed, digital-first platform that accelerates time-to-publication, enhances your work with multimedia, and connects it to a global audience.
+  [View Submission Guidelines](/submission-guidelines)
+
+3. Access Proven Methodologies
+  *For the educator, trainer, and practitioner.*
+  Discover our curated library of evidence-based training and creative development methods. Sourced from our Hubs and a global network of experts, these resources bridge the gap between academic theory and practical, on-the-ground application.
+  [Explore the Methodology Library](/methodology-library)
+
+## Our Core Innovation: Smarter Research for a Digital Age
+
+What truly sets our platform apart is its foundation, built from the ground up for the era of artificial intelligence. We aren't just putting articles online; we are structuring knowledge in a new way.
+
+While the technical details are complex, the benefits for you as a researcher are simple and profound:
+
+- **Discover Deeper Connections:** Our AI-ready content structure allows you and future AI tools to find non-obvious connections between different studies, theories, and artistic practices.
+- **Accelerate Your Workflow:** Imagine an AI assistant that can instantly generate a literature review or summarize key findings from our entire corpus. This is the future we are building.
+- **Increase Your Impact:** By making your work machine-readable, we ensure it is more discoverable, more easily translated, and more readily integrated into the next generation of research tools, dramatically increasing its long-term relevance.
+
+## Join the Vanguard of Performing Arts Scholarship
+
+The future of our field depends on our collective ability to create and share knowledge effectively. We invite you to be a part of this new chapter.
+
+**Ready to get involved?**
+
+**🔬 Read Our Founding Whitepaper**: "The Future of Scholarly Communication"
+Download our free paper outlining the vision and technical principles behind our AI-enhanced publishing model.
+[Download the Whitepaper](/downloads/white-paper)
+
+**💬 Join Our Research Community**: Sign up for our free online forum to connect with other forward-thinking researchers, share works-in-progress, and hear about new collaboration opportunities.
+[Join the Community](/community/join)
+
+---
+
+## Deprecated Content
+
+## Access Cutting-Edge Research in Performing Arts & Technology
 
 ## Where Scholars, Practitioners, and Innovators Connect to Advance Knowledge and Shape the Future of Live Performance
 

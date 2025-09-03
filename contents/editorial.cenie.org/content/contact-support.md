@@ -12,11 +12,11 @@ Whether you're a researcher seeking content guidance, an author ready to publish
 
 **Knowledge Base & FAQ**
 Find instant answers to common questions about platform features, access issues, and research tools.
-**[Browse FAQ](#)** | **[Search Knowledge Base](#)**
+**[Browse FAQ](/#)** | **[Search Knowledge Base](/#)**
 
 **Technical Support Chat**
 Get real-time assistance with platform navigation, search strategies, and technical issues.
-**[Start Chat Support](#)** *Available: 9 AM - 5 PM EST, Monday-Friday*
+**[Start Chat Support](/#)** *Available: 9 AM - 5 PM EST, Monday-Friday*
 
 ### Email Support
 
@@ -48,7 +48,7 @@ Get expert guidance on the submission and publication process.
 
 - **Email:** <editorial@editorial.cenie.org>
 - **Phone:** [Phone number]
-- **Schedule consultation:** **[Book Editorial Meeting](#)**
+- **Schedule consultation:** **[Book Editorial Meeting](/#)**
 
 ### For Researchers & Students
 
@@ -67,7 +67,7 @@ Maximize your research efficiency with expert platform guidance.
 
 - **Email:** <research@editorial.cenie.org>
 - **Live chat:** Available during business hours
-- **Virtual consultation:** **[Schedule Research Session](#)**
+- **Virtual consultation:** **[Schedule Research Session](/#)**
 
 ### For Librarians & Institutions
 
@@ -86,7 +86,7 @@ Dedicated support for institutional implementation and optimization.
 
 - **Email:** <libraries@editorial.cenie.org>
 - **Phone:** [Dedicated library support line]
-- **Demo requests:** **[Schedule Institutional Demo](#)**
+- **Demo requests:** **[Schedule Institutional Demo](/#)**
 
 ### Technical & AI Support
 
@@ -104,7 +104,7 @@ Expert assistance with advanced features and institutional deployments.
 **Contact AI Team:**
 
 - **Email:** <ai@editorial.cenie.org>
-- **Technical consultation:** **[Request AI Support](#)**
+- **Technical consultation:** **[Request AI Support](/#)**
 
 ---
 
@@ -159,7 +159,7 @@ Full support services available in Spanish for our Spanish-speaking academic com
 - **Student Training Materials** - Ready-to-use instructional resources
 - **Advanced Analytics Training** - Usage data interpretation and optimization
 
-**[View Training Calendar](#)** | **[Register for Webinar](#)**
+**[View Training Calendar](/#)** | **[Register for Webinar](/#)**
 
 ### Self-Service Resources
 
@@ -177,7 +177,7 @@ Full support services available in Spanish for our Spanish-speaking academic com
 - **Technical specifications** for integration planning
 - **Troubleshooting guides** for common issues
 
-**[Access Resource Library](#)**
+**[Access Resource Library](/#)**
 
 ---
 
@@ -194,7 +194,7 @@ Connect with other CENIE Editorial users to share strategies, ask questions, and
 - **Content Recommendations** - User-generated reading lists and reviews
 - **Feature Requests** - Suggest improvements and vote on priorities
 
-**[Join Community Forums](#)**
+**[Join Community Forums](/#)**
 
 ### Professional Networks
 
@@ -225,7 +225,7 @@ Your feedback drives our platform development and service enhancement.
 **User Advisory Board:**
 Join our user advisory board to directly influence platform development and feature priorities.
 
-**[Apply for Advisory Board](#)**
+**[Apply for Advisory Board](/#)**
 
 ### Report Issues
 
@@ -238,7 +238,7 @@ Report accuracy concerns, broken links, or content quality issues directly to ou
 **Accessibility Issues:**
 Help us maintain WCAG 2.1 AA compliance by reporting accessibility barriers or concerns.
 
-**[Submit Issue Report](#)**
+**[Submit Issue Report](/#)**
 
 ---
 
@@ -271,4 +271,4 @@ Help us maintain WCAG 2.1 AA compliance by reporting accessibility barriers or c
 
 *We're committed to your success with CENIE Editorial. Don't hesitate to reach out for any assistance—our expert team is here to help you maximize the impact of AI-enhanced performing arts scholarship.*
 
-**[Contact Form](#)** | **[Schedule Consultation](#)** | **[Emergency Support](#)**
+**[Contact Form](/#)** | **[Schedule Consultation](/#)** | **[Emergency Support](/#)**

@@ -57,7 +57,7 @@ Educational content and thought leadership through YouTube channels and multimed
 
 ### For Performing Artists: Elevate Your Skills & Career Potential
 
-**The Opportunity:** Artists who embrace technology and business literacy see an average **40% increase in income** and **90% improvement in career sustainability**.
+**Our Core Belief:** The most successful artists of the next decade will be those who combine their creative talent with technological literacy and business acumen. We exist to make those skills accessible.
 
 **How CENIE Helps:**
 
@@ -66,52 +66,52 @@ Educational content and thought leadership through YouTube channels and multimed
 - Develop business acumen for freelance success and entrepreneurship
 - Connect with a global community of forward-thinking artists
 
-**Success Story:** Maria, a contemporary dancer from Madrid, increased her annual income from $28,000 to $42,000 within 18 months of completing CENIE's technology and business literacy programs. She now teaches internationally via digital platforms and has launched her own online choreography studio.
+**This Path is for You If...** You're a talented dancer in Madrid who wants to build an international online presence, a recent theatre graduate in Bogotá needing to understand project budgets, or an actor in New York looking to leverage AI for auditioning. We provide the practical skills that complement your artistic training.
 
-**[Start Your Transformation →](/skills/)**
+**[Explore the Skills Pathway →](/skills/)**
 
 ### For Creative Professionals: Innovate Your Art with Technology
 
-**The Opportunity:** Artists and directors using AI-enhanced creative tools report **60% faster development cycles** and **unprecedented creative breakthroughs**.
+**Our Core Belief:** Technology should not replace human creativity, but amplify it. When used with intention, AI, AR/VR, and other emerging tools can unlock unprecedented artistic possibilities.
 
 **How CENIE Helps:**
 
 - Access state-of-the-art innovation labs and residency programs
-- Use Stoomp's AI video analysis to refine performances with precision
+- Use AI video analysis tools to refine performances with precision
 - Integrate emerging technologies into your artistic practice
 - Collaborate with technologists who understand artistic vision
 
-**Success Story:** The Barcelona Contemporary Theater Collective used CENIE's Creative Development Hub to integrate AI choreography tools into their latest production, reducing rehearsal time by 40% while achieving their most critically acclaimed work to date.
+**This Path is for You If...** You're a choreographer curious about generative AI as a creative partner, a director looking to integrate interactive visuals into a live performance, or a collective wanting to explore the future of digital theatre. We provide the sandbox and the tools for you to build what's next.
 
-**[Explore Innovation Opportunities →](/innovate/)**
+**[Explore the Innovation Pathway →](/innovate/)**
 
 ### For Industry Professionals: Optimize Your Production Processes
 
-**The Opportunity:** Organizations implementing CENIE's optimization solutions achieve **30% reduction in production timelines** and **significant cost savings** through workflow automation.
+**Our Core Belief:** Operational excellence frees up resources for what truly matters: creating impactful art. By streamlining workflows, we can make the entire industry more sustainable and resilient.
 
 **How CENIE Helps:**
 
-- Streamline productions with qAderno's collaborative management platform
-- Accelerate casting and talent discovery through Platea's matching algorithms
-- Implement custom AI automation for repetitive administrative tasks
-- Receive strategic consulting for digital transformation
+- Streamline productions with collaborative management platforms
+- Accelerate casting and talent discovery through matching algorithms
+- Implement custom AI automation to reduce administrative overhead
+- Receive strategic consulting for an efficient digital transformation
 
-**Success Story:** Teatro Nacional reduced their production planning time from 6 weeks to 10 days using qAderno, while simultaneously improving team communication and reducing coordination errors by 85%.
+**This Path is for You If...** You're a production manager for a national theatre tired of coordinating via endless email chains, an artistic director needing a more efficient casting process, or an organization looking to digitize archives and streamline operations. We build the infrastructure that lets you focus on the art.
 
 **[Optimize Your Operations →](/optimize/)**
 
 ### For Researchers & Academics: Explore Cutting-Edge Insights
 
-**The Opportunity:** Access to CENIE's research network opens doors to **international collaborations**, **enhanced publication opportunities**, and **AI-ready content development**.
+**Our Core Belief:** The future of performing arts scholarship is digital, accessible, and interconnected. By integrating research with AI, we can accelerate discovery and bridge the gap between theory and practice.
 
 **How CENIE Helps:**
 
 - Publish through our AI-enhanced academic division with global reach
 - Access comprehensive methodology libraries and research databases
-- Contribute to developing AI-ready content models for performing arts
-- Connect with researchers worldwide through our knowledge-sharing platform
+- Contribute to developing new, AI-ready content models for performing arts
+- Connect with scholars and practitioners through our knowledge-sharing platform
 
-**Success Story:** Dr. Carlos Mendoza's research on movement analysis, published through CENIE's Academic Publishing Division, has been cited 300% more frequently than his previous work, leading to three international research collaborations.
+**This Path is for You If...** You're a scholar whose vital research is trapped behind traditional paywalls, a PhD student seeking innovative digital tools for your dissertation, or a professor who wants to see your work have a more immediate impact on the field. We are building the future of scholarly communication.
 
 **[Access Research Resources →](/insights/)**
 
@@ -137,28 +137,16 @@ We're the first platform to provide cutting-edge performing arts methodologies a
 
 Our methodologies are backed by research and proven outcomes. We track success metrics and continuously refine our approaches based on real-world results.
 
-## Proven Impact: Real Results for Real Artists and Organizations
+## Our Founding Principles: The CENIE Promise
 
-### Individual Artist Outcomes
+ENIE is a new initiative, but it is built on a lifetime of experience. Our approach is grounded in three core principles that guide everything we do.
 
-- **40% average income increase** within 18 months
-- **90% improvement in technology proficiency**
-- **75% of graduates** report enhanced creative satisfaction
-- **60% career advancement rate** among program participants
-
-### Organizational Impact
-
-- **30% reduction** in production timelines
-- **85% improvement** in team collaboration metrics  
-- **50% cost savings** through process optimization
-- **95% client satisfaction** rate for consulting services
-
-### Global Community Growth
-
-- **15,000+ artists** in our international network
-- **50+ countries** represented in our community
-- **12 languages** supported across our platforms
-- **200+ successful projects** facilitated through our programs
+1. Grounded in Expertise, Driven by Experience
+CENIE was not conceived in a boardroom. It was born from over 30 years of professional experience as a performing artist, a PhD-level academic, and a university professor who has guided thousands of students into their careers. I have lived the challenges our community faces, and I have dedicated my parallel career in technology to building the solutions I wish I had. Our methodologies are rooted in both academic rigor and real-world, on-the-stage practice.
+2. Artist-Centric by Design
+We believe technology must serve the artist, not the other way around. Every tool we build, every course we design, and every resource we publish is evaluated through a single lens: Does this empower human creativity? Our commitment is to amplify the artist's voice and vision, ensuring that technology remains a powerful tool in the hands of the creator.
+3. A Commitment to Evidence and Evolution
+While we are at the beginning of our journey, we are deeply committed to an evidence-based approach. We will transparently track and share the outcomes of our programs. We will build our success stories with our community, not for them. We invite you to join us in this mission, to contribute to our research, and to help us build the case studies that will define the next generation of the performing arts. This is our promise to you.
 
 ## Choose Your Path Forward
 
@@ -231,7 +219,7 @@ Not at all. Our programs are designed to meet you wherever you are in your techn
 
 ### How does CENIE differ from other online education platforms?
 
-CENIE is the only platform specifically designed by performing arts professionals for the performing arts community. Our content addresses the unique challenges and opportunities facing artists and arts organizations, with culturally relevant examples and practical applications.
+CENIE is an integrated ecosystem, not just a course library. Our key difference is the founder's deep, authentic expertise in both performing arts and technology. Our content is specifically designed for the artistic mind, bridging the gap between theory and practice in a way generic platforms cannot.
 
 ### Is CENIE available in Spanish?
 
@@ -239,7 +227,7 @@ Yes! CENIE is committed to serving the global Spanish-speaking arts community. W
 
 ### What kind of results can I expect?
 
-Based on our tracked outcomes, artists typically see a 40% income increase and 90% improvement in technology proficiency within 18 months. Organizations report 30% faster production timelines and significant cost savings through our optimization solutions.
+Our programs are designed to equip you with the tangible skills and strategic knowledge needed to build a more sustainable and innovative career. While individual results vary, our goal is to provide you with the tools and mindset to increase your opportunities, enhance your creative potential, and navigate the industry with greater confidence. We are committed to tracking and sharing success metrics as our community grows.
 
 ### How do I get started?
 

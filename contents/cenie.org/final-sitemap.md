@@ -9,7 +9,7 @@ This sitemap is based primarily on Gladys's outcome-focused navigation structure
 
 ## Primary Navigation Structure
 
-### 1. Elevate Your Skills
+### 1. (Learn) Elevate Your Skills
 
 **URL:** `/learn/`  
 **Target Audiences:** Performing Artists, Educators  
@@ -18,17 +18,28 @@ This sitemap is based primarily on Gladys's outcome-focused navigation structure
 
 #### Sub-Navigation
 
-- **Courses for Artists** - `/skills/courses/`
-  - Academy programs in technology, finance, business skills
-  - Specialized education for career advancement
-- **Training Methodologies** - `/skills/training-methodologies/`
-  - Training Exchange Hub resources
-  - Evidence-based techniques for performers and trainers
-- **Tech & Business Literacy** - `/skills/tech-business-literacy/`
-  - Bridge educational gaps in technology and business
-  - Skills beyond traditional arts training
+- /learn/courses/ (The Course Catalog):
+  - This is where the detailed information from your original draft will live.
+  - It should feature the different tracks (Technology Literacy, Business Skills).
+  - Each course should be a "card" with a brief description, duration, and a "Learn More" button.
+  - The "Complete Artist Entrepreneur" program should be featured prominently at the top.
+  - This page should also include a section on Financial Assistance and the Program Comparison Table.
+- /learn/courses/[course-name]/ (Individual Course Sales Pages):
+  - Each course needs its own detailed landing page. This is where you do the "hard sell."
+  - Content should include: Who this course is for, what you will learn (learning outcomes), course modules, instructor bio, student testimonials (once you have them), format, schedule, price, and a clear enrollment CTA.
+- /learn/training-methodologies/ (The Hub Page):
+  - This page expands on the mission of the Training Exchange Hub.
+  - It should feature articles and resources on pedagogy, evidence-based practices, and research in arts education.
+  - It should have a clear CTA for educators and researchers to "Contribute Your Methodology" or "Join the Research Community."
+- /learn/resources/ (Free Resources & Lead Magnets):
+  - This is a crucial page for top-of-funnel lead generation.
+  - It should house your free tutorials, downloadable templates, checklists, and links to register for free workshops.
+  - Every resource should be a lead magnet that requires an email address for access, tagging the user for the Academy funnel.
+- /learn/assessment/ (The Skills Assessment Tool):
+  - A simple quiz (e.g., using Typeform or a similar tool) that asks users about their confidence levels in tech, finance, marketing, etc.
+  - Based on their answers, it directs them to the most relevant course or resource, providing a personalized and highly effective user journey.
 
-### 2. Innovate Your Art
+### 2. (Innovate) Your Art
 
 **URL:** `/innovate/`  
 **Target Audiences:** Artists, Choreographers, Directors, Researchers  
@@ -37,17 +48,23 @@ This sitemap is based primarily on Gladys's outcome-focused navigation structure
 
 #### Sub-Navigation
 
-- **Creative Development Labs** - `/innovate/creative-labs/`
-  - Creative Hub residencies and innovation spaces
-  - Support for developing new artistic works
-- **Performance Analysis Tools** - `/innovate/performance-analysis/`
-  - Stoomp video analysis platform
-  - Collaborative performance development tools
-- **Technology Integration** - `/innovate/technology-integration/`
-  - AI and digital technology in performance
-  - Creative Hub and Automation Agency consulting
+- /innovate/performance-analysis/ (The Stoomp Sales Page):
+  - This is the primary landing page for the Stoomp software. It should be treated like a classic SaaS product page.
+  - Content: Headline focused on the core benefit (e.g., "See Your Performance with Unprecedented Clarity"). Features (Movement Quality, Timing Analysis, etc.). Use "Archetype Scenarios" instead of case studies: "Imagine a ballet company reducing injuries..." or "Picture a director improving ensemble timing...". A feature comparison table is excellent here. A very clear CTA to "Start Free Trial."
+- /innovate/creative-labs/ (The Programs Page):
+  - This page details the concept of the Creative Development Hub.
+  - Instead of listing priced residencies, frame them as "Our Program Tracks."
+  - Innovation Workshops: Describe the short, introductory workshops. CTA: "See Upcoming Workshops."
+  - Collaborative Labs: Describe the concept of bringing artists and technologists together for project-based work. CTA: "Join the Waitlist for Our Next Lab."
+  - Artist Residencies (Future Offering): Describe the vision for the residency program. CTA: "Sign up for updates and be the first to know when applications open for our beta cohort." This is honest and builds anticipation.
+  - This page should focus on the process and philosophy of innovation at CENIE.
+- /innovate/technology-integration/ (The Consulting Services Page):
+  - This page is for B2B lead generation (artists or organizations with a specific need).
+  - Clearly outline the types of services offered (Individual Artist Consulting, Organizational Transformation).
+  - Instead of ROI stats, use benefit-driven language: "What could you achieve with a more efficient workflow?" or "Unlock new creative potential with expert guidance."
+  - The primary CTA should be soft and consultative: "Schedule a Free Innovation Consultation" to discuss their project.
 
-### 3. Optimize Your Process
+### 3. (Optimize) Your Process
 
 **URL:** `/optimize/`  
 **Target Audiences:** Industry Professionals, Producers, Directors, Managers  
@@ -56,20 +73,26 @@ This sitemap is based primarily on Gladys's outcome-focused navigation structure
 
 #### Sub-Navigation
 
-- **Production Collaboration** - `/optimize/production-collaboration/`
-  - qAderno production management system
-  - Team collaboration tools for theatrical productions
-- **AI Automation Solutions** - `/optimize/ai-automation/`
-  - Automation Agency services
-  - AI/ML solutions for production and administration
-- **Talent Discovery Platform** - `/optimize/talent-discovery/`
-  - Platea talent matchmaking platform
-  - Casting and talent connection solutions
-- **Workflow Consulting** - `/optimize/workflow-consulting/`
-  - Strategic consulting for digital transformation
-  - Custom process optimization
+- /optimize/production-collaboration/ (The qAderno Product Page):
+  - This is the sales page for qAderno.
+  -Focus on the core benefits/outcomes: "Centralize Communication," "Master Your Budget," "Simplify Scheduling."
+  -Instead of an exhaustive feature list, use visuals and short descriptions to highlight the experience of using the platform.
+  -Use a "Principle-Based Scenario": "Imagine your next production where every team member, from the director to the stagehand, has real-time access to the latest schedule and designs, all on their phone. That's the clarity qAderno provides."
+  -CTA: "Schedule a Demo" or "Start a Free Trial" (when ready).
+- /optimize/talent-discovery/ (The Platea Product Page):
+  - The sales page for Platea.
+  - Focus on benefits like "Discover Diverse Talent Beyond Your Network," "Streamline Your Audition Process," and "Make Data-Informed Casting Decisions."
+  -Explain the concept of the matching algorithm in simple terms, focusing on how it helps find better artistic fits.
+  -CTA: "Schedule a Demo" or "Join the Beta for Casting Directors."
+- /optimize/workflow-consulting/ (The Agency Services Page):
+  - This is the lead-gen page for your consulting services.
+  - Outline your process: "1. Operational Assessment, 2. Strategic Roadmap, 3. Implementation Support." This builds trust by showing you have a structured approach.
+  - Use benefit-driven language to describe service categories ("Administrative Process Automation," "Marketing Automation").
+  - The primary CTA must be soft and consultative: "Book a Free Automation Assessment."
+- /optimize/demo/ & /optimize/automation-assessment/ (Lead Capture Pages):
+  - These are simple landing pages with a form to schedule a demo or consultation. They are the conversion points for this entire section of the site.
 
-### 4. Explore Insights
+### 4. (Explore) Insights
 
 **URL:** `/insights/`  
 **Target Audiences:** Researchers, Academics, Students, Practitioners  
