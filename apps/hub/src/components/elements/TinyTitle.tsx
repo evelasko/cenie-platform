@@ -6,15 +6,17 @@ export default function TinyTitle({
   text,
   icon,
   className,
+  variant = 'dark',
 }: {
   text: string
   icon?: React.ReactNode
   className?: string
+  variant?: 'light' | 'dark'
 }) {
   return (
     <div className={SubframeUtils.twClassNames('flex w-full items-start', className)}>
       <IconWithBackground
-        variant="dark"
+        variant={variant}
         size="x-small"
         icon={icon || <Plus className="size-3 lg:size-4" />}
         square={false}
