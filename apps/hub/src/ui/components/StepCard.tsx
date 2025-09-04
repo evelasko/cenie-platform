@@ -7,7 +7,7 @@
 import React from 'react'
 import * as SubframeUtils from '../utils'
 
-interface StepCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StepCardRootProps extends React.HTMLAttributes<HTMLDivElement> {
   image?: string
   label?: React.ReactNode
   variant?: 'default' | 'step-1' | 'step-2' | 'step-3' | 'step-4'

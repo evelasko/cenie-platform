@@ -7,21 +7,18 @@ import DarkSection from '../components/layouts/DarkSection'
 import { motion, useScroll, useTransform, easeOut, easeInOut } from 'framer-motion'
 import { useRef } from 'react'
 import clsx from 'clsx'
-import ImageCard from '../components/cards/ImageCard'
 import TinyTitle from '../components/elements/TinyTitle'
-import OverImageContent from '../components/elements/OverImageContent'
-import NoiseOverlay from '../components/decorations/NoiseOverlay'
 import { BrandAccordion } from '../ui/components/BrandAccordion'
 import { ButtonThemed } from '../ui/components/ButtonThemed'
 import { FeatherArrowUpRight } from '@subframe/core'
-import { FeatherCircleSmall } from '@subframe/core'
 import Image from 'next/image'
 import Spacer from '../components/layouts/Spacer'
-import { StepCard } from '../ui/components/StepCard'
 import { Button } from '../ui/components/Button'
 import { AccordionFaq } from '../ui/components/AccordionFaq'
+import { DynamicIcon } from 'lucide-react/dynamic'
 import { BulletList } from '../ui/components/BulletList'
 import { BulletListItem } from '../ui/components/BulletListItem'
+import WhatWeDoFor from './widgets/WhatWeDoFor'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -198,7 +195,7 @@ export default function HubHomePage() {
       <div className="page-wrapper">
         {/* Page Content */}
         <Spacer />
-        {/* Problem ================================================== */}
+        {/* Problem =============================================== */}
         <section id="problem">
           <div className="content-wrapper flex flex-col lg:flex-row w-full lg:items-stretch gap-6 lg:gap-8">
             {/* Text Content Column */}
@@ -209,47 +206,37 @@ export default function HubHomePage() {
 
               {/* Challenge List */}
               <BulletList>
-                <BulletListItem>
-                  Economic uncertainty
-                  <span className="text-subtext-color">
-                    {' '}
-                    with traditional funding models under pressure
-                  </span>
-                </BulletListItem>
-
-                <BulletListItem>
-                  Technology gaps
-                  <span className="text-subtext-color">
-                    {' '}
-                    that separate artists from new opportunities
-                  </span>
-                </BulletListItem>
-
-                <BulletListItem>
-                  Educational limitations
-                  <span className="text-subtext-color"> in business and digital literacy</span>
-                </BulletListItem>
-
-                <BulletListItem>
-                  Fragmented resources
-                  <span className="text-subtext-color">
-                    {' '}
-                    across training, creation, and production
-                  </span>
-                </BulletListItem>
-
-                <BulletListItem>
-                  Language barriers
-                  <span className="text-subtext-color">
-                    {' '}
-                    limiting access to cutting-edge methodologies
-                  </span>
-                </BulletListItem>
-
-                <BulletListItem>
-                  Operational inefficiencies
-                  <span className="text-subtext-color"> in production and talent management</span>
-                </BulletListItem>
+                {[
+                  {
+                    heading: 'Economic uncertainty',
+                    details: 'with traditional funding models under pressure',
+                  },
+                  {
+                    heading: 'Technology gaps',
+                    details: 'that separate artists from new opportunities',
+                  },
+                  {
+                    heading: 'Educational limitations',
+                    details: 'in business and digital literacy',
+                  },
+                  {
+                    heading: 'Fragmented resources',
+                    details: 'across training, creation, and production',
+                  },
+                  {
+                    heading: 'Language barriers',
+                    details: 'limiting access to cutting-edge methodologies',
+                  },
+                  {
+                    heading: 'Operational inefficiencies',
+                    details: 'in production and talent management',
+                  },
+                ].map(({ heading, details }) => (
+                  <BulletListItem key={heading}>
+                    {heading}
+                    <span className="text-subtext-color"> {details}</span>
+                  </BulletListItem>
+                ))}
               </BulletList>
             </div>
 
@@ -274,7 +261,7 @@ export default function HubHomePage() {
           </MarginBlock>
         </section>
         <Spacer />
-        {/* Solutions ================================================ */}
+        {/* Solutions ============================================= */}
         <section id="solutions">
           <DarkSection customClass="py-12 lg:py-32">
             <>
@@ -288,539 +275,380 @@ export default function HubHomePage() {
                 </p>
               </MarginBlock>
               <div className="content-wrapper">
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Academy for Specialized Education"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
+                {[
+                  {
+                    heading: 'Academy for Specialized Education',
+                    details:
+                      'Professional development courses in technology, finance, and business skills specifically designed for performing artists. Bridge the gap between traditional arts training and modern career requirements.',
+                    ctaLabel: 'visit the academy',
+                    ctaLink: 'https://academy.cenie.org',
+                    image: '/media/images/image-1.jpg',
+                  },
+                  {
+                    heading: 'Creative Development Hub',
+                    details:
+                      'Innovation labs and residency programs where choreographers and directors can experiment with AI, AR/VR, and emerging technologies in collaborative environments.',
+                    ctaLabel: 'visit the hub',
+                    ctaLink: '',
+                    image: '/media/images/image-1.jpg',
+                  },
+                  {
+                    heading: 'Training Exchange Network',
+                    details:
+                      'Platform for sharing and developing evidence-based methodologies among performing arts educators and trainers worldwide.',
+                    ctaLabel: 'explore the network',
+                    ctaLink: '',
+                    image: '/media/images/image-1.jpg',
+                  },
+                  {
+                    heading: 'Software Suite',
+                    detailsNode: (
+                      <div className="w-full space-y-4">
+                        {[
+                          {
+                            heading: 'Stoomp',
+                            details: 'AI-powered video analysis for performance enhancement',
+                            ctaLink: 'https://stoomp.cenie.org',
+                          },
+                          {
+                            heading: 'qAderno',
+                            details: 'Production management and team collaboration platform',
+                            ctaLink: 'https://qaderno.cenie.org',
+                          },
+                          {
+                            heading: 'Platea',
+                            details: 'Talent discovery and casting optimization platform',
+                            ctaLink: 'https://platea.cenie.org',
+                          },
+                        ].map(({ heading, details, ctaLink }) => (
+                          <div
+                            key={heading}
+                            className="flex gap-3 pb-4 border-b border-neutral-100"
+                          >
+                            <div className="w-full">
+                              <div className="text-body-large text-brand-700 pb-2">{heading}</div>
+                              <div className="text-body-small md:!text-body text-neutral-500">
+                                {details}
+                              </div>
+                            </div>
+                            <ButtonThemed
+                              variant="brand-tertiary"
+                              size="medium"
+                              iconRight={<FeatherArrowUpRight />}
+                              onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
+                                // TODO: Implement onClick
+                                console.log(ctaLink)
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ),
+                    ctaLabel: '',
+                    ctaLink: '',
+                    image: '/media/images/image-1.jpg',
+                  },
+                  {
+                    heading: 'Automation Agency',
+                    details:
+                      'Custom AI and machine learning solutions for production workflows and organizational administration.',
+                    ctaLabel: 'visit the agency',
+                    ctaLink: 'https://agency.cenie.org',
+                    image: '/media/images/image-1.jpg',
+                  },
+                  {
+                    heading: 'Research and Development',
+                    details:
+                      'Advanced research and development in performing arts methodologies and technology.',
+                    ctaLabel: 'visit the editorial',
+                    ctaLink: 'https://editorial.cenie.org',
+                    image: '/media/images/image-1.jpg',
+                  },
+                ].map(({ heading, details, image, detailsNode, ctaLabel, ctaLink }) => (
+                  <BrandAccordion
+                    key={heading}
+                    trigger={
+                      <div className="flex w-full items-center gap-2 px-3 py-4">
+                        <div className="flex grow shrink-0 basis-0 flex-col items-start text-display-text-small text-default-font-light">
+                          {heading}
                         </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Academy for Specialized Education
+                        <BrandAccordion.Chevron />
+                      </div>
+                    }
+                    headerImage={image}
+                    headerText={heading}
+                  >
+                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2">
+                      <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 pb-2">
+                        <span className="text-body md:!text-body-large  text-neutral-500">
+                          {details ?? detailsNode}
                         </span>
                       </div>
-                      <BrandAccordion.Chevron />
-                    </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Academy for Specialized Education"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2">
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 pb-2">
-                      <span className="text-body md:!text-body-large  text-neutral-500">
-                        Professional development courses in technology, finance, and business skills
-                        specifically designed for performing artists. Bridge the gap between
-                        traditional arts training and modern career requirements.
-                      </span>
-                    </div>
-                    <div className="flex w-full items-start gap-2 px-6 py-6">
-                      <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
-                      <ButtonThemed
-                        variant="brand-secondary"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      >
-                        VISIT THE ACADEMY
-                      </ButtonThemed>
-                    </div>
-                  </div>
-                </BrandAccordion>
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Creative Development Hub"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
-                        </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Creative Development Hub
-                        </span>
+                      <div className="flex w-full items-start gap-2 px-6 py-6">
+                        <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
+                        <ButtonThemed
+                          variant="brand-secondary"
+                          iconRight={<FeatherArrowUpRight />}
+                          onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
+                            // TODO: Implement onClick
+                            console.log(ctaLink)
+                          }}
+                        >
+                          {ctaLabel}
+                        </ButtonThemed>
                       </div>
-                      <BrandAccordion.Chevron />
                     </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Creative Development Hub"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                    <div className="flex flex-col items-start gap-2">
-                      <span className="text-body-large font-body-large text-subtext-color">
-                        Innovation labs and residency programs where choreographers and directors
-                        can experiment with AI, AR/VR, and emerging technologies in collaborative
-                        environments.
-                      </span>
-                    </div>
-                    <div className="flex w-full items-start gap-2 px-6 py-6">
-                      <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
-                      <ButtonThemed
-                        variant="brand-secondary"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      >
-                        VISIT THE HUB
-                      </ButtonThemed>
-                    </div>
-                  </div>
-                </BrandAccordion>
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Training Exchange Network"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
-                        </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Training Exchange Network
-                        </span>
-                      </div>
-                      <BrandAccordion.Chevron />
-                    </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Training Exchange Network"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                    <div className="flex flex-col items-start gap-2">
-                      <span className="text-body-large font-body-large text-subtext-color">
-                        Platform for sharing and developing evidence-based methodologies among
-                        performing arts educators and trainers worldwide.
-                      </span>
-                    </div>
-                    <div className="flex w-full items-start gap-2 px-6 py-6">
-                      <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
-                      <ButtonThemed
-                        variant="brand-secondary"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      >
-                        VISIT THE HUB
-                      </ButtonThemed>
-                    </div>
-                  </div>
-                </BrandAccordion>
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Software Suite"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
-                        </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Software Suite
-                        </span>
-                      </div>
-                      <BrandAccordion.Chevron />
-                    </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Software Suite"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                    <div className="flex w-full items-center gap-2 border-b border-solid border-neutral-border">
-                      <FeatherCircleSmall className="text-body-large font-body-large text-default-font" />
-                      <div className="flex grow shrink-0 basis-0 flex-wrap items-start gap-2 px-2 py-2">
-                        <span className="text-body-large font-body-large text-brand-700">
-                          Stoomp
-                        </span>
-                        <span className="text-body-large font-body-large text-subtext-color">
-                          AI-powered video analysis for performance enhancement
-                        </span>
-                      </div>
-                      <ButtonThemed
-                        variant="brand-tertiary"
-                        size="small"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      />
-                    </div>
-                    <div className="flex w-full items-center gap-2 border-b border-solid border-neutral-border">
-                      <FeatherCircleSmall className="text-body-large font-body-large text-default-font" />
-                      <div className="flex grow shrink-0 basis-0 flex-wrap items-start gap-2 px-2 py-2">
-                        <span className="text-body-large font-body-large text-brand-700">
-                          Cuaderno
-                        </span>
-                        <span className="text-body-large font-body-large text-subtext-color">
-                          Production management and team collaboration platform
-                        </span>
-                      </div>
-                      <ButtonThemed
-                        variant="brand-tertiary"
-                        size="small"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      />
-                    </div>
-                    <div className="flex w-full items-center gap-2">
-                      <FeatherCircleSmall className="text-body-large font-body-large text-default-font" />
-                      <div className="flex grow shrink-0 basis-0 flex-wrap items-start gap-2 px-2 py-2">
-                        <span className="text-body-large font-body-large text-brand-700">
-                          Platea
-                        </span>
-                        <span className="text-body-large font-body-large text-subtext-color">
-                          Talent discovery and casting optimization platform
-                        </span>
-                      </div>
-                      <ButtonThemed
-                        variant="brand-tertiary"
-                        size="small"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      />
-                    </div>
-                    <div className="flex h-px w-full flex-none flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                  </div>
-                </BrandAccordion>
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Automation Agency"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
-                        </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Automation Agency
-                        </span>
-                      </div>
-                      <BrandAccordion.Chevron />
-                    </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Automation Agency"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start">
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                      <span className="text-body-large font-body-large text-subtext-color">
-                        Custom AI and machine learning solutions for production workflows and
-                        organizational administration.
-                      </span>
-                    </div>
-                    <div className="flex w-full items-start gap-2 px-6 py-6">
-                      <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
-                      <ButtonThemed
-                        variant="brand-secondary"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      >
-                        VISIT THE AGENCY
-                      </ButtonThemed>
-                    </div>
-                  </div>
-                </BrandAccordion>
-                <BrandAccordion
-                  trigger={
-                    <div className="flex w-full items-center gap-2 px-3 py-4">
-                      <div className="flex grow shrink-0 basis-0 flex-col items-start">
-                        <div className="flex items-start">
-                          <Image
-                            width={144}
-                            height={144}
-                            className="hidden grow shrink-0 basis-0 rounded-md"
-                            src="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                            alt="Academic Publishing Division"
-                          />
-                          <div className="hidden h-px flex-col items-center gap-2 bg-transparent px-12 py-12" />
-                        </div>
-                        <div className="hidden w-full flex-col items-center gap-2 bg-transparent px-2 py-2" />
-                        <span className="w-full text-display-text-small font-display-text-small text-default-font-light">
-                          Academic Publishing Division
-                        </span>
-                      </div>
-                      <BrandAccordion.Chevron />
-                    </div>
-                  }
-                  headerImage="/media/images/default/zhgLgjCtsbVWTYRQuFeBf3XoW6c.jpg"
-                  headerText="Academic Publishing Division"
-                >
-                  <div className="flex w-full grow shrink-0 basis-0 flex-col items-start">
-                    <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-2">
-                      <span className="text-body-large font-body-large text-subtext-color">
-                        Digital-first scholarly publishing with AI integration and Spanish-language
-                        translations, making research more accessible and actionable.
-                      </span>
-                    </div>
-                    <div className="flex w-full items-start gap-2 px-6 py-6">
-                      <div className="flex h-0 grow shrink-0 basis-0 flex-col items-center gap-2 bg-neutral-border" />
-                      <ButtonThemed
-                        variant="brand-secondary"
-                        iconRight={<FeatherArrowUpRight />}
-                        onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}
-                      >
-                        VISIT THE EDITORIAL
-                      </ButtonThemed>
-                    </div>
-                  </div>
-                </BrandAccordion>
+                  </BrandAccordion>
+                ))}
               </div>
             </>
           </DarkSection>
         </section>
         <Spacer />
-        {/* Success Story ============================================ */}
-        <section id="success-story-for-artists">
-          <MarginBlock header={<TinyTitle text="Success Story" />}>
-            <div className="flex flex-col items-start gap-6 pr-6 pt-6 pb-12">
-              <div className="flex flex-wrap items-start gap-2">
-                <span className="text-display-text-extra-large text-default-font">
-                  For performing artists:
-                </span>
-                <span className="text-display-text-extra-large text-subtext-color">
-                  Elevate Your Skills &amp; Career Potential
-                </span>
-              </div>
-              <div className="text-body">
-                The Opportunity: Artists who embrace technology and business literacy see an average
-                40% increase in income and 90% improvement in career sustainability.
-              </div>
-              <span className="text-display-text-extra-large text-subtext-color">how we help:</span>
-            </div>
-          </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
-            <StepCard
-              image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
-              label="Master essential technology skills through specific training programs"
-              variant="step-1"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
-              label="Access AI-powered tools that enhance your creative process"
-              variant="step-2"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
-              label="Develop business acumen for freelance success and entrepreneurship"
-              variant="step-3"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
-              label="Connect with a global community of forward-thinking artists"
-              variant="step-4"
-              className="lg:h-full"
-            />
-          </div>
-          <div className="py-12" />
-          <NoiseOverlay
-            className="w-full aspect-[4/3] md:aspect-[4/3] max-md:aspect-[3/4] radius-lg z-30"
-            contentAboveNoise={
-              <OverImageContent
-                heading="Success Story"
-                details="Maria, a contemporary dancer from Madrid, increased her annual income from $28,000 to $42,000 within 18 months of completing CENIE's technology and business literacy programs. She now teaches internationally via digital platforms and has launched her own online choreography studio."
-                ctaTitle="Start your transformation"
-                ctaButtonLabel="Visit our Skills Section"
-                onClick={() => {
-                  console.log('clicked')
-                }}
-              />
-            }
+        {/* What we do for artists ================================ */}
+        <section id="what-we-do-for-artists">
+          <WhatWeDoFor
+            heading={['For Performing Artists:', 'elevate your skills & career potential']}
+            details="The most successful artists of the next decade will be those who combine their creative talent with technological literacy and business acumen. We exist to make those skills accessible."
+            steps={[
+              {
+                image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f',
+                label: 'Master essential technology skills through specific training programs',
+              },
+              {
+                image:
+                  'https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg',
+                label: 'Access AI-powered tools that enhance your creative process',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+                label: 'Develop business acumen for freelance success and entrepreneurship',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0',
+                label: 'Connect with a global community of forward-thinking artists',
+              },
+            ]}
+            explanation="You're a talented dancer who wants to build an international online presence, a recent theatre graduate needing to understand project budgets, or an actor looking to leverage AI for auditioning. We provide the practical skills that complement your artistic training."
+            underExplanation="We provide the practical skills that complement your artistic training."
+            ctaTitle="Explore the Skills Pathway"
+            ctaLabel="Visit our Skills Section"
+            ctaLink="todo" // TODO: Add link
+            image="/media/images/image-1.jpg"
+            imageAlt="Success story background"
+          />
+        </section>
+        <Spacer />
+        {/* What we do for creatives ============================== */}
+        <section id="what-we-do-for-creatives">
+          <WhatWeDoFor
+            heading={['For Creative Professionals:', 'innovate your art with technology']}
+            details="Technology should not replace human creativity, but amplify it. When used with intention, AI, AR/VR, and other emerging tools can unlock unprecedented artistic possibilities."
+            steps={[
+              {
+                image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f',
+                label: 'Access state-of-the-art innovation labs and residency programs',
+              },
+              {
+                image:
+                  'https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg',
+                label: 'Use AI video analysis tools to refine performances with precision',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+                label: 'Integrate emerging technologies into your artistic practice',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0',
+                label: 'Collaborate with technologists who understand artistic vision',
+              },
+            ]}
+            explanation="You're a choreographer curious about generative AI as a creative partner, a director looking to integrate interactive visuals into a live performance, or a collective wanting to explore the future of digital theatre. We provide the sandbox and the tools for you to build what's next."
+            underExplanation="We provide the sandbox and the tools for you to build what's next."
+            ctaTitle="Explore the Innovation Pathway"
+            ctaLabel="Visit our Innovation Section"
+            ctaLink="todo" // TODO: Add link
+            image="/media/images/image-1.jpg"
+            imageAlt="Success story background"
+          />
+        </section>
+        <Spacer />
+        {/* What we do for professionals ========================== */}
+        <section id="what-we-do-for-professionals">
+          <WhatWeDoFor
+            heading={['For Industry Professionals:', 'optimize your production processes']}
+            details="Operational excellence frees up resources for what truly matters: creating impactful art. By streamlining workflows, we can make the entire industry more sustainable and resilient."
+            steps={[
+              {
+                image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f',
+                label: 'Streamline productions with collaborative management platform',
+              },
+              {
+                image:
+                  'https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg',
+                label: 'Accelerate casting and talent discovery through matching algorithms',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+                label: 'Implement custom AI automation for repetitive administrative tasks',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0',
+                label: 'Receive strategic consulting for digital transformation',
+              },
+            ]}
+            explanation="You're a production manager for a national theatre tired of coordinating via endless email chains, an artistic director needing a more efficient casting process, or an organization looking to digitize archives and streamline operations. We build the infrastructure that lets you focus on the art."
+            underExplanation="We build the infrastructure that lets you focus on the art."
+            ctaTitle="Explore the Optimization Pathway"
+            ctaLabel="Visit our Optimization Section"
+            ctaLink="todo" // TODO: Add link
+            image="/media/images/image-1.jpg"
+            imageAlt="Success story background"
+          />
+        </section>
+        <Spacer />
+        {/* What we do for researchers ============================ */}
+        <section id="what-we-do-for-researchers">
+          <WhatWeDoFor
+            heading={['For Researchers &amp; Academics:', 'explore cutting-edge insights']}
+            details="The future of performing arts scholarship is digital, accessible, and interconnected. By integrating research with AI, we can accelerate discovery and bridge the gap between theory and practice."
+            steps={[
+              {
+                image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f',
+                label: 'Publish through our AI-enhanced academic division with global reach',
+              },
+              {
+                image:
+                  'https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg',
+                label: 'Access comprehensive methodology libraries and research databases',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+                label: 'Contribute to developing AI-ready content models for performing arts',
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0',
+                label: 'Connect with researchers worldwide through our sharing platform',
+              },
+            ]}
+            explanation="You're a researcher looking to integrate AI into your work, an academic seeking to develop new methodologies, or an institution wanting to digitize archives and streamline operations. We provide the tools and resources to make your research more efficient and impactful."
+            underExplanation="We provide the tools and resources to make your research more efficient and impactful."
+            ctaTitle="Explore the Research Pathway"
+            ctaLabel="Visit our Research Section"
+            ctaLink="todo" // TODO: Add link
+            image="/media/images/image-1.jpg"
+            imageAlt="Success story background"
           >
-            <ImageCard
-              src="/media/images/image-1.jpg"
-              alt="Image 1"
-              variant="clean"
-              diableContentAnimation
-            />
-          </NoiseOverlay>
+            <MarginBlock header={<div />}>
+              <div className="flex grow shrink-0 basis-0 flex-col items-start gap-6 pr-6 pt-6 pb-12">
+                <span className="w-full text-display-text-large text-subtext-color">
+                  Access research resources
+                </span>
+                <Button
+                  onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
+                    // TODO: Implement onClick
+                    console.log('ctaLink')
+                  }}
+                >
+                  Visit our Insights Section
+                </Button>
+              </div>
+            </MarginBlock>
+          </WhatWeDoFor>
+          <div className="py-12" />
         </section>
         <Spacer />
-        {/* Success Story for Creatives ============================== */}
-        <section id="success-story-for-creatives">
-          <MarginBlock header={<TinyTitle text="Success Story" />}>
-            <div className="flex flex-col items-start gap-6 pr-6 pt-6 pb-12">
-              <div className="flex flex-wrap items-start gap-2">
-                <span className="text-display-text-extra-large font-display-text-extra-large text-default-font">
-                  For Creative Professionals:
-                </span>
-                <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                  Innovate Your Art with Technology
-                </span>
-              </div>
-              <span className="text-body-large font-body-large text-default-font">
-                The Opportunity: Artists and directors using AI-enhanced creative tools report 60%
-                faster development cycles and unprecedented creative breakthroughs.
-              </span>
-              <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                how we help:
-              </span>
-            </div>
-          </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
-            <StepCard
-              image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
-              label="Access state-of-the-art innovation labs and residency programs"
-              variant="step-1"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
-              label="Use Stoomp's AI video analysis to refine performances with precision"
-              variant="step-2"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
-              label="Integrate emerging technologies into your artistic practice"
-              variant="step-3"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
-              label="Collaborate with technologists who understand artistic vision"
-              variant="step-4"
-              className="lg:h-full"
-            />
-          </div>
-        </section>
-        <Spacer />
-        {/* Success Story for Professionals ========================== */}
-        <section id="success-story-for-professionals">
-          <MarginBlock header={<TinyTitle text="Success Story" />}>
-            <div className="flex flex-col items-start gap-6 pr-6 pt-6 pb-12">
-              <div className="flex flex-wrap items-start gap-2">
-                <span className="text-display-text-extra-large font-display-text-extra-large text-default-font">
-                  For Industry Professionals:
-                </span>
-                <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                  Optimize Your Production Processes
-                </span>
-              </div>
-              <span className="text-body-large font-body-large text-default-font">
-                The Opportunity: Organizations implementing CENIE&#39;s optimization solutions
-                achieve 30% reduction in production timelines and significant cost savings through
-                workflow automation.
-              </span>
-              <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                how we help:
-              </span>
-            </div>
-          </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
-            <StepCard
-              image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
-              label="Streamline productions with qAderno's collaborative management platform"
-              variant="step-1"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
-              label="Accelerate casting and talent discovery through Platea's matching algorithms"
-              variant="step-2"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
-              label="Implement custom AI automation for repetitive administrative tasks"
-              variant="step-3"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
-              label="Receive strategic consulting for digital transformation"
-              variant="step-4"
-              className="lg:h-full"
-            />
-          </div>
-        </section>
-        <Spacer />
-        {/* Success Story for Researchers ============================ */}
-        <section id="success-story-for-researchers">
-          <MarginBlock header={<TinyTitle text="Success Story" />}>
-            <div className="flex flex-col items-start gap-6 pr-6 pt-6 pb-12">
-              <div className="flex flex-wrap items-start gap-2">
-                <span className="text-display-text-extra-large font-display-text-extra-large text-default-font">
-                  For Researchers &amp; Academics:
-                </span>
-                <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                  Explore Cutting-Edge Insights
-                </span>
-              </div>
-              <span className="text-body-large font-body-large text-default-font">
-                The Opportunity: Access to CENIE&#39;s research network opens doors to international
-                collaborations, enhanced publication opportunities, and AI-ready content
-                development.
-              </span>
-              <span className="text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                how we help:
-              </span>
-            </div>
-          </MarginBlock>
-          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
-            <StepCard
-              image="https://images.unsplash.com/photo-1516321497487-e288fb19713f"
-              label="Publish through our AI-enhanced academic division with global reach"
-              variant="step-1"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://res.cloudinary.com/subframe/image/upload/v1755504646/uploads/24215/ugj8o2t8sumcxjtv85lq.jpg"
-              label="Access comprehensive methodology libraries and research databases"
-              variant="step-2"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4"
-              label="Contribute to developing AI-ready content models for performing arts"
-              variant="step-3"
-              className="lg:h-full"
-            />
-            <StepCard
-              image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0"
-              label="Connect with researchers worldwide through our sharing platform"
-              variant="step-4"
-              className="lg:h-full"
-            />
-          </div>
-          <MarginBlock header={<div />}>
-            <div className="flex grow shrink-0 basis-0 flex-col items-start gap-6 pr-6 pt-6 pb-12">
-              <span className="w-full text-display-text-extra-large font-display-text-extra-large text-subtext-color">
-                Access research resources
-              </span>
-              <Button onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {}}>
-                Visit our Insights Section
-              </Button>
-            </div>
-          </MarginBlock>
+        {/* The CENIE Difference ================================== */}
+        <section id="the-cenie-difference">
+          <DarkSection customClass="py-12 lg:py-32">
+            <>
+              <MarginBlock
+                header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" variant="light" />}
+              >
+                <>
+                  <h2 className="text-heading-2">Difference.</h2>
+                  <p className="text-display-text-extra-large text-neutral-500 pt-8">
+                    Why We&apos;re Uniquely Positioned to Transform Your Success
+                  </p>
+                </>
+              </MarginBlock>
+              <MarginBlock
+                header={
+                  <div className="h-full md:flex-col justify-end pr-8 hidden md:flex">
+                    <p className="text-display-text-large pb-4">Discover More</p>
+                    <ButtonThemed
+                      variant="brand-primary"
+                      size="medium"
+                      iconRight={<FeatherArrowUpRight />}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
+                        // TODO: Implement onClick
+                        console.log('ctaLink')
+                      }}
+                    >
+                      Visit our About Section
+                    </ButtonThemed>
+                  </div>
+                }
+              >
+                <>
+                  <div className="w-full grid grid-cols-2 gap-1">
+                    {[
+                      {
+                        heading: 'Deep Performing Arts Expertise',
+                        details:
+                          "Our founders and team come from prestigious performing arts institutions and have decades of experience in theater, dance, and interdisciplinary performance. We understand your challenges because we've lived them.",
+                        icon: 'activity',
+                      },
+                      {
+                        heading: 'Cutting-Edge Technology Integration',
+                        details:
+                          'We partner with leading AI researchers and technology developers to create tools specifically for artistic applications. Our solutions amplify human creativity rather than replace it.',
+                        icon: 'anchor',
+                      },
+                      {
+                        heading: 'Comprehensive Ecosystem Approach',
+                        details:
+                          "Unlike fragmented solutions, CENIE's seven integrated initiatives work together to address every aspect of your professional development and organizational needs.",
+                        icon: 'anchor',
+                      },
+                      {
+                        heading: 'Evidence-Based Results',
+                        details:
+                          'Our methodologies are backed by research and proven outcomes. We track success metrics and continuously refine our approaches based on real-world results.',
+                        icon: 'anchor',
+                      },
+                    ].map(({ heading, details, icon }) => (
+                      <div key={heading} className="bg-neutral-100/50 p-6 rounded-md">
+                        <div className="flex flex-col md:flex-row items-start md:items-center gap-2 pb-4">
+                          <div className="mb-2 md:mb-0">
+                            <DynamicIcon name={icon as any} size={12} color="white" />
+                          </div>
+                          <p className="text-body md:!text-body-large text-default-font-light !font-bold">
+                            {heading}
+                          </p>
+                        </div>
+                        <p className="text-body-small md:!text-body text-neutral-600">{details}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-full md:hidden pt-24">
+                    <p className="text-display-text-large pb-4">Discover More</p>
+                    <ButtonThemed
+                      variant="brand-primary"
+                      size="medium"
+                      iconRight={<FeatherArrowUpRight />}
+                      onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
+                        // TODO: Implement onClick
+                        console.log('ctaLink')
+                      }}
+                    >
+                      Visit our About Section
+                    </ButtonThemed>
+                  </div>
+                </>
+              </MarginBlock>
+            </>
+          </DarkSection>
         </section>
         <Spacer />
         {/* FAQ ===================================================== */}
@@ -872,7 +700,7 @@ export default function HubHomePage() {
                   }
                 >
                   <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-4">
-                    <span className="text-body-large font-body-large text-subtext-color">
+                    <span className="text-body-large text-subtext-color">
                       Not at all. Our programs are designed to meet you wherever you are in your
                       technology journey. We offer everything from basic digital literacy to
                       advanced AI integration, with clear learning pathways for every skill level.
@@ -892,7 +720,7 @@ export default function HubHomePage() {
                   }
                 >
                   <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-4">
-                    <span className="text-body-large font-body-large text-subtext-color">
+                    <span className="text-body-large text-subtext-color">
                       CENIE is the only platform specifically designed by performing arts
                       professionals for the performing arts community. Our content addresses the
                       unique challenges and opportunities facing artists and arts organizations,
@@ -913,7 +741,7 @@ export default function HubHomePage() {
                   }
                 >
                   <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 py-4">
-                    <span className="text-body-large font-body-large text-subtext-color">
+                    <span className="text-body-large text-subtext-color">
                       Based on our tracked outcomes, artists typically see a 40% income increase and
                       90% improvement in technology proficiency within 18 months. Organizations
                       report 30% faster production timelines and significant cost savings through

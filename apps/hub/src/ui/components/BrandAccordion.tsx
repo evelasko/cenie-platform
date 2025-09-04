@@ -29,11 +29,8 @@ const Chevron = React.forwardRef<HTMLDivElement, ChevronProps>(function Chevron(
         )}
         ref={ref}
       >
-        {boolean ? (
-          <FeatherMinus className="text-display-text-small font-display-text-small text-default-font-light" />
-        ) : (
-          <FeatherPlus className="text-display-text-small font-display-text-small text-default-font-light" />
-        )}
+        <FeatherPlus className="text-display-text-small font-display-text-small text-default-font-light group-data-[state=open]/08273c8e:hidden" />
+        <FeatherMinus className="text-display-text-small font-display-text-small text-default-font-light hidden group-data-[state=open]/08273c8e:block" />
       </div>
     </SubframeCore.Collapsible.Chevron>
   )
@@ -122,22 +119,24 @@ const BrandAccordionRoot = React.forwardRef<HTMLDivElement, BrandAccordionRootPr
             ) : null}
           </Trigger>
           <Content>
-            {/* Main content section - only visible when accordion is open */}
+            {/* Main content section - animated open/close */}
             {children ? (
-              <div className="hidden group-data-[state=open]/08273c8e:flex w-full !flex-row items-start gap-4 px-3 py-4 group-data-[state=open]/08273c8e:border-b group-data-[state=open]/08273c8e:border-solid group-data-[state=open]/08273c8e:border-neutral-border">
-                {headerImage && (
-                  <div className="w-[20%] lg:w-[10%] aspect-square flex-shrink-0">
-                    <Image
-                      width={144}
-                      height={144}
-                      className="w-full h-full rounded-sm md:rounded-md object-cover"
-                      src={headerImage}
-                      alt={typeof headerText === 'string' ? headerText : 'Header image'}
-                    />
-                  </div>
-                )}
-                {/* Content takes up remaining space beside the image */}
-                <div className="flex-1 flex flex-col items-start">{children}</div>
+              <div className="overflow-hidden transition-all duration-300 ease-in-out group-data-[state=closed]/08273c8e:max-h-0 group-data-[state=open]/08273c8e:max-h-[2000px] border-b border-solid border-neutral-border">
+                <div className="flex w-full !flex-row items-start gap-4 px-3 py-4 opacity-0 translate-y-2 transition-all duration-300 ease-out delay-75 group-data-[state=open]/08273c8e:opacity-100 group-data-[state=open]/08273c8e:translate-y-0 group-data-[state=closed]/08273c8e:opacity-0 group-data-[state=closed]/08273c8e:translate-y-1">
+                  {headerImage && (
+                    <div className="w-[20%] lg:w-[10%] aspect-square flex-shrink-0">
+                      <Image
+                        width={144}
+                        height={144}
+                        className="w-full h-full rounded-sm md:rounded-md object-cover"
+                        src={headerImage}
+                        alt={typeof headerText === 'string' ? headerText : 'Header image'}
+                      />
+                    </div>
+                  )}
+                  {/* Content takes up remaining space beside the image */}
+                  <div className="flex-1">{children}</div>
+                </div>
               </div>
             ) : null}
           </Content>
