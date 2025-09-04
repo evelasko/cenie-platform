@@ -4,7 +4,7 @@
 import MediaHero from '../components/heroes/MediaHero'
 import MarginBlock from '../components/layouts/MarginBlock'
 import DarkSection from '../components/layouts/DarkSection'
-import { motion, useScroll, useTransform, easeOut, easeInOut } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import clsx from 'clsx'
 import TinyTitle from '../components/elements/TinyTitle'
@@ -42,64 +42,64 @@ export default function HubHomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const revealerRef = useRef<HTMLDivElement>(null)
 
-  // Use global scroll progress for slower-than-scroll animation
-  const { scrollYProgress } = useScroll()
+  // // Use global scroll progress for slower-than-scroll animation
+  // const { scrollYProgress } = useScroll()
 
-  // Define scroll stages for slower reveal animation (80% of scroll to complete)
-  const scrollStages = {
-    initial: 0, // 0% - Animation starts
-    active: 0.3, // 30% - Main transition begins
-    complete: 0.8, // 80% - Reveal completes, content centered
-    normal: 1.0, // 100% - Normal scrolling
-  }
+  // // Define scroll stages for slower reveal animation (80% of scroll to complete)
+  // const scrollStages = {
+  //   initial: 0, // 0% - Animation starts
+  //   active: 0.3, // 30% - Main transition begins
+  //   complete: 0.8, // 80% - Reveal completes, content centered
+  //   normal: 1.0, // 100% - Normal scrolling
+  // }
 
-  // REVEALER ANIMATIONS (the hero component that moves away)
-  // Scale animations: X axis subtle compression, Y axis moderate compression
-  const revealerScaleX = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.complete],
-    [1, 0.55],
-    { ease: easeOut }
-  )
-  const revealerScaleY = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.complete],
-    [1, 0.5],
-    { ease: easeOut }
-  )
+  // // REVEALER ANIMATIONS (the hero component that moves away)
+  // // Scale animations: X axis subtle compression, Y axis moderate compression
+  // const revealerScaleX = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.complete],
+  //   [1, 0.55],
+  //   { ease: easeOut }
+  // )
+  // const revealerScaleY = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.complete],
+  //   [1, 0.5],
+  //   { ease: easeOut }
+  // )
 
-  // Translation: Move revealer up and out of viewport
-  const revealerTranslateY = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.complete],
-    [0, -400], // Move further up to ensure complete exit
-    { ease: easeInOut }
-  )
+  // // Translation: Move revealer up and out of viewport
+  // const revealerTranslateY = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.complete],
+  //   [0, -400], // Move further up to ensure complete exit
+  //   { ease: easeInOut }
+  // )
 
-  // REVEALER-CONTENT ANIMATIONS (the content that gets revealed)
-  // Translation: Start above center, end at center when revealer exits
-  const contentTranslateY = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.complete],
-    [-150, 750], // Start slightly above, end centered
-    { ease: easeOut }
-  )
+  // // REVEALER-CONTENT ANIMATIONS (the content that gets revealed)
+  // // Translation: Start above center, end at center when revealer exits
+  // const contentTranslateY = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.complete],
+  //   [-150, 750], // Start slightly above, end centered
+  //   { ease: easeOut }
+  // )
 
-  // Scale: Subtle zoom-in effect during reveal
-  const contentScale = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.active],
-    [0.85, 1],
-    { ease: easeOut }
-  )
+  // // Scale: Subtle zoom-in effect during reveal
+  // const contentScale = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.active],
+  //   [0.85, 1],
+  //   { ease: easeOut }
+  // )
 
-  // Opacity: Fade in during initial stage
-  const contentOpacity = useTransform(
-    scrollYProgress,
-    [scrollStages.initial, scrollStages.initial + 0.15], // Quick fade-in
-    [0, 1],
-    { ease: easeOut }
-  )
+  // // Opacity: Fade in during initial stage
+  // const contentOpacity = useTransform(
+  //   scrollYProgress,
+  //   [scrollStages.initial, scrollStages.initial + 0.15], // Quick fade-in
+  //   [0, 1],
+  //   { ease: easeOut }
+  // )
 
   return (
     <>
