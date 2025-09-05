@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
-import NoiseOverlay from '../../components/decorations/NoiseOverlay'
-import OverImageSimpleContent from '../../components/elements/OverImageSimpleContent'
-import TinyTitle from '../../components/elements/TinyTitle'
-import MarginBlock from '../../components/layouts/MarginBlock'
-import { StepCard, type StepCardRootProps } from '../../ui/components/StepCard'
+import NoiseOverlay from '../components/decorations/NoiseOverlay'
+import OverImageSimpleContent from '../components/elements/OverImageSimpleContent'
+import TinyTitle from '../components/elements/TinyTitle'
+import MarginBlock from '../components/layouts/MarginBlock'
+import { StepCard, type StepCardRootProps } from '../ui/components/StepCard'
 import Image from 'next/image'
 
 interface WhatWeDoForProps {
