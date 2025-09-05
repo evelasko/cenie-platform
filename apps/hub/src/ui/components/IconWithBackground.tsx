@@ -32,7 +32,7 @@ const IconWithBackgroundRoot = React.forwardRef<HTMLDivElement, IconWithBackgrou
     return (
       <div
         className={SubframeUtils.twClassNames(
-          'group/c5d68c0e flex h-4 w-4 lg:h-5 lg:w-5 items-center justify-center gap-2 rounded-full bg-brand-100',
+          'group/c5d68c0e flex h-4 w-4 lg:h-5 lg:w-5 items-center justify-center gap-2 rounded-full bg-brand-primary',
           {
             'rounded-[4px]': square,
             'h-6 w-6': size === 'small',

@@ -6,10 +6,14 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { footerNavigationItems } from '../../constants/navigation'
 import Link from 'next/link'
+import Spacer from '../layouts/Spacer'
 
 export default function Footer({ className }: { className?: string }) {
   return (
-    <div className={clsx('flex w-full flex-col items-start gap-4 content-wrapper', className)}>
+    <div
+      className={clsx('flex w-full flex-col bg-white items-start gap-4 content-wrapper', className)}
+    >
+      <Spacer />
       <div className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {footerNavigationItems.map((item) => (
           <div className="flex flex-col items-center md:items-start gap-2" key={item.label}>

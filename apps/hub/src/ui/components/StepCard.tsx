@@ -21,7 +21,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
   return (
     <div
       className={SubframeUtils.twClassNames(
-        'group/e5834e3a flex w-full flex-col items-start gap-4 rounded-md bg-neutral-950 px-6 py-6 min-h-0',
+        'group/e5834e3a flex w-full flex-col items-start gap-2 rounded-md bg-neutral-950 px-6 py-6 min-h-0',
         className
       )}
       ref={ref}
@@ -32,7 +32,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
         <div className="flex items-center gap-1">
           <div
             className={SubframeUtils.twClassNames(
-              'flex h-2.5 w-2.5 flex-none flex-col items-center rounded-full bg-neutral-background',
+              'flex h-2 w-2 flex-none flex-col items-center rounded-full bg-neutral-background',
               {
                 'bg-default-font':
                   variant === 'step-4' ||
@@ -44,7 +44,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
           />
           <div
             className={SubframeUtils.twClassNames(
-              'flex h-2.5 w-2.5 flex-none flex-col items-center rounded-full bg-neutral-background',
+              'flex h-2 w-2 flex-none flex-col items-center rounded-full bg-neutral-background',
               {
                 'bg-default-font':
                   variant === 'step-4' || variant === 'step-3' || variant === 'step-2',
@@ -53,7 +53,7 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
           />
           <div
             className={SubframeUtils.twClassNames(
-              'flex h-2.5 w-2.5 flex-none flex-col items-center rounded-full bg-neutral-background',
+              'flex h-2 w-2 flex-none flex-col items-center rounded-full bg-neutral-background',
               {
                 'bg-default-font': variant === 'step-4' || variant === 'step-3',
               }
@@ -61,16 +61,15 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
           />
           <div
             className={SubframeUtils.twClassNames(
-              'flex h-2.5 w-2.5 flex-none flex-col items-center rounded-full bg-neutral-background',
+              'flex h-2 w-2 flex-none flex-col items-center rounded-full bg-neutral-background',
               { 'bg-default-font': variant === 'step-4' }
             )}
           />
         </div>
         <span
-          className={SubframeUtils.twClassNames(
-            'text-button-small font-button-small text-subtext-color',
-            { 'text-subtext-color': variant === 'step-1' }
-          )}
+          className={SubframeUtils.twClassNames('text-button-small text-subtext-color', {
+            'text-subtext-color': variant === 'step-1',
+          })}
         >
           {variant === 'step-4'
             ? '04'
@@ -88,17 +87,17 @@ const StepCardRoot = React.forwardRef<HTMLDivElement, StepCardRootProps>(functio
       <div className="flex w-full flex-row gap-4 px-2 py-2 flex-1 min-h-0">
         {/* Text content - appears first on mobile, second on desktop */}
         {label ? (
-          <div className="order-2 flex-1 min-w-0 text-body-large lg:!text-body-small">
+          <div className="order-2 flex-1 min-w-0 text-body-small lg:!text-body-small">
             <span className="break-words">{label}</span>
           </div>
         ) : null}
 
         {/* Image - appears second on mobile, first on desktop */}
         {image ? (
-          <div className="order-1 flex-none w-14">
+          <div className="order-1 flex-none w-12">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className="w-full md:w-14 rounded-sm aspect-square object-cover"
+              className="w-full md:w-12 rounded-sm aspect-square object-cover"
               src={image}
               alt=""
             />

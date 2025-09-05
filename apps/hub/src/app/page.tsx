@@ -19,6 +19,10 @@ import { DynamicIcon } from 'lucide-react/dynamic'
 import { BulletList } from '../ui/components/BulletList'
 import { BulletListItem } from '../ui/components/BulletListItem'
 import WhatWeDoFor from './widgets/WhatWeDoFor'
+import LightSection from '../components/layouts/LightSection'
+import { IconButton } from '../ui'
+import Link from 'next/link'
+import { CircleArrowRight } from 'lucide-react'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -510,7 +514,7 @@ export default function HubHomePage() {
         {/* What we do for researchers ============================ */}
         <section id="what-we-do-for-researchers">
           <WhatWeDoFor
-            heading={['For Researchers &amp; Academics:', 'explore cutting-edge insights']}
+            heading={['For Researchers & Academics:', 'explore cutting-edge insights']}
             details="The future of performing arts scholarship is digital, accessible, and interconnected. By integrating research with AI, we can accelerate discovery and bridge the gap between theory and practice."
             steps={[
               {
@@ -555,7 +559,6 @@ export default function HubHomePage() {
               </div>
             </MarginBlock>
           </WhatWeDoFor>
-          <div className="py-12" />
         </section>
         <Spacer />
         {/* The CENIE Difference ================================== */}
@@ -563,7 +566,7 @@ export default function HubHomePage() {
           <DarkSection customClass="py-12 lg:py-32">
             <>
               <MarginBlock
-                header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" variant="light" />}
+                header={<TinyTitle text="Why with us" className="mb-4 lg:mb-0" variant="light" />}
               >
                 <>
                   <h2 className="text-heading-2">Difference.</h2>
@@ -597,37 +600,40 @@ export default function HubHomePage() {
                         heading: 'Deep Performing Arts Expertise',
                         details:
                           "Our founders and team come from prestigious performing arts institutions and have decades of experience in theater, dance, and interdisciplinary performance. We understand your challenges because we've lived them.",
-                        icon: 'activity',
+                        icon: 'theater',
                       },
                       {
                         heading: 'Cutting-Edge Technology Integration',
                         details:
                           'We partner with leading AI researchers and technology developers to create tools specifically for artistic applications. Our solutions amplify human creativity rather than replace it.',
-                        icon: 'anchor',
+                        icon: 'bot',
                       },
                       {
                         heading: 'Comprehensive Ecosystem Approach',
                         details:
                           "Unlike fragmented solutions, CENIE's seven integrated initiatives work together to address every aspect of your professional development and organizational needs.",
-                        icon: 'anchor',
+                        icon: 'codesandbox',
                       },
                       {
                         heading: 'Evidence-Based Results',
                         details:
                           'Our methodologies are backed by research and proven outcomes. We track success metrics and continuously refine our approaches based on real-world results.',
-                        icon: 'anchor',
+                        icon: 'chart-no-axes-combined',
                       },
                     ].map(({ heading, details, icon }) => (
                       <div key={heading} className="bg-neutral-100/50 p-6 rounded-md">
                         <div className="flex flex-col md:flex-row items-start md:items-center gap-2 pb-4">
                           <div className="mb-2 md:mb-0">
-                            <DynamicIcon name={icon as any} size={12} color="white" />
+                            <DynamicIcon
+                              name={icon as any}
+                              className="text-neutral-600 w-6 md:w-8 h-6 md:h-8"
+                            />
                           </div>
                           <p className="text-body md:!text-body-large text-default-font-light !font-bold">
                             {heading}
                           </p>
                         </div>
-                        <p className="text-body-small md:!text-body text-neutral-600">{details}</p>
+                        <p className="text-subtitle md:!text-body text-neutral-600">{details}</p>
                       </div>
                     ))}
                   </div>
@@ -642,7 +648,7 @@ export default function HubHomePage() {
                         console.log('ctaLink')
                       }}
                     >
-                      Visit our About Section
+                      About Section
                     </ButtonThemed>
                   </div>
                 </>
@@ -651,7 +657,74 @@ export default function HubHomePage() {
           </DarkSection>
         </section>
         <Spacer />
-        {/* FAQ ===================================================== */}
+        {/* Steps to transform =================================== */}
+        <section id="steps-to-transform">
+          <MarginBlock header={<div />}>
+            <>
+              <p className="text-display-text-extra-large">
+                Ready to Transform
+                <br />
+                <span className="text-subtext-color">Your Artistic Future?</span>
+              </p>
+              <p className="text-display-text-small !font-medium !tracking-tighter pt-12 text-subtext-color">
+                The performing arts industry is evolving rapidly, and the artists and organizations
+                that embrace this transformation{' '}
+                <span className="text-default-font">
+                  will define the next generation of live performance
+                </span>
+                . CENIE provides the tools, knowledge, and community you need to not just adapt to
+                change, <span className="text-default-font">but to lead it.</span>
+              </p>
+            </>
+          </MarginBlock>
+          <div className="w-full items-start gap-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-wrapper">
+            {[
+              [
+                'Assess\nYour Needs',
+                'Use our free online assessment to identify your priority areas for development',
+                '/connect/community/',
+              ],
+              [
+                'Explore\nYour Options',
+                'Dive deep into whichever pathway resonates most with your goals',
+                '/connect/community/',
+              ],
+              [
+                'Connect with Community',
+                'Join our global network of artists and innovators',
+                '/connect/community/',
+              ],
+              [
+                'Start Your Transformation',
+                'Enroll in programs or begin using our tools',
+                '/skills/courses/',
+              ],
+            ].map(([heading, details, ctaLink], index) => (
+              <LightSection key={heading} customClass="!rounded-md p-6">
+                <div className="flex flex-row lg:flex-col items-start gap-2">
+                  <span className="shrink text-heading-1 text-subtext-color">{index + 1}.</span>
+                  <div className="flex grow shrink-0 basis-0 flex-col gap-2">
+                    <span className="text-display-text-large md:!text-caption md:!leading-6 md:!font-extrabold md:!tracking-tighter pt-0 md:!pt-4 lg:!pt-12">
+                      {heading.split('\n').map((line, index) => (
+                        <div key={index} className="whitespace-pre-line">
+                          {line}
+                        </div>
+                      ))}
+                    </span>
+                    <div className="flex flex-row items-center gap-2">
+                      <span className="grow text-body-small">{details}</span>
+                      <Link href={ctaLink} className="shrink-0">
+                        <CircleArrowRight className="text-brand-primary" size={20} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </LightSection>
+            ))}
+          </div>
+        </section>
+        <Spacer />
+        {/* FAQ ================================================== */}
         <section id="faq">
           <div className="w-full flex-wrap items-start gap-2 px-2 py-2 grid grid-cols-1 md:grid-cols-2 content-wrapper">
             <div className="flex flex-col items-start gap-2">
@@ -754,30 +827,50 @@ export default function HubHomePage() {
           </div>
         </section>
         <Spacer />
-        {/* Who we are =============================================== */}
-        <section id="who-we-are">
-          <MarginBlock header={<div />}>
-            <p className="text-display-text-large">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-            </p>
-          </MarginBlock>
+        {/* Newsletter signup ==================================== */}
+        <section id="newsletter-signup">
+          <div className="flex w-full flex-col-reverse sm:flex-row items-start gap-8 sm:gap-16 content-wrapper">
+            <div className="w-full sm:w-1/2">
+              <p className="text-display-text-small !font-medium !tracking-tighter pt-12 md:!pt-1 pr-0 md:pr-12">
+                Stay ahead of the curve with CENIE&apos;s exclusive insights, research findings, and
+                industry updates.{' '}
+                <span className="text-subtext-color">
+                  Our newsletter delivers curated content that matters to performing arts
+                  professionals, helping you make informed decisions and grow your career or
+                  organization.
+                </span>
+              </p>
+            </div>
+            <div className="w-full sm:w-1/2 flex flex-col gap-6">
+              <h3 className="text-heading-3 font-heading-3 text-default-font">
+                Subscribe to our Newsletter
+              </h3>
+              <div className="flex flex-col gap-6 pt-10">
+                <input
+                  type="text"
+                  placeholder="Your name *"
+                  className="w-full bg-transparent border-b border-neutral-500 pb-2 text-body focus:outline-none animate-fade-in-up"
+                />
+                <input
+                  type="email"
+                  placeholder="Email *"
+                  className="w-full bg-transparent border-b border-neutral-500 pb-2 text-body focus:outline-none animate-fade-in-up delay-100"
+                />
+                <ButtonThemed
+                  variant="brand-primary"
+                  className="mt-10 w-fit animate-fade-in-up delay-200"
+                >
+                  Subscribe
+                </ButtonThemed>
+                <p className="text-body-small font-medium animate-fade-in-up delay-300 pt-2">
+                  Join our newsletter and stay updated on the latest trends in performing arts
+                  research and innovation.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
-        <MarginBlock header={<TinyTitle text="Who we are" />}>
-          <p className="text-display-text-large">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-          </p>
-        </MarginBlock>
-        <MarginBlock header={<TinyTitle text="What we do" />}>
-          <p className="text-display-text-large">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-          </p>
-        </MarginBlock>
-
-        <MarginBlock header={<TinyTitle text="What we do" />}>
-          <p className="text-display-text-large">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-          </p>
-        </MarginBlock>
+        <Spacer />
       </div>
     </>
   )

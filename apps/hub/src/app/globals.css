@@ -139,7 +139,7 @@
   --text-display-text-medium-font-weight: 400;
 
   --text-display-text-small-size: clamp(0.975rem, 1.5vw + 0.125rem, 1.375rem); /* 22px max */
-  --text-display-text-small-line-height: clamp(1.25rem, 1.5vw + 0.125rem, 1.5rem); /* 24px max */
+  --text-display-text-small-line-height: clamp(1.25rem, 1.5vw + 0.325rem, 1.75rem); /* 28px max */
   --text-display-text-small-letter-spacing: -0.025em;
   --text-display-text-small-font-weight: 400;
 
@@ -176,7 +176,7 @@
   --text-overtitle-font-weight: 400;
 
   --text-subtitle-size: clamp(0.6875rem, 0.75vw + 0.125rem, 0.875rem); /* 11px min, 14px max */
-  --text-subtitle-line-height: clamp(1.125rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
+  --text-subtitle-line-height: clamp(1rem, 1vw + 0.125rem, 1.25rem); /* 20px max */
   --text-subtitle-letter-spacing: -0.025em;
   --text-subtitle-font-weight: 400;
 
@@ -186,7 +186,7 @@
   --text-overline-font-weight: 400;
 
   --text-caption-size: clamp(1.25rem, 2.5vw + 0.25rem, 1.875rem); /* 30px max */
-  --text-caption-line-height: clamp(1rem, 0.75vw + 0.125rem, 1.25rem); /* 16px min, 20px max */
+  --text-caption-line-height: clamp(1rem, 1.2vw + 0.525rem, 1.75rem); /* 16px min, 20px max */
   --text-caption-letter-spacing: -0.025em;
   --text-caption-font-weight: 400;
 

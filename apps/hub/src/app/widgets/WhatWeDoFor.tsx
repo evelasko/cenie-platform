@@ -57,7 +57,7 @@ export default function WhatWeDoFor({
         ))}
       </div>
       {children ?? (
-        <div className="w-full !pt-1.5 content-wrapper">
+        <div className="w-full !pt-6 md:!pt-1.5 content-wrapper">
           <NoiseOverlay
             className="w-full min-h-[600px] md:min-h-[500px] rounded-md"
             contentAboveNoise={
