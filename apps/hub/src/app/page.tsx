@@ -20,7 +20,6 @@ import { BulletList } from '../ui/components/BulletList'
 import { BulletListItem } from '../ui/components/BulletListItem'
 import WhatWeDoFor from './widgets/WhatWeDoFor'
 import LightSection from '../components/layouts/LightSection'
-import { IconButton } from '../ui'
 import Link from 'next/link'
 import { CircleArrowRight } from 'lucide-react'
 
