@@ -1,5 +1,3 @@
-'use client'
-
 import { AnalyticsProvider } from '@cenie/firebase/analytics'
 import { AuthProvider } from '@cenie/firebase/auth'
 

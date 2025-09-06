@@ -1,6 +1,7 @@
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
+import createNextIntlPlugin from 'next-intl/plugin'
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -46,5 +47,5 @@ const nextConfig = {
     ]
   },
 }
-
-export default nextConfig
+const withNextIntl = createNextIntlPlugin()
+export default withNextIntl(nextConfig)

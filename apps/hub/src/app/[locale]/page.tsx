@@ -1,27 +1,28 @@
 'use client'
 
-// import { type Metadata } from 'next'
-import MediaHero from '../components/heroes/MediaHero'
-import MarginBlock from '../components/layouts/MarginBlock'
-import DarkSection from '../components/layouts/DarkSection'
+import MediaHero from '../../components/heroes/MediaHero'
+import MarginBlock from '../../components/layouts/MarginBlock'
+import DarkSection from '../../components/layouts/DarkSection'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import clsx from 'clsx'
-import TinyTitle from '../components/elements/TinyTitle'
-import { BrandAccordion } from '../ui/components/BrandAccordion'
-import { ButtonThemed } from '../ui/components/ButtonThemed'
+import TinyTitle from '../../components/elements/TinyTitle'
+import { BrandAccordion } from '../../ui/components/BrandAccordion'
+import { ButtonThemed } from '../../ui/components/ButtonThemed'
 import { FeatherArrowUpRight } from '@subframe/core'
 import Image from 'next/image'
-import Spacer from '../components/layouts/Spacer'
-import { Button } from '../ui/components/Button'
-import { AccordionFaq } from '../ui/components/AccordionFaq'
+import Spacer from '../../components/layouts/Spacer'
+import { Button } from '../../ui/components/Button'
+import { AccordionFaq } from '../../ui/components/AccordionFaq'
 import { DynamicIcon } from 'lucide-react/dynamic'
-import { BulletList } from '../ui/components/BulletList'
-import { BulletListItem } from '../ui/components/BulletListItem'
-import WhatWeDoFor from '../widgets/WhatWeDoFor'
-import LightSection from '../components/layouts/LightSection'
+import { BulletList } from '../../ui/components/BulletList'
+import { BulletListItem } from '../../ui/components/BulletListItem'
+import WhatWeDoFor from '../../widgets/WhatWeDoFor'
+import LightSection from '../../components/layouts/LightSection'
 import Link from 'next/link'
 import { CircleArrowRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import richtextSolver from '../../i18n/richtext'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -44,6 +45,7 @@ import { CircleArrowRight } from 'lucide-react'
 export default function HubHomePage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const revealerRef = useRef<HTMLDivElement>(null)
+  const t = useTranslations('home')
 
   // // Use global scroll progress for slower-than-scroll animation
   // const { scrollYProgress } = useScroll()
@@ -150,10 +152,7 @@ export default function HubHomePage() {
           <div className="w-full h-full items-start content-start grid grid-cols-4 pt-4 px-8">
             <div className="col-span-1"></div>
             <div className="col-span-3 text-left mix-blend-exclusion">
-              <p className="text-hero-quote text-white/80">
-                Transform your artistic career with technology that amplifies, never replaces, human
-                creativity
-              </p>
+              <p className="text-hero-quote text-white/80">{t('hero.quote')}</p>
             </div>
             <div className="col-span-1 flex items-end justify-end pt-12 pr-4 lg:pr-8">
               <div className="animate-bounce">
@@ -169,7 +168,7 @@ export default function HubHomePage() {
               </div>
             </div>
             <div className="col-span-3 pt-12 text-left">
-              <p className="text-text-button text-white/80">discover how</p>
+              <p className="text-text-button text-white/80">{t('hero.discover')}</p>
             </div>
           </div>
         </MediaHero>
@@ -187,11 +186,7 @@ export default function HubHomePage() {
       >
         <MarginBlock header={<div />}>
           <p className="text-display-text-extra-large text-default-font">
-            No somos otra app:{' '}
-            <span className="text-subtext-color">
-              CENIE es un ecosistema diseñado por y para la comunidad artística que combina el
-              conocimiento del arte con la innovación tecnológica de vanguardia.
-            </span>
+            {t.rich('mainquote', richtextSolver)}
           </p>
         </MarginBlock>
       </motion.div>
@@ -204,7 +199,7 @@ export default function HubHomePage() {
             {/* Text Content Column */}
             <div className="w-full lg:w-[80%] flex flex-col items-start gap-4">
               <span className="text-display-text-extra-large text-default-font pb-4 lg:pb-8">
-                Performing artists and organizations are navigating unprecedented challenges:
+                {t('problem.title')}
               </span>
 
               {/* Challenge List */}
