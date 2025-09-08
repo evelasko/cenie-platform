@@ -1,58 +1,71 @@
 export const mainNavigationItems = [
-  { label: 'aprende', href: '/aprende' },
-  { label: 'innova', href: '/innova' },
-  { label: 'optimiza', href: '/optimiza' },
-  { label: 'profundiza', href: '/profundiza' },
-  { label: 'acerca', href: '/acerca' },
+  { label: 'aprende', href: '/learn' },
+  { label: 'innova', href: '/innovate' },
+  { label: 'optimiza', href: '/optimize' },
+  { label: 'profundiza', href: '/insights' },
+  { label: 'acerca', href: '/about' },
+  { label: 'conecta', href: '/connect' },
 ]
 
 export const footerNavigationItems = [
   {
     label: 'aprende',
-    href: '/aprende',
+    href: '/learn',
     items: [
-      { label: 'cursos', href: 'aprende/cursos' },
-      { label: 'metodologías', href: 'aprende/metodologias' },
-      { label: 'literacidad', href: 'aprende/literacidad' },
+      { label: 'cursos', href: '/learn/courses' },
+      { label: 'metodologías de formación', href: '/learn/training-methodologies' },
+      { label: 'recursos', href: '/learn/resources' },
+      { label: 'evaluación', href: '/learn/assessment' },
     ],
   },
   {
     label: 'innova',
-    href: '/innova',
+    href: '/innovate',
     items: [
-      { label: 'laboratorios', href: 'innova/laboratorios' },
-      { label: 'analisis', href: 'innova/analisis' },
-      { label: 'integración', href: 'innova/integracion' },
+      { label: 'análisis de rendimiento', href: '/innovate/performance-analysis' },
+      { label: 'laboratorios creativos', href: '/innovate/creative-labs' },
+      { label: 'integración tecnológica', href: '/innovate/technology-integration' },
     ],
   },
   {
     label: 'optimiza',
-    href: '/optimiza',
+    href: '/optimize',
     items: [
-      { label: 'producción', href: 'optimiza/produccion' },
-      { label: 'automatización', href: 'optimiza/automatizacion' },
-      { label: 'descubrimiento', href: 'optimiza/descubrimiento' },
-      { label: 'digitalización', href: 'optimiza/digitalizacion' },
+      { label: 'colaboración en producción', href: '/optimize/production-collaboration' },
+      { label: 'descubrimiento de talento', href: '/optimize/talent-discovery' },
+      { label: 'consultoría de flujo de trabajo', href: '/optimize/workflow-consulting' },
+      { label: 'demo', href: '/optimize/demo' },
+      { label: 'evaluación de automatización', href: '/optimize/automation-assessment' },
     ],
   },
   {
     label: 'profundiza',
-    href: '/profundiza',
+    href: '/insights',
     items: [
-      { label: 'publicaciones', href: 'profundiza/publicaciones' },
-      { label: 'modelos', href: 'profundiza/modelos' },
-      { label: 'metodologías', href: 'profundiza/metodologias' },
-      { label: 'tendencias', href: 'profundiza/tendencias' },
+      { label: 'publicaciones', href: '/insights/publications' },
+      { label: 'modelos de contenido IA', href: '/insights/ai-content-models' },
+      { label: 'biblioteca de metodologías', href: '/insights/methodology-library' },
+      { label: 'tendencias de la industria', href: '/insights/industry-trends' },
     ],
   },
   {
     label: 'acerca',
-    href: '/acerca',
+    href: '/about',
     items: [
-      { label: 'misión', href: 'acerca/mision' },
-      { label: 'visión', href: 'acerca/vision' },
-      { label: 'equipo', href: 'acerca/equipo' },
-      { label: 'noticias', href: 'acerca/noticias' },
+      { label: 'misión y visión', href: '/about/mission-vision' },
+      { label: 'nuestro enfoque', href: '/about/approach' },
+      { label: 'equipo', href: '/about/team' },
+      { label: 'noticias', href: '/about/news' },
+    ],
+  },
+  {
+    label: 'conecta',
+    href: '/connect',
+    items: [
+      { label: 'comunidad', href: '/connect/community' },
+      { label: 'alianzas', href: '/connect/partnerships' },
+      { label: 'eventos', href: '/connect/events' },
+      { label: 'contacto', href: '/connect/contact' },
     ],
   },
   {
@@ -67,7 +80,7 @@ export const footerNavigationItems = [
 ]
 
 export const legalNavigationItems = [
-  { label: 'política de privacidad', href: '/politica-de-privacidad' },
-  { label: 'términos de servicio', href: '/terminos-de-servicio' },
-  { label: 'mapa del sitio', href: '/mapa-del-sitio' },
+  { label: 'política de privacidad', href: '/privacy-policy' },
+  { label: 'términos de servicio', href: '/terms-of-service' },
+  { label: 'mapa del sitio', href: '/search' },
 ]
