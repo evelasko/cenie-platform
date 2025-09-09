@@ -48,3 +48,5 @@ next-env.d.ts
 # Changeset
 .changeset
 firebase-serviceaccount.json
+
+.playwright
