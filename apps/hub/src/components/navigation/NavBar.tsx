@@ -8,6 +8,7 @@ import { type LocaleString, type NavigationItem } from '../../lib/types'
 import BurgerButton from '../buttons/BurgerButton'
 import clsx from 'clsx'
 import LocaleSwitcher from './LocaleSwitcher'
+import { kDefaultNavbarHeight } from '../../constants/styles'
 
 interface NavBarProps {
   locale: LocaleString
@@ -114,7 +115,8 @@ export default function NavBar({ locale, items }: NavBarProps) {
       {/* Fixed Navbar - Always 64px height */}
       <motion.nav
         className={clsx(
-          'fixed top-0 left-0 right-0 z-50 backdrop-blur-md h-16'
+          'fixed top-0 left-0 right-0 z-50 backdrop-blur-md',
+          kDefaultNavbarHeight
           // isMenuOpen ? "bg-background" : "bg-background/75"
         )}
         animate={{
@@ -128,7 +130,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className={clsx('flex items-center justify-between', kDefaultNavbarHeight)}>
             {/* Logo */}
             <div className="flex-shrink-0 pr-8">
               <Link href="/" className="flex items-center">

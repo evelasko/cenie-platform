@@ -113,7 +113,7 @@ export default function HubHomePage() {
         id="revealer"
         ref={revealerRef}
         className={clsx(
-          'h-[calc(100vh-4rem)] mt-16 px-1 md:px-1.5',
+          'h-[calc(100vh-4rem)] px-1 md:px-1.5',
           'bg-gradient-to-b from-[var(--color-nav-background)] to-background',
           'z-[5]'
         )}

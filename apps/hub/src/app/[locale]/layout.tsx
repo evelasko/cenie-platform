@@ -8,6 +8,7 @@ import BottomBlurFrame from '../../components/decorations/BottomBlurFrame'
 import { routing } from '../../i18n/routing'
 import { notFound } from 'next/navigation'
 import { stringToLocaleString } from '../../lib/types'
+import PageContentWrapper from '../../components/layouts/PageContentWrapper'
 
 export default async function LocaleLayout({
   children,
@@ -27,7 +28,9 @@ export default async function LocaleLayout({
       {/*  Navigation Bar */}
       <NavBar items={mainNavigationItems} locale={localeString} />
       {/* Main body content */}
-      <ReactLenis root>{children}</ReactLenis>
+      <ReactLenis root>
+        <PageContentWrapper>{children}</PageContentWrapper>
+      </ReactLenis>
       {/* Footer */}
       <Footer locale={localeString} />
       {/* Copyright and Legal */}
