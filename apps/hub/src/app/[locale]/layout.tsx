@@ -7,6 +7,7 @@ import Footer from '../../components/navigation/Footer'
 import BottomBlurFrame from '../../components/decorations/BottomBlurFrame'
 import { routing } from '../../i18n/routing'
 import { notFound } from 'next/navigation'
+import { stringToLocaleString } from '../../lib/types'
 
 export default async function LocaleLayout({
   children,
@@ -20,16 +21,17 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
+  const localeString = stringToLocaleString(locale)
   return (
     <NextIntlClientProvider locale={locale}>
       {/*  Navigation Bar */}
-      <NavBar items={mainNavigationItems} />
+      <NavBar items={mainNavigationItems} locale={localeString} />
       {/* Main body content */}
       <ReactLenis root>{children}</ReactLenis>
       {/* Footer */}
-      <Footer />
+      <Footer locale={localeString} />
       {/* Copyright and Legal */}
-      <BottomEdge />
+      <BottomEdge locale={localeString} />
       {/* Bottom Blur Frame Decoration Component */}
       <BottomBlurFrame />
     </NextIntlClientProvider>

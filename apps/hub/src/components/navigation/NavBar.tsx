@@ -4,11 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'motion/react'
-import { type NavigationItem } from '../../lib/types'
+import { type LocaleString, type NavigationItem } from '../../lib/types'
 import BurgerButton from '../buttons/BurgerButton'
 import clsx from 'clsx'
+import LocaleSwitcher from './LocaleSwitcher'
 
 interface NavBarProps {
+  locale: LocaleString
   items: NavigationItem[]
 }
 
@@ -96,7 +98,7 @@ const desktopNavVariants = {
   },
 }
 
-export default function NavBar({ items }: NavBarProps) {
+export default function NavBar({ locale, items }: NavBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -160,7 +162,7 @@ export default function NavBar({ items }: NavBarProps) {
                       'text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]'
                     )}
                   >
-                    <span className="font-semibold">{item.label.toUpperCase()}</span>
+                    <span className="font-semibold">{item.label[locale].toUpperCase()}</span>
                   </Link>
                 ))}
               </div>
@@ -199,7 +201,7 @@ export default function NavBar({ items }: NavBarProps) {
                           'text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]'
                         )}
                       >
-                        {item.label}
+                        {item.label[locale]}
                       </Link>
                     </motion.div>
                   ))}
@@ -228,7 +230,7 @@ export default function NavBar({ items }: NavBarProps) {
                     contact@cenie.org
                   </a>
 
-                  <div className="flex items-center space-x-8">
+                  {/* <div className="flex items-center space-x-8">
                     <Link
                       href="/privacy-policy"
                       onClick={closeMenu}
@@ -249,9 +251,9 @@ export default function NavBar({ items }: NavBarProps) {
                     >
                       Terms of Service
                     </Link>
-                  </div>
+                  </div> */}
 
-                  <span>© {new Date().getFullYear()} CENIE</span>
+                  <LocaleSwitcher />
                 </div>
               </motion.div>
             </div>

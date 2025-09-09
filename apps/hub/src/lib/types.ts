@@ -1,7 +1,20 @@
 import { type Timestamp } from 'firebase-admin/firestore'
 
+export type LocaleString = 'en' | 'es'
+
+export const stringToLocaleString = (string: string): LocaleString => {
+  if (string !== 'en' && string !== 'es') {
+    throw new Error('Invalid locale string')
+  }
+  return string as LocaleString
+}
+
+export type LocalizedLabel = {
+  [key in LocaleString]: string
+}
+
 export interface NavigationItem {
-  label: string
+  label: LocalizedLabel
   href: string
   icon?: React.ReactNode
   items?: NavigationItem[]

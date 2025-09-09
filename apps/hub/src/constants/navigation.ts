@@ -1,86 +1,121 @@
-export const mainNavigationItems = [
-  { label: 'aprende', href: '/learn' },
-  { label: 'innova', href: '/innovate' },
-  { label: 'optimiza', href: '/optimize' },
-  { label: 'profundiza', href: '/insights' },
-  { label: 'acerca', href: '/about' },
-  { label: 'conecta', href: '/connect' },
+import { type NavigationItem } from '../lib/types'
+
+export const mainNavigationItems: NavigationItem[] = [
+  { label: { en: 'learn', es: 'aprende' }, href: '/learn' },
+  { label: { en: 'innovate', es: 'innova' }, href: '/innovate' },
+  { label: { en: 'optimize', es: 'optimiza' }, href: '/optimize' },
+  { label: { en: 'insights', es: 'profundiza' }, href: '/insights' },
+  { label: { en: 'about', es: 'acerca' }, href: '/about' },
+  { label: { en: 'connect', es: 'conecta' }, href: '/connect' },
 ]
 
-export const footerNavigationItems = [
+export const footerNavigationItems: NavigationItem[] = [
   {
-    label: 'aprende',
+    label: { en: 'learn', es: 'aprende' },
     href: '/learn',
     items: [
-      { label: 'cursos', href: '/learn/courses' },
-      { label: 'metodologías de formación', href: '/learn/training-methodologies' },
-      { label: 'recursos', href: '/learn/resources' },
-      { label: 'evaluación', href: '/learn/assessment' },
+      { label: { en: 'courses', es: 'cursos' }, href: '/learn/courses' },
+      {
+        label: { en: 'training methodologies', es: 'metodologías de formación' },
+        href: '/learn/training-methodologies',
+      },
+      { label: { en: 'resources', es: 'recursos' }, href: '/learn/resources' },
+      { label: { en: 'evaluation', es: 'evaluación' }, href: '/learn/assessment' },
     ],
   },
   {
-    label: 'innova',
+    label: { en: 'innovate', es: 'innova' },
     href: '/innovate',
     items: [
-      { label: 'análisis de rendimiento', href: '/innovate/performance-analysis' },
-      { label: 'laboratorios creativos', href: '/innovate/creative-labs' },
-      { label: 'integración tecnológica', href: '/innovate/technology-integration' },
+      {
+        label: { en: 'performance analysis', es: 'análisis de rendimiento' },
+        href: '/innovate/performance-analysis',
+      },
+      {
+        label: { en: 'creative labs', es: 'laboratorios creativos' },
+        href: '/innovate/creative-labs',
+      },
+      {
+        label: { en: 'technology integration', es: 'integración tecnológica' },
+        href: '/innovate/technology-integration',
+      },
     ],
   },
   {
-    label: 'optimiza',
+    label: { en: 'optimize', es: 'optimiza' },
     href: '/optimize',
     items: [
-      { label: 'colaboración en producción', href: '/optimize/production-collaboration' },
-      { label: 'descubrimiento de talento', href: '/optimize/talent-discovery' },
-      { label: 'consultoría de flujo de trabajo', href: '/optimize/workflow-consulting' },
-      { label: 'demo', href: '/optimize/demo' },
-      { label: 'evaluación de automatización', href: '/optimize/automation-assessment' },
+      {
+        label: { en: 'production collaboration', es: 'colaboración en producción' },
+        href: '/optimize/production-collaboration',
+      },
+      {
+        label: { en: 'talent discovery', es: 'descubrimiento de talento' },
+        href: '/optimize/talent-discovery',
+      },
+      {
+        label: { en: 'workflow consulting', es: 'consultoría de flujo de trabajo' },
+        href: '/optimize/workflow-consulting',
+      },
+      { label: { en: 'demo', es: 'demo' }, href: '/optimize/demo' },
+      {
+        label: { en: 'automation assessment', es: 'evaluación de automatización' },
+        href: '/optimize/automation-assessment',
+      },
     ],
   },
   {
-    label: 'profundiza',
+    label: { en: 'insights', es: 'profundiza' },
     href: '/insights',
     items: [
-      { label: 'publicaciones', href: '/insights/publications' },
-      { label: 'modelos de contenido IA', href: '/insights/ai-content-models' },
-      { label: 'biblioteca de metodologías', href: '/insights/methodology-library' },
-      { label: 'tendencias de la industria', href: '/insights/industry-trends' },
+      { label: { en: 'publications', es: 'publicaciones' }, href: '/insights/publications' },
+      {
+        label: { en: 'ai content models', es: 'modelos de contenido IA' },
+        href: '/insights/ai-content-models',
+      },
+      {
+        label: { en: 'methodology library', es: 'biblioteca de metodologías' },
+        href: '/insights/methodology-library',
+      },
+      {
+        label: { en: 'industry trends', es: 'tendencias de la industria' },
+        href: '/insights/industry-trends',
+      },
     ],
   },
   {
-    label: 'acerca',
+    label: { en: 'about', es: 'acerca' },
     href: '/about',
     items: [
-      { label: 'misión y visión', href: '/about/mission-vision' },
-      { label: 'nuestro enfoque', href: '/about/approach' },
-      { label: 'equipo', href: '/about/team' },
-      { label: 'noticias', href: '/about/news' },
+      { label: { en: 'mission and vision', es: 'misión y visión' }, href: '/about/mission-vision' },
+      { label: { en: 'our approach', es: 'nuestro enfoque' }, href: '/about/approach' },
+      { label: { en: 'team', es: 'equipo' }, href: '/about/team' },
+      { label: { en: 'news', es: 'noticias' }, href: '/about/news' },
     ],
   },
   {
-    label: 'conecta',
+    label: { en: 'connect', es: 'conecta' },
     href: '/connect',
     items: [
-      { label: 'comunidad', href: '/connect/community' },
-      { label: 'alianzas', href: '/connect/partnerships' },
-      { label: 'eventos', href: '/connect/events' },
-      { label: 'contacto', href: '/connect/contact' },
+      { label: { en: 'community', es: 'comunidad' }, href: '/connect/community' },
+      { label: { en: 'partnerships', es: 'alianzas' }, href: '/connect/partnerships' },
+      { label: { en: 'events', es: 'eventos' }, href: '/connect/events' },
+      { label: { en: 'contact', es: 'contacto' }, href: '/connect/contact' },
     ],
   },
   {
-    label: 'cenie',
+    label: { en: 'cenie', es: 'cenie' },
     href: '/',
     items: [
-      { label: 'academia', href: 'https://academia.cenie.org' },
-      { label: 'agencia', href: 'https://agencia.cenie.org' },
-      { label: 'editorial', href: 'https://editorial.cenie.org' },
+      { label: { en: 'academia', es: 'academia' }, href: 'https://academia.cenie.org' },
+      { label: { en: 'agency', es: 'agencia' }, href: 'https://agencia.cenie.org' },
+      { label: { en: 'editorial', es: 'editorial' }, href: 'https://editorial.cenie.org' },
     ],
   },
 ]
 
-export const legalNavigationItems = [
-  { label: 'política de privacidad', href: '/privacy-policy' },
-  { label: 'términos de servicio', href: '/terms-of-service' },
-  { label: 'mapa del sitio', href: '/search' },
+export const legalNavigationItems: NavigationItem[] = [
+  { label: { en: 'privacy policy', es: 'política de privacidad' }, href: '/privacy-policy' },
+  { label: { en: 'terms of service', es: 'términos de servicio' }, href: '/terms-of-service' },
+  { label: { en: 'site map', es: 'mapa del sitio' }, href: '/search' },
 ]

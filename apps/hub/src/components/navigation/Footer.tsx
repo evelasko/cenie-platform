@@ -7,8 +7,15 @@ import Image from 'next/image'
 import { footerNavigationItems } from '../../constants/navigation'
 import Link from 'next/link'
 import Spacer from '../layouts/Spacer'
+import { type LocaleString } from '../../lib/types'
 
-export default function Footer({ className }: { className?: string }) {
+export default function Footer({
+  className,
+  locale,
+}: {
+  className?: string
+  locale: LocaleString
+}) {
   return (
     <div
       className={clsx('flex w-full flex-col bg-white items-start gap-4 content-wrapper', className)}
@@ -16,18 +23,18 @@ export default function Footer({ className }: { className?: string }) {
       <Spacer />
       <div className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {footerNavigationItems.map((item) => (
-          <div className="flex flex-col items-center md:items-start gap-2" key={item.label}>
+          <div className="flex flex-col items-center md:items-start gap-2" key={item.label[locale]}>
             <span className="text-caption-small !font-bold uppercase text-default-font">
-              {item.label}
+              {item.label[locale]}
             </span>
             <div className="flex flex-col items-center md:items-start gap-1">
-              {item.items.map((item) => (
+              {(item.items ?? []).map((item) => (
                 <Link
                   className="text-display-text-small text-subtext-color"
                   href={item.href}
-                  key={item.label}
+                  key={item.label[locale]}
                 >
-                  {item.label}
+                  {item.label[locale]}
                 </Link>
               ))}
             </div>
