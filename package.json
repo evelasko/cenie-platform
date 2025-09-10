@@ -22,6 +22,8 @@
     "version-packages": "changeset version",
     "release": "turbo build --filter=!@cenie/hub --filter=!@cenie/editorial --filter=!@cenie/academy --filter=!@cenie/agency && changeset publish",
     "sync-content": "npx sync-directory  ../docs/web-content contents",
+    "sync:once": "unison cenie-content",
+    "sync:watch": "./scripts/sync-watch.sh",
     "build:hub": "turbo build --filter=@cenie/hub",
     "build:editorial": "turbo build --filter=@cenie/editorial",
     "build:academy": "turbo build --filter=@cenie/academy",
