@@ -6,7 +6,8 @@ export const mainNavigationItems: NavigationItem[] = [
   { label: { en: 'optimize', es: 'optimiza' }, href: '/optimize' },
   { label: { en: 'insights', es: 'profundiza' }, href: '/insights' },
   { label: { en: 'about', es: 'acerca' }, href: '/about' },
-  { label: { en: 'connect', es: 'conecta' }, href: '/connect' },
+  // TODO: Add connect section back in
+  // { label: { en: 'connect', es: 'conecta' }, href: '/connect' },
 ]
 
 export const footerNavigationItems: NavigationItem[] = [
@@ -68,18 +69,18 @@ export const footerNavigationItems: NavigationItem[] = [
     label: { en: 'insights', es: 'profundiza' },
     href: '/insights',
     items: [
-      { label: { en: 'publications', es: 'publicaciones' }, href: '/insights/publications' },
+      { label: { en: 'research', es: 'investigaciones' }, href: '/insights/featured-research' },
       {
-        label: { en: 'ai content models', es: 'modelos de contenido IA' },
-        href: '/insights/ai-content-models',
+        label: { en: 'AI approach', es: 'enfoque IA' },
+        href: '/insights/ai-approach',
       },
       {
-        label: { en: 'methodology library', es: 'biblioteca de metodologías' },
+        label: { en: 'methodology', es: 'metodologías' },
         href: '/insights/methodology-library',
       },
       {
-        label: { en: 'industry trends', es: 'tendencias de la industria' },
-        href: '/insights/industry-trends',
+        label: { en: 'publish with us', es: 'publicar' },
+        href: '/insights/publish-with-us',
       },
     ],
   },
@@ -87,27 +88,26 @@ export const footerNavigationItems: NavigationItem[] = [
     label: { en: 'about', es: 'acerca' },
     href: '/about',
     items: [
-      { label: { en: 'mission and vision', es: 'misión y visión' }, href: '/about/mission-vision' },
-      { label: { en: 'our approach', es: 'nuestro enfoque' }, href: '/about/approach' },
       { label: { en: 'team', es: 'equipo' }, href: '/about/team' },
       { label: { en: 'news', es: 'noticias' }, href: '/about/news' },
     ],
   },
-  {
-    label: { en: 'connect', es: 'conecta' },
-    href: '/connect',
-    items: [
-      { label: { en: 'community', es: 'comunidad' }, href: '/connect/community' },
-      { label: { en: 'partnerships', es: 'alianzas' }, href: '/connect/partnerships' },
-      { label: { en: 'events', es: 'eventos' }, href: '/connect/events' },
-      { label: { en: 'contact', es: 'contacto' }, href: '/connect/contact' },
-    ],
-  },
+  // TODO: Add connect section back in
+  // {
+  //   label: { en: 'connect', es: 'conecta' },
+  //   href: '/connect',
+  //   items: [
+  //     { label: { en: 'community', es: 'comunidad' }, href: '/connect/community' },
+  //     { label: { en: 'partnerships', es: 'alianzas' }, href: '/connect/partnerships' },
+  //     { label: { en: 'events', es: 'eventos' }, href: '/connect/events' },
+  //     { label: { en: 'contact', es: 'contacto' }, href: '/connect/contact' },
+  //   ],
+  // },
   {
     label: { en: 'cenie', es: 'cenie' },
     href: '/',
     items: [
-      { label: { en: 'academia', es: 'academia' }, href: 'https://academia.cenie.org' },
+      { label: { en: 'academy', es: 'academia' }, href: 'https://academia.cenie.org' },
       { label: { en: 'agency', es: 'agencia' }, href: 'https://agencia.cenie.org' },
       { label: { en: 'editorial', es: 'editorial' }, href: 'https://editorial.cenie.org' },
     ],

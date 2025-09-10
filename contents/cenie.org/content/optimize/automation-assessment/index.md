@@ -1,33 +1,4 @@
-Excellent idea. The lead capture pages are the most crucial conversion points in this entire funnel. A user who clicks "Schedule a Demo" or "Book an Assessment" is a high-intent, qualified lead. These pages must be frictionless, trustworthy, and compelling to ensure they complete the final step.
-
-Here is a robust design, structure, and copy for the two primary lead capture pages in the `/optimize` section.
-
----
-
-**Core Principles for High-Converting Lead Capture Pages**
-
-1. **Laser Focus:** These pages have ONE job: get the user to fill out the form. We will remove all distractions—no main navigation, no footer links to other parts of the site, nothing that allows them to click away.
-2. **Reinforce the Value:** The user is here because they are interested, but they may still have doubts. The copy must quickly and powerfully reiterate the value proposition of what they are signing up for.
-3. **Minimize Friction:** The form must be as short and simple as possible. We only ask for the information we absolutely need to qualify and contact the lead.
-4. **Build Trust:** We will use social proof elements (even if subtle at first) and clear, human language to make the user feel confident and secure.
-
----
-
-# Lead Capture Page: Book Your Free Automation Assessment
-
-**URL:** `/optimize/automation-assessment/`
-**Goal:** Get a qualified lead (organization leader) to book a free consultation for the CENIE Automation Agency.
-
-## Structure & Design Layout
-
-* **Header:** CENIE Logo only (links back to `/optimize`).
-* **Layout:** Same two-column (desktop) / single-column (mobile) structure. This consistency is key.
-
-## Copy Content for `/optimize/automation-assessment/`
-
-### Left Column (The "Why")
-
-**Headline:** `Discover Your Organization's Untapped Potential.`
+# Discover Your Organization's Untapped Potential
 
 **Sub-headline:** `In just 30 minutes, we can help you identify the top 1-2 areas where strategic automation can save you thousands of dollars and hundreds of hours in administrative overhead.`
 
@@ -44,11 +15,9 @@ This free, no-obligation **Automation Assessment** is a powerful strategic sessi
 
 This is a valuable strategic consultation, offered for free.
 
-### Right Column (The "How")
-
 **(Form Headline)**
 
-#### `Book Your Free 30-Minute Assessment`
+## `Book Your Free 30-Minute Assessment`
 
 **(Form Fields - *Slightly Different to Qualify for a Service*)**
 

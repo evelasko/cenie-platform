@@ -89,32 +89,24 @@ export const pathnames: Pathnames<['en', 'es']> = {
   },
 
   // Insights Section
-  '/insights/publications': {
-    en: '/insights/publications',
-    es: '/profundiza/publicaciones',
+  '/insights/featured-research': {
+    en: '/insights/featured-research',
+    es: '/profundiza/investigaciones-destacadas',
   },
-  '/insights/ai-content-models': {
-    en: '/insights/ai-content-models',
-    es: '/profundiza/modelos-contenido-ia',
+  '/insights/ai-approach': {
+    en: '/insights/ai-approach',
+    es: '/profundiza/enfoque-ia',
   },
   '/insights/methodology-library': {
     en: '/insights/methodology-library',
     es: '/profundiza/biblioteca-metodologias',
   },
-  '/insights/industry-trends': {
-    en: '/insights/industry-trends',
-    es: '/profundiza/tendencias-industria',
+  '/insights/publish-with-us': {
+    en: '/insights/publish-with-us',
+    es: '/profundiza/publicar-con-nosotros',
   },
 
   // About Section
-  '/about/mission-vision': {
-    en: '/about/mission-vision',
-    es: '/acerca/mision-vision',
-  },
-  '/about/approach': {
-    en: '/about/approach',
-    es: '/acerca/enfoque',
-  },
   '/about/team': {
     en: '/about/team',
     es: '/acerca/equipo',
@@ -124,23 +116,24 @@ export const pathnames: Pathnames<['en', 'es']> = {
     es: '/acerca/noticias',
   },
 
+  // TODO: Add connect section back in
   // Connect Section
-  '/connect/community': {
-    en: '/connect/community',
-    es: '/conecta/comunidad',
-  },
-  '/connect/partnerships': {
-    en: '/connect/partnerships',
-    es: '/conecta/alianzas',
-  },
-  '/connect/events': {
-    en: '/connect/events',
-    es: '/conecta/eventos',
-  },
-  '/connect/contact': {
-    en: '/connect/contact',
-    es: '/conecta/contacto',
-  },
+  //   '/connect/community': {
+  //     en: '/connect/community',
+  //     es: '/conecta/comunidad',
+  //   },
+  //   '/connect/partnerships': {
+  //     en: '/connect/partnerships',
+  //     es: '/conecta/alianzas',
+  //   },
+  //   '/connect/events': {
+  //     en: '/connect/events',
+  //     es: '/conecta/eventos',
+  //   },
+  //   '/connect/contact': {
+  //     en: '/connect/contact',
+  //     es: '/conecta/contacto',
+  //   },
 
   // Utility Pages
   '/search': {

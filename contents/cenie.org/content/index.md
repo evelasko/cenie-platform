@@ -66,7 +66,7 @@ Educational content and thought leadership through YouTube channels and multimed
 - Develop business acumen for freelance success and entrepreneurship
 - Connect with a global community of forward-thinking artists
 
-**This Path is for You If...** You're a talented dancer who wants to build an international online presence, a recent theatre graduate needing to understand project budgets, or an actor looking to leverage AI for auditioning. We provide the practical skills that complement your artistic training.
+**This Path is for You If...** You're a talented dancer in Madrid who wants to build an international online presence, a recent theatre graduate in Bogotá needing to understand project budgets, or an actor in New York looking to leverage AI for auditioning. We provide the practical skills that complement your artistic training.
 
 **[Explore the Skills Pathway →](/skills/)**
 
@@ -129,6 +129,10 @@ We partner with leading AI researchers and technology developers to create tools
 
 Unlike fragmented solutions, CENIE's seven integrated initiatives work together to address every aspect of your professional development and organizational needs.
 
+### Multilingual and Multicultural
+
+We're the first platform to provide cutting-edge performing arts methodologies and technology training in Spanish, serving the global Spanish-speaking artistic community.
+
 ### Evidence-Based Results
 
 Our methodologies are backed by research and proven outcomes. We track success metrics and continuously refine our approaches based on real-world results.
@@ -138,11 +142,11 @@ Our methodologies are backed by research and proven outcomes. We track success m
 ENIE is a new initiative, but it is built on a lifetime of experience. Our approach is grounded in three core principles that guide everything we do.
 
 1. Grounded in Expertise, Driven by Experience
-   CENIE was not conceived in a boardroom. It was born from over 30 years of professional experience as a performing artist, a PhD-level academic, and a university professor who has guided thousands of students into their careers. I have lived the challenges our community faces, and I have dedicated my parallel career in technology to building the solutions I wish I had. Our methodologies are rooted in both academic rigor and real-world, on-the-stage practice.
+CENIE was not conceived in a boardroom. It was born from over 30 years of professional experience as a performing artist, a PhD-level academic, and a university professor who has guided thousands of students into their careers. I have lived the challenges our community faces, and I have dedicated my parallel career in technology to building the solutions I wish I had. Our methodologies are rooted in both academic rigor and real-world, on-the-stage practice.
 2. Artist-Centric by Design
-   We believe technology must serve the artist, not the other way around. Every tool we build, every course we design, and every resource we publish is evaluated through a single lens: Does this empower human creativity? Our commitment is to amplify the artist's voice and vision, ensuring that technology remains a powerful tool in the hands of the creator.
+We believe technology must serve the artist, not the other way around. Every tool we build, every course we design, and every resource we publish is evaluated through a single lens: Does this empower human creativity? Our commitment is to amplify the artist's voice and vision, ensuring that technology remains a powerful tool in the hands of the creator.
 3. A Commitment to Evidence and Evolution
-   While we are at the beginning of our journey, we are deeply committed to an evidence-based approach. We will transparently track and share the outcomes of our programs. We will build our success stories with our community, not for them. We invite you to join us in this mission, to contribute to our research, and to help us build the case studies that will define the next generation of the performing arts. This is our promise to you.
+While we are at the beginning of our journey, we are deeply committed to an evidence-based approach. We will transparently track and share the outcomes of our programs. We will build our success stories with our community, not for them. We invite you to join us in this mission, to contribute to our research, and to help us build the case studies that will define the next generation of the performing arts. This is our promise to you.
 
 ## Choose Your Path Forward
 
@@ -157,7 +161,7 @@ Perfect for artists seeking professional development and career sustainability
 - Digital literacy programs
 - **Start Here:** [Explore Skills Development →](/skills/)
 
-### 🚀 **Innovation-Focused Path**
+### 🚀 **Innovation-Focused Path**  
 
 Ideal for creatives ready to push artistic boundaries with technology
 
