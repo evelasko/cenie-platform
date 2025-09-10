@@ -13,6 +13,10 @@ export type LocalizedLabel = {
   [key in LocaleString]: string
 }
 
+export type LocalizedHref = {
+  [key in LocaleString]: string
+}
+
 export interface NavigationItem {
   label: LocalizedLabel
   href: string

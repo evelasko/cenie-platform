@@ -20,7 +20,9 @@
       "mcp__context7__resolve-library-id",
       "mcp__context7__get-library-docs",
       "Bash(turbo lint:*)",
-      "Bash(pnpm turbo lint:*)"
+      "Bash(pnpm turbo lint:*)",
+      "Bash(awk:*)",
+      "Bash(tree:*)"
     ],
     "deny": []
   }
