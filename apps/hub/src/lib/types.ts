@@ -24,6 +24,29 @@ export interface NavigationItem {
   items?: NavigationItem[]
 }
 
+// Enhanced structure interfaces for single source of truth
+export interface StructureItem {
+  // Route information
+  key: string // Used as the English href and pathnames key
+  href: LocalizedHref // Localized paths
+  label: LocalizedLabel // Localized labels
+
+  // Navigation metadata
+  icon?: React.ReactNode
+  showInMainNav?: boolean
+  showInFooter?: boolean
+  showInSitemap?: boolean
+
+  // Hierarchy
+  children?: StructureItem[]
+}
+
+export interface SiteStructure {
+  routes: StructureItem[]
+  external: StructureItem[] // For external links like academia.cenie.org
+  utility: StructureItem[] // For legal pages, search, account, etc.
+}
+
 export interface Profile {
   id: string
   email: string
