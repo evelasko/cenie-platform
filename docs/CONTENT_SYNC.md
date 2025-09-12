@@ -1,49 +1,75 @@
 # Content Synchronization with Unison
 
-This document describes the bidirectional content synchronization system between the external docs repository and the hub contents directory.
+This document describes the bidirectional content synchronization system between the external docs repository and all CENIE application content directories.
 
 ## Overview
 
-The sync system uses [Unison](https://www.cis.upenn.edu/~bcpierce/unison/) to maintain bidirectional synchronization between:
+The sync system uses [Unison](https://www.cis.upenn.edu/~bcpierce/unison/) to maintain bidirectional synchronization between multiple content directories:
 
-- **External Directory**: `../docs/web-content/cenie.org/content`
-- **Hub Directory**: `apps/hub/src/contents`
+### Sync Pairs
 
-Both directories will always contain identical content, with changes in either location automatically propagating to the other.
+| Profile       | External Directory                                | Internal Directory            |
+| ------------- | ------------------------------------------------- | ----------------------------- |
+| **Hub**       | `../docs/web-content/cenie.org/content`           | `apps/hub/src/contents`       |
+| **Academy**   | `../docs/web-content/academy.cenie.org/content`   | `apps/academy/src/contents`   |
+| **Agency**    | `../docs/web-content/agency.cenie.org/content`    | `apps/agency/src/contents`    |
+| **Editorial** | `../docs/web-content/editorial.cenie.org/content` | `apps/editorial/src/contents` |
+
+All directory pairs maintain identical content, with changes in either location automatically propagating to the other.
 
 ## Available Commands
 
-### `npm run sync:once`
+### One-Time Sync Commands
 
-Runs a one-time synchronization with interactive conflict resolution.
-
-- **Use case**: Initial sync, manual sync, or when you want to review conflicts
-- **Behavior**:
-  - Shows all changes before applying them
-  - Prompts for confirmation on conflicts
-  - Asks before large deletions
-  - Logs all operations
+#### Individual Profiles
 
 ```bash
-npm run sync:once
+npm run sync:once:hub        # Hub content only
+npm run sync:once:academy    # Academy content only
+npm run sync:once:agency     # Agency content only
+npm run sync:once:editorial  # Editorial content only
 ```
 
-### `npm run sync:watch`
-
-Starts continuous bidirectional file watching and automatic synchronization.
-
-- **Use case**: During development when you want real-time sync
-- **Behavior**:
-  - Runs initial sync automatically
-  - Monitors both directories for file changes
-  - Automatically syncs changes as they occur
-  - Auto-resolves conflicts by preferring newer files
-  - Runs in foreground with colored output
-  - Press `Ctrl+C` to stop
+#### Batch Operations
 
 ```bash
-npm run sync:watch
+npm run sync:once:all        # All profiles sequentially
+npm run sync:once            # Hub only (legacy compatibility)
 ```
+
+**Behavior**: Interactive sync with conflict resolution prompts
+
+- Shows all changes before applying them
+- Prompts for confirmation on conflicts
+- Asks before large deletions
+- Logs all operations
+
+### Watch Mode Commands
+
+#### Individual Profile Watching
+
+```bash
+npm run sync:watch:hub        # Watch Hub content only
+npm run sync:watch:academy    # Watch Academy content only
+npm run sync:watch:agency     # Watch Agency content only
+npm run sync:watch:editorial  # Watch Editorial content only
+```
+
+#### Unified Multi-Profile Watching
+
+```bash
+npm run sync:watch:all        # Watch ALL profiles simultaneously
+npm run sync:watch            # Hub only (legacy compatibility)
+```
+
+**Behavior**: Continuous bidirectional sync
+
+- Runs initial sync automatically for all profiles
+- Monitors directories for file changes
+- Automatically syncs changes as they occur
+- Auto-resolves conflicts by preferring newer files
+- Color-coded output by profile
+- Press `Ctrl+C` to stop
 
 ## Conflict Resolution
 
@@ -51,7 +77,7 @@ npm run sync:watch
 
 When conflicts occur during manual sync, you'll see options like:
 
-```
+```bash
 file1.md has been updated on both sides
   <M NEWER  file1.md  [f]
 Choose: (L)eft, (R)ight, (S)kip, or (?) for help
@@ -145,31 +171,57 @@ chmod -R u+rw apps/hub/src/contents
 ### Checking Sync Status
 
 ```bash
-# View recent sync activity
-tail -20 ~/.unison/sync-watch.log
+# View recent activity for all profiles
+tail -20 ~/.unison/sync-watch-all.log
 
-# Check if watch process is running
+# View activity for specific profile
+tail -20 ~/.unison/sync-watch-academy-content.log
+
+# Check if watch processes are running
 ps aux | grep sync-watch
 
 # Manual sync to check for differences
-npm run sync:once
+npm run sync:once:all          # Check all profiles
+npm run sync:once:editorial    # Check specific profile
 ```
 
 ## Best Practices
 
 ### Development Workflow
 
-1. **Start Development Session**:
+#### Option 1: Watch All Profiles (Recommended)
 
-   ```bash
-   npm run sync:watch
-   ```
+```bash
+# Start watching all content directories simultaneously
+npm run sync:watch:all
+```
 
-2. **Edit Files**: Make changes in either directory
-   - Changes are automatically synced
-   - Watch for sync confirmations in terminal
+#### Option 2: Watch Specific Profiles
 
-3. **End Session**: Press `Ctrl+C` to stop watching
+```bash
+# Watch only the profiles you're working on
+npm run sync:watch:hub        # Terminal 1
+npm run sync:watch:editorial  # Terminal 2 (if needed)
+```
+
+#### Option 3: Manual Sync Workflow
+
+```bash
+# Sync all profiles before starting work
+npm run sync:once:all
+
+# Work on content...
+
+# Sync specific profiles as needed
+npm run sync:once:editorial
+```
+
+**During Development**:
+
+- Changes are automatically synced in real-time
+- Watch for color-coded sync confirmations in terminal
+- Each profile has its own color for easy identification
+- Press `Ctrl+C` to stop watching
 
 ### Content Management
 
@@ -197,6 +249,8 @@ npm run sync:once
 - **Latency**: ~1 second delay between file change and sync
 - **Efficiency**: Only changed files are transferred
 - **Resource Usage**: Minimal CPU usage during idle periods
+- **Multi-Profile Impact**: 4 profiles running simultaneously use ~4x resources, but still lightweight for content files
+- **Unified Watching**: Single `fswatch` process monitors all directories efficiently
 
 ### Safety Features
 
@@ -207,17 +261,55 @@ npm run sync:once
 
 ## Migration from Previous System
 
-The old `sync-content` script has been replaced. Key differences:
+The old `sync-content` script has been replaced with a comprehensive multi-profile system.
+
+### Key Improvements
 
 | Old System             | New System                                      |
 | ---------------------- | ----------------------------------------------- |
+| Hub only               | **All 4 CENIE apps supported**                  |
 | One-way sync           | **Bidirectional sync**                          |
 | Manual execution only  | **Automatic watching**                          |
 | No conflict resolution | **Interactive & automatic conflict resolution** |
 | Basic exclusions       | **Comprehensive exclusion patterns**            |
-| No logging             | **Detailed logging**                            |
+| No logging             | **Detailed logging per profile**                |
+| Single directory       | **Multi-profile with unified watching**         |
 
-To migrate, simply use the new commands:
+### Migration Commands
 
-- Replace `npm run sync-content` with `npm run sync:once`
-- Use `npm run sync:watch` for continuous sync during development
+| Old Command            | New Command Options                                                               |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `npm run sync-content` | `npm run sync:once:all` (all profiles)<br>`npm run sync:once:hub` (hub only)      |
+| _(no equivalent)_      | `npm run sync:watch:all` (watch all)<br>`npm run sync:watch:hub` (watch hub only) |
+
+### Backward Compatibility
+
+Legacy commands still work for Hub content:
+
+- `npm run sync:once` → Hub content only
+- `npm run sync:watch` → Hub content only
+
+## Quick Reference
+
+### Most Common Commands
+
+```bash
+# Start development with all content syncing
+npm run sync:watch:all
+
+# Sync all content once before starting work
+npm run sync:once:all
+
+# Watch specific profile only
+npm run sync:watch:editorial
+
+# Check sync status
+tail -f ~/.unison/sync-watch-all.log
+```
+
+### Profile Names
+
+- `hub` / `cenie-content` - Main CENIE hub content
+- `academy` / `academy-content` - CENIE Academy content
+- `agency` / `agency-content` - CENIE Agency content
+- `editorial` / `editorial-content` - CENIE Editorial content

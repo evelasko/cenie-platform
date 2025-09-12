@@ -2,6 +2,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
 import createNextIntlPlugin from 'next-intl/plugin'
+import withMDX from '@next/mdx'
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -14,6 +15,7 @@ config({ path: resolve(__dirname, '../../.env') })
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@cenie/ui', '@cenie/design-system'],
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   images: {
     remotePatterns: [
       {
@@ -48,4 +50,11 @@ const nextConfig = {
   },
 }
 const withNextIntl = createNextIntlPlugin()
-export default withNextIntl(nextConfig)
+const withMDXPlugin = withMDX({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+export default withNextIntl(withMDXPlugin(nextConfig))
