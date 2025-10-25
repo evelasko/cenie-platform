@@ -6,11 +6,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@cenie/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@cenie/ui'
 
-import { 
-  Calendar, 
-  Mail, 
-  CheckCircle
-} from 'lucide-react'
+import { Calendar, Mail, CheckCircle } from 'lucide-react'
 
 export default function EditorialComingSoon() {
   const { user, loading } = useAuth()
@@ -60,28 +56,31 @@ export default function EditorialComingSoon() {
           <div className="absolute top-40 right-20 w-56 h-56 bg-accent/30 rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute bottom-20 left-1/3 w-32 h-32 bg-secondary/30 rounded-full blur-2xl animate-pulse delay-2000"></div>
         </div>
-        
+
         <div className="relative container mx-auto px-4 text-center">
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
-              <p className="type-overline text-primary mb-4">Llega el futuro del conocimientopara las artes escénicas</p>
-              <h1 className="type-display-1 mb-4 text-foreground">
-                CENIE Editorial
-              </h1>
+              <p className="type-overline text-primary mb-4">
+                Llega el futuro del conocimientopara las artes escénicas
+              </p>
+              <h1 className="type-display-1 mb-4 text-foreground">CENIE Editorial</h1>
               <h2 className="type-heading-2 mb-8 text-muted-foreground">
                 Edición académica mejorada con IA para las artes escénicas
               </h2>
             </div>
-            
+
             <div className="flex items-center justify-center gap-2 mb-8 animate-fade-in-up delay-200">
               <Calendar className="h-5 w-5 text-primary animate-bounce" />
-              <p className="type-heading-4 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
+              <p className="type-heading-4 text-primary font-bold">
+                Lanzamiento en septiembre de 2025
+              </p>
             </div>
-            
+
             <div className="animate-fade-in-up delay-400">
               <p className="type-lead mb-12 text-muted-foreground max-w-4xl mx-auto">
-                Llega una nueva prensa académica digital. Estamos combinando una rigurosa revisión por pares con tecnología nativa de IA 
-                para hacer que la investigación en estudios de teatro, danza y performance sea más descubrible, accesible y potente.
+                Llega una nueva prensa académica digital. Estamos combinando una rigurosa revisión
+                por pares con tecnología nativa de IA para hacer que la investigación en estudios de
+                teatro, danza y performance sea más descubrible, accesible y potente.
               </p>
             </div>
 
@@ -94,7 +93,8 @@ export default function EditorialComingSoon() {
                     Sea el primero en saberlo
                   </CardTitle>
                   <CardDescription className="type-body-small">
-                    Inscríbase para recibir actualizaciones sobre el lanzamiento, avances exclusivos y una invitación a nuestro programa piloto
+                    Inscríbase para recibir actualizaciones sobre el lanzamiento, avances exclusivos
+                    y una invitación a nuestro programa piloto
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -129,16 +129,21 @@ export default function EditorialComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="type-heading-1 mb-6">Una nueva era para la investigación y la enseñanza</h2>
+            <h2 className="type-heading-1 mb-6">
+              Una nueva era para la investigación y la enseñanza
+            </h2>
             <div className="max-w-4xl mx-auto">
               <p className="type-lead text-muted-foreground mb-8">
-                CENIE Editorial es el brazo editorial del Centro de Investigación e Innovación en Artes Escénicas (CENIE). 
-                Estamos construidos para abordar las lagunas críticas en la publicación académica. Entregamos monografías, antologías, 
-                y erudición traslacional de alta calidad optimizadas para la forma en que se produce la investigación moderna.
+                CENIE Editorial es el brazo editorial del Centro de Investigación e Innovación en
+                Artes Escénicas (CENIE). Estamos construidos para abordar las lagunas críticas en la
+                publicación académica. Entregamos monografías, antologías, y erudición traslacional
+                de alta calidad optimizadas para la forma en que se produce la investigación
+                moderna.
               </p>
               <p className="type-body-large text-muted-foreground">
-                Nuestra misión es acelerar la difusión del conocimiento haciendo que los contenidos estén estructurados de forma única para el descubrimiento impulsado por la IA, 
-                al tiempo que se amplía el acceso para la comunidad académica hispanohablante.
+                Nuestra misión es acelerar la difusión del conocimiento haciendo que los contenidos
+                estén estructurados de forma única para el descubrimiento impulsado por la IA, al
+                tiempo que se amplía el acceso para la comunidad académica hispanohablante.
               </p>
             </div>
           </div>
@@ -151,8 +156,9 @@ export default function EditorialComingSoon() {
           <div className="text-center mb-16">
             <h2 className="type-heading-1 mb-6">Nuestra solución: Becas, reimaginadas</h2>
             <p className="type-lead text-muted-foreground max-w-3xl mx-auto">
-              CENIE Editorial ofrece una alternativa creíble y moderna a las editoriales tradicionales, 
-              optimizada para el descubrimiento, la pedagogía y la conservación a largo plazo.
+              CENIE Editorial ofrece una alternativa creíble y moderna a las editoriales
+              tradicionales, optimizada para el descubrimiento, la pedagogía y la conservación a
+              largo plazo.
             </p>
           </div>
 
@@ -163,7 +169,8 @@ export default function EditorialComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Encuentre exactamente lo que necesita en cuestión de segundos con nuestro Protocolo de modelos contextuales.
+                  Encuentre exactamente lo que necesita en cuestión de segundos con nuestro
+                  Protocolo de modelos contextuales.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -174,7 +181,8 @@ export default function EditorialComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Traducciones curadas que cubren importantes lagunas de conocimiento en los estudios sobre el rendimiento.
+                  Traducciones curadas que cubren importantes lagunas de conocimiento en los
+                  estudios sobre el rendimiento.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -211,27 +219,49 @@ export default function EditorialComingSoon() {
             <h2 className="type-heading-1 mb-6">La cuenta atrás ha comenzado</h2>
             <div className="flex items-center justify-center gap-2 mb-8">
               <Calendar className="h-6 w-6 text-primary" />
-              <p className="type-heading-3 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
+              <p className="type-heading-3 text-primary font-bold">
+                Lanzamiento en septiembre de 2025
+              </p>
             </div>
             <p className="type-lead mb-12 text-muted-foreground">
-              No se pierda el lanzamiento de una plataforma que redefinirá la publicación académica en las artes escénicas.
+              No se pierda el lanzamiento de una plataforma que redefinirá la publicación académica
+              en las artes escénicas.
             </p>
-            
-            <Button size="lg" className="type-button" onClick={() => {
-              const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement
-              emailInput?.focus()
-            }}>
+
+            <Button
+              size="lg"
+              className="type-button"
+              onClick={() => {
+                const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement
+                emailInput?.focus()
+              }}
+            >
               <Mail className="mr-2 h-4 w-4" />
               Manténgame al día
             </Button>
           </div>
         </div>
       </section>
+      <section className="my-24">
+        <div className="container mx-auto px-24 mb-[200px]">
+          <p className="font-display text-4xl tracking-tighter mb-4">
+            Ripples on the Cosmic
+            <br />
+            Ocean
+          </p>
+          <p className="font-body text-lg font-light tracking-tighter">
+            An Environmental History of Our Place in
+            <br /> the Solar System
+          </p>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 text-center">
-          <p className="type-caption text-muted-foreground">© 2024 CENIE Editorial. Todos los derechos reservados.</p>
+          <p className="type-caption text-muted-foreground">
+            © 2024 CENIE Editorial. Todos los derechos reservados.
+          </p>
         </div>
       </footer>
     </div>
