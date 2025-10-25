@@ -50,3 +50,5 @@ next-env.d.ts
 firebase-serviceaccount.json
 
 .playwright
+
+*.temp
