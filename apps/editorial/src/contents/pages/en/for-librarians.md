@@ -15,18 +15,21 @@ CENIE Editorial provides academic libraries with cutting-edge performing arts sc
 CENIE Editorial works with your current library systems and discovery environments through industry-standard protocols and formats.
 
 **Technical Integration:**
+
 - **OAI-PMH feeds** for metadata harvesting and discovery
 - **MARC-ready records** for catalog integration
 - **Dublin Core** and Schema.org structured data
 - **Crossref DOI integration** for permanent linking
 
 **Authentication Systems:**
+
 - **IP-based access** for campus networks
 - **SAML/Shibboleth SSO** integration
 - **Athens/OpenAthens** compatibility
 - **Proxy server** support for off-campus access
 
 **Discovery Integration:**
+
 - **Primo, Summon, WorldCat** compatibility
 - **Google Scholar** indexing for broader discovery
 - **Library guides** integration support
@@ -37,6 +40,7 @@ CENIE Editorial works with your current library systems and discovery environmen
 Our Context Model Protocol enhances traditional metadata with semantic information that improves discoverability and user experience.
 
 **Enhanced Metadata Features:**
+
 - **Subject headings** aligned with LCSH and MeSH
 - **Bilingual keywords** for Spanish and English discovery
 - **Multimedia descriptions** for accessibility compliance
@@ -53,18 +57,21 @@ We understand that every institution has unique needs and budget constraints. Ou
 **Licensing Tiers:**
 
 **Essential Access** - Small Institutions (Under 5,000 FTE)
+
 - Core performing arts collection access
 - Standard usage reporting
 - Basic integration support
 - Annual licensing with predictable costs
 
 **Comprehensive Access** - Mid-Size Institutions (5,000-15,000 FTE)
+
 - Full catalog access including multimedia content
 - Advanced usage analytics
 - Priority integration support
 - Consortial pricing available
 
 **Research Plus** - Major Universities (15,000+ FTE)
+
 - Complete collection plus RAG toolkit access
 - Custom analytics and reporting
 - Dedicated integration specialist
@@ -73,16 +80,32 @@ We understand that every institution has unique needs and budget constraints. Ou
 ### Consortial and Partnership Programs
 
 **Multi-Institutional Benefits:**
+
 - **Volume pricing** for consortial members
 - **Shared authentication** across member institutions
 - **Aggregated usage reporting** for consortial management
 - **Collaborative collection development** opportunities
 
 **Pilot Program Options:**
+
 - **30-day free trials** for evaluation
 - **Faculty demonstration** programs
 - **Gradual implementation** with phased rollouts
 - **Success metrics** consultation and tracking
+
+---
+
+## A New Standard in Research Experience
+
+### Interactive Tools That Drive Engagement and Learning
+
+CENIE Editorial provides more than just content; we provide an interactive research environment. Our AI-powered features empower your patrons to engage with scholarly material more deeply, leading to better learning outcomes and a greater return on your collection investment.
+
+**Key Features for Your Users:**
+
+- **Conversational Search:** Patrons can ask complex research questions and receive direct, synthesized answers, reducing research friction and improving the user experience.
+- **Guided Discovery:** Our platform proactively suggests new research pathways and conceptual connections, fostering interdisciplinary exploration and learning.
+- **Verifiable AI:** We guarantee academic integrity. Every AI-generated insight is directly linked to the source text, providing the transparency and trustworthiness your institution requires.
 
 ---
 
@@ -95,18 +118,21 @@ CENIE Editorial addresses significant collection needs in performing arts schola
 **Collection Strengths:**
 
 **Spanish-Language Access:**
+
 - **First-time translations** of seminal performing arts works
 - **Original Spanish scholarship** from global researchers
 - **Bilingual research support** for diverse student populations
 - **Cultural diversity** metrics for accreditation reporting
 
 **AI-Enhanced Discoverability:**
+
 - **Semantic search** capabilities beyond traditional catalogs
 - **Cross-reference networks** revealing research connections
 - **Concept-based browsing** for interdisciplinary discovery
 - **Multimedia integration** with searchable transcripts
 
 **Contemporary Relevance:**
+
 - **Cutting-edge methodologies** in performance research
 - **Digital documentation** techniques and exemplars
 - **Applied theatre** and community engagement scholarship
@@ -117,6 +143,7 @@ CENIE Editorial addresses significant collection needs in performing arts schola
 Demonstrate collection value through measurable research and learning outcomes:
 
 **Usage Analytics:**
+
 - **Deep engagement** metrics beyond simple download counts
 - **Research pathway** tracking through semantic connections
 - **Citation impact** measurement for collection assessment
@@ -131,6 +158,7 @@ Demonstrate collection value through measurable research and learning outcomes:
 Our analytics go beyond traditional usage statistics to provide actionable insights for collection development and resource allocation.
 
 **Standard Reports (COUNTER 5.1):**
+
 - **TR_J1**: Journal Requests by Month and Journal
 - **TR_B1**: Book Requests by Month and Title  
 - **TR_B3**: Book Access Denied by Month and Title
@@ -140,18 +168,21 @@ Our analytics go beyond traditional usage statistics to provide actionable insig
 **Enhanced Analytics:**
 
 **Semantic Discovery Metrics:**
+
 - **Concept-based search** usage and success rates
 - **Cross-reference following** patterns and research pathways
 - **AI-recommendation** engagement and research outcomes
 - **Multilingual usage** patterns and language preferences
 
 **Research Impact Tracking:**
+
 - **Citation generation** from platform usage
 - **Course integration** and pedagogical impact
 - **Student research** success and completion rates
 - **Faculty productivity** metrics and research acceleration
 
 **Custom Dashboards:**
+
 - **Real-time usage** monitoring and alerts
 - **Collection gap** identification through search analytics
 - **Budget justification** reports with ROI calculations
@@ -175,18 +206,21 @@ Automated report delivery through COUNTER's SUSHI (Standardized Usage Statistics
 Our library services team ensures smooth implementation and ongoing optimization of your CENIE Editorial integration.
 
 **Pre-Implementation:**
+
 - **Technical requirements** assessment and planning
 - **Authentication setup** and testing
 - **Discovery integration** configuration and testing
 - **Staff training** programs and documentation
 
 **Ongoing Support:**
+
 - **Dedicated account management** for institutional partners
 - **Technical support** with guaranteed response times
 - **Usage optimization** consultation and recommendations
 - **Content updates** and new feature training
 
 **Professional Development:**
+
 - **Conference presentations** on AI-enhanced discovery
 - **Webinar series** for library staff and faculty
 - **Best practices** sharing with peer institutions
@@ -201,12 +235,14 @@ Our library services team ensures smooth implementation and ongoing optimization
 We partner with you to demonstrate the value of your CENIE Editorial investment through comprehensive impact measurement.
 
 **Key Performance Indicators:**
+
 - **Research output** increase in performing arts departments
 - **Student success** metrics in related programs
 - **Faculty satisfaction** with research support tools
 - **Interdisciplinary collaboration** facilitated through discovery
 
 **Budget Justification Support:**
+
 - **Cost per use** calculations with contextual benchmarking
 - **Research acceleration** metrics and time savings
 - **Grant success** correlation with enhanced research capabilities

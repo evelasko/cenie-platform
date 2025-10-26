@@ -10,21 +10,22 @@ CENIE Editorial offers performing arts scholars the opportunity to publish with 
 
 ## Why Choose CENIE Editorial?
 
-### AI-Native Publishing That Enhances Your Impact
+### Amplify Your Impact with Interactive Publishing
 
-Your scholarship deserves more than traditional publishing can offer. Our **Context Model Protocol** makes your work machine-understandable, dramatically increasing discoverability and citation potential through AI-powered research tools.
+Your scholarship deserves to be engaged with, not just read. Our AI-native platform transforms your text into an interactive experience, allowing readers to explore, question, and connect with your work in unprecedented ways.
 
-**Your work will benefit from:**
-- **Enhanced discoverability** through semantic search capabilities
-- **AI-assisted literature reviews** that properly cite your contributions  
-- **Cross-reference networks** that connect your work to related scholarship
-- **Global accessibility** through bilingual publication options
+**How our platform makes your work more impactful:**
+
+- **Conversational Search:** Readers can ask direct questions and get answers sourced from your work, bringing your arguments to the forefront.
+- **Guided Discovery:** Our AI connects your ideas to the wider scholarly conversation, surfacing your work in new and unexpected contexts.
+- **Verifiable AI:** We build trust by allowing readers to instantly verify every AI-generated insight, linking them directly back to your original text.
 
 ### Rigorous Academic Standards You Can Trust
 
 Innovation doesn't mean compromising on quality. Our **double-blind peer review process** and expert editorial board maintain the academic rigor you need for tenure, promotion, and scholarly recognition.
 
 **Our commitment to excellence:**
+
 - **Expert editorial board** spanning theatre, dance, and performance studies
 - **Transparent peer review** with clear timelines and feedback
 - **Ethical publishing practices** with conflict-of-interest policies
@@ -35,6 +36,7 @@ Innovation doesn't mean compromising on quality. Our **double-blind peer review 
 Expand your scholarly impact beyond language barriers. Our **Spanish Translation Program** can make your work accessible to the entire Spanish-speaking academic community.
 
 **Bilingual opportunities include:**
+
 - **Translation funding** for selected works of high scholarly merit
 - **Bilingual publication** for works submitted in either language
 - **Cross-cultural dialogue** through global scholarly networks
@@ -49,9 +51,10 @@ Expand your scholarly impact beyond language barriers. Our **Spanish Translation
 Traditional academic publishing leaves your work invisible to AI research tools. Our **Context Model Protocol** structures your scholarship so it can be properly understood, cited, and built upon by both human researchers and AI systems.
 
 **What this means for your work:**
-- **Semantic tagging** of key concepts and methodologies
+
+- **Semantic tagging** of your key concepts and methodologies
 - **Entity recognition** for proper names, theories, and practices
-- **Citation networks** that reveal scholarly relationships
+- **Citation networks** that reveal your scholarly relationships
 - **Machine-readable abstracts** that improve search visibility
 
 ### Multimedia Integration Support
@@ -59,6 +62,7 @@ Traditional academic publishing leaves your work invisible to AI research tools.
 Performing arts scholarship shouldn't be limited to text. We support rich multimedia content that brings your research to life.
 
 **Enhanced publication formats:**
+
 - **Embedded video** demonstrations and exemplars
 - **Audio recordings** of interviews and performances
 - **Interactive diagrams** and process visualizations
@@ -69,6 +73,7 @@ Performing arts scholarship shouldn't be limited to text. We support rich multim
 Join our mission to make performing arts scholarship truly global through our comprehensive translation and distribution network.
 
 **Global reach includes:**
+
 - **Professional translation services** for selected works
 - **Cultural consultation** for cross-cultural accessibility
 - **International distribution** through academic networks
@@ -79,25 +84,33 @@ Join our mission to make performing arts scholarship truly global through our co
 ## Our Publishing Process
 
 ### 1. Initial Submission
+
 **Timeline: Immediate response**
+
 - Submit your proposal through our online system
 - Receive confirmation and initial editorial review
 - Get guidance on Context Model Protocol preparation
 
 ### 2. Peer Review Process  
+
 **Timeline: 8-12 weeks**
+
 - Double-blind review by field experts
 - Transparent feedback and revision guidance
 - Editorial support throughout the process
 
 ### 3. Production & Enhancement
+
 **Timeline: 6-8 weeks**
+
 - Context Model Protocol implementation
 - Multimedia integration and testing
 - Translation coordination if applicable
 
 ### 4. Publication & Promotion
+
 **Timeline: 2-4 weeks**
+
 - DOI assignment and metadata registration
 - Library distribution and discovery integration
 - Author-supported promotional campaign
@@ -107,6 +120,7 @@ Join our mission to make performing arts scholarship truly global through our co
 ## Author Services & Support
 
 ### Editorial Assistance
+
 Our editorial team provides comprehensive support throughout the publication process:
 
 - **Manuscript development** guidance and feedback
@@ -115,6 +129,7 @@ Our editorial team provides comprehensive support throughout the publication pro
 - **Citation and referencing** standards compliance
 
 ### Technical Guidance
+
 Navigate the AI-native publishing process with expert support:
 
 - **Digital workflow** optimization
@@ -123,6 +138,7 @@ Navigate the AI-native publishing process with expert support:
 - **Rights and permissions** management
 
 ### Promotional Support
+
 Maximize your work's impact through our comprehensive promotion services:
 
 - **Launch coordination** with academic conferences and networks
@@ -131,6 +147,7 @@ Maximize your work's impact through our comprehensive promotion services:
 - **Author speaking** opportunities and event coordination
 
 ### Rights Management
+
 Maintain control while maximizing reach:
 
 - **Flexible licensing** options including Creative Commons
@@ -143,9 +160,11 @@ Maintain control while maximizing reach:
 ## Ready to Join the Future of Academic Publishing?
 
 ### Submit Your Proposal
+
 Our editorial team is ready to discuss your project and guide you through the submission process.
 
 **What to include in your initial submission:**
+
 - **Project overview** (500-1000 words)
 - **Chapter outline** or table of contents
 - **Sample chapter** or excerpt
@@ -155,11 +174,13 @@ Our editorial team is ready to discuss your project and guide you through the su
 **[Submit Proposal Now](#submission-guidelines)**
 
 ### Schedule a Consultation
+
 Speak directly with our editorial team about your project and learn how CENIE Editorial can enhance your scholarly impact.
 
 **[Schedule Consultation](#contact-support)**
 
 ### Download Submission Guidelines
+
 Get detailed information about our submission requirements, formatting guidelines, and publication process.
 
 **[Download Guidelines](#submission-guidelines)**

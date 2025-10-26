@@ -5,8 +5,9 @@ import { Button } from '@cenie/ui'
 import { signOut } from 'firebase/auth'
 import { getFirebaseAuth } from '@cenie/firebase/client'
 import { useRouter } from 'next/navigation'
+import { LogoEditorial } from '@cenie/ui'
 
-export function Navbar() {
+export default function Navbar() {
   const { user, loading } = useAuth()
   const router = useRouter()
 
@@ -39,37 +40,26 @@ export function Navbar() {
     <nav className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-bold text-gray-900">CENIE Editorial</h1>
+          <LogoEditorial />
           <span className="text-sm text-gray-500">Academic Publishing Platform</span>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {user ? (
             <>
               <span className="text-sm text-gray-700">
                 Welcome, {user.displayName || user.email}
               </span>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                size="sm"
-              >
+              <Button onClick={handleSignOut} variant="outline" size="sm">
                 Sign Out
               </Button>
             </>
           ) : (
             <div className="flex space-x-2">
-              <Button
-                onClick={() => router.push('/sign-in')}
-                variant="outline"
-                size="sm"
-              >
+              <Button onClick={() => router.push('/sign-in')} variant="outline" size="sm">
                 Sign In
               </Button>
-              <Button
-                onClick={() => router.push('/sign-up')}
-                size="sm"
-              >
+              <Button onClick={() => router.push('/sign-up')} size="sm">
                 Sign Up
               </Button>
             </div>

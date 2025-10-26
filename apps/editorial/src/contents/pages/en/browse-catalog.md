@@ -9,34 +9,41 @@ Transform how you find and explore performing arts scholarship. Our Context Mode
 ## Advanced Discovery Tools
 
 ### AI-Semantic Search
+
 **Search like you think, not like a machine.** Our semantic search understands research questions in natural language and finds relevant content based on meaning, not just keyword matching.
 
 **Try searching for:**
+
 - "Methods for teaching devising to undergraduate students"
 - "Audience participation in immersive theatre experiences"
 - "Digital documentation of performance practices"
 
 ### Intelligent Filtering
+
 Refine your discoveries with advanced filters designed for performing arts research:
 
 **By Language:**
+
 - English publications
 - Spanish translations
 - Bilingual resources
 
 **By Research Focus:**
+
 - Theoretical frameworks
 - Practice-based research
 - Historical analysis
 - Cross-cultural studies
 
 **By Content Type:**
+
 - Monographs
 - Edited collections
 - Multimedia publications
 - Translation series
 
 **By Methodology:**
+
 - Ethnographic approaches
 - Archival research
 - Performance as research
@@ -47,54 +54,66 @@ Refine your discoveries with advanced filters designed for performing arts resea
 ## Browse by Category
 
 ### Theatre Studies
+
 Explore contemporary and historical approaches to theatrical performance, dramaturgy, and theatre-making.
 
 **Featured Topics:**
+
 - Contemporary Dramaturgy
 - Site-Specific Theatre
 - Community Theatre Practices
 - Theatre and Social Justice
 
 ### Dance & Movement
+
 Discover scholarship on dance techniques, choreography, movement analysis, and somatic practices.
 
 **Featured Topics:**
+
 - Contemporary Dance Methods
 - Cultural Dance Traditions
 - Movement Analysis
 - Dance and Technology
 
 ### Performance as Research
+
 Access cutting-edge methodologies where creative practice generates scholarly knowledge.
 
 **Featured Topics:**
+
 - Practice-Based Research Methods
 - Digital Documentation Strategies
 - Embodied Knowledge Systems
 - Creative-Critical Writing
 
 ### Applied Theatre
+
 Find resources on theatre in education, community engagement, and social intervention.
 
 **Featured Topics:**
+
 - Drama in Education
 - Theatre for Development
 - Therapeutic Theatre Practices
 - Participatory Performance
 
 ### Immersive & Interactive Performance
+
 Explore new forms of audience engagement and environmental storytelling.
 
 **Featured Topics:**
+
 - Immersive Theatre Design
 - Audience Participation Frameworks
 - Virtual Reality Performance
 - Interactive Narrative Structures
 
 ### Historical Performance Studies
+
 Research historical performance practices, archival methods, and cultural contexts.
 
 **Featured Topics:**
+
 - Performance Reconstruction
 - Archival Research Methods
 - Historical Theatre Practices
@@ -119,6 +138,7 @@ Multimedia publication with embedded video documentation of performance practice
 *Available in: English, with Spanish abstracts* | **[Access Full Text]** | **[Export Citation]**
 
 ### Spanish Translation Series
+
 Essential performing arts texts now accessible to Spanish-speaking scholars and practitioners.
 
 - Applied Theatre Methodologies
@@ -129,19 +149,23 @@ Essential performing arts texts now accessible to Spanish-speaking scholars and 
 [**View All Spanish Translations →**](#spanish-translations)
 
 ### Editor's Recommendations
+
 Curated selections highlighting innovative research and essential reading.
 
 **For New Researchers:**
+
 - Foundational theories in performance studies
 - Research methodology guides
 - Citation and writing resources
 
 **For Practitioners:**
+
 - Practice-based research exemplars
 - Creative-critical methodologies
 - Documentation techniques
 
 **For Educators:**
+
 - Pedagogical approaches
 - Curriculum design resources
 - Student assessment methods
@@ -151,10 +175,13 @@ Curated selections highlighting innovative research and essential reading.
 ## Search Results Experience
 
 ### Context-Aware Results
+
 Every search result includes AI-generated summaries that highlight why this publication matches your query, saving time in literature review.
 
 ### Instant Citation Export
+
 One-click export to:
+
 - Zotero
 - Mendeley  
 - EndNote
@@ -162,20 +189,25 @@ One-click export to:
 - CSL JSON
 
 ### Related Works Discovery
+
 AI-powered recommendations reveal connections across our catalog:
+
 - **Conceptually similar** publications
 - **Methodologically related** approaches  
 - **Thematically connected** research
 - **Historically contextual** works
 
 ### Full-Text Access
+
 **For Institutional Users:**
+
 - Immediate access to complete publications
 - Downloadable PDFs with persistent identifiers
 - Print-friendly formatting options
 - Mobile-optimized reading experience
 
 **For Individual Subscribers:**
+
 - Chapter-level access options
 - Preview excerpts with context highlighting
 - Recommendation-based reading lists
