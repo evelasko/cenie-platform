@@ -1,3 +1,4 @@
+export * from './components/graphics'
 export * from './components/button'
 export * from './components/card'
 export * from './components/badge'

@@ -27,7 +27,7 @@
     "sync:once:academy": "unison academy-content",
     "sync:once:agency": "unison agency-content",
     "sync:once:editorial": "unison editorial-content",
-    "sync:once:all": "npm run sync:once:hub && npm run sync:once:academy && npm run sync:once:agency && npm run sync:once:editorial",
+    "sync:once:all": "concurrently \"pnpm run sync:once:hub\" \"pnpm run sync:once:academy\" \"pnpm run sync:once:agency\" \"pnpm run sync:once:editorial\"",
     "sync:watch:hub": "./scripts/sync-watch-single.sh cenie-content",
     "sync:watch:academy": "./scripts/sync-watch-single.sh academy-content",
     "sync:watch:agency": "./scripts/sync-watch-single.sh agency-content",
@@ -67,5 +67,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

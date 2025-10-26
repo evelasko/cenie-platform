@@ -1,7 +1,12 @@
-import { reactConfig } from '../eslint-config/src/react.js';
+// import { reactConfig } from '../eslint-config/src/react.js'
+import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import importPlugin from 'eslint-plugin-import'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
-export default [
-  ...reactConfig,
+/** @type {import('eslint').Linter.Config[]} */
+const eslintConfig = [
+  // ...reactConfig,
   {
     languageOptions: {
       parserOptions: {
@@ -13,17 +18,17 @@ export default [
       'react/display-name': 'error', // Important for debugging components
       'react/prop-types': 'off', // Using TypeScript instead
       'react/jsx-no-leaked-render': 'error',
-      
+
       // Enforce consistent exports for component library
       'import/prefer-default-export': 'off',
       'import/no-default-export': 'error',
-      
+
       // Accessibility is crucial for UI components
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/aria-props': 'error',
       'jsx-a11y/role-has-required-aria-props': 'error',
       'jsx-a11y/role-supports-aria-props': 'error',
-      
+
       // TypeScript strict rules for component library
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
@@ -38,4 +43,4 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
-];
+]

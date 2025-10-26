@@ -1,7 +1,7 @@
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import importPlugin from 'eslint-plugin-import';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import importPlugin from 'eslint-plugin-import'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 /** @type {import('eslint').Linter.Config[]} */
 const eslintConfig = [
@@ -37,7 +37,7 @@ const eslintConfig = [
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
-      
+
       // Import rules
       'import/order': [
         'error',
@@ -47,11 +47,12 @@ const eslintConfig = [
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
-      
+
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-debugger': 'error',
       'prefer-const': 'error',
+      'import/no-default-export': 'off',
     },
   },
   // Prettier integration - must be last to override conflicting rules
@@ -72,6 +73,6 @@ const eslintConfig = [
       'apps/*/.next',
     ],
   },
-];
+]
 
-export default eslintConfig;
+export default eslintConfig
