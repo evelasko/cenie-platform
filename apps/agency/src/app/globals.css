@@ -1,129 +1,143 @@
 @import url('https://use.typekit.net/rnn4nzl.css');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Typography Scale - Golden Ratio Based */
-  --type-scale-ratio: 1.618;
-  --type-base-size: 1rem;
+  /* Font Families - Effica-inspired (Three font system) */
+  --font-display: sora, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: geist, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ibm-plex-mono, ui-monospace, monospace;
 
-  /* Font Families - Gotham for Learn */
-  --font-display: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* HERO/DISPLAY STYLES - Massive uppercase headings */
+  --type-hero-size: clamp(3rem, 9vw + 2rem, 6.798rem);
+  --type-hero-line: 0.85;
+  --type-hero-tracking: -0.05em;
+  --type-hero-weight: 800;
 
-  /* DISPLAY STYLES - Hero sections, major announcements */
-  --type-display-1-size: clamp(3.5rem, 8vw + 1rem, 8rem);
-  --type-display-1-line: 0.9;
-  --type-display-1-tracking: 0.05em;
+  --type-display-1-size: clamp(2.5rem, 6vw + 1.5rem, 3.955rem);
+  --type-display-1-line: 1;
+  --type-display-1-tracking: -0.07em;
   --type-display-1-weight: 800;
 
-  --type-display-2-size: clamp(2.5rem, 6vw + 1rem, 5.5rem);
-  --type-display-2-line: 1;
-  --type-display-2-tracking: 0.03em;
+  --type-display-2-size: clamp(1.75rem, 3vw + 1rem, 2.375rem);
+  --type-display-2-line: 0.95;
+  --type-display-2-tracking: -0.05em;
   --type-display-2-weight: 700;
 
-  /* HEADING STYLES - Progressive hierarchy */
-  --type-heading-1-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
-  --type-heading-1-line: 1.1;
-  --type-heading-1-tracking: 0.02em;
+  /* HEADING STYLES */
+  --type-heading-1-size: clamp(1.5rem, 2.5vw + 0.75rem, 2.125rem);
+  --type-heading-1-line: 0.95;
+  --type-heading-1-tracking: -0.05em;
   --type-heading-1-weight: 700;
 
-  --type-heading-2-size: clamp(1.875rem, 4vw + 0.25rem, 3rem);
-  --type-heading-2-line: 1.15;
-  --type-heading-2-tracking: 0.015em;
+  --type-heading-2-size: clamp(1.25rem, 2vw + 0.625rem, 1.875rem);
+  --type-heading-2-line: 0.95;
+  --type-heading-2-tracking: -0.05em;
   --type-heading-2-weight: 700;
 
-  --type-heading-3-size: clamp(1.5rem, 3vw + 0.25rem, 2.25rem);
-  --type-heading-3-line: 1.2;
-  --type-heading-3-tracking: 0.01em;
+  --type-heading-3-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+  --type-heading-3-line: 1.1;
+  --type-heading-3-tracking: -0.05em;
   --type-heading-3-weight: 700;
 
-  --type-heading-4-size: clamp(1.25rem, 2.5vw + 0.125rem, 1.75rem);
-  --type-heading-4-line: 1.25;
-  --type-heading-4-tracking: 0.005em;
+  --type-heading-4-size: clamp(1rem, 1vw + 0.5rem, 1.125rem);
+  --type-heading-4-line: 1.1;
+  --type-heading-4-tracking: -0.05em;
   --type-heading-4-weight: 700;
 
-  --type-heading-5-size: clamp(1.125rem, 2vw + 0.125rem, 1.375rem);
-  --type-heading-5-line: 1.3;
-  --type-heading-5-tracking: 0;
+  --type-heading-5-size: clamp(0.875rem, 0.75vw + 0.5rem, 0.9375rem);
+  --type-heading-5-line: 1.1;
+  --type-heading-5-tracking: -0.03em;
   --type-heading-5-weight: 700;
 
-  --type-heading-6-size: clamp(1rem, 1.5vw + 0.125rem, 1.125rem);
-  --type-heading-6-line: 1.35;
-  --type-heading-6-tracking: 0;
+  --type-heading-6-size: clamp(0.8125rem, 0.5vw + 0.5rem, 0.875rem);
+  --type-heading-6-line: 0.9;
+  --type-heading-6-tracking: -0.03em;
   --type-heading-6-weight: 700;
 
-  /* BODY STYLES - Reading content */
-  --type-body-large-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.375rem);
-  --type-body-large-line: 1.6;
-  --type-body-large-tracking: -0.005em;
-  --type-body-large-weight: 300;
+  /* BODY TEXT STYLES */
+  --type-body-large-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --type-body-large-line: 1.35;
+  --type-body-large-tracking: -0.03em;
+  --type-body-large-weight: 500;
 
-  --type-body-base-size: clamp(1rem, 1vw + 0.5rem, 1.125rem);
-  --type-body-base-line: 1.65;
-  --type-body-base-tracking: 0;
-  --type-body-base-weight: 400;
+  --type-body-base-size: clamp(0.9375rem, 0.25vw + 0.875rem, 1rem);
+  --type-body-base-line: 1.35;
+  --type-body-base-tracking: -0.03em;
+  --type-body-base-weight: 500;
 
-  --type-body-small-size: clamp(0.875rem, 0.75vw + 0.5rem, 1rem);
-  --type-body-small-line: 1.6;
-  --type-body-small-tracking: 0.005em;
-  --type-body-small-weight: 400;
+  --type-body-small-size: clamp(0.875rem, 0.25vw + 0.8125rem, 0.9375rem);
+  --type-body-small-line: 1.4;
+  --type-body-small-tracking: -0.02em;
+  --type-body-small-weight: 500;
 
-  /* UI/UTILITY STYLES */
-  --type-lead-size: clamp(1.25rem, 2vw + 0.5rem, 1.625rem);
-  --type-lead-line: 1.5;
-  --type-lead-tracking: -0.01em;
-  --type-lead-weight: 300;
+  /* SPECIALIZED STYLES */
+  --type-quote-size: clamp(1.5rem, 2vw + 0.875rem, 2.125rem);
+  --type-quote-line: 0.95;
+  --type-quote-tracking: -0.06em;
+  --type-quote-weight: 700;
 
-  --type-caption-size: clamp(0.75rem, 0.5vw + 0.375rem, 0.875rem);
-  --type-caption-line: 1.5;
-  --type-caption-tracking: 0.01em;
-  --type-caption-weight: 400;
+  --type-stat-size: clamp(1.5rem, 2vw + 0.875rem, 2.25rem);
+  --type-stat-line: 0.9;
+  --type-stat-tracking: -0.06em;
+  --type-stat-weight: 600;
 
-  --type-overline-size: clamp(0.75rem, 0.25vw + 0.5rem, 0.875rem);
-  --type-overline-line: 1.2;
-  --type-overline-tracking: 0.1em;
-  --type-overline-weight: 700;
+  --type-year-size: clamp(1.25rem, 1.5vw + 0.625rem, 1.75rem);
+  --type-year-line: 0.9;
+  --type-year-tracking: -0.05em;
+  --type-year-weight: 600;
 
-  --type-button-size: clamp(0.875rem, 0.5vw + 0.5rem, 1rem);
-  --type-button-line: 1.2;
-  --type-button-tracking: 0.025em;
-  --type-button-weight: 700;
+  --type-project-size: clamp(1rem, 0.5vw + 0.75rem, 1.125rem);
+  --type-project-line: 0.9;
+  --type-project-tracking: -0.05em;
+  --type-project-weight: 500;
 
-  --type-link-decoration: underline;
-  --type-link-decoration-thickness: 0.0625em;
-  --type-link-underline-offset: 0.125em;
-  --type-link-weight: 400;
+  --type-cta-primary-size: clamp(0.8125rem, 0.125vw + 0.75rem, 0.8125rem);
+  --type-cta-primary-line: 0.9;
+  --type-cta-primary-tracking: -0.03em;
+  --type-cta-primary-weight: 700;
 
-  --type-quote-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem);
-  --type-quote-line: 1.45;
-  --type-quote-tracking: -0.005em;
-  --type-quote-weight: 300;
+  --type-cta-secondary-size: clamp(0.875rem, 0.125vw + 0.8125rem, 0.875rem);
+  --type-cta-secondary-line: 0.9;
+  --type-cta-secondary-tracking: -0.03em;
+  --type-cta-secondary-weight: 600;
 
-  --type-label-size: clamp(0.875rem, 0.5vw + 0.5rem, 1rem);
-  --type-label-line: 1.4;
-  --type-label-tracking: 0.01em;
-  --type-label-weight: 600;
+  --type-label-mono-size: clamp(0.75rem, 0.25vw + 0.6875rem, 0.8125rem);
+  --type-label-mono-line: 1.4;
+  --type-label-mono-tracking: -0.02em;
+  --type-label-mono-weight: 500;
+
+  --type-section-label-size: clamp(0.75rem, 0.125vw + 0.6875rem, 0.75rem);
+  --type-section-label-line: 1.35;
+  --type-section-label-tracking: -0.04em;
+  --type-section-label-weight: 500;
+
+  --type-rating-size: clamp(0.625rem, 0.125vw + 0.5625rem, 0.625rem);
+  --type-rating-line: 1.4;
+  --type-rating-tracking: -0.02em;
+  --type-rating-weight: 500;
+
+  --type-link-weight: 600;
 }
 
 :root {
-  --color-background: oklch(1.0000 0 0);
+  --color-background: oklch(1 0 0);
   --color-foreground: oklch(0.2686 0 0);
-  --color-card: oklch(1.0000 0 0);
+  --color-card: oklch(1 0 0);
   --color-card-foreground: oklch(0.2686 0 0);
-  --color-popover: oklch(1.0000 0 0);
+  --color-popover: oklch(1 0 0);
   --color-popover-foreground: oklch(0.2686 0 0);
   --color-primary: oklch(0.588 0.158 241.966);
-  --color-primary-foreground: oklch(1.0000 0 0);
+  --color-primary-foreground: oklch(1 0 0);
   --color-secondary: oklch(0.3469 0.0733 234.7352);
   --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
   --color-muted: oklch(0.9846 0.0017 247.8389);
-  --color-muted-foreground: oklch(0.5510 0.0234 264.3637);
+  --color-muted-foreground: oklch(0.551 0.0234 264.3637);
   --color-accent: oklch(0.777 0.152 181.912);
   --color-accent-foreground: oklch(0.3469 0.0733 234.7352);
   --color-destructive: oklch(0.6368 0.2078 25.3313);
-  --color-destructive-foreground: oklch(1.0000 0 0);
+  --color-destructive-foreground: oklch(1 0 0);
   --color-border: oklch(0.9276 0.0058 264.5313);
   --color-input: oklch(0.9276 0.0058 264.5313);
   --color-ring: oklch(0.588 0.158 241.966);
@@ -147,16 +161,16 @@
   --color-accent: oklch(0.2676 0.0336 229.2762);
   --color-accent-foreground: oklch(0.9635 0.0341 183.0511);
   --color-destructive: oklch(0.6368 0.2078 25.3313);
-  --color-destructive-foreground: oklch(1.0000 0 0);
+  --color-destructive-foreground: oklch(1 0 0);
   --color-border: oklch(0.3715 0 0);
   --color-input: oklch(0.3715 0 0);
   --color-ring: oklch(0.588 0.158 241.966);
 }
 
 @theme inline {
-  --font-sans: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "aglet-mono", ui-monospace, monospace;
-  --font-serif: "gotham", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'aglet-mono', ui-monospace, monospace;
+  --font-serif: 'gotham', -apple-system, BlinkMacSystemFont, sans-serif;
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
   --color-card: var(--color-card);
@@ -184,7 +198,16 @@
 
 /* Typography Utility Classes */
 @layer utilities {
-  /* Display Styles */
+  /* Hero/Display Styles - All Sora, uppercase */
+  .type-hero {
+    font-family: var(--font-display);
+    font-size: var(--type-hero-size);
+    line-height: var(--type-hero-line);
+    letter-spacing: var(--type-hero-tracking);
+    font-weight: var(--type-hero-weight);
+    text-transform: uppercase;
+  }
+
   .type-display-1 {
     font-family: var(--font-display);
     font-size: var(--type-display-1-size);
@@ -192,7 +215,6 @@
     letter-spacing: var(--type-display-1-tracking);
     font-weight: var(--type-display-1-weight);
     text-transform: uppercase;
-    transition: var(--type-transition);
   }
 
   .type-display-2 {
@@ -202,10 +224,9 @@
     letter-spacing: var(--type-display-2-tracking);
     font-weight: var(--type-display-2-weight);
     text-transform: uppercase;
-    transition: var(--type-transition);
   }
 
-  /* Heading Styles */
+  /* Heading Styles - All Sora, uppercase */
   .type-heading-1 {
     font-family: var(--font-display);
     font-size: var(--type-heading-1-size);
@@ -213,7 +234,6 @@
     letter-spacing: var(--type-heading-1-tracking);
     font-weight: var(--type-heading-1-weight);
     text-transform: uppercase;
-    transition: var(--type-transition);
   }
 
   .type-heading-2 {
@@ -223,7 +243,6 @@
     letter-spacing: var(--type-heading-2-tracking);
     font-weight: var(--type-heading-2-weight);
     text-transform: uppercase;
-    transition: var(--type-transition);
   }
 
   .type-heading-3 {
@@ -232,7 +251,7 @@
     line-height: var(--type-heading-3-line);
     letter-spacing: var(--type-heading-3-tracking);
     font-weight: var(--type-heading-3-weight);
-    transition: var(--type-transition);
+    text-transform: uppercase;
   }
 
   .type-heading-4 {
@@ -241,35 +260,34 @@
     line-height: var(--type-heading-4-line);
     letter-spacing: var(--type-heading-4-tracking);
     font-weight: var(--type-heading-4-weight);
-    transition: var(--type-transition);
+    text-transform: uppercase;
   }
 
   .type-heading-5 {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: var(--type-heading-5-size);
     line-height: var(--type-heading-5-line);
     letter-spacing: var(--type-heading-5-tracking);
     font-weight: var(--type-heading-5-weight);
-    transition: var(--type-transition);
+    text-transform: uppercase;
   }
 
   .type-heading-6 {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: var(--type-heading-6-size);
     line-height: var(--type-heading-6-line);
     letter-spacing: var(--type-heading-6-tracking);
     font-weight: var(--type-heading-6-weight);
-    transition: var(--type-transition);
+    text-transform: uppercase;
   }
 
-  /* Body Styles */
+  /* Body Styles - Geist, sentence case */
   .type-body-large {
     font-family: var(--font-body);
     font-size: var(--type-body-large-size);
     line-height: var(--type-body-large-line);
     letter-spacing: var(--type-body-large-tracking);
     font-weight: var(--type-body-large-weight);
-    transition: var(--type-transition);
   }
 
   .type-body-base {
@@ -278,7 +296,6 @@
     line-height: var(--type-body-base-line);
     letter-spacing: var(--type-body-base-tracking);
     font-weight: var(--type-body-base-weight);
-    transition: var(--type-transition);
   }
 
   .type-body-small {
@@ -287,80 +304,96 @@
     line-height: var(--type-body-small-line);
     letter-spacing: var(--type-body-small-tracking);
     font-weight: var(--type-body-small-weight);
-    transition: var(--type-transition);
   }
 
-  /* UI/Utility Styles */
-  .type-lead {
-    font-family: var(--font-body);
-    font-size: var(--type-lead-size);
-    line-height: var(--type-lead-line);
-    letter-spacing: var(--type-lead-tracking);
-    font-weight: var(--type-lead-weight);
-    transition: var(--type-transition);
-  }
-
-  .type-caption {
-    font-family: var(--font-body);
-    font-size: var(--type-caption-size);
-    line-height: var(--type-caption-line);
-    letter-spacing: var(--type-caption-tracking);
-    font-weight: var(--type-caption-weight);
-    opacity: 0.8;
-    transition: var(--type-transition);
-  }
-
-  .type-overline {
-    font-family: var(--font-body);
-    font-size: var(--type-overline-size);
-    line-height: var(--type-overline-line);
-    letter-spacing: var(--type-overline-tracking);
-    font-weight: var(--type-overline-weight);
-    text-transform: uppercase;
-    opacity: 0.75;
-    transition: var(--type-transition);
-  }
-
-  .type-button {
-    font-family: var(--font-body);
-    font-size: var(--type-button-size);
-    line-height: var(--type-button-line);
-    letter-spacing: var(--type-button-tracking);
-    font-weight: var(--type-button-weight);
-    text-transform: uppercase;
-    transition: var(--type-transition);
-  }
-
-  .type-link {
-    font-weight: var(--type-link-weight);
-    text-decoration: var(--type-link-decoration);
-    text-decoration-thickness: var(--type-link-decoration-thickness);
-    text-underline-offset: var(--type-link-underline-offset);
-    transition: var(--type-transition);
-  }
-
-  .type-link:hover {
-    opacity: 0.7;
-    text-decoration-thickness: 0.125em;
-  }
-
+  /* Specialized Styles */
   .type-quote {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: var(--type-quote-size);
     line-height: var(--type-quote-line);
     letter-spacing: var(--type-quote-tracking);
     font-weight: var(--type-quote-weight);
-    font-style: italic;
-    transition: var(--type-transition);
+    text-transform: uppercase;
   }
 
-  .type-label {
+  .type-stat {
     font-family: var(--font-body);
-    font-size: var(--type-label-size);
-    line-height: var(--type-label-line);
-    letter-spacing: var(--type-label-tracking);
-    font-weight: var(--type-label-weight);
-    transition: var(--type-transition);
+    font-size: var(--type-stat-size);
+    line-height: var(--type-stat-line);
+    letter-spacing: var(--type-stat-tracking);
+    font-weight: var(--type-stat-weight);
+  }
+
+  .type-year {
+    font-family: var(--font-body);
+    font-size: var(--type-year-size);
+    line-height: var(--type-year-line);
+    letter-spacing: var(--type-year-tracking);
+    font-weight: var(--type-year-weight);
+    text-transform: uppercase;
+  }
+
+  .type-project {
+    font-family: var(--font-body);
+    font-size: var(--type-project-size);
+    line-height: var(--type-project-line);
+    letter-spacing: var(--type-project-tracking);
+    font-weight: var(--type-project-weight);
+  }
+
+  .type-cta-primary {
+    font-family: var(--font-display);
+    font-size: var(--type-cta-primary-size);
+    line-height: var(--type-cta-primary-line);
+    letter-spacing: var(--type-cta-primary-tracking);
+    font-weight: var(--type-cta-primary-weight);
+    text-transform: uppercase;
+  }
+
+  .type-cta-secondary {
+    font-family: var(--font-display);
+    font-size: var(--type-cta-secondary-size);
+    line-height: var(--type-cta-secondary-line);
+    letter-spacing: var(--type-cta-secondary-tracking);
+    font-weight: var(--type-cta-secondary-weight);
+  }
+
+  .type-label-mono {
+    font-family: var(--font-mono);
+    font-size: var(--type-label-mono-size);
+    line-height: var(--type-label-mono-line);
+    letter-spacing: var(--type-label-mono-tracking);
+    font-weight: var(--type-label-mono-weight);
+    text-transform: uppercase;
+  }
+
+  .type-section-label {
+    font-family: var(--font-mono);
+    font-size: var(--type-section-label-size);
+    line-height: var(--type-section-label-line);
+    letter-spacing: var(--type-section-label-tracking);
+    font-weight: var(--type-section-label-weight);
+    text-transform: uppercase;
+  }
+
+  .type-rating {
+    font-family: var(--font-mono);
+    font-size: var(--type-rating-size);
+    line-height: var(--type-rating-line);
+    letter-spacing: var(--type-rating-tracking);
+    font-weight: var(--type-rating-weight);
+    text-transform: uppercase;
+  }
+
+  .type-link {
+    font-family: var(--font-display);
+    font-weight: var(--type-link-weight);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .type-link:hover {
+    opacity: 0.7;
   }
 }
 
@@ -376,7 +409,7 @@
     letter-spacing: var(--type-body-base-tracking);
     font-weight: var(--type-body-base-weight);
     transition: var(--type-transition);
-    
+
     /* Improve text rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -401,23 +434,23 @@
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
   }
-  
+
   .delay-200 {
     animation-delay: 200ms;
   }
-  
+
   .delay-400 {
     animation-delay: 400ms;
   }
-  
+
   .delay-600 {
     animation-delay: 600ms;
   }
-  
+
   .delay-1000 {
     animation-delay: 1000ms;
   }
-  
+
   .delay-2000 {
     animation-delay: 2000ms;
   }
