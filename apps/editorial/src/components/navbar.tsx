@@ -9,11 +9,21 @@ import { useRouter } from 'next/navigation'
 import { LogoEditorial } from '@cenie/ui'
 import { TYPOGRAPHY } from '@/lib/typography'
 import Link from 'next/link'
+import type { NavigationItem } from '@/lib/navigation'
 
-export default function Navbar() {
+interface NavbarProps {
+  navigationItems: NavigationItem[]
+  showAuth?: boolean
+  logoColor?: string
+}
+
+export default function Navbar({
+  navigationItems,
+  showAuth = true,
+  logoColor = 'var(--color-primary)',
+}: NavbarProps) {
   const { user, loading } = useAuth()
   const router = useRouter()
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleSignOut = async () => {
@@ -25,19 +35,6 @@ export default function Navbar() {
       console.error('Sign out error:', error)
     }
   }
-
-  const recursos = [
-    { title: 'Publicar con Nosotros', href: '/recursos/autores' },
-    { title: 'Para Instituciones', href: '/recursos/instituciones' },
-    { title: 'Acceso Individual', href: '/recursos/acceso' },
-  ]
-
-  const nosotros = [
-    { title: 'Sobre CENIE Editorial', href: '/nosotros' },
-    { title: 'Traducciones al Español', href: '/nosotros/traducciones' },
-    { title: 'Noticias', href: '/noticias' },
-    { title: 'Contacto y Soporte', href: '/nosotros/contacto' },
-  ]
 
   if (loading) {
     return (
@@ -62,109 +59,62 @@ export default function Navbar() {
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-24">
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
-              <LogoEditorial />
+            <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
+              <LogoEditorial color={logoColor} />
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center justify-center flex-1 mx-12">
               <ul className="flex items-center space-x-8">
-                <li>
-                  <Link
-                    href="/catalogo"
-                    className={`${TYPOGRAPHY.button} text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors`}
-                  >
-                    Catálogo
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/tecnologia"
-                    className={`${TYPOGRAPHY.button} text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors`}
-                  >
-                    Tecnología
-                  </Link>
-                </li>
-                <li
-                  className="relative group"
-                  onMouseEnter={() => setActiveDropdown('recursos')}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <button
-                    className={`${TYPOGRAPHY.button} text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors flex items-center`}
-                  >
-                    Recursos
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                  {activeDropdown === 'recursos' && (
-                    <div className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg border border-gray-200 py-4">
-                      <ul className="space-y-3">
-                        {recursos.map((item) => (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              className={`${TYPOGRAPHY.bodyBase} block px-6 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50`}
-                            >
-                              {item.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </li>
-                <li
-                  className="relative group"
-                  onMouseEnter={() => setActiveDropdown('nosotros')}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <button
-                    className={`${TYPOGRAPHY.button} text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors flex items-center`}
-                  >
-                    Nosotros
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                  {activeDropdown === 'nosotros' && (
-                    <div className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg border border-gray-200 py-4">
-                      <ul className="space-y-3">
-                        {nosotros.map((item) => (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              className={`${TYPOGRAPHY.bodyBase} block px-6 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50`}
-                            >
-                              {item.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </li>
+                {navigationItems.map((item) => (
+                  <li key={item.href} className={item.items ? 'relative group' : ''}>
+                    {item.items ? (
+                      <>
+                        <button
+                          className={`${TYPOGRAPHY.bodyLarge} inline-flex items-center text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors`}
+                        >
+                          {item.label}
+                          <svg
+                            className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-200"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                        <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out">
+                          <div className="w-64 bg-white shadow-lg border border-gray-200 py-4 rounded-md transform translate-y-2 group-hover:translate-y-0 transition-transform duration-200">
+                            <ul className="space-y-1">
+                              {item.items.map((subItem) => (
+                                <li key={subItem.href}>
+                                  <Link
+                                    href={subItem.href}
+                                    className={`${TYPOGRAPHY.bodyBase} block px-6 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors`}
+                                  >
+                                    {subItem.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={`${TYPOGRAPHY.bodyLarge} inline-block text-gray-900 hover:text-gray-600 border-b-2 border-transparent hover:border-gray-900 pb-1 transition-colors`}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
               </ul>
             </nav>
 
@@ -183,7 +133,7 @@ export default function Navbar() {
                   />
                 </svg>
               </button>
-              {user && (
+              {showAuth && user && (
                 <Button onClick={handleSignOut} variant="outline" size="sm">
                   Cerrar Sesión
                 </Button>
@@ -224,61 +174,39 @@ export default function Navbar() {
           <div className="lg:hidden border-t border-gray-200 bg-white">
             <nav className="container mx-auto px-6 py-6">
               <ul className="space-y-4">
-                <li>
-                  <Link
-                    href="/catalogo"
-                    className={`${TYPOGRAPHY.bodyBase} block py-2 text-gray-900 hover:text-gray-600`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Catálogo
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/tecnologia"
-                    className={`${TYPOGRAPHY.bodyBase} block py-2 text-gray-900 hover:text-gray-600`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Tecnología
-                  </Link>
-                </li>
-                <li>
-                  <div className={`${TYPOGRAPHY.bodyBase} py-2 text-gray-500 font-semibold`}>
-                    Recursos
-                  </div>
-                  <ul className="ml-4 space-y-2 mt-2">
-                    {recursos.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          className={`${TYPOGRAPHY.bodySmall} block py-1 text-gray-700 hover:text-gray-900`}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {item.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                <li>
-                  <div className={`${TYPOGRAPHY.bodyBase} py-2 text-gray-500 font-semibold`}>
-                    Nosotros
-                  </div>
-                  <ul className="ml-4 space-y-2 mt-2">
-                    {nosotros.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          className={`${TYPOGRAPHY.bodySmall} block py-1 text-gray-700 hover:text-gray-900`}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {item.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                {user && (
+                {navigationItems.map((item) => (
+                  <li key={item.href}>
+                    {item.items ? (
+                      <>
+                        <div className={`${TYPOGRAPHY.bodyBase} py-2 text-gray-500 font-semibold`}>
+                          {item.label}
+                        </div>
+                        <ul className="ml-4 space-y-2 mt-2">
+                          {item.items.map((subItem) => (
+                            <li key={subItem.href}>
+                              <Link
+                                href={subItem.href}
+                                className={`${TYPOGRAPHY.bodySmall} block py-1 text-gray-700 hover:text-gray-900`}
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {subItem.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={`${TYPOGRAPHY.bodyBase} block py-2 text-gray-900 hover:text-gray-600`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+                {showAuth && user && (
                   <li className="pt-4 border-t border-gray-200">
                     <Button
                       onClick={() => {

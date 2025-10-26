@@ -32,7 +32,7 @@ export default function EditorialComingSoon() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-primary/5 via-background to-accent/5">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 type-body-base text-muted-foreground">Cargando...</p>
@@ -46,10 +46,10 @@ export default function EditorialComingSoon() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+    <div className="min-h-screen bg-linear-to-br from-primary/5 via-background to-accent/5">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10 opacity-50" />
         {/* Scholarly background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 bg-primary/30 rounded-full blur-2xl animate-pulse"></div>
@@ -151,7 +151,7 @@ export default function EditorialComingSoon() {
       </section>
 
       {/* Solutions Preview */}
-      <section className="py-20 bg-gradient-to-r from-muted/20 to-accent/20">
+      <section className="py-20 bg-linear-to-r from-muted/20 to-accent/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="type-heading-1 mb-6">Nuestra solución: Becas, reimaginadas</h2>

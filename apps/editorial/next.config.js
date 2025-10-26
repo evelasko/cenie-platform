@@ -8,9 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') })
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@cenie/ui', '@cenie/design-system'],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },  images: {
+  images: {
     remotePatterns: [
       {
         protocol: 'https',
