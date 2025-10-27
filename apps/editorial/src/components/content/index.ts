@@ -1,5 +1,6 @@
 export { Prose } from './Prose'
 export { ContentLayout } from './ContentLayout'
+export { ContentCard } from './ContentCard'
 export { mdxComponents } from './MDXComponents'
 export { PageContainer } from './PageContainer'
 export { PageHero } from './PageHero'
