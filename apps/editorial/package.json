@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
-    "clean": "rm -rf .next .turbo node_modules"
+    "clean": "rm -rf .next .turbo"
   },
   "dependencies": {
     "@cenie/auth-client": "workspace:*",
@@ -22,6 +22,7 @@
     "@next/mdx": "^16.0.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.18",
     "firebase": "^12.4.0",

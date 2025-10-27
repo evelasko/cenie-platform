@@ -1,0 +1,109 @@
+import { ReactNode } from 'react'
+import { Prose } from './Prose'
+import type { Frontmatter } from '@/lib/mdx'
+
+interface ContentLayoutProps {
+  frontmatter: Frontmatter
+  readingTime: string
+  children: ReactNode
+  type?: 'article' | 'news'
+}
+
+export function ContentLayout({
+  frontmatter,
+  readingTime,
+  children,
+}: ContentLayoutProps) {
+  const formattedDate = new Date(frontmatter.publishedDate).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-background">
+        <div className="container mx-auto px-4 py-16 max-w-4xl">
+          {/* Category badge */}
+          {frontmatter.category && (
+            <div className="mb-4">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary rounded-full">
+                {frontmatter.category}
+              </span>
+            </div>
+          )}
+
+          {/* Title */}
+          <h1 className="type-display-1 mb-6">{frontmatter.title}</h1>
+
+          {/* Description */}
+          {frontmatter.description && (
+            <p className="type-lead text-muted-foreground mb-6">{frontmatter.description}</p>
+          )}
+
+          {/* Meta information */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground type-body-small">
+            {'author' in frontmatter && frontmatter.author && (
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-foreground">{frontmatter.author}</span>
+              </div>
+            )}
+            <time dateTime={frontmatter.publishedDate}>{formattedDate}</time>
+            <span>{readingTime} de lectura</span>
+          </div>
+
+          {/* Tags */}
+          {frontmatter.tags && frontmatter.tags.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {frontmatter.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Cover Image */}
+      {frontmatter.coverImage && (
+        <div className="w-full bg-muted">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <img
+              src={frontmatter.coverImage}
+              alt={frontmatter.coverImageAlt || frontmatter.title}
+              className="w-full h-auto max-h-[600px] object-cover"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Content */}
+      <main className="container mx-auto px-4 py-12">
+        <Prose>{children}</Prose>
+      </main>
+
+      {/* Footer metadata */}
+      <footer className="border-t border-border bg-muted/30">
+        <div className="container mx-auto px-4 py-8 max-w-4xl">
+          <div className="text-sm text-muted-foreground type-body-small">
+            {'updatedDate' in frontmatter && frontmatter.updatedDate && (
+              <p>
+                Última actualización:{' '}
+                {new Date(frontmatter.updatedDate).toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            )}
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}

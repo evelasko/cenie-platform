@@ -9,20 +9,18 @@ const publicRoutes = [
   '/api/health', // Health check endpoint
 ]
 
-const apiRoutes = [
-  '/api'
-]
+const apiRoutes = ['/api']
 
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow public routes
-  if (publicRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))) {
+  if (publicRoutes.some((route) => pathname === route || pathname.startsWith(route + '/'))) {
     return NextResponse.next()
   }
 
   // Handle API routes
-  if (apiRoutes.some(route => pathname.startsWith(route))) {
+  if (apiRoutes.some((route) => pathname.startsWith(route))) {
     // API routes handle their own auth
     return NextResponse.next()
   }

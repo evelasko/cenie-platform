@@ -16,6 +16,11 @@ const nextConfig = {
       },
     ],
   },
+  // MDX support
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  experimental: {
+    mdxRs: false, // Use the JS-based MDX compiler for better compatibility
+  },
 }
 
 module.exports = nextConfig

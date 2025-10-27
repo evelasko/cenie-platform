@@ -381,3 +381,177 @@
     animation-delay: 2000ms;
   }
 }
+
+/* Prose Content Styles */
+.prose-content {
+  max-width: none;
+}
+
+.prose-content h1 {
+  font-family: var(--font-display);
+  font-size: var(--type-heading-1-size);
+  line-height: var(--type-heading-1-line);
+  letter-spacing: var(--type-heading-1-tracking);
+  font-weight: var(--type-heading-1-weight);
+  color: rgb(17 24 39);
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose-content h2 {
+  font-family: var(--font-display);
+  font-size: var(--type-heading-2-size);
+  line-height: var(--type-heading-2-line);
+  letter-spacing: var(--type-heading-2-tracking);
+  font-weight: var(--type-heading-2-weight);
+  color: rgb(17 24 39);
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose-content h3 {
+  font-family: var(--font-body);
+  font-size: var(--type-heading-3-size);
+  line-height: var(--type-heading-3-line);
+  letter-spacing: var(--type-heading-3-tracking);
+  font-weight: var(--type-heading-3-weight);
+  color: rgb(17 24 39);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose-content h4 {
+  font-family: var(--font-body);
+  font-size: var(--type-heading-4-size);
+  line-height: var(--type-heading-4-line);
+  letter-spacing: var(--type-heading-4-tracking);
+  font-weight: var(--type-heading-4-weight);
+  color: rgb(17 24 39);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-content h5 {
+  font-family: var(--font-body);
+  font-size: var(--type-heading-5-size);
+  line-height: var(--type-heading-5-line);
+  letter-spacing: var(--type-heading-5-tracking);
+  font-weight: var(--type-heading-5-weight);
+  color: rgb(17 24 39);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-content h6 {
+  font-family: var(--font-body);
+  font-size: var(--type-heading-6-size);
+  line-height: var(--type-heading-6-line);
+  letter-spacing: var(--type-heading-6-tracking);
+  font-weight: var(--type-heading-6-weight);
+  color: rgb(17 24 39);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-content p {
+  font-family: var(--font-body);
+  font-size: var(--type-body-large-size);
+  line-height: var(--type-body-large-line);
+  letter-spacing: var(--type-body-large-tracking);
+  font-weight: var(--type-body-large-weight);
+  color: rgb(55 65 81);
+  margin-bottom: 1.5rem;
+}
+
+.prose-content ul {
+  font-family: var(--font-body);
+  font-size: var(--type-body-base-size);
+  line-height: var(--type-body-base-line);
+  letter-spacing: var(--type-body-base-tracking);
+  font-weight: var(--type-body-base-weight);
+  color: rgb(55 65 81);
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.prose-content ol {
+  font-family: var(--font-body);
+  font-size: var(--type-body-base-size);
+  line-height: var(--type-body-base-line);
+  letter-spacing: var(--type-body-base-tracking);
+  font-weight: var(--type-body-base-weight);
+  color: rgb(55 65 81);
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  list-style-type: decimal;
+}
+
+.prose-content li {
+  font-family: var(--font-body);
+  font-size: var(--type-body-base-size);
+  line-height: var(--type-body-base-line);
+  letter-spacing: var(--type-body-base-tracking);
+  font-weight: var(--type-body-base-weight);
+  color: rgb(55 65 81);
+  margin-top: 0.5rem;
+}
+
+.prose-content strong {
+  color: rgb(17 24 39);
+  font-weight: 600;
+}
+
+.prose-content em {
+  font-style: italic;
+}
+
+.prose-content a {
+  color: rgb(17 24 39);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.prose-content a:hover {
+  color: rgb(75 85 99);
+}
+
+.prose-content blockquote {
+  border-left: 4px solid rgb(209 213 219);
+  padding-left: 1.5rem;
+  font-style: italic;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: rgb(75 85 99);
+}
+
+.prose-content hr {
+  border-color: rgb(229 231 235);
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border-top-width: 1px;
+}
+
+.prose-content code {
+  font-family: var(--font-mono);
+  font-size: var(--type-body-small-size);
+  background-color: rgb(243 244 246);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.prose-content pre {
+  background-color: rgb(17 24 39);
+  color: rgb(243 244 246);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.prose-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
