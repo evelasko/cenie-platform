@@ -263,12 +263,19 @@ export class GoogleBooksAPI {
 // Singleton instance for server-side use
 let googleBooksInstance: GoogleBooksAPI | null = null
 
+/**
+ * Get the Google Books API client instance.
+ * Lazily initializes on first access to ensure environment variables are loaded.
+ */
 export function getGoogleBooksClient(): GoogleBooksAPI {
   if (!googleBooksInstance) {
     const apiKey = process.env.GOOGLE_API_KEY
 
     if (!apiKey) {
-      throw new Error('GOOGLE_API_KEY environment variable is not set')
+      throw new Error(
+        'GOOGLE_API_KEY environment variable is not set. ' +
+        'Make sure the .env file is loaded and the variable is defined.'
+      )
     }
 
     googleBooksInstance = new GoogleBooksAPI(apiKey)
@@ -277,5 +284,15 @@ export function getGoogleBooksClient(): GoogleBooksAPI {
   return googleBooksInstance
 }
 
-// Export singleton instance
-export const googleBooks = getGoogleBooksClient()
+/**
+ * Lazy-initialized singleton instance of Google Books API.
+ * Uses a Proxy to defer initialization until first method call.
+ * This ensures environment variables are loaded before the API key is accessed.
+ */
+export const googleBooks = new Proxy({} as GoogleBooksAPI, {
+  get(_target, prop) {
+    const instance = getGoogleBooksClient()
+    const value = instance[prop as keyof GoogleBooksAPI]
+    return typeof value === 'function' ? value.bind(instance) : value
+  },
+})

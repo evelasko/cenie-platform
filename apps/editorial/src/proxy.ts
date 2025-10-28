@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import type { Database } from '@cenie/supabase/types'
 
 const publicRoutes = [
   '/',
@@ -9,25 +11,46 @@ const publicRoutes = [
   '/api/health', // Health check endpoint
 ]
 
-const apiRoutes = ['/api']
-
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Create a response object to modify
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  // Create Supabase client with cookie handling for middleware
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value)
+            response.cookies.set(name, value, options)
+          })
+        },
+      },
+    }
+  )
+
+  // IMPORTANT: Refresh session if expired - this is crucial for auth to work
+  await supabase.auth.getUser()
+
   // Allow public routes
   if (publicRoutes.some((route) => pathname === route || pathname.startsWith(route + '/'))) {
-    return NextResponse.next()
+    return response
   }
 
-  // Handle API routes
-  if (apiRoutes.some((route) => pathname.startsWith(route))) {
-    // API routes handle their own auth
-    return NextResponse.next()
-  }
-
-  // For now, allow all routes - client-side auth will handle protection
-  // In production, you might want to implement session cookie checking here
-  return NextResponse.next()
+  // For protected routes, the auth check happens in the route itself or via RLS
+  // Just ensure cookies are properly refreshed
+  return response
 }
 
 export const config = {

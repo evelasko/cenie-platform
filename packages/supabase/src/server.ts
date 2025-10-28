@@ -12,6 +12,12 @@ export function createNextServerClient() {
         async getAll() {
           return (await cookies()).getAll()
         },
+        async setAll(cookiesToSet) {
+          const cookieStore = await cookies()
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options)
+          })
+        },
       },
     }
   )

@@ -111,6 +111,20 @@ export type BookStatus =
 
 export type ReviewRecommendation = 'strong_yes' | 'yes' | 'maybe' | 'no' | 'strong_no'
 
+export type TranslationStatus = 'not_checked' | 'checking' | 'found' | 'not_found' | 'needs_review'
+
+export type InvestigationMethod = 'google_books_auto' | 'manual' | 'llm_assisted'
+
+export interface ConfidenceBreakdown {
+  authorMatch: number
+  titleSimilarity: number
+  publisherKnown: number
+  isbnLinked: number
+  categoryMatch: number
+  dateReasonable: number
+  total: number
+}
+
 export interface Book {
   id: string
   google_books_id: string
@@ -134,6 +148,22 @@ export interface Book {
   updated_at: string
   reviewed_at?: string | null
   reviewed_by?: string | null
+  // Translation tracking
+  translation_status: TranslationStatus
+  spanish_title?: string | null
+  spanish_subtitle?: string | null
+  spanish_authors?: string[] | null
+  spanish_google_books_id?: string | null
+  spanish_isbn_13?: string | null
+  spanish_isbn_10?: string | null
+  spanish_publisher?: string | null
+  spanish_published_date?: string | null
+  confidence_score?: number | null
+  confidence_breakdown?: ConfidenceBreakdown | null
+  investigation_method?: InvestigationMethod | null
+  investigation_notes?: string | null
+  last_checked_at?: string | null
+  checked_by?: string | null
 }
 
 export interface BookTag {
@@ -226,3 +256,49 @@ export interface BookStats {
 
 // Image size options for book covers
 export type BookCoverSize = 'smallThumbnail' | 'thumbnail' | 'small' | 'medium' | 'large' | 'extraLarge'
+
+// =====================================================
+// TRANSLATION INVESTIGATION TYPES
+// =====================================================
+
+export interface TranslationInvestigationResult {
+  success: boolean
+  translation_found: boolean
+  confidence_score: number
+  confidence_breakdown: ConfidenceBreakdown
+  spanish_book?: {
+    google_books_id: string
+    title: string
+    subtitle?: string
+    authors?: string[]
+    publisher?: string
+    published_date?: string
+    isbn_13?: string
+    isbn_10?: string
+    preview_link?: string
+  }
+  investigation_notes: string
+  checked_at: string
+  method: InvestigationMethod
+}
+
+export interface BatchInvestigationProgress {
+  total: number
+  completed: number
+  found: number
+  not_found: number
+  needs_review: number
+  failed: number
+  current_book?: string
+}
+
+export interface SpanishTranslationData {
+  title: string
+  subtitle?: string
+  authors?: string[]
+  google_books_id: string
+  isbn_13?: string
+  isbn_10?: string
+  publisher?: string
+  published_date?: string
+}

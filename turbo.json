@@ -39,7 +39,11 @@
         "CLOUDINARY_API_KEY",
         "CLOUDINARY_API_SECRET",
         "NEXT_PUBLIC_APP_URL",
-        "NEXT_PUBLIC_HUB_API_URL"
+        "NEXT_PUBLIC_HUB_API_URL",
+        "GOOGLE_API_KEY",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "SUPABASE_SECRET_KEY"
       ]
     },
     "dev": {
@@ -60,7 +64,11 @@
         "NEXT_PUBLIC_APP_NAME",
         "FIREBASE_PROJECT_ID",
         "FIREBASE_CLIENT_EMAIL",
-        "FIREBASE_PRIVATE_KEY"
+        "FIREBASE_PRIVATE_KEY",
+        "GOOGLE_API_KEY",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "SUPABASE_SECRET_KEY"
       ]
     },
     "lint": {

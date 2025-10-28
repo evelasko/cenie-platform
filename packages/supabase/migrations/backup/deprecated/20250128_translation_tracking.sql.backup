@@ -1,0 +1,136 @@
+-- CENIE Editorial - Translation Tracking
+-- Migration: 20250128_translation_tracking
+-- Description: Adds translation investigation tracking to books table
+
+-- =====================================================
+-- ADD TRANSLATION TRACKING COLUMNS TO BOOKS TABLE
+-- =====================================================
+
+-- Translation investigation status
+ALTER TABLE books ADD COLUMN IF NOT EXISTS translation_status varchar(20) DEFAULT 'not_checked'
+  CHECK (translation_status IN ('not_checked', 'checking', 'found', 'not_found', 'needs_review'));
+
+-- Spanish translation metadata
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_title text;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_subtitle text;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_authors text[];
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_google_books_id varchar(255);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_isbn_13 varchar(13);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_isbn_10 varchar(10);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_publisher text;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS spanish_published_date varchar(50);
+
+-- Investigation metadata
+ALTER TABLE books ADD COLUMN IF NOT EXISTS confidence_score integer CHECK (confidence_score >= 0 AND confidence_score <= 100);
+ALTER TABLE books ADD COLUMN IF NOT EXISTS confidence_breakdown jsonb; -- Stores detailed scoring
+ALTER TABLE books ADD COLUMN IF NOT EXISTS investigation_method varchar(30); -- 'google_books_auto', 'manual', 'llm_assisted'
+ALTER TABLE books ADD COLUMN IF NOT EXISTS investigation_notes text;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS last_checked_at timestamptz;
+ALTER TABLE books ADD COLUMN IF NOT EXISTS checked_by uuid REFERENCES auth.users(id);
+
+-- Create indexes for translation queries
+CREATE INDEX IF NOT EXISTS idx_books_translation_status ON books(translation_status);
+CREATE INDEX IF NOT EXISTS idx_books_spanish_google_id ON books(spanish_google_books_id);
+CREATE INDEX IF NOT EXISTS idx_books_last_checked ON books(last_checked_at DESC);
+
+-- =====================================================
+-- HELPER FUNCTIONS
+-- =====================================================
+
+-- Function to start translation check (marks book as "checking")
+CREATE OR REPLACE FUNCTION start_translation_check(book_id uuid, user_id uuid DEFAULT NULL)
+RETURNS void AS $$
+BEGIN
+  UPDATE books
+  SET
+    translation_status = 'checking',
+    last_checked_at = now(),
+    checked_by = user_id
+  WHERE id = book_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to complete translation check (saves results)
+CREATE OR REPLACE FUNCTION complete_translation_check(
+  book_id uuid,
+  found boolean,
+  score integer,
+  breakdown jsonb,
+  method varchar(30),
+  notes text DEFAULT NULL,
+  spanish_data jsonb DEFAULT NULL
+)
+RETURNS void AS $$
+BEGIN
+  -- Base update
+  UPDATE books
+  SET
+    translation_status = CASE
+      WHEN found = true AND score >= 70 THEN 'found'
+      WHEN found = true AND score < 70 THEN 'needs_review'
+      ELSE 'not_found'
+    END,
+    confidence_score = score,
+    confidence_breakdown = breakdown,
+    investigation_method = method,
+    investigation_notes = notes,
+    last_checked_at = now()
+  WHERE id = book_id;
+
+  -- Update Spanish translation data if found
+  IF found = true AND spanish_data IS NOT NULL THEN
+    UPDATE books
+    SET
+      spanish_title = spanish_data->>'title',
+      spanish_subtitle = spanish_data->>'subtitle',
+      spanish_authors = ARRAY(SELECT jsonb_array_elements_text(spanish_data->'authors')),
+      spanish_google_books_id = spanish_data->>'google_books_id',
+      spanish_isbn_13 = spanish_data->>'isbn_13',
+      spanish_isbn_10 = spanish_data->>'isbn_10',
+      spanish_publisher = spanish_data->>'publisher',
+      spanish_published_date = spanish_data->>'published_date'
+    WHERE id = book_id;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to get translation statistics
+CREATE OR REPLACE FUNCTION get_translation_stats()
+RETURNS TABLE(
+  status varchar(20),
+  count bigint,
+  avg_confidence numeric
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    b.translation_status as status,
+    COUNT(*)::bigint as count,
+    ROUND(AVG(b.confidence_score), 2) as avg_confidence
+  FROM books b
+  WHERE b.translation_status != 'not_checked'
+  GROUP BY b.translation_status
+  ORDER BY
+    CASE b.translation_status
+      WHEN 'found' THEN 1
+      WHEN 'needs_review' THEN 2
+      WHEN 'not_found' THEN 3
+      WHEN 'checking' THEN 4
+      ELSE 5
+    END;
+END;
+$$ LANGUAGE plpgsql;
+
+-- =====================================================
+-- COMMENTS FOR DOCUMENTATION
+-- =====================================================
+
+COMMENT ON COLUMN books.translation_status IS 'Translation investigation status: not_checked, checking, found, not_found, needs_review';
+COMMENT ON COLUMN books.confidence_score IS 'Confidence score 0-100 for translation match accuracy';
+COMMENT ON COLUMN books.confidence_breakdown IS 'JSON breakdown of confidence factors (author_match, title_similarity, etc.)';
+COMMENT ON COLUMN books.investigation_method IS 'Method used: google_books_auto, manual, llm_assisted';
+COMMENT ON COLUMN books.spanish_google_books_id IS 'Google Books volume ID for Spanish translation';
+
+COMMENT ON FUNCTION start_translation_check IS 'Marks a book as "checking" translation status';
+COMMENT ON FUNCTION complete_translation_check IS 'Saves translation investigation results';
+COMMENT ON FUNCTION get_translation_stats IS 'Returns statistics about translation investigation results';

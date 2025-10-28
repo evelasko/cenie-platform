@@ -28,7 +28,15 @@
       "Bash(git checkout apps/editorial/src/app/dashboard apps/editorial/src/app/api/books apps/editorial/src/lib/books)",
       "Bash(pnpm tsc --noEmit --pretty)",
       "Bash(pnpm next build)",
-      "Bash(cat .env)"
+      "Bash(cat .env)",
+      "Bash(pnpm tsc --noEmit)",
+      "Bash(pnpm --filter=@cenie/editorial tsc --noEmit)",
+      "Bash(pnpm --filter=@cenie/editorial dev)",
+      "Bash(lsof -ti:3001)",
+      "Bash(xargs kill -9)",
+      "Bash(cat .next/trace)",
+      "Bash(node --version)",
+      "Bash(cat apps/editorial/.env.local)"
     ],
     "deny": []
   }

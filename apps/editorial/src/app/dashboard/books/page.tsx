@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Loader2, AlertCircle, BookOpen, Filter, ChevronRight } from 'lucide-react'
+import { Loader2, AlertCircle, BookOpen, Filter, ChevronRight, Search, CheckCircle2, XCircle, Clock } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import type { Book, BookStatus } from '@/types/books'
+import type { Book, BookStatus, BatchInvestigationProgress } from '@/types/books'
 
 const statusColors: Record<BookStatus, string> = {
   discovered: 'bg-muted text-muted-foreground',
@@ -31,6 +31,9 @@ export default function BooksListPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [statusFilter, setStatusFilter] = useState<BookStatus | 'all'>('all')
+  const [selectedBooks, setSelectedBooks] = useState<Set<string>>(new Set())
+  const [batchInvestigating, setBatchInvestigating] = useState(false)
+  const [batchProgress, setBatchProgress] = useState<BatchInvestigationProgress | null>(null)
 
   useEffect(() => {
     fetchBooks()
@@ -68,11 +71,112 @@ export default function BooksListPage() {
     return `${authors[0]} et al.`
   }
 
+  const toggleBookSelection = (bookId: string) => {
+    const newSelected = new Set(selectedBooks)
+    if (newSelected.has(bookId)) {
+      newSelected.delete(bookId)
+    } else {
+      newSelected.add(bookId)
+    }
+    setSelectedBooks(newSelected)
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedBooks.size === books.length) {
+      setSelectedBooks(new Set())
+    } else {
+      setSelectedBooks(new Set(books.map(b => b.id)))
+    }
+  }
+
+  const handleBatchInvestigation = async () => {
+    if (selectedBooks.size === 0) return
+
+    setBatchInvestigating(true)
+    const bookIds = Array.from(selectedBooks)
+
+    setBatchProgress({
+      total: bookIds.length,
+      completed: 0,
+      found: 0,
+      not_found: 0,
+      needs_review: 0,
+      failed: 0,
+      current_book: undefined,
+    })
+
+    for (let i = 0; i < bookIds.length; i++) {
+      const bookId = bookIds[i]
+      const book = books.find(b => b.id === bookId)
+
+      setBatchProgress(prev => prev ? {
+        ...prev,
+        current_book: book?.title || 'Unknown',
+      } : null)
+
+      try {
+        const response = await fetch(`/api/books/${bookId}/investigate-translation`, {
+          method: 'POST',
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          setBatchProgress(prev => {
+            if (!prev) return null
+            const newProgress = {
+              ...prev,
+              completed: prev.completed + 1,
+            }
+
+            if (data.translation_found) {
+              if (data.confidence_score >= 70) {
+                newProgress.found++
+              } else {
+                newProgress.needs_review++
+              }
+            } else {
+              newProgress.not_found++
+            }
+
+            return newProgress
+          })
+        } else {
+          setBatchProgress(prev => prev ? {
+            ...prev,
+            completed: prev.completed + 1,
+            failed: prev.failed + 1,
+          } : null)
+        }
+      } catch (err) {
+        setBatchProgress(prev => prev ? {
+          ...prev,
+          completed: prev.completed + 1,
+          failed: prev.failed + 1,
+        } : null)
+      }
+
+      // Small delay to avoid rate limiting
+      if (i < bookIds.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500))
+      }
+    }
+
+    // Refresh books list
+    await fetchBooks()
+    setSelectedBooks(new Set())
+    setBatchInvestigating(false)
+  }
+
+  const closeBatchProgress = () => {
+    setBatchProgress(null)
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-card rounded-none shadow-sm border border-border p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className={clsx(TYPOGRAPHY.h2, 'text-foreground mb-2')}>Books Database</h1>
             <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>
@@ -83,6 +187,46 @@ export default function BooksListPage() {
             <Button variant="primary">Add New Book</Button>
           </Link>
         </div>
+
+        {/* Batch Actions */}
+        {books.length > 0 && !loading && (
+          <div className="flex items-center gap-4 pt-4 border-t border-border">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedBooks.size === books.length && books.length > 0}
+                onChange={toggleSelectAll}
+                className="h-4 w-4 text-primary focus:ring-primary border-border rounded-none"
+              />
+              <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-foreground')}>
+                Select All ({books.length})
+              </span>
+            </label>
+
+            {selectedBooks.size > 0 && (
+              <>
+                <div className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                  {selectedBooks.size} selected
+                </div>
+                <Button
+                  onClick={handleBatchInvestigation}
+                  disabled={batchInvestigating}
+                  variant="outlined"
+                  leadingIcon={Search}
+                  size="sm"
+                >
+                  {batchInvestigating ? 'Investigating...' : 'Check Selected for Translations'}
+                </Button>
+                <button
+                  onClick={() => setSelectedBooks(new Set())}
+                  className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground hover:text-foreground')}
+                >
+                  Clear Selection
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Filters */}
@@ -156,13 +300,28 @@ export default function BooksListPage() {
           {books.length > 0 ? (
             <div className="space-y-3">
               {books.map((book) => (
-                <Link
+                <div
                   key={book.id}
-                  href={`/dashboard/books/${book.id}`}
-                  className="block bg-card rounded-none border border-border hover:border-primary hover:shadow-md transition-all p-4"
+                  className="bg-card rounded-none border border-border hover:border-primary hover:shadow-md transition-all p-4"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
+                  <div className="flex items-start gap-4">
+                    {/* Checkbox */}
+                    <div className="pt-1">
+                      <input
+                        type="checkbox"
+                        checked={selectedBooks.has(book.id)}
+                        onChange={() => toggleBookSelection(book.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="h-4 w-4 text-primary focus:ring-primary border-border rounded-none cursor-pointer"
+                      />
+                    </div>
+
+                    {/* Book Content - clickable link */}
+                    <Link
+                      href={`/dashboard/books/${book.id}`}
+                      className="flex-1 min-w-0 flex items-start justify-between gap-4"
+                    >
+                      <div className="flex-1 min-w-0">
                       <div className="flex items-start gap-3 mb-2">
                         <h3
                           className={clsx(
@@ -243,11 +402,12 @@ export default function BooksListPage() {
                           </>
                         )}
                       </div>
-                    </div>
+                      </div>
 
-                    <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0" />
+                      <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0" />
+                    </Link>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           ) : (
@@ -265,6 +425,116 @@ export default function BooksListPage() {
             </div>
           )}
         </>
+      )}
+
+      {/* Batch Progress Modal */}
+      {batchProgress && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-card rounded-none shadow-xl border border-border max-w-2xl w-full p-6">
+            <h2 className={clsx(TYPOGRAPHY.h3, 'text-foreground mb-4')}>
+              Batch Translation Investigation
+            </h2>
+
+            {/* Progress Bar */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                  Progress: {batchProgress.completed} / {batchProgress.total}
+                </span>
+                <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-foreground')}>
+                  {Math.round((batchProgress.completed / batchProgress.total) * 100)}%
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-primary h-3 rounded-full transition-all duration-300"
+                  style={{ width: `${(batchProgress.completed / batchProgress.total) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Current Book */}
+            {batchProgress.current_book && batchProgress.completed < batchProgress.total && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-none">
+                <div className="flex items-center gap-2 mb-2">
+                  <Loader2 className="h-4 w-4 text-blue-600 animate-spin" />
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-blue-900')}>
+                    Currently checking...
+                  </span>
+                </div>
+                <p className={clsx(TYPOGRAPHY.bodyBase, 'text-blue-800 line-clamp-1')}>
+                  {batchProgress.current_book}
+                </p>
+              </div>
+            )}
+
+            {/* Results Summary */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-green-50 border border-green-200 rounded-none p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-green-900')}>
+                    Found
+                  </span>
+                </div>
+                <p className={clsx(TYPOGRAPHY.h3, 'text-green-900 font-bold')}>
+                  {batchProgress.found}
+                </p>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-none p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Clock className="h-5 w-5 text-yellow-600" />
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-yellow-900')}>
+                    Needs Review
+                  </span>
+                </div>
+                <p className={clsx(TYPOGRAPHY.h3, 'text-yellow-900 font-bold')}>
+                  {batchProgress.needs_review}
+                </p>
+              </div>
+
+              <div className="bg-gray-50 border border-gray-200 rounded-none p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <XCircle className="h-5 w-5 text-gray-600" />
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-gray-900')}>
+                    Not Found
+                  </span>
+                </div>
+                <p className={clsx(TYPOGRAPHY.h3, 'text-gray-900 font-bold')}>
+                  {batchProgress.not_found}
+                </p>
+              </div>
+
+              {batchProgress.failed > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-none p-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <AlertCircle className="h-5 w-5 text-red-600" />
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-red-900')}>
+                      Errors
+                    </span>
+                  </div>
+                  <p className={clsx(TYPOGRAPHY.h3, 'text-red-900 font-bold')}>
+                    {batchProgress.failed}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3">
+              {batchProgress.completed === batchProgress.total ? (
+                <Button onClick={closeBatchProgress} variant="primary">
+                  Done
+                </Button>
+              ) : (
+                <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground italic')}>
+                  Please wait while we check all selected books...
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

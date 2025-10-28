@@ -15,12 +15,15 @@ import {
   User,
   Globe,
   Hash,
+  Search,
+  RefreshCw,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import type { Book, BookStatus, GoogleBookVolume } from '@/types/books'
+import type { Book, BookStatus, GoogleBookVolume, TranslationInvestigationResult } from '@/types/books'
 import { googleBooks } from '@/lib/google-books'
+import { ConfidenceBreakdownComponent } from '@/components/dashboard/ConfidenceBreakdown'
 
 const statusOptions: { value: BookStatus; label: string }[] = [
   { value: 'discovered', label: 'Discovered' },
@@ -38,6 +41,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [investigating, setInvestigating] = useState(false)
+  const [translationResult, setTranslationResult] = useState<TranslationInvestigationResult | null>(null)
 
   // Form state
   const [status, setStatus] = useState<BookStatus>('discovered')
@@ -123,6 +128,35 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       alert(err instanceof Error ? err.message : 'Failed to save book')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleInvestigateTranslation = async () => {
+    setInvestigating(true)
+
+    try {
+      const response = await fetch(`/api/books/${resolvedParams.id}/investigate-translation`, {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to investigate translation')
+      }
+
+      setTranslationResult(data)
+
+      // Refresh book data to get updated translation status
+      await fetchBook()
+
+      alert(data.translation_found
+        ? `Translation found! Confidence: ${data.confidence_score}%`
+        : 'No translation found')
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to investigate translation')
+    } finally {
+      setInvestigating(false)
     }
   }
 
@@ -429,6 +463,196 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
             </div>
           )}
         </div>
+      </div>
+
+      {/* Translation Investigation */}
+      <div className="bg-card rounded-none shadow-sm border border-border p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className={clsx(TYPOGRAPHY.h3, 'text-foreground')}>
+            Spanish Translation Investigation
+          </h2>
+          <Button
+            onClick={handleInvestigateTranslation}
+            disabled={investigating || book.translation_status === 'checking'}
+            variant="outlined"
+            leadingIcon={investigating ? RefreshCw : Search}
+          >
+            {investigating ? 'Investigating...' : book.translation_status === 'not_checked' ? 'Check for Translation' : 'Re-check Translation'}
+          </Button>
+        </div>
+
+        {/* Current Status */}
+        {book.translation_status !== 'not_checked' && (
+          <div className="mb-4">
+            <div className={clsx(
+              TYPOGRAPHY.bodyBase,
+              'inline-flex items-center px-3 py-1 rounded-full',
+              book.translation_status === 'found' && 'bg-green-100 text-green-800',
+              book.translation_status === 'not_found' && 'bg-gray-100 text-gray-800',
+              book.translation_status === 'needs_review' && 'bg-yellow-100 text-yellow-800',
+              book.translation_status === 'checking' && 'bg-blue-100 text-blue-800'
+            )}>
+              {book.translation_status === 'found' && '✓ Translation Found'}
+              {book.translation_status === 'not_found' && '✗ No Translation Found'}
+              {book.translation_status === 'needs_review' && '! Needs Review'}
+              {book.translation_status === 'checking' && '⟳ Checking...'}
+            </div>
+            {book.last_checked_at && (
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mt-2')}>
+                Last checked: {new Date(book.last_checked_at).toLocaleString()}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Translation Result (from latest investigation) */}
+        {translationResult && translationResult.translation_found && translationResult.spanish_book && (
+          <div className="space-y-4">
+            {/* Spanish Book Info */}
+            <div className="bg-green-50 border border-green-200 rounded-none p-4">
+              <h3 className={clsx(TYPOGRAPHY.h4, 'text-green-900 mb-3')}>
+                Spanish Translation Found
+              </h3>
+              <div className="space-y-2">
+                <div>
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                    Title:
+                  </span>
+                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                    {translationResult.spanish_book.title}
+                    {translationResult.spanish_book.subtitle && ` - ${translationResult.spanish_book.subtitle}`}
+                  </p>
+                </div>
+                {translationResult.spanish_book.authors && translationResult.spanish_book.authors.length > 0 && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      Authors:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                      {translationResult.spanish_book.authors.join(', ')}
+                    </p>
+                  </div>
+                )}
+                {translationResult.spanish_book.publisher && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      Publisher:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                      {translationResult.spanish_book.publisher}
+                    </p>
+                  </div>
+                )}
+                {translationResult.spanish_book.published_date && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      Published:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                      {translationResult.spanish_book.published_date}
+                    </p>
+                  </div>
+                )}
+                {(translationResult.spanish_book.isbn_13 || translationResult.spanish_book.isbn_10) && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      ISBN:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900 font-mono')}>
+                      {translationResult.spanish_book.isbn_13 || translationResult.spanish_book.isbn_10}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Confidence Breakdown */}
+            <ConfidenceBreakdownComponent
+              breakdown={translationResult.confidence_breakdown}
+              notes={translationResult.investigation_notes}
+            />
+          </div>
+        )}
+
+        {/* No Translation Found */}
+        {translationResult && !translationResult.translation_found && (
+          <div className="bg-gray-50 border border-gray-200 rounded-none p-4">
+            <p className={clsx(TYPOGRAPHY.bodyBase, 'text-gray-700')}>
+              No Spanish translation was found for this book. The investigation checked:
+            </p>
+            <ul className={clsx(TYPOGRAPHY.bodySmall, 'text-gray-600 mt-2 list-disc list-inside space-y-1')}>
+              <li>ISBN-based search</li>
+              <li>Title and author combination</li>
+              <li>Fuzzy keyword search with "traducción"</li>
+            </ul>
+            {translationResult.investigation_notes && (
+              <details className="mt-3">
+                <summary className={clsx(TYPOGRAPHY.bodySmall, 'text-gray-700 cursor-pointer font-medium')}>
+                  View Investigation Details
+                </summary>
+                <pre className={clsx(TYPOGRAPHY.bodySmall, 'mt-2 text-gray-600 whitespace-pre-wrap font-mono')}>
+                  {translationResult.investigation_notes}
+                </pre>
+              </details>
+            )}
+          </div>
+        )}
+
+        {/* Stored Translation Data (from database) */}
+        {!translationResult && book.translation_status === 'found' && book.spanish_title && (
+          <div className="space-y-4">
+            <div className="bg-green-50 border border-green-200 rounded-none p-4">
+              <h3 className={clsx(TYPOGRAPHY.h4, 'text-green-900 mb-3')}>
+                Spanish Translation (Stored)
+              </h3>
+              <div className="space-y-2">
+                <div>
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                    Title:
+                  </span>
+                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                    {book.spanish_title}
+                    {book.spanish_subtitle && ` - ${book.spanish_subtitle}`}
+                  </p>
+                </div>
+                {book.spanish_authors && book.spanish_authors.length > 0 && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      Authors:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                      {book.spanish_authors.join(', ')}
+                    </p>
+                  </div>
+                )}
+                {book.spanish_publisher && (
+                  <div>
+                    <span className={clsx(TYPOGRAPHY.bodySmall, 'text-green-700 font-medium')}>
+                      Publisher:
+                    </span>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-green-900')}>
+                      {book.spanish_publisher}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {book.confidence_breakdown && (
+              <ConfidenceBreakdownComponent
+                breakdown={book.confidence_breakdown as any}
+                notes={book.investigation_notes || undefined}
+              />
+            )}
+          </div>
+        )}
+
+        {/* Initial State */}
+        {book.translation_status === 'not_checked' && !translationResult && (
+          <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>
+            This book has not been checked for Spanish translations yet. Click the button above to investigate.
+          </p>
+        )}
       </div>
 
       {/* Metadata */}

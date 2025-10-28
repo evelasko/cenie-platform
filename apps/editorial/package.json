@@ -20,6 +20,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.0.0",
+    "@supabase/ssr": "^0.7.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "cloudinary": "^2.8.0",
@@ -36,6 +37,7 @@
     "react-dom": "^19.2.0",
     "reading-time-estimator": "^1.14.0",
     "remark-gfm": "^4.0.1",
+    "string-similarity": "^4.0.4",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -46,6 +48,7 @@
     "@types/node": "^24.9.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@types/string-similarity": "^4.0.2",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.38.0",
     "eslint-config-next": "16.0.0",
