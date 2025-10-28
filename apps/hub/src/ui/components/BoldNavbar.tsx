@@ -32,7 +32,7 @@ const NavItem = React.forwardRef<HTMLDivElement, NavItemProps>(function NavItem(
       {...otherProps}
     >
       {children ? (
-        <span className="font-['Montserrat'] text-[15px] font-[600] leading-[20px] text-brand-900">
+        <span className="font-['Montserrat'] text-[15px] font-semibold leading-[20px] text-brand-900">
           {children}
         </span>
       ) : null}

@@ -1,6 +1,9 @@
 import './globals.css'
 import { Geist, Sora, IBM_Plex_Mono } from 'next/font/google'
 import { Providers } from './providers'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
+import ReactLenis from 'lenis/react'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -28,7 +31,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geist.className} ${sora.className} ${ibmPlexMono.className}`}
     >
       <body className="min-h-screen bg-background font-sans antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <ReactLenis root>{children}</ReactLenis>
+          <Analytics />
+          <SpeedInsights />
+        </Providers>
       </body>
     </html>
   )

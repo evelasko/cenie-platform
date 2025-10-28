@@ -132,7 +132,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className={clsx('flex items-center justify-between', kDefaultNavbarHeight)}>
             {/* Logo */}
-            <div className="flex-shrink-0 pr-8">
+            <div className="shrink-0 pr-8">
               <Link href="/" className="flex items-center">
                 <Image
                   src="/media/brand/logo-black.svg"
@@ -161,7 +161,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
                     href={item.href}
                     className={clsx(
                       'text-button-small whitespace-nowrap transition-colors duration-300 ease-in-out',
-                      'text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]'
+                      'text-(--color-nav-text) hover:text-(--color-nav-hover)'
                     )}
                   >
                     <span className="font-semibold">{item.label[locale].toUpperCase()}</span>
@@ -183,7 +183,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
         {isMenuOpen && (
           <motion.div
             key="drawer"
-            className="fixed top-16 left-0 right-0 z-40 bg-[color:var(--color-nav-background)] overflow-hidden"
+            className="fixed top-16 left-0 right-0 z-40 bg-(--color-nav-background) overflow-hidden"
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
@@ -200,7 +200,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
                         onClick={closeMenu}
                         className={clsx(
                           'block text-display-text-extra-large whitespace-nowrap transition-colors duration-300 ease-in-out',
-                          'text-[color:var(--color-nav-text)] hover:text-[color:var(--color-nav-hover)]'
+                          'text-(--color-nav-text) hover:text-(--color-nav-hover)'
                         )}
                       >
                         {item.label[locale]}
@@ -226,7 +226,7 @@ export default function NavBar({ locale, items }: NavBarProps) {
                     href="mailto:contact@cenie.org"
                     className={clsx(
                       'transition-colors duration-300 ease-in-out',
-                      'hover:text-[color:var(--color-nav-hover)]'
+                      'hover:text-(--color-nav-hover)'
                     )}
                   >
                     contact@cenie.org

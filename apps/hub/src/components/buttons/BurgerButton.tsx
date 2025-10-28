@@ -40,9 +40,9 @@ export default function BurgerButton({
       <span
         className={clsx(
           'absolute block h-0.5 transition-all duration-300 ease-in-out',
-          'bg-[color:var(--color-nav-text)] group-hover:bg-[color:var(--color-nav-hover)]',
+          'bg-(--color-nav-text) group-hover:bg-(--color-nav-hover)',
           {
-            'bg-[color:var(--color-nav-hover)]': isOpen,
+            'bg-(--color-nav-hover)': isOpen,
             '-translate-y-1': !isOpen,
           }
         )}
@@ -59,9 +59,9 @@ export default function BurgerButton({
       <span
         className={clsx(
           'absolute block h-0.5 transition-all duration-300 ease-in-out',
-          'bg-[color:var(--color-nav-text)] group-hover:bg-[color:var(--color-nav-hover)]',
+          'bg-(--color-nav-text) group-hover:bg-(--color-nav-hover)',
           {
-            'bg-[color:var(--color-nav-hover)]': isOpen,
+            'bg-(--color-nav-hover)': isOpen,
             'translate-y-1': !isOpen,
           }
         )}

@@ -24,7 +24,7 @@ export default function Footer({
       <div className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {footerNavigationItems.map((item) => (
           <div className="flex flex-col items-center md:items-start gap-2" key={item.label[locale]}>
-            <span className="text-caption-small !font-bold uppercase text-default-font">
+            <span className="text-caption-small font-bold! uppercase text-default-font">
               {item.label[locale]}
             </span>
             <div className="flex flex-col items-center md:items-start gap-1">
@@ -45,19 +45,19 @@ export default function Footer({
       <div className="flex w-full flex-col-reverse md:flex-row gap-4 md:gap-20">
         <div id="social-and-email" className="flex flex-col-2 md:flex-col justify-between">
           <div className="flex flex-row gap-4">
-            <FeatherInstagram className="text-body-large md:!text-display-text-large" />
-            <FeatherFacebook className="text-body-large md:!text-display-text-large" />
-            <FeatherLinkedin className="text-body-large md:!text-display-text-large" />
-            <FeatherYoutube className="text-body-large md:!text-display-text-large" />
+            <FeatherInstagram className="text-body-large md:text-display-text-large!" />
+            <FeatherFacebook className="text-body-large md:text-display-text-large!" />
+            <FeatherLinkedin className="text-body-large md:text-display-text-large!" />
+            <FeatherYoutube className="text-body-large md:text-display-text-large!" />
           </div>
           <Link
-            className="text-[clamp(0.4rem,2.4vw_+_0.5rem,2.55rem)] font-bold tracking-tighter"
+            className="text-[clamp(0.4rem,2.4vw+0.5rem,2.55rem)] font-bold tracking-tighter"
             href="mailto:hola@cenie.org"
           >
             hola@cenie.org
           </Link>
         </div>
-        <div id="footer-logo" className="relative grow aspect-[311/51]">
+        <div id="footer-logo" className="relative grow aspect-311/51">
           <Image
             className="opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] filter-[brightness(1.5)]"
             src="/media/brand/logo-black-fill.svg"

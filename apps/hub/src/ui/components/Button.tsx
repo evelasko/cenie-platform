@@ -102,7 +102,7 @@ const ButtonRoot = React.forwardRef<HTMLButtonElement, ButtonRootProps>(function
           className={SubframeUtils.twClassNames(
             'text-caption font-caption text-black group-disabled/3b777358:text-neutral-400',
             {
-              "inline-block font-['Inter'] text-[12px] font-[400] leading-[20px] tracking-normal":
+              "inline-block font-['Inter'] text-[12px] font-normal leading-[20px] tracking-normal":
                 loading,
               'text-caption font-caption': size === 'small',
               'text-error-700':

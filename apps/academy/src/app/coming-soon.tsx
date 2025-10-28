@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Button } from '@cenie/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@cenie/ui'
-import { 
-  Calendar, 
-  Mail, 
+import {
+  Calendar,
+  Mail,
   CheckCircle,
   Laptop,
   DollarSign,
   Users,
   ArrowRight,
   TrendingUp,
-  Star
+  Star,
 } from 'lucide-react'
 
 export default function AcademyComingSoon() {
@@ -41,7 +41,7 @@ export default function AcademyComingSoon() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-primary/5 via-background to-accent/5">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 type-body-base text-muted-foreground">Cargando...</p>
@@ -55,38 +55,41 @@ export default function AcademyComingSoon() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+    <div className="min-h-screen bg-linear-to-br from-primary/5 via-background to-accent/5">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10 opacity-50" />
         {/* Educational background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 bg-primary/30 rounded-full blur-2xl animate-pulse"></div>
           <div className="absolute top-40 right-20 w-56 h-56 bg-accent/30 rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute bottom-20 left-1/3 w-32 h-32 bg-secondary/30 rounded-full blur-2xl animate-pulse delay-2000"></div>
         </div>
-        
+
         <div className="relative container mx-auto px-4 text-center">
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
-              <h1 className="type-display-1 mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="type-display-1 mb-6 bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                 La próxima etapa de tu carrera comienza aquí
               </h1>
               <h2 className="type-heading-2 mb-8 text-foreground">
                 Academia CENIE: Donde el arte se encuentra con la oportunidad
               </h2>
             </div>
-            
+
             <div className="flex items-center justify-center gap-2 mb-8 animate-fade-in-up delay-200">
               <Calendar className="h-5 w-5 text-primary animate-bounce" />
-              <p className="type-heading-4 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
+              <p className="type-heading-4 text-primary font-bold">
+                Lanzamiento en septiembre de 2025
+              </p>
             </div>
-            
+
             <div className="animate-fade-in-up delay-400">
               <p className="type-lead mb-12 text-muted-foreground max-w-4xl mx-auto">
-                En el mundo digital actual, el talento artístico es sólo el principio. La Academia CENIE es una nueva institución innovadora 
-                para el artista escénico moderno, diseñada para armarle con las habilidades esenciales en tecnología, finanzas y gestión empresarial 
-                necesarias para construir una carrera próspera y sostenible.
+                En el mundo digital actual, el talento artístico es sólo el principio. La Academia
+                CENIE es una nueva institución innovadora para el artista escénico moderno, diseñada
+                para armarle con las habilidades esenciales en tecnología, finanzas y gestión
+                empresarial necesarias para construir una carrera próspera y sostenible.
               </p>
               <p className="type-body-large mb-12 text-foreground font-medium">
                 Creemos que los artistas no sólo deben sobrevivir, sino florecer.
@@ -102,7 +105,8 @@ export default function AcademyComingSoon() {
                     Sea el primero en saberlo
                   </CardTitle>
                   <CardDescription className="type-body-small">
-                    Inscríbase para recibir actualizaciones exclusivas, información sobre la inscripción anticipada y un primer vistazo a nuestros cursos innovadores
+                    Inscríbase para recibir actualizaciones exclusivas, información sobre la
+                    inscripción anticipada y un primer vistazo a nuestros cursos innovadores
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -137,9 +141,12 @@ export default function AcademyComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="type-heading-1 mb-6">¿Por qué la Academia CENIE? Transforme su oficio y su carrera</h2>
+            <h2 className="type-heading-1 mb-6">
+              ¿Por qué la Academia CENIE? Transforme su oficio y su carrera
+            </h2>
             <p className="type-lead text-muted-foreground max-w-4xl mx-auto">
-              Nuestro plan de estudios es práctico, basado en proyectos y diseñado específicamente para los estilos de aprendizaje de los profesionales creativos. Le capacitamos para:
+              Nuestro plan de estudios es práctico, basado en proyectos y diseñado específicamente
+              para los estilos de aprendizaje de los profesionales creativos. Le capacitamos para:
             </p>
           </div>
 
@@ -148,13 +155,16 @@ export default function AcademyComingSoon() {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Laptop className="h-10 w-10 text-primary" />
-                  <CardTitle className="type-heading-4">Domine la tecnología para su arte</CardTitle>
+                  <CardTitle className="type-heading-4">
+                    Domine la tecnología para su arte
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Desde herramientas creativas impulsadas por IA y marketing digital hasta desarrollo web y análisis de datos, 
-                  aprenda a aprovechar la tecnología para amplificar su voz creativa y su alcance.
+                  Desde herramientas creativas impulsadas por IA y marketing digital hasta
+                  desarrollo web y análisis de datos, aprenda a aprovechar la tecnología para
+                  amplificar su voz creativa y su alcance.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -163,13 +173,16 @@ export default function AcademyComingSoon() {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <DollarSign className="h-10 w-10 text-primary" />
-                  <CardTitle className="type-heading-4">Lograr la autosuficiencia financiera</CardTitle>
+                  <CardTitle className="type-heading-4">
+                    Lograr la autosuficiencia financiera
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Adquiera conocimientos prácticos y reales sobre finanzas personales, financiación de las artes, elaboración de presupuestos para proyectos 
-                  y redacción de subvenciones. Tome las riendas de su futuro financiero.
+                  Adquiera conocimientos prácticos y reales sobre finanzas personales, financiación
+                  de las artes, elaboración de presupuestos para proyectos y redacción de
+                  subvenciones. Tome las riendas de su futuro financiero.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -183,8 +196,9 @@ export default function AcademyComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Desarrolle las habilidades empresariales y de gestión necesarias para producir, comercializar y dirigir sus propias empresas artísticas. 
-                  Convierta su visión creativa en una realidad de éxito.
+                  Desarrolle las habilidades empresariales y de gestión necesarias para producir,
+                  comercializar y dirigir sus propias empresas artísticas. Convierta su visión
+                  creativa en una realidad de éxito.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -193,7 +207,7 @@ export default function AcademyComingSoon() {
       </section>
 
       {/* Curriculum Preview Section */}
-      <section className="py-20 bg-gradient-to-r from-muted/20 to-accent/20">
+      <section className="py-20 bg-linear-to-r from-muted/20 to-accent/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="type-heading-1 mb-6">Un vistazo a nuestro plan de estudios</h2>
@@ -203,11 +217,14 @@ export default function AcademyComingSoon() {
             <Card className="p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
                 <Laptop className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="type-heading-5">Tecnología de la información para artistas</CardTitle>
+                <CardTitle className="type-heading-5">
+                  Tecnología de la información para artistas
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Desbloquear la creatividad digital y los conocimientos de marketing para el artista moderno.
+                  Desbloquear la creatividad digital y los conocimientos de marketing para el
+                  artista moderno.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -219,7 +236,8 @@ export default function AcademyComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Construir la estabilidad financiera y financiar su trabajo creativo de forma sostenible.
+                  Construir la estabilidad financiera y financiar su trabajo creativo de forma
+                  sostenible.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -243,16 +261,25 @@ export default function AcademyComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="type-heading-1 mb-8">El futuro de la educación en artes escénicas está en camino</h2>
+            <h2 className="type-heading-1 mb-8">
+              El futuro de la educación en artes escénicas está en camino
+            </h2>
             <p className="type-lead mb-12 text-muted-foreground">
-              Inscríbase para recibir actualizaciones exclusivas, información sobre la inscripción anticipada y un primer vistazo a nuestros innovadores cursos.
+              Inscríbase para recibir actualizaciones exclusivas, información sobre la inscripción
+              anticipada y un primer vistazo a nuestros innovadores cursos.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="type-button" onClick={() => {
-                const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement
-                emailInput?.focus()
-              }}>
+              <Button
+                size="lg"
+                className="type-button"
+                onClick={() => {
+                  const emailInput = document.querySelector(
+                    'input[type="email"]'
+                  ) as HTMLInputElement
+                  emailInput?.focus()
+                }}
+              >
                 <Mail className="mr-2 h-4 w-4" />
                 Obtener notificaciones de lanzamiento
               </Button>
@@ -276,7 +303,9 @@ export default function AcademyComingSoon() {
       {/* Footer */}
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 text-center">
-          <p className="type-caption text-muted-foreground">© 2024 Academia CENIE. Todos los derechos reservados.</p>
+          <p className="type-caption text-muted-foreground">
+            © 2024 Academia CENIE. Todos los derechos reservados.
+          </p>
         </div>
       </footer>
     </div>

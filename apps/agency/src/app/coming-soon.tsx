@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Button } from '@cenie/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@cenie/ui'
-import { 
-  Calendar, 
-  Mail, 
+import {
+  Calendar,
+  Mail,
   CheckCircle,
   Clock,
   DollarSign,
@@ -16,7 +16,7 @@ import {
   Lightbulb,
   Settings,
   Zap,
-  Quote
+  Quote,
 } from 'lucide-react'
 
 export default function AgencyComingSoon() {
@@ -43,7 +43,7 @@ export default function AgencyComingSoon() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-primary/5 via-background to-accent/5">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 type-body-base text-muted-foreground">Cargando...</p>
@@ -57,41 +57,46 @@ export default function AgencyComingSoon() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+    <div className="min-h-screen bg-linear-to-br from-primary/5 via-background to-accent/5">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-accent/10 opacity-50" />
         {/* Tech background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 bg-primary/30 rounded-full blur-2xl animate-pulse"></div>
           <div className="absolute top-40 right-20 w-56 h-56 bg-accent/30 rounded-full blur-2xl animate-pulse delay-1000"></div>
           <div className="absolute bottom-20 left-1/3 w-32 h-32 bg-secondary/30 rounded-full blur-2xl animate-pulse delay-2000"></div>
         </div>
-        
+
         <div className="relative container mx-auto px-4 text-center">
           <div className="mx-auto max-w-5xl">
             <div className="animate-fade-in-up">
-              <h1 className="type-display-1 mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="type-display-1 mb-6 bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                 ¡El futuro de la producción está casi aquí!
               </h1>
               <h2 className="type-heading-1 mb-8 text-foreground">
                 Agencia de Automatización del CENIE
               </h2>
             </div>
-            
+
             <div className="flex items-center justify-center gap-2 mb-8 animate-fade-in-up delay-200">
               <Calendar className="h-5 w-5 text-primary animate-bounce" />
-              <p className="type-heading-4 text-primary font-bold">Lanzamiento en septiembre de 2025</p>
+              <p className="type-heading-4 text-primary font-bold">
+                Lanzamiento en septiembre de 2025
+              </p>
             </div>
-            
+
             <div className="animate-fade-in-up delay-400">
               <p className="type-lead mb-8 text-muted-foreground max-w-4xl mx-auto">
-                La <strong>Agencia de Automatización del CENIE</strong> es un nuevo servicio de asesoramiento dedicado a resolver los desafíos operativos únicos 
-                de las artes escénicas. Somos un equipo de profesionales expertos con un profundo conocimiento tanto de los entresijos de la producción 
-                como del poder de la inteligencia artificial.
+                La <strong>Agencia de Automatización del CENIE</strong> es un nuevo servicio de
+                asesoramiento dedicado a resolver los desafíos operativos únicos de las artes
+                escénicas. Somos un equipo de profesionales expertos con un profundo conocimiento
+                tanto de los entresijos de la producción como del poder de la inteligencia
+                artificial.
               </p>
               <p className="type-body-large mb-12 text-foreground font-medium">
-                Nuestra misión es liberar a los profesionales del arte de las cargas administrativas para que puedan centrarse en lo que realmente importa: <strong>el arte.</strong>
+                Nuestra misión es liberar a los profesionales del arte de las cargas administrativas
+                para que puedan centrarse en lo que realmente importa: <strong>el arte.</strong>
               </p>
             </div>
 
@@ -104,7 +109,8 @@ export default function AgencyComingSoon() {
                     Sea el primero en saberlo
                   </CardTitle>
                   <CardDescription className="type-body-small">
-                    Únase a nuestra exclusiva lista de correo para obtener acceso anticipado, estudios de casos y perspectivas sobre el futuro de la gestión de las artes
+                    Únase a nuestra exclusiva lista de correo para obtener acceso anticipado,
+                    estudios de casos y perspectivas sobre el futuro de la gestión de las artes
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -139,10 +145,13 @@ export default function AgencyComingSoon() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="type-heading-1 mb-6">Lo que hacemos: Automatización a medida para las artes</h2>
+            <h2 className="type-heading-1 mb-6">
+              Lo que hacemos: Automatización a medida para las artes
+            </h2>
             <p className="type-lead text-muted-foreground max-w-4xl mx-auto">
-              ¿Está cansado de luchar con calendarios complejos, presupuestos ajustados y papeleo repetitivo? 
-              Creamos soluciones a medida para agilizar sus flujos de trabajo más críticos.
+              ¿Está cansado de luchar con calendarios complejos, presupuestos ajustados y papeleo
+              repetitivo? Creamos soluciones a medida para agilizar sus flujos de trabajo más
+              críticos.
             </p>
           </div>
 
@@ -151,13 +160,16 @@ export default function AgencyComingSoon() {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Clock className="h-10 w-10 text-primary" />
-                  <CardTitle className="type-heading-4">Programación y logística inteligentes</CardTitle>
+                  <CardTitle className="type-heading-4">
+                    Programación y logística inteligentes
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Diseñamos sistemas que optimizan los calendarios de ensayos, gestionan los recursos y resuelven los conflictos al instante, 
-                  ahorrándole decenas de horas por producción.
+                  Diseñamos sistemas que optimizan los calendarios de ensayos, gestionan los
+                  recursos y resuelven los conflictos al instante, ahorrándole decenas de horas por
+                  producción.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -166,13 +178,16 @@ export default function AgencyComingSoon() {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <DollarSign className="h-10 w-10 text-primary" />
-                  <CardTitle className="type-heading-4">Presupuestación dinámica y planificación de escenarios</CardTitle>
+                  <CardTitle className="type-heading-4">
+                    Presupuestación dinámica y planificación de escenarios
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Nuestros modelos interactivos le permiten explorar escenarios hipotéticos en cuestión de minutos, 
-                  ayudándole a reducir el riesgo de sus decisiones financieras y a evitar sobrecostes.
+                  Nuestros modelos interactivos le permiten explorar escenarios hipotéticos en
+                  cuestión de minutos, ayudándole a reducir el riesgo de sus decisiones financieras
+                  y a evitar sobrecostes.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -181,13 +196,16 @@ export default function AgencyComingSoon() {
               <CardHeader className="pb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <FileText className="h-10 w-10 text-primary" />
-                  <CardTitle className="type-heading-4">Automatización administrativa sin esfuerzo</CardTitle>
+                  <CardTitle className="type-heading-4">
+                    Automatización administrativa sin esfuerzo
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-base text-muted-foreground">
-                  Automatizamos la generación de informes, las actualizaciones de las partes interesadas y otras comunicaciones esenciales, 
-                  lo que permite a su equipo centrarse en un trabajo de mayor valor.
+                  Automatizamos la generación de informes, las actualizaciones de las partes
+                  interesadas y otras comunicaciones esenciales, lo que permite a su equipo
+                  centrarse en un trabajo de mayor valor.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -196,12 +214,14 @@ export default function AgencyComingSoon() {
       </section>
 
       {/* Quote Section */}
-      <section className="py-20 bg-gradient-to-r from-muted/20 to-accent/20">
+      <section className="py-20 bg-linear-to-r from-muted/20 to-accent/20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <Quote className="h-12 w-12 text-primary mx-auto mb-6" />
             <blockquote className="type-quote text-foreground mb-8">
-              &quot;Nuestro servicio permite a los profesionales del arte <strong>descargar sus cargas operativas más tediosas</strong> para que puedan centrarse en su trabajo creativo.&quot;
+              &quot;Nuestro servicio permite a los profesionales del arte{' '}
+              <strong>descargar sus cargas operativas más tediosas</strong> para que puedan
+              centrarse en su trabajo creativo.&quot;
             </blockquote>
           </div>
         </div>
@@ -213,8 +233,9 @@ export default function AgencyComingSoon() {
           <div className="text-center mb-16">
             <h2 className="type-heading-1 mb-6">Un nuevo tipo de asociación</h2>
             <p className="type-lead text-muted-foreground max-w-4xl mx-auto">
-              Somos más que simples tecnólogos; somos colaboradores apasionados por las artes. 
-              La experiencia única de nuestro fundador tanto en procesos teatrales como en desarrollo de IA garantiza que cada solución sea:
+              Somos más que simples tecnólogos; somos colaboradores apasionados por las artes. La
+              experiencia única de nuestro fundador tanto en procesos teatrales como en desarrollo
+              de IA garantiza que cada solución sea:
             </p>
           </div>
 
@@ -238,7 +259,8 @@ export default function AgencyComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Diseñado con un profundo respeto por el proceso creativo y el flujo de trabajo artístico.
+                  Diseñado con un profundo respeto por el proceso creativo y el flujo de trabajo
+                  artístico.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -250,7 +272,8 @@ export default function AgencyComingSoon() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="type-body-small">
-                  Centrado en resolver las necesidades de producción del mundo real con soluciones prácticas.
+                  Centrado en resolver las necesidades de producción del mundo real con soluciones
+                  prácticas.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -259,19 +282,26 @@ export default function AgencyComingSoon() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/5 to-accent/5">
+      <section className="py-20 bg-linear-to-r from-primary/5 to-accent/5">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="type-heading-1 mb-8">El telón se levanta en septiembre de 2025</h2>
             <p className="type-lead mb-12 text-muted-foreground">
-              Únase a nuestra exclusiva lista de correo para obtener acceso anticipado, casos prácticos y perspectivas sobre el futuro de la gestión de las artes.
+              Únase a nuestra exclusiva lista de correo para obtener acceso anticipado, casos
+              prácticos y perspectivas sobre el futuro de la gestión de las artes.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <Button size="lg" className="type-button" onClick={() => {
-                const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement
-                emailInput?.focus()
-              }}>
+              <Button
+                size="lg"
+                className="type-button"
+                onClick={() => {
+                  const emailInput = document.querySelector(
+                    'input[type="email"]'
+                  ) as HTMLInputElement
+                  emailInput?.focus()
+                }}
+              >
                 <Mail className="mr-2 h-4 w-4" />
                 Inscríbase para recibir actualizaciones
               </Button>
@@ -282,7 +312,8 @@ export default function AgencyComingSoon() {
             </div>
 
             <p className="type-caption text-muted-foreground italic">
-              Respetamos su privacidad y sólo le enviaremos información relevante sobre la Agencia de Automatización del CENIE.
+              Respetamos su privacidad y sólo le enviaremos información relevante sobre la Agencia
+              de Automatización del CENIE.
             </p>
           </div>
         </div>
@@ -292,9 +323,12 @@ export default function AgencyComingSoon() {
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 text-center">
           <div className="flex flex-col items-center gap-2">
-            <p className="type-caption text-muted-foreground">© 2024 Agencia de Automatización del CENIE. Todos los derechos reservados.</p>
+            <p className="type-caption text-muted-foreground">
+              © 2024 Agencia de Automatización del CENIE. Todos los derechos reservados.
+            </p>
             <p className="type-caption text-muted-foreground italic">
-              Una división central del <strong>Centro de Investigación e Innovación en Artes Escénicas (CENIE)</strong>.
+              Una división central del{' '}
+              <strong>Centro de Investigación e Innovación en Artes Escénicas (CENIE)</strong>.
             </p>
           </div>
         </div>

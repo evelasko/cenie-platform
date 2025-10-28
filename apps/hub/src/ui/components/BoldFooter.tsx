@@ -32,7 +32,7 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
         <div className="flex w-full max-w-[1280px] flex-col items-center gap-12">
           <div className="flex w-full flex-wrap items-start gap-6">
             <div className="flex min-w-[144px] grow shrink-0 basis-0 flex-col items-start gap-6">
-              <span className="w-full font-['Montserrat'] text-[14px] font-[600] leading-[20px] text-default-font -tracking-[0.01em]">
+              <span className="w-full font-['Montserrat'] text-[14px] font-semibold leading-[20px] text-default-font -tracking-[0.01em]">
                 Product
               </span>
               <div className="flex flex-col items-start gap-4">
@@ -43,7 +43,7 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
               </div>
             </div>
             <div className="flex min-w-[144px] grow shrink-0 basis-0 flex-col items-start gap-6">
-              <span className="w-full font-['Montserrat'] text-[14px] font-[600] leading-[20px] text-default-font -tracking-[0.01em]">
+              <span className="w-full font-['Montserrat'] text-[14px] font-semibold leading-[20px] text-default-font -tracking-[0.01em]">
                 Company
               </span>
               <div className="flex flex-col items-start gap-4">
@@ -53,7 +53,7 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
               </div>
             </div>
             <div className="flex min-w-[144px] grow shrink-0 basis-0 flex-col items-start gap-6">
-              <span className="w-full font-['Montserrat'] text-[14px] font-[600] leading-[20px] text-default-font -tracking-[0.01em]">
+              <span className="w-full font-['Montserrat'] text-[14px] font-semibold leading-[20px] text-default-font -tracking-[0.01em]">
                 Resources
               </span>
               <div className="flex flex-col items-start gap-4">
@@ -63,7 +63,7 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
               </div>
             </div>
             <div className="flex min-w-[144px] grow shrink-0 basis-0 flex-col items-start gap-4 self-stretch">
-              <span className="w-full font-['Montserrat'] text-[14px] font-[600] leading-[20px] text-default-font -tracking-[0.01em]">
+              <span className="w-full font-['Montserrat'] text-[14px] font-semibold leading-[20px] text-default-font -tracking-[0.01em]">
                 Follow us
               </span>
               <div className="flex w-full items-center gap-2">
@@ -95,10 +95,10 @@ const BoldFooterRoot = React.forwardRef<HTMLDivElement, BoldFooterRootProps>(
             </div>
           </div>
           <div className="flex w-full max-w-[768px] flex-col items-center gap-4">
-            <span className="font-['Montserrat'] text-[14px] font-[500] leading-[20px] text-subtext-color text-center">
+            <span className="font-['Montserrat'] text-[14px] font-medium leading-[20px] text-subtext-color text-center">
               © Subframe 2024
             </span>
-            <span className="font-['Montserrat'] text-[14px] font-[500] leading-[20px] text-subtext-color text-center">
+            <span className="font-['Montserrat'] text-[14px] font-medium leading-[20px] text-subtext-color text-center">
               Subframe is an intergalactic financial services company registered with the Cosmic
               Union. It is authorized in most galaxies, subject to local laws and regulations.
             </span>
