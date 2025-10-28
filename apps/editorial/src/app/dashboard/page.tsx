@@ -1,144 +1,156 @@
-'use client'
-
-import { useAuthContext } from '@cenie/firebase/auth'
-import { signOut } from '@cenie/firebase/auth'
-import { Button } from '@cenie/ui'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import Link from 'next/link'
+import { Search, Library } from 'lucide-react'
+import { clsx } from 'clsx'
+import { TYPOGRAPHY } from '@/lib/typography'
 
 export default function DashboardPage() {
-  const { user, loading } = useAuthContext()
-  const router = useRouter()
+  return (
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <div className="bg-card rounded-none shadow-sm border border-border p-6">
+        <h2 className={clsx(TYPOGRAPHY.h2, 'text-foreground mb-2')}>Welcome to CENIE Editorial</h2>
+        <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>
+          Manage and curate performing arts books for translation from English to Spanish.
+        </p>
+      </div>
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/sign-in')
-    }
-  }, [user, loading, router])
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Link
+          href="/dashboard/books/search"
+          className="group bg-card rounded-none shadow-sm border border-border p-6 hover:shadow-md hover:border-primary transition-all"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="p-2 bg-primary/10 rounded-none group-hover:bg-primary/20 transition-colors">
+                  <Search className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className={clsx(TYPOGRAPHY.h4, 'text-foreground')}>Search Books</h3>
+              </div>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                Search Google Books API to find new titles for potential translation
+              </p>
+            </div>
+          </div>
+        </Link>
 
-  const handleSignOut = async () => {
-    try {
-      await signOut()
-      router.push('/sign-in')
-    } catch (error) {
-      console.error('Sign out error:', error)
-    }
-  }
+        <Link
+          href="/dashboard/books"
+          className="group bg-card rounded-none shadow-sm border border-border p-6 hover:shadow-md hover:border-secondary transition-all"
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="p-2 bg-secondary/10 rounded-none group-hover:bg-secondary/20 transition-colors">
+                  <Library className="h-6 w-6 text-secondary" />
+                </div>
+                <h3 className={clsx(TYPOGRAPHY.h4, 'text-foreground')}>Manage Books</h3>
+              </div>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                View and manage all books in the editorial workflow
+              </p>
+            </div>
+          </div>
+        </Link>
+      </div>
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      {/* Getting Started Guide */}
+      <div className="bg-card rounded-none shadow-sm border border-border p-6">
+        <h3 className={clsx(TYPOGRAPHY.h4, 'text-foreground mb-4')}>Getting Started</h3>
+        <div className="space-y-4">
+          <div className="flex items-start space-x-3">
+            <div className="shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold text-sm">
+              1
+            </div>
+            <div>
+              <h4 className={clsx(TYPOGRAPHY.h6, 'font-medium text-foreground')}>
+                Search for Books
+              </h4>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                Use the search tool to find performing arts books in English from Google Books
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <div className="shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold text-sm">
+              2
+            </div>
+            <div>
+              <h4 className={clsx(TYPOGRAPHY.h6, 'font-medium text-foreground')}>
+                Add to Database
+              </h4>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                Select books that are potentially relevant for translation
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <div className="shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold text-sm">
+              3
+            </div>
+            <div>
+              <h4 className={clsx(TYPOGRAPHY.h6, 'font-medium text-foreground')}>
+                Review and Evaluate
+              </h4>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                Assess books for marketability, relevance, and translation priority
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <div className="shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold text-sm">
+              4
+            </div>
+            <div>
+              <h4 className={clsx(TYPOGRAPHY.h6, 'font-medium text-foreground')}>
+                Select for Translation
+              </h4>
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                Mark books as selected and move them through the translation workflow
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    )
-  }
 
-  if (!user) {
-    return null // Will redirect to signin
-  }
-
-  return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 to-red-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900">Editorial Dashboard</h1>
+      {/* Workflow Status Overview */}
+      <div className="bg-card rounded-none shadow-sm border border-border p-6">
+        <h3 className={clsx(TYPOGRAPHY.h4, 'text-foreground mb-4')}>Editorial Workflow</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-muted-foreground')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>Discovered</div>
+          </div>
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-secondary')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>
+              Under Review
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {user.displayName || user.email}</span>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                className="border-orange-300 text-orange-700 hover:bg-orange-50"
-              >
-                Sign Out
-              </Button>
+          </div>
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-primary')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>Selected</div>
+          </div>
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-secondary')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>
+              In Translation
             </div>
+          </div>
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-primary')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>Published</div>
+          </div>
+          <div className="text-center">
+            <div className={clsx(TYPOGRAPHY.display2, 'text-destructive')}>-</div>
+            <div className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground mt-1')}>Rejected</div>
           </div>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white overflow-hidden shadow-lg rounded-lg border border-orange-100">
-            <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Authentication Details</h2>
-
-              <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">User ID</dt>
-                  <dd className="mt-1 text-sm text-gray-900 font-mono">{user.uid}</dd>
-                </div>
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Email</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{user.email}</dd>
-                </div>
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Display Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{user.displayName || 'Not set'}</dd>
-                </div>
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Email Verified</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.emailVerified
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}
-                    >
-                      {user.emailVerified ? 'Verified' : 'Not Verified'}
-                    </span>
-                  </dd>
-                </div>
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Provider</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{user.providerId || 'Unknown'}</dd>
-                </div>
-
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">Last Sign In</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'Unknown'}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <div className="mt-6 bg-white overflow-hidden shadow-lg rounded-lg border border-orange-100">
-            <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Welcome to Editorial</h2>
-              <div className="prose max-w-none">
-                <p className="text-gray-600 mb-4">
-                  📚 Welcome to the CENIE Editorial platform - your academic publishing workspace.
-                </p>
-                <p className="text-gray-600 mb-4">
-                  Here you can manage manuscripts, coordinate peer reviews, and collaborate with
-                  authors and reviewers in the academic publishing process.
-                </p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-4">
-                  <h3 className="text-sm font-medium text-orange-800 mb-2">Next Steps:</h3>
-                  <ul className="text-sm text-orange-700 space-y-1">
-                    <li>• Set up your editorial profile</li>
-                    <li>• Review assigned manuscripts</li>
-                    <li>• Manage peer review workflows</li>
-                    <li>• Coordinate with editorial team</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      </div>
     </div>
   )
 }

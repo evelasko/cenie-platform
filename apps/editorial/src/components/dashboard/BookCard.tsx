@@ -1,5 +1,8 @@
 import Image from 'next/image'
-import { Book, Calendar, User, ExternalLink } from 'lucide-react'
+import { Book, Calendar, User, ExternalLink, Building2 } from 'lucide-react'
+import { clsx } from 'clsx'
+import { TYPOGRAPHY } from '@/lib/typography'
+import Button from '@/components/ui/Button'
 import type { GoogleBookVolume } from '@/types/books'
 
 interface BookCardProps {
@@ -21,7 +24,7 @@ export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) 
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 hover:border-orange-200 hover:shadow-md transition-all p-4">
+    <div className="bg-card rounded-none border border-border hover:border-primary hover:shadow-md transition-all p-4">
       <div className="flex gap-4">
         {/* Book Cover */}
         <div className="shrink-0">
@@ -31,53 +34,72 @@ export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) 
               alt={volumeInfo.title}
               width={80}
               height={120}
-              className="rounded shadow-sm"
+              className="rounded-none shadow-sm"
               unoptimized
             />
           ) : (
-            <div className="w-20 h-30 bg-gray-100 rounded flex items-center justify-center">
-              <Book className="h-8 w-8 text-gray-400" />
+            <div className="w-20 h-30 bg-muted rounded-none flex items-center justify-center">
+              <Book className="h-8 w-8 text-muted-foreground" />
             </div>
           )}
         </div>
 
         {/* Book Info */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">{volumeInfo.title}</h3>
+          <h3 className={clsx(TYPOGRAPHY.h4, 'font-semibold text-foreground mb-1 line-clamp-2')}>
+            {volumeInfo.title}
+          </h3>
           {volumeInfo.subtitle && (
-            <p className="text-sm text-gray-600 mb-2 line-clamp-1">{volumeInfo.subtitle}</p>
+            <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mb-2 line-clamp-1')}>
+              {volumeInfo.subtitle}
+            </p>
           )}
 
-          <div className="space-y-1 mb-3">
-            <div className="flex items-center text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 my-6">
+            <div className={clsx(TYPOGRAPHY.bodySmall, 'flex items-center')}>
               <User className="h-3 w-3 mr-1 shrink-0" />
               <span className="line-clamp-1">{formatAuthors(volumeInfo.authors)}</span>
             </div>
             {volumeInfo.publishedDate && (
-              <div className="flex items-center text-sm text-gray-600">
+              <div className={clsx(TYPOGRAPHY.bodySmall, 'flex items-center')}>
                 <Calendar className="h-3 w-3 mr-1 shrink-0" />
                 <span>{volumeInfo.publishedDate}</span>
+              </div>
+            )}
+            {volumeInfo.publisher && (
+              <div className={clsx(TYPOGRAPHY.bodySmall, 'flex items-center')}>
+                <Building2 className="h-3 w-3 mr-1 shrink-0" />
+                <span>{volumeInfo.publisher}</span>
               </div>
             )}
           </div>
 
           {volumeInfo.description && (
-            <p className="text-sm text-gray-600 line-clamp-2 mb-3">{volumeInfo.description}</p>
+            <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground line-clamp-2 mb-3')}>
+              {volumeInfo.description}
+            </p>
           )}
 
           <div className="flex items-center gap-2">
             {volumeInfo.categories && volumeInfo.categories.length > 0 && (
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+              <span
+                className={clsx(
+                  TYPOGRAPHY.caption,
+                  'inline-flex items-center px-2 py-0.5 rounded-none font-medium bg-secondary/10 text-secondary'
+                )}
+              >
                 {volumeInfo.categories[0]}
               </span>
             )}
             {volumeInfo.averageRating && (
-              <span className="text-xs text-gray-500">
+              <span className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground')}>
                 ⭐ {volumeInfo.averageRating.toFixed(1)}
               </span>
             )}
             {volumeInfo.pageCount && (
-              <span className="text-xs text-gray-500">{volumeInfo.pageCount} pages</span>
+              <span className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground')}>
+                {volumeInfo.pageCount} pages
+              </span>
             )}
           </div>
         </div>
@@ -89,7 +111,7 @@ export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) 
               href={volumeInfo.previewLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-600 hover:text-orange-700 p-1"
+              className="text-primary hover:text-primary/80 p-1 transition-colors"
               title="View on Google Books"
             >
               <ExternalLink className="h-4 w-4" />
@@ -97,19 +119,16 @@ export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) 
           )}
 
           {onAddBook && (
-            <button
+            <Button
               onClick={() => onAddBook(book.id)}
               disabled={isAdding || isAdded}
-              className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${
-                isAdded
-                  ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                  : isAdding
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-orange-600 text-white hover:bg-orange-700'
-              }`}
+              variant={isAdded ? 'tertiary' : 'primary'}
+              size="sm"
+              backgroundColor={isAdded ? '#10b981' : undefined}
+              textColor={isAdded ? 'white' : undefined}
             >
               {isAdded ? 'Added' : isAdding ? 'Adding...' : 'Add Book'}
-            </button>
+            </Button>
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '@cenie/firebase/auth'
-import { Button } from '@cenie/ui'
+import Button from '@/components/ui/Button'
 import { signOut } from 'firebase/auth'
 import { getFirebaseAuth } from '@cenie/firebase/client'
 import { useRouter } from 'next/navigation'
@@ -134,7 +134,7 @@ export default function Navbar({
                 </svg>
               </button>
               {showAuth && user && (
-                <Button onClick={handleSignOut} variant="outline" size="sm">
+                <Button onClick={handleSignOut} variant="outlined" size="sm">
                   Cerrar Sesión
                 </Button>
               )}
@@ -213,7 +213,7 @@ export default function Navbar({
                         handleSignOut()
                         setMobileMenuOpen(false)
                       }}
-                      variant="outline"
+                      variant="outlined"
                       size="sm"
                       className="w-full"
                     >
