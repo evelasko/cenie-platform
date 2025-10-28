@@ -1,3 +1,3 @@
 export * from './context'
 export * from './hooks'
-export * from '../analytics'
+export * from '../analytics-utils'

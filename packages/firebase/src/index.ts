@@ -1,11 +1,11 @@
 // Client-side exports
 export * from './client'
-export * from './analytics'
+export * from './analytics-utils'
 
 // Auth exports with explicit re-exports to avoid conflicts
 export * from './auth/hooks'
 export * from './auth/context'
-export { 
+export {
   // Re-export everything from utils except AuthError to avoid conflict
   signIn,
   signUp,
@@ -27,7 +27,7 @@ export {
   // Rename Firebase's AuthError to avoid conflict with our custom AuthError
   type AuthError as FirebaseAuthError,
   type OAuthError,
-  type OAuthSignInResult
+  type OAuthSignInResult,
 } from './auth/utils'
 
 // Types exports (includes our custom AuthError interface)

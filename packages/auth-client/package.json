@@ -17,7 +17,7 @@
     "@cenie/firebase": "workspace:*"
   },
   "devDependencies": {
-    "eslint": "^9.33.0",
-    "typescript": "^5.9.2"
+    "eslint": "^9.38.0",
+    "typescript": "^5.9.3"
   }
 }

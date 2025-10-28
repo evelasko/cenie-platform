@@ -78,9 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
@@ -130,7 +128,9 @@ export function MyComponent() {
 
   return (
     <div>
-      <p>Analytics ready for {appName}: {isReady ? '✅' : '❌'}</p>
+      <p>
+        Analytics ready for {appName}: {isReady ? '✅' : '❌'}
+      </p>
       <button onClick={handleButtonClick}>Track Click</button>
       <button onClick={handleFormSubmit}>Track Form Submit</button>
     </div>
@@ -197,21 +197,21 @@ import { logEvent } from '@cenie/firebase/analytics'
 export async function POST(request: Request) {
   try {
     // Your API logic here
-    
+
     // Log server-side event (will fallback to console.log)
     await logEvent('api_call', {
       endpoint: '/api/some-endpoint',
       method: 'POST',
       success: true,
     })
-    
+
     return Response.json({ success: true })
   } catch (error) {
     await logEvent('api_error', {
       endpoint: '/api/some-endpoint',
       error_message: error.message,
     })
-    
+
     return Response.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -220,6 +220,7 @@ export async function POST(request: Request) {
 ## Analytics Events
 
 All analytics events automatically include:
+
 - `app_name`: The current app name (hub, editorial, academy, agency)
 - Timestamp and session information
 - User ID (if authenticated)
@@ -227,6 +228,7 @@ All analytics events automatically include:
 ### Custom Dimensions in Google Analytics
 
 Set up these custom dimensions in your Google Analytics 4 property:
+
 - `app_name` - To filter and segment data by application
 - `user_type` - To differentiate between authenticated/anonymous users
 - `error_context` - To categorize error events
@@ -271,7 +273,7 @@ type AnalyticsSeverity = 'low' | 'medium' | 'high'
 
 ## Architecture
 
-```
+```tree
 packages/firebase/
 ├── src/
 │   ├── analytics.ts          # Core analytics functions

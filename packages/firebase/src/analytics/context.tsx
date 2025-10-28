@@ -4,7 +4,7 @@
 import { type Analytics } from 'firebase/analytics'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
-import { initializeAnalytics, getAppName, type AnalyticsEventParams } from '../analytics'
+import { initializeAnalytics, getAppName, type AnalyticsEventParams } from '../analytics-utils'
 
 interface AnalyticsContextType {
   analytics: Analytics | null
@@ -34,13 +34,16 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
     async function initialize() {
       try {
         const analyticsInstance = await initializeAnalytics()
-        
+
         if (mounted) {
           setAnalytics(analyticsInstance)
           setIsInitialized(true)
-          
+
           if (enableDebug || process.env.NODE_ENV === 'development') {
-            console.log(`[Analytics] Initialized for app: ${appName}`, analyticsInstance ? '✅' : '❌')
+            console.log(
+              `[Analytics] Initialized for app: ${appName}`,
+              analyticsInstance ? '✅' : '❌'
+            )
           }
         }
       } catch (error) {
@@ -64,36 +67,32 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
     appName,
     isInitialized,
     logEvent: async (eventName: string, eventParams?: AnalyticsEventParams) => {
-      const { logEvent } = await import('../analytics')
+      const { logEvent } = await import('../analytics-utils')
       return logEvent(eventName, eventParams)
     },
     logPageView: async (pagePath: string, pageTitle?: string) => {
-      const { logPageView } = await import('../analytics')
+      const { logPageView } = await import('../analytics-utils')
       return logPageView(pagePath, pageTitle)
     },
     logUserAction: async (action: string, category: string, label?: string, value?: number) => {
-      const { logUserAction } = await import('../analytics')
+      const { logUserAction } = await import('../analytics-utils')
       return logUserAction(action, category, label, value)
     },
     logError: async (error: Error | string, context?: string) => {
-      const { logError } = await import('../analytics')
+      const { logError } = await import('../analytics-utils')
       return logError(error, context)
     },
   }
 
-  return (
-    <AnalyticsContext.Provider value={contextValue}>
-      {children}
-    </AnalyticsContext.Provider>
-  )
+  return <AnalyticsContext.Provider value={contextValue}>{children}</AnalyticsContext.Provider>
 }
 
 export function useAnalyticsContext(): AnalyticsContextType {
   const context = useContext(AnalyticsContext)
-  
+
   if (!context) {
     throw new Error('useAnalyticsContext must be used within an AnalyticsProvider')
   }
-  
+
   return context
 }
