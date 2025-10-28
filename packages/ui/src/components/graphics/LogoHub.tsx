@@ -1,6 +1,27 @@
-export default function LogoHub({ color = 'black' }: { color?: string }) {
+export default function LogoHub({
+  color = 'black',
+  className = '',
+  width = 180,
+  height,
+}: {
+  color?: string
+  className?: string
+  width?: number
+  height?: number
+}) {
+  // Calculate height based on aspect ratio if not provided
+  const aspectRatio = 203.61 / 819.49
+  const calculatedHeight = height || width * aspectRatio
+
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 819.49 203.61">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      data-name="Layer 1"
+      viewBox="0 0 819.49 203.61"
+      width={width}
+      height={calculatedHeight}
+      className={className}
+    >
       <path
         fill={color}
         d="m330.82 76.31-17.4 5.38c-12.66-23.39-49.43-25.57-71.76-17.29-23.91 8.86-31.26 34.32-24.14 57.34 10.72 34.69 71.32 37.33 93.63 12.7l17.54 4.3c-23 39.45-96.66 39.68-121.77 3.06-14.61-21.31-14.04-55.57 2.12-75.96 27.46-34.66 102.67-32.63 121.78 10.47M460.67 44.6v17.98H370.2v34.9h74.51v17.98H370.2v32.78h90.47v17.98H351.04V44.6zm318.25 0v17.98h-90.47v34.9h74.5v17.98h-74.5v32.78h90.47v17.98H669.29V44.6zm-273.01 0 79.29 96.24V44.6h18.1v121.62h-20.76l-79.29-95.18v95.18h-19.16V44.6zm120.8 0h19.16v121.63h-19.16zm-457.3 98.06h-.01c-10.3-2.49-17.94-11.77-17.94-22.83v-16.59c0-24.06-19.49-43.56-43.55-43.56s-43.56 19.5-43.56 43.56v16.5c0 11.02-7.51 20.27-17.76 22.8-.06.02-.13.03-.19.05v-39.35c0-2.12.11-4.21.32-6.28 3.14-31.02 29.34-55.23 61.19-55.23s58.1 24.26 61.2 55.33c.2 2.03.31 4.09.31 6.18v39.42ZM46.4 150.58h122.99v17.98H46.4z"
