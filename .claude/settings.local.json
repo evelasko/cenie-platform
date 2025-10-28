@@ -22,7 +22,13 @@
       "Bash(turbo lint:*)",
       "Bash(pnpm turbo lint:*)",
       "Bash(awk:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(pnpm --filter=@cenie/editorial build)",
+      "Bash(pnpm tsc --noEmit src/lib/mdx.ts src/app/articulos/[slug]/page.tsx src/app/noticias/[slug]/page.tsx)",
+      "Bash(git checkout apps/editorial/src/app/dashboard apps/editorial/src/app/api/books apps/editorial/src/lib/books)",
+      "Bash(pnpm tsc --noEmit --pretty)",
+      "Bash(pnpm next build)",
+      "Bash(cat .env)"
     ],
     "deny": []
   }
