@@ -122,9 +122,9 @@ const BrandAccordionRoot = React.forwardRef<HTMLDivElement, BrandAccordionRootPr
             {/* Main content section - animated open/close */}
             {children ? (
               <div className="overflow-hidden transition-all duration-300 ease-in-out group-data-[state=closed]/08273c8e:max-h-0 group-data-[state=open]/08273c8e:max-h-[2000px] border-b border-solid border-neutral-border">
-                <div className="flex w-full !flex-row items-start gap-4 px-3 py-4 opacity-0 translate-y-2 transition-all duration-300 ease-out delay-75 group-data-[state=open]/08273c8e:opacity-100 group-data-[state=open]/08273c8e:translate-y-0 group-data-[state=closed]/08273c8e:opacity-0 group-data-[state=closed]/08273c8e:translate-y-1">
+                <div className="flex w-full flex-row! items-start gap-4 px-3 py-4 opacity-0 translate-y-2 transition-all duration-300 ease-out delay-75 group-data-[state=open]/08273c8e:opacity-100 group-data-[state=open]/08273c8e:translate-y-0 group-data-[state=closed]/08273c8e:opacity-0 group-data-[state=closed]/08273c8e:translate-y-1">
                   {headerImage && (
-                    <div className="w-[20%] lg:w-[10%] aspect-square flex-shrink-0">
+                    <div className="w-[20%] lg:w-[10%] aspect-square shrink-0">
                       <Image
                         width={144}
                         height={144}

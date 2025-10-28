@@ -164,10 +164,10 @@ export default function ImageCard({
         {useNoise && (
           <>
             {/* Dark noise overlay */}
-            <div className="absolute inset-0 bg-black/30 z-[15] pointer-events-none" />
+            <div className="absolute inset-0 bg-black/30 z-15 pointer-events-none" />
 
             {/* Canvas noise overlay */}
-            <div className="absolute inset-0 z-[20] overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
               <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full opacity-[0.10] mix-blend-overlay"
@@ -179,7 +179,7 @@ export default function ImageCard({
             </div>
 
             {/* Static PNG noise overlay */}
-            <div className="absolute inset-0 z-[21] overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 z-21 overflow-hidden pointer-events-none">
               <div
                 className="absolute inset-0 opacity-[0.03]"
                 style={{

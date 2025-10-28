@@ -91,7 +91,7 @@ export default function MediaHero({
       {/* Background video layer */}
       {backgroundVideo && (
         <video
-          className="absolute inset-0 radius-lg z-[1] w-full h-full object-cover"
+          className="absolute inset-0 radius-lg z-1 w-full h-full object-cover"
           autoPlay
           muted
           loop
@@ -108,10 +108,10 @@ export default function MediaHero({
       )}
 
       {/* Dark overlay (same as NoiseOverlay) */}
-      <div className="absolute inset-0 radius-lg bg-black/30 z-[2] pointer-events-none" />
+      <div className="absolute inset-0 radius-lg bg-black/30 z-2 pointer-events-none" />
 
       {/* Canvas noise overlay (same as NoiseOverlay) */}
-      <div className="absolute inset-0 radius-lg z-[3] overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 radius-lg z-3 overflow-hidden pointer-events-none">
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full opacity-[0.10] mix-blend-overlay radius-lg"
@@ -123,7 +123,7 @@ export default function MediaHero({
       </div>
 
       {/* Additional static noise layer using the PNG for texture variation (same as NoiseOverlay) */}
-      <div className="absolute inset-0 radius-lg z-[4] overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 radius-lg z-4 overflow-hidden pointer-events-none">
         <div
           className="absolute inset-0 opacity-[0.03] radius-lg"
           style={{
@@ -137,7 +137,7 @@ export default function MediaHero({
       </div>
 
       {/* Content layer */}
-      <div className="relative w-full z-[5]">{children}</div>
+      <div className="relative w-full z-5">{children}</div>
 
       {/* Noise flicker animation keyframes (same as NoiseOverlay) */}
       <style jsx>{`
