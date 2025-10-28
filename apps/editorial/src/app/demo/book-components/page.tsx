@@ -4,6 +4,7 @@ import BookCardItem from '@/components/items/BookCardItem'
 import BookListItem from '@/components/items/BookListItem'
 import BookPraiseItem from '@/components/items/BookPraiseItem'
 import InLineMenuCard from '@/components/items/InLineMenuCard'
+import Button from '@/components/ui/Button'
 
 export default function BookComponentsDemoPage() {
   return (
@@ -70,11 +71,7 @@ export default function BookComponentsDemoPage() {
               subtitle="A Novel of the Jazz Age"
               author="F. Scott Fitzgerald"
               description="Set in the Jazz Age on Long Island, the novel depicts narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby and Gatsby's obsession to reunite with his former lover, Daisy Buchanan."
-              button={
-                <button className="px-6 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity">
-                  View Details
-                </button>
-              }
+              button={<Button variant="primary">View Details</Button>}
             />
             <BookListItem
               imageSrc="/images/covers/cover-6.jpg"
@@ -82,11 +79,7 @@ export default function BookComponentsDemoPage() {
               title="Moby-Dick"
               author="Herman Melville"
               description="The narrative of Captain Ahab's obsessive quest to destroy the white whale that maimed him. A masterpiece of American literature exploring themes of obsession, nature, and humanity."
-              button={
-                <button className="px-6 py-2 bg-secondary text-secondary-foreground rounded hover:opacity-90 transition-opacity">
-                  Learn More
-                </button>
-              }
+              button={<Button variant="secondary">Learn More</Button>}
             />
             <BookListItem
               imageSrc="/images/covers/cover-7.jpg"
@@ -95,11 +88,7 @@ export default function BookComponentsDemoPage() {
               subtitle="Coming of Age Classic"
               author="J.D. Salinger"
               description="The novel details two days in the life of 16-year-old Holden Caulfield after he has been expelled from prep school. Confused and disillusioned, Holden searches for truth and rails against the phoniness of the adult world."
-              button={
-                <button className="px-6 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity">
-                  Add to Library
-                </button>
-              }
+              button={<Button variant="primary">Add to Library</Button>}
             />
           </div>
         </section>
@@ -191,9 +180,9 @@ export default function BookComponentsDemoPage() {
               author="Dr. Elizabeth Martinez"
               description="A comprehensive examination of philosophical movements shaping our modern world. This groundbreaking work synthesizes decades of research into an accessible and engaging narrative that speaks to both scholars and general readers."
               button={
-                <button className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity">
+                <Button variant="primary" size="lg">
                   Purchase Now
-                </button>
+                </Button>
               }
             />
 

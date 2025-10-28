@@ -11,8 +11,8 @@ export default function TypographyPage() {
             Editorial Typography System
           </h1>
           <p className={clsx(TYPOGRAPHY.lead, 'text-muted-foreground')}>
-            Anziano for headings, FF Basic Gothic Pro for body text — inspired by Harvard University
-            Press
+            Anziano for headings, Barlow for body text — inspired by Harvard University Press with
+            enhanced readability
           </p>
         </div>
 
@@ -101,7 +101,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 The Power of Creative Destruction
               </h1>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: anziano | Size: clamp(1.5rem, 3vw + 1rem, 2.0625rem) | Weight: 400
+                Font: Anziano | Size: clamp(1.75rem, 3.5vw + 1.25rem, 2.5rem) | Weight: 400 |
+                Tracking: -0.03em
               </div>
             </div>
             <div>
@@ -110,7 +111,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 Focus on Scholarly Excellence
               </h1>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: anziano | Size: clamp(1.375rem, 2.5vw + 0.875rem, 1.875rem) | Weight: 400
+                Font: Anziano | Size: clamp(1.375rem, 2.5vw + 0.875rem, 1.875rem) | Weight: 400 |
+                Tracking: -0.03em
               </div>
             </div>
           </div>
@@ -126,7 +128,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Heading 1 — Hero Titles</p>
               <h1 className={clsx(TYPOGRAPHY.h1, 'text-foreground')}>New and Noteworthy</h1>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: anziano | Size: clamp(1.5rem, 3vw + 1rem, 2.0625rem) | Weight: 400
+                Font: Anziano | Size: clamp(1.5rem, 3vw + 1rem, 2.0625rem) | Weight: 400 | Tracking:
+                -0.03em
               </div>
             </div>
             <div>
@@ -135,7 +138,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 Philippe Aghion Wins Nobel Prize
               </h2>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: anziano | Size: clamp(1.25rem, 2vw + 0.75rem, 1.4375rem) | Weight: 400
+                Font: Anziano | Size: clamp(1.25rem, 2vw + 0.75rem, 1.4375rem) | Weight: 400 |
+                Tracking: -0.03em
               </div>
             </div>
             <div>
@@ -144,31 +148,32 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 Reading List Recommendations
               </h3>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(1.125rem, 1.5vw + 0.625rem, 1.25rem) |
-                Weight: 300
+                Font: Barlow | Size: clamp(1.125rem, 1.5vw + 0.625rem, 1.25rem) | Weight: 400 |
+                Tracking: -0.01em
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Heading 4 — Minor Headings</p>
               <h4 className={clsx(TYPOGRAPHY.h4, 'text-foreground')}>Article Categories</h4>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(1rem, 1vw + 0.5rem, 1.125rem) | Weight: 300
+                Font: Barlow | Size: clamp(1rem, 1vw + 0.5rem, 1.125rem) | Weight: 400 | Tracking:
+                -0.01em
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Heading 5 — Component Titles</p>
               <h5 className={clsx(TYPOGRAPHY.h5, 'text-foreground')}>Featured Authors</h5>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(0.9375rem, 0.75vw + 0.5rem, 1rem) | Weight:
-                300
+                Font: Barlow | Size: clamp(0.9375rem, 0.75vw + 0.5rem, 1rem) | Weight: 400 |
+                Tracking: -0.01em
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Heading 6 — Small Headings</p>
               <h6 className={clsx(TYPOGRAPHY.h6, 'text-foreground')}>Publication Details</h6>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(0.875rem, 0.5vw + 0.5rem, 0.9375rem) |
-                Weight: 400
+                Font: Barlow | Size: clamp(0.875rem, 0.5vw + 0.5rem, 0.9375rem) | Weight: 400 |
+                Tracking: -0.02em
               </div>
             </div>
           </div>
@@ -188,8 +193,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 innovation, growth, and the dynamics of creative destruction.
               </p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem) | Weight:
-                300
+                Font: Barlow | Size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem) | Weight: 400 |
+                Tracking: -0.01em
               </div>
             </div>
             <div>
@@ -202,8 +207,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 communication.
               </p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(0.9375rem, 0.25vw + 0.875rem, 1rem) |
-                Weight: 300
+                Font: Barlow | Size: clamp(0.9375rem, 0.25vw + 0.875rem, 1rem) | Weight: 400 |
+                Tracking: -0.01em
               </div>
             </div>
             <div>
@@ -213,8 +218,8 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 Press, Cambridge, Massachusetts.
               </p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Font: ff-basic-gothic-pro | Size: clamp(0.8125rem, 0.25vw + 0.75rem, 0.875rem) |
-                Weight: 300
+                Font: Barlow | Size: clamp(0.8125rem, 0.25vw + 0.75rem, 0.875rem) | Weight: 300 |
+                Tracking: normal
               </div>
             </div>
           </div>
@@ -232,28 +237,31 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 Introduction to scholarly articles and features
               </p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem) | Weight: 300
+                Font: Barlow | Size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem) | Weight: 300 |
+                Tracking: -0.02em
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Caption</p>
               <p className={TYPOGRAPHY.caption}>Marla A. Ramírez</p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Size: clamp(0.75rem, 0.25vw + 0.6875rem, 0.875rem) | Weight: 300
+                Font: Barlow | Size: clamp(0.75rem, 0.25vw + 0.6875rem, 0.875rem) | Weight: 300 |
+                Tracking: 0.07px
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Button Text</p>
               <p className={clsx(TYPOGRAPHY.button, 'text-foreground')}>Discover the book</p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Size: clamp(0.875rem, 0.25vw + 0.8125rem, 1rem) | Weight: 300
+                Font: Barlow | Size: clamp(0.875rem, 0.25vw + 0.8125rem, 1rem) | Weight: 400 |
+                Tracking: -0.02em
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Link Text</p>
               <p className={clsx(TYPOGRAPHY.link, 'text-primary hover:opacity-70')}>Learn more</p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Weight: 300 | Decoration: none (hover: opacity 0.7)
+                Font: Barlow | Weight: 300 | Decoration: none (hover: opacity 0.7)
               </div>
             </div>
             <div>
@@ -263,14 +271,16 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
                 standards of excellence.
               </p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Size: clamp(1.125rem, 1vw + 0.875rem, 1.375rem) | Weight: 300 | Style: italic
+                Font: Barlow | Size: clamp(1.125rem, 1vw + 0.875rem, 1.375rem) | Weight: 300 |
+                Tracking: -0.03em | Style: italic
               </div>
             </div>
             <div>
               <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Label Text</p>
               <p className={clsx(TYPOGRAPHY.label, 'text-foreground')}>Reading List</p>
               <div className={clsx(TYPOGRAPHY.caption, 'mt-2 font-mono')}>
-                Size: clamp(0.875rem, 0.25vw + 0.8125rem, 1rem) | Weight: 400
+                Font: Barlow | Size: clamp(0.875rem, 0.25vw + 0.8125rem, 1rem) | Weight: 400 |
+                Tracking: normal
               </div>
             </div>
           </div>
@@ -321,36 +331,37 @@ import { TYPOGRAPHY } from '@/lib/typography';`}
           </div>
         </section>
 
-        {/* Font Weights - FF Basic Gothic Pro Body */}
+        {/* Font Weights - Barlow Body */}
         <section className="space-y-8">
           <h2 className={clsx(TYPOGRAPHY.h2, 'text-foreground border-b border-border pb-2')}>
-            Body Font Weights (FF Basic Gothic Pro)
+            Body Font Weights (Barlow)
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Light (300) — Primary Weight</p>
+              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>
+                Light (300) — Captions & Supporting Text
+              </p>
               <p className="text-lg" style={{ fontFamily: 'var(--font-body)', fontWeight: 300 }}>
-                FF Basic Gothic Pro Light for elegant body text
+                Barlow Light for captions, credits, and subtle details
               </p>
             </div>
             <div>
-              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Regular (400) — Secondary Weight</p>
+              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Regular (400) — Primary Weight</p>
               <p className="text-lg" style={{ fontFamily: 'var(--font-body)', fontWeight: 400 }}>
-                FF Basic Gothic Pro Regular for labels and headings
+                Barlow Regular for body text, headings, and main content
               </p>
             </div>
-            <div>
-              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Medium (500)</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
-                FF Basic Gothic Pro Medium for emphasis
-              </p>
-            </div>
-            <div>
-              <p className={clsx(TYPOGRAPHY.caption, 'mb-2')}>Bold (700)</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-body)', fontWeight: 700 }}>
-                FF Basic Gothic Pro Bold for strong emphasis
-              </p>
-            </div>
+          </div>
+          <div className="mt-6 p-6 bg-muted/30 rounded-lg border border-border">
+            <p className={clsx(TYPOGRAPHY.label, 'text-foreground mb-3')}>
+              Enhanced Readability Features:
+            </p>
+            <ul className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground space-y-2')}>
+              <li>✓ Improved negative letter-spacing for better text flow</li>
+              <li>✓ Uniform weight 400 across most text for consistency</li>
+              <li>✓ Weight 300 reserved for captions to create visual hierarchy</li>
+              <li>✓ Optimized line heights (1.3-1.5) for comfortable reading</li>
+            </ul>
           </div>
         </section>
       </div>
