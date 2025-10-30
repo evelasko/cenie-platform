@@ -1,34 +1,71 @@
-# CENIE Editorial - Book Management System
+# CENIE Editorial - Publications Management System
+
+## 📖 Documentation Index
+
+- **[Phase 1 Summary](../../packages/supabase/PHASE_1_COMPLETE.md)** - What's been delivered and next steps
+- **[Deployment Checklist](../../packages/supabase/DEPLOYMENT_CHECKLIST.md)** - Step-by-step deployment guide
+- **[Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md)** - Phase 2-4 development plan
+- **[Migration Guide](../../packages/supabase/migrations/README.md)** - Database schema documentation
+- **This Document** - System overview and usage guide
+
+---
 
 ## Overview
 
-This system enables CENIE Editorial to search, curate, and manage performing arts books for translation from English to Spanish using the Google Books API.
+This system enables CENIE Editorial to discover, curate, translate, and publish performing arts books. It supports three publication types: translated works, original CENIE publications, and adapted editions.
+
+**📚 Current Status:** Phase 1 Complete - Database schema ready for deployment  
+**🚀 Next Phase:** Phase 2 - Editorial Workflow Tools (Contributors, Auto-translation, Cover management)
+
+## Quick Start
+
+1. **Deploy database:** Follow [Deployment Checklist](../../packages/supabase/DEPLOYMENT_CHECKLIST.md)
+2. **Review architecture:** Read this document
+3. **Start Phase 2:** Follow [Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md)
 
 ## Architecture
 
-### Data Strategy: Hybrid Reference Model
+### Data Strategy: Dual-Table Workspace & Catalog Model
 
-- **Minimal Database Storage**: Only essential metadata stored in Supabase
-- **On-Demand Fetching**: Full book details fetched from Google Books API as needed
-- **Smart Caching**: Client-side caching for performance optimization
-- **Scalable Design**: Handles hundreds to thousands of books efficiently
+- **Editorial Workspace** (`books` table): Discovery, curation, and preparation
+- **Public Catalog** (`catalog_volumes` table): Published volumes
+- **Normalized Contributors**: Authors, translators, editors (reusable across publications)
+- **On-Demand Fetching**: Google Books API for external book data
+- **Cloud Storage**: Cloudinary for covers and photos
+- **Smart Translation**: Google Cloud Translation API with performing arts glossary
 
 ### Key Components
 
-1. **Database (Supabase)**
-   - `books` - Core book registry with editorial metadata
-   - `book_tags` - Categorization system
-   - `book_reviews` - Internal editorial assessments
+1. **Database (Supabase)** - See `packages/supabase/migrations/`
+   - `books` - Editorial workspace (discovery & curation)
+   - `catalog_volumes` - Public catalog (published books)
+   - `contributors` - Authors, translators, editors (normalized)
+   - `volume_contributors` - Junction table for relationships
+   - `publishers` - Publisher information
+   - `translation_glossary` - Performing arts terminology (65+ terms)
+   - `user_app_access` - Permissions
 
 2. **Google Books API Integration**
    - Server-side wrapper at [src/lib/google-books.ts](src/lib/google-books.ts)
    - Search, retrieve, and enrich book data
    - Rate-limited (1000 requests/day free tier)
 
-3. **Dashboard Interface**
+3. **Cloudinary Integration** (Phase 2)
+   - Cover image storage and CDN delivery
+   - Contributor photos
+   - Automatic transformations and optimization
+
+4. **Google Cloud Translation API** (Phase 2)
+   - Auto-translation with glossary integration
+   - Performing arts terminology awareness
+   - Manual refinement workflow
+
+5. **Dashboard Interface**
    - Search books from Google Books
-   - Add books to editorial database
-   - Manage editorial workflow
+   - Add books to editorial workspace
+   - Prepare books for publication
+   - Manage contributors and publishers
+   - Publish to catalog
    - Track translation status
 
 ## Database Schema

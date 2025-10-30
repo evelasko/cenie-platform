@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
+import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
 import { googleBooks } from '@/lib/google-books'
 import type { BookCreateInput } from '@/types/books'
 
@@ -13,6 +14,12 @@ import type { BookCreateInput } from '@/types/books'
  */
 export async function GET(request: NextRequest) {
   try {
+    // Require authentication and editorial access
+    const authResult = await requireEditorialAccess()
+    if (authResult instanceof NextResponse) {
+      return authResult
+    }
+
     const supabase = createNextServerClient()
     const searchParams = request.nextUrl.searchParams
 
@@ -60,19 +67,24 @@ export async function GET(request: NextRequest) {
  * Add a book to the database from Google Books
  * Body:
  * - googleBooksId: Google Books volume ID (required)
+ * Requires: editor or admin role
  */
 export async function POST(request: NextRequest) {
   try {
+    // Require editor or admin role
+    const authResult = await requireRole('editor')
+    if (authResult instanceof NextResponse) {
+      return authResult
+    }
+
+    const { user } = authResult
     const supabase = createNextServerClient()
     const body: BookCreateInput = await request.json()
 
     const { googleBooksId } = body
 
     if (!googleBooksId) {
-      return NextResponse.json(
-        { error: 'googleBooksId is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'googleBooksId is required' }, { status: 400 })
     }
 
     // Check if book already exists
@@ -96,11 +108,6 @@ export async function POST(request: NextRequest) {
     const bookData = await googleBooks.getBook(googleBooksId)
     const isbns = googleBooks.getISBNs(bookData)
 
-    // Get current user
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
     // Insert book into database
     const { data, error } = await supabase
       .from('books')
@@ -113,7 +120,7 @@ export async function POST(request: NextRequest) {
         language: bookData.volumeInfo.language || null,
         isbn_13: isbns.isbn13 || null,
         isbn_10: isbns.isbn10 || null,
-        added_by: user?.id || null,
+        added_by: user.uid,
         status: 'discovered' as const,
       } as any)
       .select()

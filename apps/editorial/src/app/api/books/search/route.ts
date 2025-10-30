@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireEditorialAccess } from '@/lib/auth-helpers'
 import { googleBooks } from '@/lib/google-books'
 
 /**
@@ -11,6 +12,12 @@ import { googleBooks } from '@/lib/google-books'
  */
 export async function GET(request: NextRequest) {
   try {
+    // Require authentication and editorial access
+    const authResult = await requireEditorialAccess()
+    if (authResult instanceof NextResponse) {
+      return authResult
+    }
+
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q')
     const maxResults = parseInt(searchParams.get('maxResults') || '20')
