@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { useToast } from '@/components/ui/ToastContainer'
+import { getContributorPhotoUrl } from '@/lib/twicpics'
 import type { Contributor, ContributorRole } from '@/types/books'
 
 const roleLabels: Record<ContributorRole, string> = {
@@ -63,7 +64,9 @@ export default function ContributorsListPage() {
   }
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"? This will deactivate the contributor.`)) {
+    if (
+      !confirm(`Are you sure you want to delete "${name}"? This will deactivate the contributor.`)
+    ) {
       return
     }
 
@@ -234,17 +237,22 @@ export default function ContributorsListPage() {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        {contributor.photo_url ? (
-                          <img
-                            src={contributor.photo_url}
-                            alt={contributor.full_name}
-                            className="h-10 w-10 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-                            <User className="h-5 w-5 text-muted-foreground" />
-                          </div>
-                        )}
+                        {(() => {
+                          const photoUrl = contributor.photo_twicpics_path
+                            ? getContributorPhotoUrl(contributor.photo_twicpics_path, 200)
+                            : contributor.photo_url
+                          return photoUrl ? (
+                            <img
+                              src={photoUrl}
+                              alt={contributor.full_name}
+                              className="h-10 w-10 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                              <User className="h-5 w-5 text-muted-foreground" />
+                            </div>
+                          )
+                        })()}
                         <div>
                           <p className={clsx(TYPOGRAPHY.bodyBase, 'font-medium text-foreground')}>
                             {contributor.full_name}
@@ -275,12 +283,12 @@ export default function ContributorsListPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <Link href={`/dashboard/contributors/${contributor.id}`}>
-                          <Button variant="ghost" size="sm" leadingIcon={Edit}>
+                          <Button variant="outlined" size="sm" leadingIcon={Edit}>
                             Edit
                           </Button>
                         </Link>
                         <Button
-                          variant="ghost"
+                          variant="outlined"
                           size="sm"
                           leadingIcon={Trash2}
                           onClick={() => handleDelete(contributor.id, contributor.full_name)}
@@ -300,4 +308,3 @@ export default function ContributorsListPage() {
     </div>
   )
 }
-

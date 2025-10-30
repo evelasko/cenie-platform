@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { use } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, AlertCircle, Save, ArrowLeft, User as UserIcon } from 'lucide-react'
+import { Loader2, AlertCircle, Save, ArrowLeft } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -20,13 +19,8 @@ const roleOptions: { value: ContributorRole; label: string }[] = [
   { value: 'other', label: 'Other' },
 ]
 
-export default function ContributorDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default function ContributorDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
-  const router = useRouter()
   const toast = useToast()
 
   const [contributor, setContributor] = useState<Contributor | null>(null)
@@ -102,7 +96,10 @@ export default function ContributorDetailPage({
           slug,
           primary_role: primaryRole,
           name_variants: nameVariants
-            ? nameVariants.split(',').map((v) => v.trim()).filter(Boolean)
+            ? nameVariants
+                .split(',')
+                .map((v) => v.trim())
+                .filter(Boolean)
             : null,
           bio_es: bioEs || null,
           bio_en: bioEn || null,
@@ -112,11 +109,17 @@ export default function ContributorDetailPage({
           website_url: websiteUrl || null,
           translator_specializations:
             primaryRole === 'translator' && translatorSpecializations
-              ? translatorSpecializations.split(',').map((v) => v.trim()).filter(Boolean)
+              ? translatorSpecializations
+                  .split(',')
+                  .map((v) => v.trim())
+                  .filter(Boolean)
               : null,
           translator_languages:
             primaryRole === 'translator' && translatorLanguages
-              ? translatorLanguages.split(',').map((v) => v.trim()).filter(Boolean)
+              ? translatorLanguages
+                  .split(',')
+                  .map((v) => v.trim())
+                  .filter(Boolean)
               : null,
         }),
       })
@@ -155,9 +158,7 @@ export default function ContributorDetailPage({
     return (
       <div className="bg-card rounded-none shadow-sm border border-border p-12 text-center">
         <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
-        <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>
-          Loading contributor...
-        </p>
+        <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>Loading contributor...</p>
       </div>
     )
   }
@@ -201,9 +202,7 @@ export default function ContributorDetailPage({
 
       {/* Contributor Info */}
       <div className="bg-card rounded-none shadow-sm border border-border p-6">
-        <h2 className={clsx(TYPOGRAPHY.h3, 'text-foreground mb-6')}>
-          Contributor Information
-        </h2>
+        <h2 className={clsx(TYPOGRAPHY.h3, 'text-foreground mb-6')}>Contributor Information</h2>
 
         <div className="space-y-6">
           {/* Photo Preview */}
@@ -215,9 +214,7 @@ export default function ContributorDetailPage({
                 className="h-24 w-24 rounded-full object-cover border-2 border-border"
               />
               <div>
-                <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
-                  Current Photo
-                </p>
+                <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>Current Photo</p>
                 <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground italic')}>
                   Photo upload coming soon
                 </p>
@@ -485,4 +482,3 @@ export default function ContributorDetailPage({
     </div>
   )
 }
-

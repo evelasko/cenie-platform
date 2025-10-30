@@ -20,6 +20,8 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { useToast } from '@/components/ui/ToastContainer'
 import { ContributorAutocomplete } from '@/components/dashboard/ContributorAutocomplete'
+import { CoverManager } from '@/components/dashboard/CoverManager'
+import { getBookCoverUrl } from '@/lib/twicpics'
 import type { Book, ContributorRole } from '@/types/books'
 
 interface ContributorSelection {
@@ -61,6 +63,18 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
   const [publicationYear, setPublicationYear] = useState<number>(new Date().getFullYear())
   const [categories, setCategories] = useState('')
   const [tags, setTags] = useState('')
+  const [coverPath, setCoverPath] = useState<string>('')
+  const [coverUrl, setCoverUrl] = useState<string | null>(null)
+
+  // Generate slug from Spanish title for cover naming
+  const publicationSlug = titleEs
+    ? titleEs
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+    : ''
 
   useEffect(() => {
     fetchBook()
@@ -96,6 +110,11 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
       setExcerptEs(bookData.publication_excerpt_es || '')
       setIsbn13(bookData.isbn_13 || '')
       setIsbn10(bookData.isbn_10 || '')
+      // Set cover if exists
+      if (bookData.temp_cover_twicpics_path) {
+        setCoverPath(bookData.temp_cover_twicpics_path)
+        setCoverUrl(getBookCoverUrl(bookData.temp_cover_twicpics_path, 'medium'))
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch book')
     } finally {
@@ -154,6 +173,34 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
     }
   }
 
+  const handleCoverSelect = (path: string, url: string) => {
+    setCoverPath(path)
+    setCoverUrl(url)
+    // Save immediately to draft
+    handleSaveCover(path)
+  }
+
+  const handleSaveCover = async (path: string) => {
+    try {
+      const response = await fetch(`/api/books/${resolvedParams.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          temp_cover_twicpics_path: path || null,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to save cover')
+      }
+    } catch (err) {
+      console.error('Failed to save cover:', err)
+      // Error toast is handled by ImageUpload component
+    }
+  }
+
   const handleSaveDraft = async () => {
     setSaving(true)
 
@@ -167,6 +214,7 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
           publication_description_es: descriptionEs || null,
           publication_excerpt_es: excerptEs || null,
           publication_table_of_contents: tableOfContents ? JSON.parse(tableOfContents) : null,
+          temp_cover_twicpics_path: coverPath || null,
         }),
       })
 
@@ -649,17 +697,15 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
             />
           </div>
 
-          {/* Cover Upload - Placeholder */}
+          {/* Cover Management */}
           <div>
-            <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
-              Cover Image
-            </label>
-            <div className="border-2 border-dashed border-border rounded-none p-8 text-center">
-              <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
-                Cover upload coming soon (TwicPics integration)
-              </p>
-            </div>
+            <CoverManager
+              currentCoverPath={coverPath}
+              currentCoverUrl={coverUrl || undefined}
+              slug={publicationSlug}
+              onSelect={handleCoverSelect}
+              label="Cover Image"
+            />
           </div>
         </div>
       </div>

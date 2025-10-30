@@ -24,17 +24,14 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10')
 
     if (!query) {
-      return NextResponse.json(
-        { error: 'Query parameter "q" is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Query parameter "q" is required' }, { status: 400 })
     }
 
     const supabase = createNextServerClient()
 
     let dbQuery = supabase
       .from('contributors')
-      .select('id, full_name, slug, primary_role, photo_url, nationality')
+      .select('id, full_name, slug, primary_role, photo_url, photo_twicpics_path, nationality')
       .eq('is_active', true)
       .or(`full_name.ilike.%${query}%,slug.ilike.%${query}%`)
       .order('full_name', { ascending: true })
@@ -63,4 +60,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

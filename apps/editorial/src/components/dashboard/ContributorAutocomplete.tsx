@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { Search, User, Plus, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import type { Contributor, ContributorRole } from '@/types/books'
+import { getContributorPhotoUrl } from '@/lib/twicpics'
+import type { ContributorRole } from '@/types/books'
 import Link from 'next/link'
 
 interface ContributorSuggestion {
@@ -13,6 +14,7 @@ interface ContributorSuggestion {
   slug: string
   primary_role: ContributorRole
   photo_url?: string | null
+  photo_twicpics_path?: string | null
   nationality?: string | null
 }
 
@@ -143,17 +145,22 @@ export function ContributorAutocomplete({
       {!multiple && selectedContributors.length > 0 && (
         <div className="flex items-center justify-between p-3 border border-border rounded-none bg-muted">
           <div className="flex items-center gap-3">
-            {selectedContributors[0].photo_url ? (
-              <img
-                src={selectedContributors[0].photo_url}
-                alt={selectedContributors[0].full_name}
-                className="h-10 w-10 rounded-full object-cover"
-              />
-            ) : (
-              <div className="h-10 w-10 rounded-full bg-muted-foreground/10 flex items-center justify-center">
-                <User className="h-5 w-5 text-muted-foreground" />
-              </div>
-            )}
+            {(() => {
+              const photoUrl = selectedContributors[0].photo_twicpics_path
+                ? getContributorPhotoUrl(selectedContributors[0].photo_twicpics_path, 200)
+                : selectedContributors[0].photo_url
+              return photoUrl ? (
+                <img
+                  src={photoUrl}
+                  alt={selectedContributors[0].full_name}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-muted-foreground/10 flex items-center justify-center">
+                  <User className="h-5 w-5 text-muted-foreground" />
+                </div>
+              )
+            })()}
             <div>
               <p className={clsx(TYPOGRAPHY.bodyBase, 'font-medium text-foreground')}>
                 {selectedContributors[0].full_name}
@@ -228,17 +235,22 @@ export function ContributorAutocomplete({
                     onClick={() => handleSelect(suggestion)}
                     className="w-full px-4 py-3 hover:bg-muted transition-colors flex items-center gap-3 border-b border-border last:border-b-0"
                   >
-                    {suggestion.photo_url ? (
-                      <img
-                        src={suggestion.photo_url}
-                        alt={suggestion.full_name}
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-                        <User className="h-5 w-5 text-muted-foreground" />
-                      </div>
-                    )}
+                    {(() => {
+                      const photoUrl = suggestion.photo_twicpics_path
+                        ? getContributorPhotoUrl(suggestion.photo_twicpics_path, 200)
+                        : suggestion.photo_url
+                      return photoUrl ? (
+                        <img
+                          src={photoUrl}
+                          alt={suggestion.full_name}
+                          className="h-10 w-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                          <User className="h-5 w-5 text-muted-foreground" />
+                        </div>
+                      )
+                    })()}
                     <div className="flex-1 text-left">
                       <p className={clsx(TYPOGRAPHY.bodyBase, 'font-medium text-foreground')}>
                         {suggestion.full_name}
@@ -269,4 +281,3 @@ export function ContributorAutocomplete({
     </div>
   )
 }
-
