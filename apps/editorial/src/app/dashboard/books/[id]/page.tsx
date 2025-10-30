@@ -29,6 +29,7 @@ import type {
 } from '@/types/books'
 import { googleBooks } from '@/lib/google-books'
 import { ConfidenceBreakdownComponent } from '@/components/dashboard/ConfidenceBreakdown'
+import { useToast } from '@/components/ui/ToastContainer'
 
 const statusOptions: { value: BookStatus; label: string }[] = [
   { value: 'discovered', label: 'Discovered' },
@@ -41,6 +42,7 @@ const statusOptions: { value: BookStatus; label: string }[] = [
 
 export default function BookDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
+  const toast = useToast()
   const [book, setBook] = useState<Book | null>(null)
   const [googleData, setGoogleData] = useState<GoogleBookVolume | null>(null)
   const [loading, setLoading] = useState(true)
@@ -133,9 +135,9 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       }
 
       setBook(data.book)
-      alert('Book updated successfully!')
+      toast.success('Book updated successfully!')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to save book')
+      toast.error(err instanceof Error ? err.message : 'Failed to save book')
     } finally {
       setSaving(false)
     }
@@ -161,13 +163,13 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       // Refresh book data to get updated translation status
       await fetchBook()
 
-      alert(
-        data.translation_found
-          ? `Translation found! Confidence: ${data.confidence_score}%`
-          : 'No translation found'
-      )
+      if (data.translation_found) {
+        toast.success(`Translation found! Confidence: ${data.confidence_score}%`, 7000)
+      } else {
+        toast.info('No translation found', 5000)
+      }
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to investigate translation')
+      toast.error(err instanceof Error ? err.message : 'Failed to investigate translation')
     } finally {
       setInvestigating(false)
     }

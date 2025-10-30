@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { BookOpen, Search, Library, LogOut, Home, BarChart } from 'lucide-react'
+import { ToastProvider } from '@/components/ui/ToastContainer'
 
 interface NavItem {
   href: string
@@ -104,94 +105,96 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card shadow-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <div>
-                <h1 className={clsx(TYPOGRAPHY.h2, 'text-foreground')}>Editorial Dashboard</h1>
-                <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
-                  CENIE Book Management
-                </p>
+    <ToastProvider>
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <header className="bg-card shadow-sm border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center space-x-3">
+                <BookOpen className="h-8 w-8 text-primary" />
+                <div>
+                  <h1 className={clsx(TYPOGRAPHY.h2, 'text-foreground')}>Editorial Dashboard</h1>
+                  <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                    CENIE Book Management
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-foreground')}>
-                  {user.displayName || 'User'}
-                </p>
-                <p className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground')}>{user.email}</p>
+              <div className="flex items-center space-x-4">
+                <div className="text-right">
+                  <p className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-foreground')}>
+                    {user.displayName || 'User'}
+                  </p>
+                  <p className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground')}>{user.email}</p>
+                </div>
+                <Button onClick={handleSignOut} variant="outlined" size="sm" leadingIcon={LogOut}>
+                  Sign Out
+                </Button>
               </div>
-              <Button onClick={handleSignOut} variant="outlined" size="sm" leadingIcon={LogOut}>
-                Sign Out
-              </Button>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* Sidebar Navigation */}
-          <aside className="w-64 shrink-0">
-            <nav className="bg-card rounded-none shadow-sm border border-border overflow-hidden">
-              <ul className="divide-y divide-border">
-                {navItems.map((item) => {
-                  const Icon = item.icon
-                  const isActive = pathname === item.href
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className={clsx(
-                          TYPOGRAPHY.bodyBase,
-                          'flex items-center space-x-3 px-4 py-3 transition-colors',
-                          isActive
-                            ? 'bg-primary/10 text-primary font-medium'
-                            : 'text-foreground hover:bg-muted hover:text-primary'
-                        )}
-                      >
-                        <Icon
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex gap-8">
+            {/* Sidebar Navigation */}
+            <aside className="w-64 shrink-0">
+              <nav className="bg-card rounded-none shadow-sm border border-border overflow-hidden">
+                <ul className="divide-y divide-border">
+                  {navItems.map((item) => {
+                    const Icon = item.icon
+                    const isActive = pathname === item.href
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
                           className={clsx(
-                            'h-5 w-5',
-                            isActive ? 'text-primary' : 'text-muted-foreground'
+                            TYPOGRAPHY.bodyBase,
+                            'flex items-center space-x-3 px-4 py-3 transition-colors',
+                            isActive
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'text-foreground hover:bg-muted hover:text-primary'
                           )}
-                        />
-                        <span>{item.label}</span>
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
-            </nav>
+                        >
+                          <Icon
+                            className={clsx(
+                              'h-5 w-5',
+                              isActive ? 'text-primary' : 'text-muted-foreground'
+                            )}
+                          />
+                          <span>{item.label}</span>
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </nav>
 
-            {/* Quick Stats */}
-            <div className="mt-6 bg-card rounded-none shadow-sm border border-border p-4">
-              <h3 className={clsx(TYPOGRAPHY.h5, 'text-foreground mb-2')}>Quick Stats</h3>
-              <div className={clsx(TYPOGRAPHY.bodySmall, 'space-y-2 text-muted-foreground')}>
-                <div className="flex justify-between">
-                  <span>Total Books</span>
-                  <span className="font-medium text-foreground">-</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Selected</span>
-                  <span className="font-medium text-primary">-</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>In Translation</span>
-                  <span className="font-medium text-secondary">-</span>
+              {/* Quick Stats */}
+              <div className="mt-6 bg-card rounded-none shadow-sm border border-border p-4">
+                <h3 className={clsx(TYPOGRAPHY.h5, 'text-foreground mb-2')}>Quick Stats</h3>
+                <div className={clsx(TYPOGRAPHY.bodySmall, 'space-y-2 text-muted-foreground')}>
+                  <div className="flex justify-between">
+                    <span>Total Books</span>
+                    <span className="font-medium text-foreground">-</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Selected</span>
+                    <span className="font-medium text-primary">-</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>In Translation</span>
+                    <span className="font-medium text-secondary">-</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
 
-          {/* Main Content */}
-          <main className="flex-1 min-w-0">{children}</main>
+            {/* Main Content */}
+            <main className="flex-1 min-w-0">{children}</main>
+          </div>
         </div>
       </div>
-    </div>
+    </ToastProvider>
   )
 }

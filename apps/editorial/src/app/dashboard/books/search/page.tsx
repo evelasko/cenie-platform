@@ -7,8 +7,10 @@ import { BookCard } from '@/components/dashboard/BookCard'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import type { GoogleBooksSearchResponse } from '@/types/books'
+import { useToast } from '@/components/ui/ToastContainer'
 
 export default function BookSearchPage() {
+  const toast = useToast()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<GoogleBooksSearchResponse | null>(null)
   const [loading, setLoading] = useState(false)
@@ -62,6 +64,7 @@ export default function BookSearchPage() {
       if (response.status === 409) {
         // Book already exists
         setAddedBooks((prev) => new Set(prev).add(volumeId))
+        toast.info('Book already exists in database')
         return
       }
 
@@ -70,8 +73,9 @@ export default function BookSearchPage() {
       }
 
       setAddedBooks((prev) => new Set(prev).add(volumeId))
+      toast.success('Book added successfully!')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to add book')
+      toast.error(err instanceof Error ? err.message : 'Failed to add book')
     } finally {
       setAddingBooks((prev) => {
         const next = new Set(prev)
