@@ -8,10 +8,7 @@ import type { Book } from '@/types/books'
  * POST /api/books/[id]/investigate-translation
  * Investigates if a book has a Spanish translation using Google Books API
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
 
@@ -34,13 +31,16 @@ export async function POST(
 
     if (!session) {
       console.error('Authentication failed: No session found')
-      return NextResponse.json({
-        error: 'Authentication required',
-        debug: {
-          authError: 'No session found',
-          hasCookie: !!request.headers.get('cookie'),
-        }
-      }, { status: 401 })
+      return NextResponse.json(
+        {
+          error: 'Authentication required',
+          debug: {
+            authError: 'No session found',
+            hasCookie: !!request.headers.get('cookie'),
+          },
+        },
+        { status: 401 }
+      )
     }
 
     // Check if user has editor/admin role in Firestore
@@ -60,6 +60,8 @@ export async function POST(
     }
 
     const accessDoc = accessSnapshot.docs[0].data()
+    console.log('accessDoc:', accessDoc)
+
     if (!['admin', 'editor'].includes(accessDoc.role)) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
@@ -77,6 +79,7 @@ export async function POST(
     if (bookError || !book) {
       return NextResponse.json({ error: 'Book not found' }, { status: 404 })
     }
+    console.log('book:', book)
 
     // Mark as checking
     // @ts-expect-error - RPC function parameters are not typed
@@ -85,9 +88,11 @@ export async function POST(
       user_id: session.uid,
     })
 
+    console.log('starting translation check')
     // Run the investigation
     const result = await findSpanishTranslation(book as Book)
 
+    console.log('result:', result)
     // Save results to database
     const spanishData = result.spanish_book
       ? {

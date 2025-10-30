@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuthContext, signOut } from '@cenie/firebase/auth'
+import { useAuthContext, signOut, getIdToken } from '@cenie/firebase/auth'
 import Button from '@/components/ui/Button'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect } from 'react'
@@ -33,9 +33,55 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [user, loading, router])
 
+  // Ensure session cookie exists for authenticated users
+  useEffect(() => {
+    async function ensureSession() {
+      if (user) {
+        try {
+          console.log('📝 [Dashboard] User authenticated, ensuring session cookie exists...')
+          const idToken = await getIdToken()
+          
+          if (!idToken) {
+            console.error('❌ [Dashboard] Failed to get ID token')
+            return
+          }
+          
+          console.log('📝 [Dashboard] Got ID token, length:', idToken.length)
+          
+          // Try to create/refresh session cookie
+          const response = await fetch('/api/auth/session', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken }),
+          })
+
+          if (response.ok) {
+            console.log('✅ [Dashboard] Session cookie ensured')
+          } else {
+            const errorData = await response.json()
+            console.error('❌ [Dashboard] Failed to create session cookie:', errorData)
+          }
+        } catch (error) {
+          console.error('❌ [Dashboard] Error ensuring session:', error)
+        }
+      }
+    }
+
+    ensureSession()
+  }, [user])
+
   const handleSignOut = async () => {
     try {
+      // Clear server-side session cookie
+      await fetch('/api/auth/session', {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+
+      // Sign out from Firebase
       await signOut()
+
       router.push('/sign-in')
     } catch (error) {
       console.error('Sign out error:', error)

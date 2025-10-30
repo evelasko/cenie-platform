@@ -7,7 +7,9 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') })
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cenie/ui', '@cenie/design-system'],
+  transpilePackages: ['@cenie/ui', '@cenie/design-system', '@cenie/firebase', '@cenie/supabase'],
+  // Mark server-only packages as external (not to be bundled)
+  serverExternalPackages: ['firebase-admin'],
   images: {
     remotePatterns: [
       {
@@ -32,6 +34,9 @@ const nextConfig = {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
+    FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
   },
 }
 

@@ -1,4 +1,6 @@
-const HUB_API_URL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_HUB_API_URL : 'http://localhost:3000/api'
+// Use local API in development (Editorial app), Hub API in production
+const HUB_API_URL =
+  process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_HUB_API_URL : '/api' // Use Editorial app's local API endpoints
 
 export interface SignUpData {
   email: string
@@ -24,9 +26,13 @@ export interface UserAppAccess {
 }
 
 class HubAuthAPI {
-  private async makeRequest<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+  private async makeRequest<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<ApiResponse<T>> {
     try {
       const response = await fetch(`${HUB_API_URL}${endpoint}`, {
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           ...options.headers,
@@ -35,7 +41,7 @@ class HubAuthAPI {
       })
 
       const data = await response.json()
-      
+
       if (!response.ok) {
         return {
           success: false,
@@ -133,7 +139,25 @@ class HubAuthAPI {
 
   async checkAppAccess(idToken: string, appName: string): Promise<boolean> {
     const response = await this.getUserAppAccess(idToken, appName)
-    return !!(response.success && response.data && response.data.length > 0)
+    
+    // The API returns { success: true, data: [...] }
+    // But makeRequest wraps it again as { success: true, data: { success: true, data: [...] } }
+    // So we need to access response.data.data for the actual array
+    const accessData = response.data?.data || response.data
+    const hasAccess = !!(
+      response.success && 
+      accessData && 
+      Array.isArray(accessData) && 
+      accessData.length > 0
+    )
+    
+    console.log('🔍 [checkAppAccess] Access check result:', {
+      hasAccess,
+      responseSuccess: response.success,
+      accessDataLength: Array.isArray(accessData) ? accessData.length : 0,
+    })
+    
+    return hasAccess
   }
 }
 

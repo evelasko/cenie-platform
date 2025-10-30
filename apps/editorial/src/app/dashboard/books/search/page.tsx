@@ -28,7 +28,9 @@ export default function BookSearchPage() {
     setError(null)
 
     try {
-      const response = await fetch(`/api/books/search?q=${encodeURIComponent(query)}`)
+      const response = await fetch(`/api/books/search?q=${encodeURIComponent(query)}`, {
+        credentials: 'include',
+      })
       const data = await response.json()
 
       if (!response.ok) {
@@ -50,6 +52,7 @@ export default function BookSearchPage() {
     try {
       const response = await fetch('/api/books', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ googleBooksId: volumeId }),
       })

@@ -49,7 +49,9 @@ export default function BooksListPage() {
         params.set('status', statusFilter)
       }
 
-      const response = await fetch(`/api/books?${params}`)
+      const response = await fetch(`/api/books?${params}`, {
+        credentials: 'include',
+      })
       const data = await response.json()
 
       if (!response.ok) {
@@ -117,6 +119,7 @@ export default function BooksListPage() {
       try {
         const response = await fetch(`/api/books/${bookId}/investigate-translation`, {
           method: 'POST',
+          credentials: 'include',
         })
 
         const data = await response.json()

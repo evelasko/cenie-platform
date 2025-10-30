@@ -54,16 +54,44 @@ function SignInForm() {
 
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
+      console.log('🔐 [Email Sign-In] Got Firebase ID token, length:', idToken.length)
+      console.log('🔐 [Email Sign-In] Checking app access...')
+
       const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
+      console.log('🔐 [Email Sign-In] App access check result:', hasAccess)
 
       if (!hasAccess) {
+        console.error('❌ [Email Sign-In] User does not have access to Editorial app')
         setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
+      // Create server-side session cookie
+      console.log('🔐 [Email Sign-In] Access granted! Creating session cookie...')
+      console.log('🔐 [Email Sign-In] ID token length:', idToken.length)
+
+      const sessionResponse = await fetch('/api/auth/session', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      })
+
+      console.log('🔐 [Email Sign-In] Session API response status:', sessionResponse.status)
+      const sessionData = await sessionResponse.json()
+      console.log('🔐 [Email Sign-In] Session API response data:', sessionData)
+
+      if (!sessionResponse.ok) {
+        console.error('❌ [Email Sign-In] Failed to create session:', sessionData)
+        throw new Error(`Failed to create session: ${sessionData.error || 'Unknown error'}`)
+      }
+
+      console.log('✅ [Email Sign-In] Session created successfully!')
+      console.log('✅ [Email Sign-In] Redirecting to:', redirectTo)
       router.push(redirectTo)
     } catch (error: any) {
-      console.error('Sign-in error:', error)
+      console.error('❌ [Email Sign-In] Error occurred:', error)
+      console.error('❌ [Email Sign-In] Error stack:', error?.stack)
 
       switch (error.code) {
         case 'auth/user-not-found':
@@ -95,16 +123,42 @@ function SignInForm() {
 
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
+      console.log('🔐 [Google Sign-In] Got Firebase ID token, length:', idToken.length)
+      console.log('🔐 [Google Sign-In] User ID:', result.user.uid)
+      console.log('🔐 [Google Sign-In] User Email:', result.user.email)
+      console.log('🔐 [Google Sign-In] Checking app access...')
+
       const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
+      console.log('🔐 [Google Sign-In] App access check result:', hasAccess)
 
       if (!hasAccess) {
+        console.error('❌ [Google Sign-In] User does not have access to Editorial app')
         setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
+      // Create server-side session cookie
+      console.log('🔐 [Google Sign-In] Access granted! Creating session cookie...')
+      const sessionResponse = await fetch('/api/auth/session', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      })
+
+      console.log('🔐 [Google Sign-In] Session API response status:', sessionResponse.status)
+      const sessionData = await sessionResponse.json()
+      console.log('🔐 [Google Sign-In] Session API response data:', sessionData)
+
+      if (!sessionResponse.ok) {
+        console.error('❌ [Google Sign-In] Failed to create session:', sessionData)
+        throw new Error(`Failed to create session: ${sessionData.error || 'Unknown error'}`)
+      }
+
+      console.log('✅ [Google Sign-In] Session created successfully, redirecting to:', redirectTo)
       router.push(redirectTo)
     } catch (error: any) {
-      console.error('Google sign-in error:', error)
+      console.error('❌ [Google Sign-In] Error:', error)
 
       if (error.code !== 'auth/popup-closed-by-user') {
         setError('Failed to sign in with Google. Please try again.')
@@ -125,16 +179,40 @@ function SignInForm() {
 
       // Get ID token and check app access
       const idToken = await result.user.getIdToken()
+      console.log('🔐 [Apple Sign-In] Got Firebase ID token, length:', idToken.length)
+      console.log('🔐 [Apple Sign-In] Checking app access...')
+
       const hasAccess = await hubAuth.checkAppAccess(idToken, 'editorial')
+      console.log('🔐 [Apple Sign-In] App access check result:', hasAccess)
 
       if (!hasAccess) {
+        console.error('❌ [Apple Sign-In] User does not have access to Editorial app')
         setError('You do not have access to the Editorial app. Please contact your administrator.')
         return
       }
 
+      // Create server-side session cookie
+      console.log('🔐 [Apple Sign-In] Access granted! Creating session cookie...')
+      const sessionResponse = await fetch('/api/auth/session', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      })
+
+      console.log('🔐 [Apple Sign-In] Session API response status:', sessionResponse.status)
+      const sessionData = await sessionResponse.json()
+      console.log('🔐 [Apple Sign-In] Session API response data:', sessionData)
+
+      if (!sessionResponse.ok) {
+        console.error('❌ [Apple Sign-In] Failed to create session:', sessionData)
+        throw new Error(`Failed to create session: ${sessionData.error || 'Unknown error'}`)
+      }
+
+      console.log('✅ [Apple Sign-In] Session created successfully, redirecting to:', redirectTo)
       router.push(redirectTo)
     } catch (error: any) {
-      console.error('Apple sign-in error:', error)
+      console.error('❌ [Apple Sign-In] Error:', error)
 
       if (error.code !== 'auth/popup-closed-by-user') {
         setError('Failed to sign in with Apple. Please try again.')
