@@ -17,6 +17,7 @@ import {
   Hash,
   Search,
   RefreshCw,
+  FileEdit,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
@@ -219,9 +220,18 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
             Back to Books
           </Button>
         </Link>
-        <Button onClick={handleSave} disabled={saving} variant="primary" leadingIcon={Save}>
-          {saving ? 'Saving...' : 'Save Changes'}
-        </Button>
+        <div className="flex items-center gap-2">
+          {book.selected_for_translation && (
+            <Link href={`/dashboard/books/${resolvedParams.id}/prepare`}>
+              <Button variant="outlined" leadingIcon={FileEdit}>
+                Prepare for Publication
+              </Button>
+            </Link>
+          )}
+          <Button onClick={handleSave} disabled={saving} variant="primary" leadingIcon={Save}>
+            {saving ? 'Saving...' : 'Save Changes'}
+          </Button>
+        </div>
       </div>
 
       {/* Book Info */}

@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import { BookOpen, Search, Library, LogOut, Home, BarChart } from 'lucide-react'
+import { BookOpen, Search, Library, LogOut, Home, BarChart, Users } from 'lucide-react'
 import { ToastProvider } from '@/components/ui/ToastContainer'
 
 interface NavItem {
@@ -20,6 +20,8 @@ const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/dashboard/books', label: 'Books', icon: Library },
   { href: '/dashboard/books/search', label: 'Search Books', icon: Search },
+  { href: '/dashboard/contributors', label: 'Contributors', icon: Users },
+  { href: '/dashboard/catalog', label: 'Catalog', icon: BookOpen },
   { href: '/dashboard/stats', label: 'Statistics', icon: BarChart },
 ]
 

@@ -31,6 +31,7 @@ const nextConfig = {
   // This ensures they're available in both Webpack and Turbopack modes
   env: {
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    GOOGLE_CLOUD_TRANSLATION_API_KEY: process.env.GOOGLE_CLOUD_TRANSLATION_API_KEY,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
