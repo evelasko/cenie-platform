@@ -1,7 +1,8 @@
 -- =====================================================
 -- CENIE Editorial - Complete Publications Management System
--- Migration: 20250130_cenie_editorial_complete
--- Description: Complete schema for managing editorial workspace and public catalog
+-- Migration: 20250131_cenie_editorial_initial
+-- Description: Production-ready schema for managing editorial workspace and public catalog
+-- Version: 1.0 - Initial Production Release
 -- Note: RLS disabled - authorization handled at application layer via Firebase Auth
 -- =====================================================
 
@@ -22,7 +23,7 @@ CREATE EXTENSION IF NOT EXISTS "pg_trgm"; -- For fuzzy text search
 -- PUBLISHERS TABLE
 -- =====================================================
 -- Stores publisher information (normalized)
-CREATE TABLE IF NOT EXISTS publishers (
+CREATE TABLE publishers (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   
   -- Identity
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS publishers (
   website_url text,
   contact_email text,
   
-  -- CENIE relationship metadata (for future use)
+  -- CENIE relationship metadata
   relationship_notes text,
   permissions_contact text,
   
@@ -42,19 +43,20 @@ CREATE TABLE IF NOT EXISTS publishers (
   is_active boolean DEFAULT true,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
-  created_by uuid  -- Firebase UID
+  created_by text  -- Firebase UID (text format)
 );
 
 CREATE INDEX idx_publishers_slug ON publishers(slug);
 CREATE INDEX idx_publishers_active ON publishers(is_active) WHERE is_active = true;
 
 COMMENT ON TABLE publishers IS 'Normalized publisher information with CENIE relationship metadata';
+COMMENT ON COLUMN publishers.created_by IS 'Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- CONTRIBUTORS TABLE
 -- =====================================================
 -- Stores all people involved in publications (authors, translators, editors, etc.)
-CREATE TABLE IF NOT EXISTS contributors (
+CREATE TABLE contributors (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   
   -- Identity
@@ -96,7 +98,7 @@ CREATE TABLE IF NOT EXISTS contributors (
   is_active boolean DEFAULT true,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
-  created_by uuid,  -- Firebase UID
+  created_by text,  -- Firebase UID (text format)
   
   -- Full-text search
   search_vector tsvector
@@ -111,12 +113,13 @@ CREATE INDEX idx_contributors_search ON contributors USING GIN(search_vector);
 COMMENT ON TABLE contributors IS 'All people involved in publications: authors, translators, editors, etc.';
 COMMENT ON COLUMN contributors.photo_twicpics_path IS 'TwicPics image path for contributor photo';
 COMMENT ON COLUMN contributors.translator_languages IS 'Language pairs in format: source-target (e.g., en-es, fr-es)';
+COMMENT ON COLUMN contributors.created_by IS 'Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- CATALOG VOLUMES TABLE
 -- =====================================================
 -- Published CENIE Editorial volumes visible in public catalog
-CREATE TABLE IF NOT EXISTS catalog_volumes (
+CREATE TABLE catalog_volumes (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   
   -- Publication Type
@@ -195,8 +198,8 @@ CREATE TABLE IF NOT EXISTS catalog_volumes (
   created_at timestamptz DEFAULT now(),
   published_at timestamptz,  -- When status changed to 'published'
   updated_at timestamptz DEFAULT now(),
-  created_by uuid,  -- Firebase UID
-  published_by uuid,  -- Firebase UID
+  created_by text,  -- Firebase UID (text format)
+  published_by text,  -- Firebase UID (text format)
   
   -- Full-text search
   search_vector tsvector
@@ -222,12 +225,14 @@ COMMENT ON COLUMN catalog_volumes.source_book_id IS 'Reference to books table if
 COMMENT ON COLUMN catalog_volumes.cover_twicpics_path IS 'TwicPics image path for book cover';
 COMMENT ON COLUMN catalog_volumes.authors_display IS 'Denormalized author names for display and search performance';
 COMMENT ON COLUMN catalog_volumes.translator_display IS 'Denormalized translator attribution for display';
+COMMENT ON COLUMN catalog_volumes.created_by IS 'Firebase UID (text format, not UUID)';
+COMMENT ON COLUMN catalog_volumes.published_by IS 'Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- VOLUME CONTRIBUTORS JUNCTION TABLE
 -- =====================================================
 -- Links contributors to catalog volumes with role specificity
-CREATE TABLE IF NOT EXISTS volume_contributors (
+CREATE TABLE volume_contributors (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   
   -- References
@@ -266,7 +271,7 @@ COMMENT ON COLUMN volume_contributors.is_original_contributor IS 'True for origi
 -- BOOKS TABLE (Editorial Workspace)
 -- =====================================================
 -- Internal workspace for discovering, curating, and preparing books
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE books (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 
   -- Google Books reference
@@ -317,7 +322,7 @@ CREATE TABLE IF NOT EXISTS books (
   investigation_method varchar(30), -- 'google_books_auto', 'manual', 'llm_assisted'
   investigation_notes text,
   last_checked_at timestamptz,
-  checked_by uuid, -- Firebase UID
+  checked_by text,  -- Firebase UID (text format)
 
   -- Promotion to Catalog
   promoted_to_catalog boolean DEFAULT false,
@@ -330,11 +335,11 @@ CREATE TABLE IF NOT EXISTS books (
   publication_table_of_contents jsonb,  -- Structured TOC for catalog
 
   -- Tracking
-  added_by uuid, -- Firebase UID
+  added_by text,  -- Firebase UID (text format)
   added_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
   reviewed_at timestamptz,
-  reviewed_by uuid, -- Firebase UID
+  reviewed_by text,  -- Firebase UID (text format)
 
   -- Full-text search vector
   search_vector tsvector
@@ -357,12 +362,15 @@ COMMENT ON TABLE books IS 'Editorial workspace for discovering, curating, and pr
 COMMENT ON COLUMN books.promoted_to_catalog IS 'Whether this book has been published to catalog_volumes';
 COMMENT ON COLUMN books.catalog_volume_id IS 'Reference to published catalog volume if promoted';
 COMMENT ON COLUMN books.temp_cover_twicpics_path IS 'Temporary cover upload during preparation phase';
+COMMENT ON COLUMN books.added_by IS 'Firebase UID (text format, not UUID)';
+COMMENT ON COLUMN books.reviewed_by IS 'Firebase UID (text format, not UUID)';
+COMMENT ON COLUMN books.checked_by IS 'Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- TRANSLATION GLOSSARY TABLE
 -- =====================================================
 -- Stores performing arts terminology for consistent auto-translation
-CREATE TABLE IF NOT EXISTS translation_glossary (
+CREATE TABLE translation_glossary (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   
   -- Terms
@@ -378,7 +386,7 @@ CREATE TABLE IF NOT EXISTS translation_glossary (
   usage_count integer DEFAULT 0,  -- Track how often term is used
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
-  created_by uuid  -- Firebase UID
+  created_by text  -- Firebase UID (text format)
 );
 
 -- Indexes
@@ -388,6 +396,7 @@ CREATE INDEX idx_glossary_category ON translation_glossary(category);
 CREATE INDEX idx_glossary_search_en ON translation_glossary USING GIN(to_tsvector('english', term_en));
 
 COMMENT ON TABLE translation_glossary IS 'Performing arts terminology for consistent auto-translation';
+COMMENT ON COLUMN translation_glossary.created_by IS 'Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- TRIGGER FUNCTIONS
@@ -447,46 +456,39 @@ $$ LANGUAGE plpgsql;
 -- =====================================================
 
 -- Updated_at triggers
-DROP TRIGGER IF EXISTS books_updated_at_trigger ON books;
 CREATE TRIGGER books_updated_at_trigger
   BEFORE UPDATE ON books
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
-DROP TRIGGER IF EXISTS catalog_volumes_updated_at_trigger ON catalog_volumes;
 CREATE TRIGGER catalog_volumes_updated_at_trigger
   BEFORE UPDATE ON catalog_volumes
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
-DROP TRIGGER IF EXISTS contributors_updated_at_trigger ON contributors;
 CREATE TRIGGER contributors_updated_at_trigger
   BEFORE UPDATE ON contributors
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
-DROP TRIGGER IF EXISTS publishers_updated_at_trigger ON publishers;
 CREATE TRIGGER publishers_updated_at_trigger
   BEFORE UPDATE ON publishers
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
 -- Search vector triggers
-DROP TRIGGER IF EXISTS books_search_vector_trigger ON books;
 CREATE TRIGGER books_search_vector_trigger
   BEFORE INSERT OR UPDATE OF title, subtitle, authors, translated_title, spanish_title
   ON books
   FOR EACH ROW
   EXECUTE FUNCTION books_search_vector_update();
 
-DROP TRIGGER IF EXISTS catalog_volumes_search_vector_trigger ON catalog_volumes;
 CREATE TRIGGER catalog_volumes_search_vector_trigger
   BEFORE INSERT OR UPDATE OF title, subtitle, description, authors_display, tags
   ON catalog_volumes
   FOR EACH ROW
   EXECUTE FUNCTION catalog_volumes_search_vector_update();
 
-DROP TRIGGER IF EXISTS contributors_search_vector_trigger ON contributors;
 CREATE TRIGGER contributors_search_vector_trigger
   BEFORE INSERT OR UPDATE OF full_name, name_variants, bio_es
   ON contributors
@@ -523,7 +525,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Function to start translation check
-CREATE OR REPLACE FUNCTION start_translation_check(book_id uuid, user_id uuid DEFAULT NULL)
+CREATE OR REPLACE FUNCTION start_translation_check(book_id uuid, user_id text DEFAULT NULL)
 RETURNS void AS $$
 BEGIN
   UPDATE books
@@ -534,6 +536,8 @@ BEGIN
   WHERE id = book_id;
 END;
 $$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION start_translation_check IS 'Starts a translation check for a book. user_id is a Firebase UID (text format, not UUID)';
 
 -- Function to complete translation check
 CREATE OR REPLACE FUNCTION complete_translation_check(
@@ -698,7 +702,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION promote_book_to_catalog(
   book_uuid uuid,
   catalog_data jsonb,
-  user_id uuid
+  user_id text  -- Firebase UID (text format)
 )
 RETURNS uuid AS $$
 DECLARE
@@ -762,7 +766,7 @@ BEGIN
     COALESCE((catalog_data->>'translation_year')::integer, EXTRACT(YEAR FROM now())::integer),
     catalog_data->>'translation_notes',
     'draft',  -- Start as draft
-    user_id,
+    user_id,  -- Firebase UID (text)
     catalog_data->>'slug'
   )
   RETURNING id INTO new_volume_id;
@@ -779,12 +783,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- =====================================================
--- NOTE: User Management
--- =====================================================
--- User permissions are managed in Firestore
--- Use Firebase Admin SDK to grant/revoke access
--- No helper functions needed in Supabase
+COMMENT ON FUNCTION promote_book_to_catalog IS 'Promotes a book from editorial workspace to public catalog. user_id is a Firebase UID (text format, not UUID)';
 
 -- =====================================================
 -- ROW LEVEL SECURITY
@@ -886,14 +885,19 @@ ON CONFLICT (term_en) DO NOTHING;
 -- FINAL COMMENTS
 -- =====================================================
 
-COMMENT ON FUNCTION promote_book_to_catalog IS 'Promotes a book from editorial workspace to public catalog';
-COMMENT ON FUNCTION get_volume_contributors IS 'Returns all contributors for a specific catalog volume';
-COMMENT ON FUNCTION generate_contributors_display IS 'Generates display text for volume contributors (e.g., "García Márquez, Gabriel; Fuentes, Carlos)"';
-COMMENT ON FUNCTION update_volume_display_fields IS 'Updates denormalized authors_display and translator_display fields';
+COMMENT ON FUNCTION search_books IS 'Full-text search across books workspace';
+COMMENT ON FUNCTION get_books_by_status IS 'Returns count of books by status';
+COMMENT ON FUNCTION complete_translation_check IS 'Completes a translation investigation and saves results';
+COMMENT ON FUNCTION get_translation_stats IS 'Returns statistics about translation investigations';
 COMMENT ON FUNCTION search_catalog_volumes IS 'Full-text search across catalog volumes';
+COMMENT ON FUNCTION get_volume_contributors IS 'Returns all contributors for a specific catalog volume with their bios';
+COMMENT ON FUNCTION generate_contributors_display IS 'Generates display text for volume contributors (e.g., "García Márquez, Gabriel; Fuentes, Carlos)")';
+COMMENT ON FUNCTION update_volume_display_fields IS 'Updates denormalized authors_display and translator_display fields';
 
 -- =====================================================
 -- MIGRATION COMPLETE
 -- =====================================================
--- Database is now ready for CENIE Editorial Phase 2 implementation
+-- CENIE Editorial Publications Management System v1.0
+-- Database is ready for production use
+-- All three phases (Discovery, Editorial Tools, Public Catalog) supported
 

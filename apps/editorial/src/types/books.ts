@@ -164,6 +164,8 @@ export interface Book {
   publication_description_es?: string | null
   publication_excerpt_es?: string | null
   publication_table_of_contents?: TableOfContents | null
+  temp_authors?: any[] | null // Temporary author assignments
+  temp_translators?: any[] | null // Temporary translator assignments
 }
 
 export interface BookCreateInput {
@@ -183,6 +185,8 @@ export interface BookUpdateInput {
   publication_excerpt_es?: string | null
   publication_table_of_contents?: TableOfContents | null
   temp_cover_twicpics_path?: string | null
+  temp_authors?: any[] | null
+  temp_translators?: any[] | null
 }
 
 export interface TranslationInvestigationResult {

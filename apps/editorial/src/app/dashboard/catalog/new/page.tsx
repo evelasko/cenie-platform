@@ -145,7 +145,7 @@ export default function NewOriginalPublicationPage() {
 
       const volumeId = volumeData.volume.id
 
-      // Link contributors
+      // Link contributors via API
       const contributorsData = [
         ...authors.map((author, index) => ({
           volume_id: volumeId,
@@ -164,26 +164,18 @@ export default function NewOriginalPublicationPage() {
       ]
 
       if (contributorsData.length > 0) {
-        // Insert contributors
-        const { createNextServerClient } = await import('@cenie/supabase/server')
-        const supabase = createNextServerClient()
+        // Link contributors through API endpoint
+        const contributorsResponse = await fetch(`/api/catalog/${volumeId}/contributors`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contributors: contributorsData }),
+        })
 
-        const { error: contributorsError } = await supabase
-          .from('volume_contributors')
-          .insert(contributorsData as any)
-
-        if (contributorsError) {
-          console.error('Contributors link error:', contributorsError)
+        if (!contributorsResponse.ok) {
+          const errorData = await contributorsResponse.json()
+          console.error('Contributors link error:', errorData)
           toast.error('Volume created but failed to link contributors')
-        }
-
-        // Update display fields
-        const { error: displayError } = await supabase.rpc('update_volume_display_fields', {
-          volume_uuid: volumeId,
-        } as any)
-
-        if (displayError) {
-          console.error('Display fields error:', displayError)
         }
       }
 

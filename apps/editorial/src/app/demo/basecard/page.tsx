@@ -89,7 +89,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="New Release"
               title="Modern Classics Revisited"
-              imageSrc="/images/covers/cover-1.jpg"
+              imageSrc="/demo/covers/cover-1.jpg"
               imageAlt="Book Cover 1"
               imageVariant="inset"
               backgroundTint="primary"
@@ -97,7 +97,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Bestseller"
               title="Stories That Define Us"
-              imageSrc="/images/covers/cover-2.jpg"
+              imageSrc="/demo/covers/cover-2.jpg"
               imageAlt="Book Cover 2"
               imageVariant="inset"
               backgroundTint="primary"
@@ -105,7 +105,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Award Winner"
               title="The Scholar's Journey"
-              imageSrc="/images/covers/cover-3.jpg"
+              imageSrc="/demo/covers/cover-3.jpg"
               imageAlt="Book Cover 3"
               imageVariant="inset"
               backgroundTint="primary"
@@ -113,7 +113,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Featured"
               title="Wisdom and Insight"
-              imageSrc="/images/covers/cover-4.jpg"
+              imageSrc="/demo/covers/cover-4.jpg"
               imageAlt="Book Cover 4"
               imageVariant="inset"
               backgroundTint="primary"
@@ -130,7 +130,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Critically Acclaimed"
               title="Voices of Change"
-              imageSrc="/images/covers/cover-5.jpg"
+              imageSrc="/demo/covers/cover-5.jpg"
               imageAlt="Book Cover 5"
               imageVariant="inset"
               backgroundTint="secondary"
@@ -138,7 +138,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Editor's Choice"
               title="Perspectives on Power"
-              imageSrc="/images/covers/cover-6.jpg"
+              imageSrc="/demo/covers/cover-6.jpg"
               imageAlt="Book Cover 6"
               imageVariant="inset"
               backgroundTint="secondary"
@@ -146,7 +146,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Staff Pick"
               title="Tales of Transformation"
-              imageSrc="/images/covers/cover-7.jpg"
+              imageSrc="/demo/covers/cover-7.jpg"
               imageAlt="Book Cover 7"
               imageVariant="inset"
               backgroundTint="secondary"
@@ -154,7 +154,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Recommended"
               title="Heritage and Hope"
-              imageSrc="/images/covers/cover-1.jpg"
+              imageSrc="/demo/covers/cover-1.jpg"
               imageAlt="Book Cover 1"
               imageVariant="inset"
               backgroundTint="secondary"
@@ -179,7 +179,7 @@ export default function BaseCardDemoPage() {
             <BaseCard
               label="Book Collection"
               title="Essential Reading"
-              imageSrc="/images/covers/cover-2.jpg"
+              imageSrc="/demo/covers/cover-2.jpg"
               imageAlt="Book Cover 2"
               imageVariant="inset"
               backgroundTint="secondary"

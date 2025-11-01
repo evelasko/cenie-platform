@@ -14,43 +14,43 @@ export default function BookSectionsDemoPage() {
     {
       title: 'The Art of War',
       author: 'Sun Tzu',
-      coverSrc: '/images/covers/cover-1.jpg',
+      coverSrc: '/demo/covers/cover-1.jpg',
       link: '/book/art-of-war',
     },
     {
       title: 'Pride and Prejudice',
       author: 'Jane Austen',
-      coverSrc: '/images/covers/cover-2.jpg',
+      coverSrc: '/demo/covers/cover-2.jpg',
       link: '/book/pride-prejudice',
     },
     {
       title: '1984',
       author: 'George Orwell',
-      coverSrc: '/images/covers/cover-3.jpg',
+      coverSrc: '/demo/covers/cover-3.jpg',
       link: '/book/1984',
     },
     {
       title: 'To Kill a Mockingbird',
       author: 'Harper Lee',
-      coverSrc: '/images/covers/cover-4.jpg',
+      coverSrc: '/demo/covers/cover-4.jpg',
       link: '/book/mockingbird',
     },
     {
       title: 'The Great Gatsby',
       author: 'F. Scott Fitzgerald',
-      coverSrc: '/images/covers/cover-5.jpg',
+      coverSrc: '/demo/covers/cover-5.jpg',
       link: '/book/gatsby',
     },
     {
       title: 'Moby Dick',
       author: 'Herman Melville',
-      coverSrc: '/images/covers/cover-6.jpg',
+      coverSrc: '/demo/covers/cover-6.jpg',
       link: '/book/moby-dick',
     },
     {
       title: 'The Catcher in the Rye',
       author: 'J.D. Salinger',
-      coverSrc: '/images/covers/cover-7.jpg',
+      coverSrc: '/demo/covers/cover-7.jpg',
       link: '/book/catcher',
     },
   ]
@@ -78,7 +78,7 @@ export default function BookSectionsDemoPage() {
           </p>
           <SingleBookBanner
             title="The Philosophy of Modern Society"
-            coverSrc="/images/covers/cover-1.jpg"
+            coverSrc="/demo/covers/cover-1.jpg"
             authors={[
               { name: 'Dr. Elizabeth Martinez', link: '/author/martinez' },
               { name: 'Prof. John Smith', link: '/author/smith' },
@@ -135,7 +135,7 @@ export default function BookSectionsDemoPage() {
               bookEditor={['Calin-Andrei Mihailescu']}
               bookPublicationDate="09/16/2025"
               bookISBN="9780674302457"
-              bookCoverSrc="/images/covers/cover-2.jpg"
+              bookCoverSrc="/demo/covers/cover-2.jpg"
               lookInsideLink="/sample/this-craft-of-verse.pdf"
               buyHereLink={[
                 { format: 'Hardcover', price: '22.95', currency: '£', link: '/buy/hardcover' },
@@ -279,7 +279,7 @@ export default function BookSectionsDemoPage() {
                 ]}
                 bookPublicationDate="11/15/2024"
                 bookISBN="9780123456789"
-                bookCoverSrc="/images/covers/cover-3.jpg"
+                bookCoverSrc="/demo/covers/cover-3.jpg"
                 lookInsideLink="/sample/philosophy-creative-destruction.pdf"
                 buyHereLink={[
                   { format: 'Hardcover', price: '34.95', currency: '$', link: '/buy/hardcover' },

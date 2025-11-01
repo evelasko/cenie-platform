@@ -7,7 +7,7 @@ Successfully implemented **Option 1: File Browser with Slug-Based Naming** for c
 **Status:** Production-ready, zero linting errors  
 **Files Created:** 2  
 **Files Modified:** 4  
-**Time to Implement:** ~3 hours  
+**Time to Implement:** ~3 hours
 
 ---
 
@@ -20,6 +20,7 @@ Successfully implemented **Option 1: File Browser with Slug-Based Naming** for c
 **Endpoint:** `GET /api/files/covers?search={query}`
 
 **Features:**
+
 - Lists all files in `public/images/covers/`
 - Returns filename, size, modified date
 - Generates TwicPics URLs (thumbnail, medium, full)
@@ -28,6 +29,7 @@ Successfully implemented **Option 1: File Browser with Slug-Based Naming** for c
 - Human-readable file sizes
 
 **Response:**
+
 ```json
 {
   "files": [
@@ -53,6 +55,7 @@ Successfully implemented **Option 1: File Browser with Slug-Based Naming** for c
 **File:** `src/app/api/upload/cover/route.ts` (updated)
 
 **Changes:**
+
 - Accepts `slug` parameter (required)
 - Validates slug format (alphanumeric + hyphens only)
 - Saves as `{slug}.{extension}` (e.g., `stanislavski-actor.jpg`)
@@ -61,6 +64,7 @@ Successfully implemented **Option 1: File Browser with Slug-Based Naming** for c
 - Preserves original file extension (jpg, png, webp)
 
 **Request:**
+
 ```typescript
 FormData {
   file: File,
@@ -69,6 +73,7 @@ FormData {
 ```
 
 **Response:**
+
 ```json
 {
   "twicpics_path": "editorial/covers/stanislavski-actor-prepares.jpg",
@@ -87,10 +92,12 @@ FormData {
 **Features:**
 
 **Two-Tab Interface:**
+
 - **Upload Tab:** Drag-and-drop upload with slug-based naming
 - **Browse Tab:** Grid of existing covers with thumbnails
 
 **Upload Mode:**
+
 - Drag and drop support
 - Click to browse
 - Visual feedback (drag active state)
@@ -100,6 +107,7 @@ FormData {
 - Overwrites existing with confirmation
 
 **Browse Mode:**
+
 - Grid layout (3-5 columns responsive)
 - Thumbnail previews (200x300)
 - Search/filter by filename
@@ -109,6 +117,7 @@ FormData {
 - Hover preview
 
 **Additional Features:**
+
 - Current cover preview with remove option
 - Smart messaging (upload vs browse)
 - Real-time search
@@ -120,11 +129,13 @@ FormData {
 ### 4. Integration in Pages ✅
 
 **Updated Files:**
+
 1. `/dashboard/books/[id]/prepare` - Prepare for publication
 2. `/dashboard/catalog/[id]` - Edit catalog volume
 3. `/dashboard/catalog/new` - Create original publication
 
 **Changes:**
+
 - Replaced `ImageUpload` with `CoverManager`
 - Added slug generation from title
 - Slug auto-updates as title changes
@@ -194,24 +205,28 @@ FormData {
 ### Slug-Based Naming Logic
 
 **Slug Generation:**
+
 ```typescript
 const slug = title
   .toLowerCase()
-  .normalize('NFD')  // Decompose accents
-  .replace(/[\u0300-\u036f]/g, '')  // Remove diacritics
-  .replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric with hyphens
-  .replace(/^-+|-+$/g, '')  // Trim leading/trailing hyphens
+  .normalize('NFD') // Decompose accents
+  .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+  .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
+  .replace(/^-+|-+$/g, '') // Trim leading/trailing hyphens
 ```
 
 **Examples:**
+
 - "La Preparación del Actor" → `la-preparacion-del-actor`
 - "Técnicas de Actuación" → `tecnicas-de-actuacion`
 - "Método Stanislavski" → `metodo-stanislavski`
 
 **Filename:**
+
 ```
 {slug}.{extension}
 ```
+
 - `stanislavski-actor.jpg`
 - `tecnicas-actuacion.png`
 - `metodo-meisner.webp`
@@ -248,7 +263,7 @@ Display URLs (auto-generated):
 ✅ **Overwrite behavior** - Update cover = same filename  
 ✅ **Git-friendly** - Meaningful commit messages  
 ✅ **No orphans** - Replacing doesn't leave old files  
-✅ **SEO-friendly** - If ever served directly  
+✅ **SEO-friendly** - If ever served directly
 
 ### Why File Browser?
 
@@ -257,20 +272,21 @@ Display URLs (auto-generated):
 ✅ **Professional UX** - Grid of thumbnails  
 ✅ **Git-first friendly** - Use committed files  
 ✅ **No manual typing** - Avoids path errors  
-✅ **Scalable** - Works with 10 or 1000 covers  
+✅ **Scalable** - Works with 10 or 1000 covers
 
 ### Why Two Tabs?
 
 ✅ **Clear separation** - Upload vs browse are different actions  
 ✅ **No confusion** - User knows which mode they're in  
 ✅ **Optimized UX** - Each tab tailored to its purpose  
-✅ **Space efficient** - Don't show both simultaneously  
+✅ **Space efficient** - Don't show both simultaneously
 
 ---
 
 ## 🧪 Testing Checklist
 
 ### Upload Tab:
+
 - [ ] Drag and drop works
 - [ ] Click to browse works
 - [ ] File validation (type, size)
@@ -281,6 +297,7 @@ Display URLs (auto-generated):
 - [ ] Error handling works
 
 ### Browse Tab:
+
 - [ ] Grid displays all covers
 - [ ] Thumbnails load via TwicPics
 - [ ] Search filters results
@@ -291,6 +308,7 @@ Display URLs (auto-generated):
 - [ ] File info displays correctly
 
 ### Integration:
+
 - [ ] Works in prepare page (slug from Spanish title)
 - [ ] Works in catalog edit (uses existing slug)
 - [ ] Works in create original (slug from title)
@@ -304,16 +322,19 @@ Display URLs (auto-generated):
 ## 📊 Performance
 
 ### API Endpoint:
+
 - **Directory scan:** ~10-50ms (typical)
 - **With 100 files:** ~100-200ms
 - **Cached:** Not implemented (files change rarely, fresh data is fine)
 
 ### Component:
+
 - **Lazy loading:** Thumbnails load via TwicPics CDN
 - **Search debounce:** 300ms
 - **Responsive grid:** 3-5 columns based on screen size
 
 ### File Sizes:
+
 - **Covers:** Typically 100-500KB
 - **After TwicPics:** Auto-optimized (WebP, quality compression)
 - **Thumbnails:** ~10-20KB (200x300)
@@ -326,19 +347,19 @@ Display URLs (auto-generated):
 
 ```typescript
 // User types Spanish title: "La Preparación del Actor"
-titleEs = "La Preparación del Actor"
+titleEs = 'La Preparación del Actor'
 
 // Slug auto-generates:
-publicationSlug = "la-preparacion-del-actor"
+publicationSlug = 'la-preparacion-del-actor'
 
 // Upload tab shows:
-"Will be saved as: la-preparacion-del-actor.jpg"
+;('Will be saved as: la-preparacion-del-actor.jpg')
 
 // User uploads → Saves to:
-public/images/covers/la-preparacion-del-actor.jpg
+public / images / covers / la - preparacion - del - actor.jpg
 
 // Database stores:
-temp_cover_twicpics_path = "editorial/covers/la-preparacion-del-actor.jpg"
+temp_cover_twicpics_path = 'editorial/covers/la-preparacion-del-actor.jpg'
 ```
 
 ### Example 2: Select Existing Cover
@@ -384,34 +405,39 @@ git push
 ## 🎉 Benefits Achieved
 
 ### For You (Admin):
+
 ✅ **Design → Export → Commit workflow** supported perfectly  
 ✅ **No UI upload needed** for pre-designed covers  
 ✅ **Visual selection** from library  
 ✅ **Git version control** for all covers  
-✅ **Clean file organization** (one file per publication)  
+✅ **Clean file organization** (one file per publication)
 
 ### For Future Editors:
+
 ✅ **Quick upload** option available  
 ✅ **Reuse covers** from library  
 ✅ **No file naming confusion** (slug-based)  
 ✅ **Professional interface** (grid browser)  
-✅ **Fast selection** (search/filter)  
+✅ **Fast selection** (search/filter)
 
 ### For System:
+
 ✅ **No orphaned files** (overwrite behavior)  
 ✅ **Predictable storage** (slug = filename)  
 ✅ **Easy debugging** (readable filenames)  
 ✅ **TwicPics optimized** (automatic transformations)  
-✅ **Vercel-friendly** (public folder deployment)  
+✅ **Vercel-friendly** (public folder deployment)
 
 ---
 
 ## 🔄 Edge Cases Handled
 
 ### 1. Slug Changes After Upload
+
 **Scenario:** Upload cover, then change publication title/slug
 
 **Behavior:**
+
 - Old cover file keeps old name
 - Path stays same in database
 - TwicPics still serves it
@@ -420,9 +446,11 @@ git push
 **Result:** No broken links
 
 ### 2. Same Slug, Different Publication
+
 **Scenario:** Two publications with same slug (shouldn't happen - DB unique constraint)
 
 **Behavior:**
+
 - Database prevents duplicate slugs
 - File system would overwrite
 - Safe due to DB constraints
@@ -430,9 +458,11 @@ git push
 **Result:** No collision possible
 
 ### 3. File Already Exists
+
 **Scenario:** Upload file with slug that already exists
 
 **Behavior:**
+
 - Uploads successfully
 - Returns `overwritten: true`
 - UI can show confirmation
@@ -441,9 +471,11 @@ git push
 **Result:** Clean replacement
 
 ### 4. No Files in Directory
+
 **Scenario:** Browse tab with empty directory
 
 **Behavior:**
+
 - Shows empty state
 - Suggests uploading or adding files
 - Switch to upload tab button
@@ -451,9 +483,11 @@ git push
 **Result:** Clear guidance
 
 ### 5. Large File Library
+
 **Scenario:** 500+ cover files
 
 **Behavior:**
+
 - All files load (no pagination yet)
 - Search/filter helps find files
 - Lazy-loaded thumbnails (TwicPics)
@@ -466,6 +500,7 @@ git push
 ## 📸 UI Screenshots (Description)
 
 ### Upload Tab:
+
 ```
 ┌────────────────────────────────────────┐
 │ Cover Image               [Remove]      │
@@ -489,6 +524,7 @@ git push
 ```
 
 ### Browse Tab:
+
 ```
 ┌────────────────────────────────────────┐
 │ Cover Image               [Remove]      │
@@ -517,6 +553,7 @@ git push
 ## 🎯 File Naming Examples
 
 ### Translated Books:
+
 ```
 Title (ES): "La Preparación del Actor"
 Slug: la-preparacion-del-actor
@@ -524,6 +561,7 @@ File: la-preparacion-del-actor.jpg
 ```
 
 ### Original Publications:
+
 ```
 Title (ES): "Técnicas de Iluminación Teatral"
 Slug: tecnicas-de-iluminacion-teatral
@@ -531,6 +569,7 @@ File: tecnicas-de-iluminacion-teatral.jpg
 ```
 
 ### Adapted Editions:
+
 ```
 Title (ES): "El Método Stanislavski (Edición Anotada)"
 Slug: el-metodo-stanislavski-edicion-anotada
@@ -542,12 +581,14 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 ## ✅ Validation & Error Handling
 
 ### Upload Validation:
+
 - ✅ File type: JPG, PNG, WebP only
 - ✅ File size: Max 5MB
 - ✅ Slug required: Must have title first
 - ✅ Slug format: Alphanumeric + hyphens only
 
 ### Error Messages:
+
 - "Slug is required" - No title entered yet
 - "Invalid slug format" - Contains invalid characters
 - "File size exceeds 5MB" - Too large
@@ -555,6 +596,7 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 - "Upload failed" - Network/server error
 
 ### Success Messages:
+
 - "Cover uploaded!" - New upload
 - "Cover updated! (Replaced existing...)" - Overwrite
 - "Cover selected!" - From browse mode
@@ -565,18 +607,21 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 ## 🚀 Performance Optimizations
 
 ### File Browser:
+
 - Only scans directory when browse tab activated
 - Results cached in component state
 - Search debounced (300ms)
 - Lazy-loaded thumbnails (TwicPics)
 
 ### Upload:
+
 - Client-side validation (instant feedback)
 - Server-side validation (security)
 - Overwrites instead of creating duplicates
 - Returns immediately after upload
 
 ### TwicPics:
+
 - Automatic WebP for modern browsers
 - Quality optimization
 - CDN caching
@@ -587,16 +632,19 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 ## 📋 Integration Points
 
 ### In Prepare for Publication:
+
 - Slug from `titleEs` (Spanish title)
 - Saves to `temp_cover_twicpics_path` in books table
 - Auto-saves to draft when cover selected
 
 ### In Catalog Edit:
+
 - Uses existing `slug` from catalog_volumes
 - Saves to `cover_twicpics_path` in catalog_volumes
 - Manual save required
 
 ### In Create Original:
+
 - Slug from `title` (auto-generated)
 - Slug updates as title changes
 - Saves when creating volume
@@ -606,6 +654,7 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 ## 🎓 Best Practices
 
 ### For Cover Design:
+
 1. **Export with slug name** - Makes browsing easier
 2. **Use JPG for photos** - Smaller file size
 3. **PNG for graphics** - Transparency support
@@ -613,6 +662,7 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 5. **Keep under 2MB** - Faster uploads
 
 ### For File Management:
+
 1. **One file per publication** - Use slug naming
 2. **Commit to git** - Version control
 3. **Organized naming** - Consistent slugs
@@ -620,6 +670,7 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 5. **Backup** - Git is your backup
 
 ### For Workflow:
+
 1. **Set title first** - Generates slug for upload
 2. **Browse before upload** - Might already exist
 3. **Use search** - With many files
@@ -655,6 +706,7 @@ File: el-metodo-stanislavski-edicion-anotada.jpg
 ## ✅ Success Criteria
 
 All met:
+
 - [x] Can upload covers with slug-based names
 - [x] Can browse existing covers in public folder
 - [x] Can select from visual grid
@@ -675,6 +727,7 @@ All met:
 Your preferred workflow (design → export → commit → link) is now fully supported with a professional visual interface.
 
 **You can:**
+
 - Upload covers on-the-fly
 - Browse and select from your design library
 - Manage covers across all publications
@@ -690,4 +743,3 @@ Your preferred workflow (design → export → commit → link) is now fully sup
 **Quality:** Production-ready  
 **Files Created/Modified:** 6  
 **Zero Errors:** ✅
-

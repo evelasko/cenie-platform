@@ -110,6 +110,15 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
       setExcerptEs(bookData.publication_excerpt_es || '')
       setIsbn13(bookData.isbn_13 || '')
       setIsbn10(bookData.isbn_10 || '')
+
+      // Load saved contributors
+      if (bookData.temp_authors) {
+        setAuthors(bookData.temp_authors as ContributorSelection[])
+      }
+      if (bookData.temp_translators) {
+        setTranslators(bookData.temp_translators as ContributorSelection[])
+      }
+
       // Set cover if exists
       if (bookData.temp_cover_twicpics_path) {
         setCoverPath(bookData.temp_cover_twicpics_path)
@@ -215,6 +224,9 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
           publication_excerpt_es: excerptEs || null,
           publication_table_of_contents: tableOfContents ? JSON.parse(tableOfContents) : null,
           temp_cover_twicpics_path: coverPath || null,
+          // Save contributor assignments
+          temp_authors: authors.length > 0 ? authors : null,
+          temp_translators: translators.length > 0 ? translators : null,
         }),
       })
 

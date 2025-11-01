@@ -30,25 +30,25 @@ export default function BookComponentsDemoPage() {
             <BookCardItem
               title="The Art of War"
               subtitle="Ancient Military Strategy"
-              imageSrc="/images/covers/cover-1.jpg"
+              imageSrc="/demo/covers/cover-1.jpg"
               imageAlt="The Art of War book cover"
             />
             <BookCardItem
               title="Pride and Prejudice"
               subtitle="A Classic Romance"
-              imageSrc="/images/covers/cover-2.jpg"
+              imageSrc="/demo/covers/cover-2.jpg"
               imageAlt="Pride and Prejudice book cover"
             />
             <BookCardItem
               title="1984"
               subtitle="Dystopian Fiction"
-              imageSrc="/images/covers/cover-3.jpg"
+              imageSrc="/demo/covers/cover-3.jpg"
               imageAlt="1984 book cover"
             />
             <BookCardItem
               title="To Kill a Mockingbird"
               subtitle="Social Justice Classic"
-              imageSrc="/images/covers/cover-4.jpg"
+              imageSrc="/demo/covers/cover-4.jpg"
               imageAlt="To Kill a Mockingbird book cover"
             />
           </div>
@@ -65,7 +65,7 @@ export default function BookComponentsDemoPage() {
           </p>
           <div className="space-y-8">
             <BookListItem
-              imageSrc="/images/covers/cover-5.jpg"
+              imageSrc="/demo/covers/cover-5.jpg"
               imageAlt="The Great Gatsby book cover"
               title="The Great Gatsby"
               subtitle="A Novel of the Jazz Age"
@@ -74,7 +74,7 @@ export default function BookComponentsDemoPage() {
               button={<Button variant="primary">View Details</Button>}
             />
             <BookListItem
-              imageSrc="/images/covers/cover-6.jpg"
+              imageSrc="/demo/covers/cover-6.jpg"
               imageAlt="Moby Dick book cover"
               title="Moby-Dick"
               author="Herman Melville"
@@ -82,7 +82,7 @@ export default function BookComponentsDemoPage() {
               button={<Button variant="secondary">Learn More</Button>}
             />
             <BookListItem
-              imageSrc="/images/covers/cover-7.jpg"
+              imageSrc="/demo/covers/cover-7.jpg"
               imageAlt="The Catcher in the Rye book cover"
               title="The Catcher in the Rye"
               subtitle="Coming of Age Classic"
@@ -173,7 +173,7 @@ export default function BookComponentsDemoPage() {
           <div className="space-y-8">
             {/* Main book info */}
             <BookListItem
-              imageSrc="/images/covers/cover-1.jpg"
+              imageSrc="/demo/covers/cover-1.jpg"
               imageAlt="Featured book cover"
               title="The Philosophy of Modern Society"
               subtitle="Exploring Contemporary Thought"

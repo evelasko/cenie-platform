@@ -25,11 +25,13 @@ Created reusable authentication helpers and updated all affected API routes to u
 - `hasRole(userRole, requiredRole)` - Helper to check role hierarchy
 
 **Role Hierarchy:**
+
 ```
 viewer (1) < editor (2) < admin (3)
 ```
 
 **Example Usage:**
+
 ```typescript
 // Require any authenticated user with editorial access
 const authResult = await requireEditorialAccess()
@@ -51,24 +53,29 @@ const { user } = authResult
 ### 2. Fixed API Routes
 
 #### `GET /api/books` (List books)
+
 - **Before:** No auth check
 - **After:** Requires editorial access via `requireEditorialAccess()`
 
 #### `POST /api/books` (Add book)
+
 - **Before:** Used `supabase.auth.getUser()` (doesn't work with Firebase)
 - **After:** Requires `editor` role via `requireRole('editor')`
 - **Change:** Uses `user.uid` from Firebase instead of Supabase user ID
 
 #### `GET /api/books/[id]` (Get book)
+
 - **Before:** No auth check
 - **After:** Requires editorial access via `requireEditorialAccess()`
 
 #### `PATCH /api/books/[id]` (Update book)
+
 - **Before:** Queried `user_app_access` table in Supabase
 - **After:** Requires `editor` role via `requireRole('editor')`
 - **Change:** Uses `user.uid` from Firebase for `reviewed_by` tracking
 
 #### `DELETE /api/books/[id]` (Delete book)
+
 - **Before:** Queried `user_app_access` table in Supabase
 - **After:** Requires `admin` role via `requireRole('admin')`
 
@@ -80,12 +87,12 @@ const { user } = authResult
 
 ```javascript
 {
-  userId: string        // Firebase UID
-  appName: string       // 'editorial'
-  role: string          // 'admin' | 'editor' | 'viewer'
-  isActive: boolean     // true
+  userId: string // Firebase UID
+  appName: string // 'editorial'
+  role: string // 'admin' | 'editor' | 'viewer'
+  isActive: boolean // true
   grantedAt: timestamp
-  grantedBy: string     // Admin who granted access
+  grantedBy: string // Admin who granted access
 }
 ```
 
@@ -132,17 +139,17 @@ const accessSnapshot = await firestore
 
 ## Role Permissions
 
-| Action | Viewer | Editor | Admin |
-|--------|--------|--------|-------|
-| View books | ✅ | ✅ | ✅ |
-| Add books | ❌ | ✅ | ✅ |
-| Update books | ❌ | ✅ | ✅ |
-| Delete books | ❌ | ❌ | ✅ |
-| Investigate translation | ❌ | ✅ | ✅ |
-| Manage contributors* | ❌ | ✅ | ✅ |
-| Publish to catalog* | ❌ | ✅ | ✅ |
+| Action                  | Viewer | Editor | Admin |
+| ----------------------- | ------ | ------ | ----- |
+| View books              | ✅     | ✅     | ✅    |
+| Add books               | ❌     | ✅     | ✅    |
+| Update books            | ❌     | ✅     | ✅    |
+| Delete books            | ❌     | ❌     | ✅    |
+| Investigate translation | ❌     | ✅     | ✅    |
+| Manage contributors\*   | ❌     | ✅     | ✅    |
+| Publish to catalog\*    | ❌     | ✅     | ✅    |
 
-*Phase 2 features (coming soon)
+\*Phase 2 features (coming soon)
 
 ---
 
@@ -188,9 +195,9 @@ export async function POST(request: NextRequest) {
   if (authResult instanceof NextResponse) {
     return authResult
   }
-  
+
   const { user } = authResult
-  
+
   // ... create contributor with user.uid for created_by field
 }
 ```
@@ -217,4 +224,3 @@ Use Firebase Console or Admin SDK to add to Firestore:
 **Files Modified:** 3  
 **Files Created:** 2  
 **Breaking Changes:** None (improves auth, doesn't break existing flow)
-
