@@ -79,10 +79,7 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!body.title || !body.description) {
-      return NextResponse.json(
-        { error: 'title and description are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'title and description are required' }, { status: 400 })
     }
 
     // Generate slug if not provided
@@ -142,7 +139,7 @@ export async function POST(request: NextRequest) {
         slug,
         created_by: user.uid,
         publication_status: 'draft',
-      })
+      } as any)
       .select()
       .single()
 
@@ -163,4 +160,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

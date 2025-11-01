@@ -423,6 +423,9 @@ importers:
       '@cenie/firebase':
         specifier: workspace:*
         version: link:../../packages/firebase
+      '@cenie/supabase':
+        specifier: workspace:*
+        version: link:../../packages/supabase
       '@cenie/ui':
         specifier: workspace:*
         version: link:../../packages/ui

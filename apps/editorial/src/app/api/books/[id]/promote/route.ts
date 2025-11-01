@@ -1,21 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireRole } from '@/lib/auth-helpers'
-import type { PromoteToCatalogInput } from '@/types/books'
+import type { Book, PromoteToCatalogInput } from '@/types/books'
 
 /**
  * POST /api/books/[id]/promote
  * Promote a book from editorial workspace to public catalog
  * Requires: editor or admin role
- * 
+ *
  * Body:
  * - catalogData: CatalogVolumeCreateInput data
  * - contributors: Array of {contributor_id, role, display_order}
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require editor or admin role
     const authResult = await requireRole('editor')
@@ -49,11 +46,13 @@ export async function POST(
       return NextResponse.json({ error: 'Book not found' }, { status: 404 })
     }
 
-    if (book.promoted_to_catalog) {
+    const typedBook = book as unknown as Book
+
+    if (typedBook.promoted_to_catalog) {
       return NextResponse.json(
         {
           error: 'Book already promoted to catalog',
-          catalog_volume_id: book.catalog_volume_id,
+          catalog_volume_id: typedBook.catalog_volume_id,
         },
         { status: 409 }
       )
@@ -61,12 +60,12 @@ export async function POST(
 
     // Call the database function to promote book to catalog
     const { data: volumeIdData, error: promoteError } = await supabase.rpc(
-      'promote_book_to_catalog',
+      'promote_book_to_catalog' as any,
       {
         book_uuid: id,
         catalog_data: catalogData,
         user_id: user.uid,
-      }
+      } as any
     )
 
     if (promoteError) {
@@ -91,7 +90,7 @@ export async function POST(
 
       const { error: contributorsError } = await supabase
         .from('volume_contributors')
-        .insert(contributorInserts)
+        .insert(contributorInserts as any)
 
       if (contributorsError) {
         console.error('Contributors link error:', contributorsError)
@@ -100,9 +99,12 @@ export async function POST(
       }
 
       // Update display fields
-      const { error: displayError } = await supabase.rpc('update_volume_display_fields', {
-        volume_uuid: volumeId,
-      })
+      const { error: displayError } = await supabase.rpc(
+        'update_volume_display_fields' as any,
+        {
+          volume_uuid: volumeId,
+        } as any
+      )
 
       if (displayError) {
         console.error('Display fields update error:', displayError)
@@ -138,4 +140,3 @@ export async function POST(
     )
   }
 }
-

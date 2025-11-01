@@ -91,6 +91,35 @@ export interface Database {
           updated_at?: string
         }
       }
+      waitlist_subscribers: {
+        Row: {
+          id: string
+          full_name: string
+          email: string
+          source: string | null
+          subscribed_at: string
+          is_active: boolean
+          metadata: Record<string, any>
+        }
+        Insert: {
+          id?: string
+          full_name: string
+          email: string
+          source?: string | null
+          subscribed_at?: string
+          is_active?: boolean
+          metadata?: Record<string, any>
+        }
+        Update: {
+          id?: string
+          full_name?: string
+          email?: string
+          source?: string | null
+          subscribed_at?: string
+          is_active?: boolean
+          metadata?: Record<string, any>
+        }
+      }
       books: {
         Row: {
           id: string
@@ -234,6 +263,26 @@ export interface Database {
         Returns: {
           status: string
           count: number
+        }[]
+      }
+      get_waitlist_subscribers: {
+        Args: {
+          search_query?: string | null
+          filter_source?: string | null
+          filter_active?: boolean
+          limit_count?: number
+          offset_count?: number
+        }
+        Returns: Database['public']['Tables']['waitlist_subscribers']['Row'][]
+      }
+      get_waitlist_stats: {
+        Args: Record<string, never>
+        Returns: {
+          total_subscribers: number
+          active_subscribers: number
+          subscribers_by_source: Record<string, number>
+          subscribers_last_7_days: number
+          subscribers_last_30_days: number
         }[]
       }
     }

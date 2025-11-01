@@ -7,10 +7,7 @@ import type { PublisherUpdateInput } from '@/types/books'
  * GET /api/publishers/[id]
  * Get a single publisher by ID
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
@@ -21,11 +18,7 @@ export async function GET(
     const { id } = await params
     const supabase = createNextServerClient()
 
-    const { data, error } = await supabase
-      .from('publishers')
-      .select('*')
-      .eq('id', id)
-      .single()
+    const { data, error } = await supabase.from('publishers').select('*').eq('id', id).single()
 
     if (error) {
       if (error.code === 'PGRST116') {
@@ -53,10 +46,7 @@ export async function GET(
  * Update a publisher
  * Requires: editor or admin role
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require editor or admin role
     const authResult = await requireRole('editor')
@@ -88,6 +78,7 @@ export async function PATCH(
     // Update publisher
     const { data, error } = await supabase
       .from('publishers')
+      // @ts-expect-error - publishers table not in auto-generated types
       .update(body)
       .eq('id', id)
       .select()
@@ -136,6 +127,7 @@ export async function DELETE(
     // Soft delete by setting is_active to false
     const { data, error } = await supabase
       .from('publishers')
+      // @ts-expect-error - publishers table not in auto-generated types
       .update({ is_active: false })
       .eq('id', id)
       .select()
@@ -161,4 +153,3 @@ export async function DELETE(
     )
   }
 }
-

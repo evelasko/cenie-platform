@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { TYPOGRAPHY } from '../../lib/typography'
+import { TYPOGRAPHY } from '@/lib/typography'
 
 export default function TypographyPage() {
   return (

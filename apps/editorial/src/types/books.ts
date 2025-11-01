@@ -194,6 +194,7 @@ export interface TranslationInvestigationResult {
   confidence_score: number
   confidence_breakdown: ConfidenceBreakdown
   investigation_notes?: string
+  method?: string
   spanish_book?: {
     title: string
     subtitle?: string

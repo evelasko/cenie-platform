@@ -113,12 +113,38 @@ All `*_by` columns store Firebase UIDs as `text` format:
 
 | Date             | Migration                                         | Description                                   | Status     |
 | ---------------- | ------------------------------------------------- | --------------------------------------------- | ---------- |
+| **Feb 01, 2025** | `20250201_waitlist_table.sql`                     | Waitlist/CRM subscribers table                | ✅ Current |
 | **Jan 31, 2025** | `20250131_cenie_editorial_initial.sql`            | Initial production release (all fixes merged) | ✅ Current |
 | ~~Jan 30, 2025~~ | ~~20250130_cenie_editorial_complete.sql~~         | Original schema                               | Superseded |
 | ~~Jan 30, 2025~~ | ~~20250130_fix_firebase_uid_types.sql~~           | Firebase UID fix                              | Merged     |
 | ~~Jan 31, 2025~~ | ~~20250131_fix_firebase_uid_function_params.sql~~ | Function params fix                           | Merged     |
 
 **Current Strategy:** Single comprehensive migration for clean production deployment.
+
+---
+
+## Waitlist Migration: `20250201_waitlist_table.sql`
+
+**Purpose:** Simple CRM solution for collecting email subscriptions for platform launch notifications.
+
+**What's Included:**
+
+- **1 Table:** `waitlist_subscribers`
+- **4 Indexes:** Email uniqueness, source, date, active status
+- **2 RLS Policies:** Public insert, admin-only select
+- **2 Helper Functions:** Search/filter, statistics
+- **Email Validation:** Format validation and uniqueness constraints
+
+**Quick Deployment:**
+
+```sql
+-- Run in Supabase SQL Editor
+-- File: 20250201_waitlist_table.sql
+```
+
+**API Documentation:** See [/docs/WAITLIST_API.md](../../docs/WAITLIST_API.md)
+
+**Status:** ✅ Production Ready
 
 ---
 

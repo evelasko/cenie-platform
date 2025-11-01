@@ -73,10 +73,7 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!body.name || !body.slug) {
-      return NextResponse.json(
-        { error: 'name and slug are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'name and slug are required' }, { status: 400 })
     }
 
     // Check if slug already exists
@@ -109,7 +106,7 @@ export async function POST(request: NextRequest) {
         permissions_contact: body.permissions_contact || null,
         created_by: user.uid,
         is_active: true,
-      })
+      } as any)
       .select()
       .single()
 
@@ -130,4 +127,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

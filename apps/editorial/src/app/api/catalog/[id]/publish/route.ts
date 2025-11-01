@@ -7,10 +7,7 @@ import { requireRole } from '@/lib/auth-helpers'
  * Change publication status to 'published'
  * Requires: editor or admin role
  */
-export async function POST(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require editor or admin role
     const authResult = await requireRole('editor')
@@ -25,6 +22,7 @@ export async function POST(
     // Update publication_status to 'published' and set published_at/published_by
     const { data, error } = await supabase
       .from('catalog_volumes')
+      // @ts-expect-error - catalog_volumes table not in auto-generated types
       .update({
         publication_status: 'published',
         published_at: new Date().toISOString(),
@@ -54,4 +52,3 @@ export async function POST(
     )
   }
 }
-

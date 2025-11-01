@@ -7,10 +7,7 @@ import { requireEditorialAccess } from '@/lib/auth-helpers'
  * Link contributors to a catalog volume
  * Requires: editorial access
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
@@ -24,29 +21,26 @@ export async function POST(
 
     // Validate request body
     if (!body.contributors || !Array.isArray(body.contributors)) {
-      return NextResponse.json(
-        { error: 'contributors array is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'contributors array is required' }, { status: 400 })
     }
 
     // Insert contributors
     const { error: contributorsError } = await supabase
       .from('volume_contributors')
-      .insert(body.contributors)
+      .insert(body.contributors as any)
 
     if (contributorsError) {
       console.error('Database insert error:', contributorsError)
-      return NextResponse.json(
-        { error: contributorsError.message },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: contributorsError.message }, { status: 500 })
     }
 
     // Update display fields (contributor names, etc.)
-    const { error: displayError } = await supabase.rpc('update_volume_display_fields', {
-      volume_uuid: id,
-    })
+    const { error: displayError } = await supabase.rpc(
+      'update_volume_display_fields' as any,
+      {
+        volume_uuid: id,
+      } as any
+    )
 
     if (displayError) {
       console.error('Display fields error:', displayError)
@@ -65,4 +59,3 @@ export async function POST(
     )
   }
 }
-

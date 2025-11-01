@@ -45,9 +45,7 @@ export async function GET(request: NextRequest) {
 
     // Search by name if query provided
     if (searchQuery) {
-      query = query.or(
-        `full_name.ilike.%${searchQuery}%,slug.ilike.%${searchQuery}%`
-      )
+      query = query.or(`full_name.ilike.%${searchQuery}%,slug.ilike.%${searchQuery}%`)
     }
 
     const { data, error } = await query
@@ -134,7 +132,7 @@ export async function POST(request: NextRequest) {
         keywords: body.keywords || null,
         created_by: user.uid,
         is_active: true,
-      })
+      } as any)
       .select()
       .single()
 
@@ -155,4 +153,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

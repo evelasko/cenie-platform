@@ -7,10 +7,7 @@ import type { CatalogVolumeUpdateInput } from '@/types/books'
  * GET /api/catalog/[id]
  * Get a single catalog volume by ID with contributors
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
@@ -38,8 +35,8 @@ export async function GET(
 
     // Get contributors for this volume
     const { data: contributors, error: contributorsError } = await supabase.rpc(
-      'get_volume_contributors',
-      { volume_uuid: id }
+      'get_volume_contributors' as any,
+      { volume_uuid: id } as any
     )
 
     if (contributorsError) {
@@ -68,10 +65,7 @@ export async function GET(
  * Update a catalog volume
  * Requires: editor or admin role
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Require editor or admin role
     const authResult = await requireRole('editor')
@@ -103,6 +97,7 @@ export async function PATCH(
     // Update volume
     const { data, error } = await supabase
       .from('catalog_volumes')
+      // @ts-expect-error - catalog_volumes table not in auto-generated types
       .update(body)
       .eq('id', id)
       .select()
@@ -151,6 +146,7 @@ export async function DELETE(
     // Archive by setting publication_status to 'archived'
     const { data, error } = await supabase
       .from('catalog_volumes')
+      // @ts-expect-error - catalog_volumes table not in auto-generated types
       .update({ publication_status: 'archived' })
       .eq('id', id)
       .select()
@@ -176,4 +172,3 @@ export async function DELETE(
     )
   }
 }
-
