@@ -58,17 +58,24 @@ function getClientIdentifier(request: NextRequest): string {
  */
 export async function POST(request: NextRequest) {
   return withCors(request, async () => {
-    try {
-      // Log request origin for debugging
-      const origin = request.headers.get('origin')
-      console.log('[Waitlist] POST request from origin:', origin)
+    const origin = request.headers.get('origin')
+    const timestamp = new Date().toISOString()
 
+    console.log(`[Waitlist ${timestamp}] POST request from:`, origin)
+
+    try {
       // Rate limiting: 50 requests per hour per IP (relaxed for external apps)
       const identifier = getClientIdentifier(request)
       const rateLimitResult = rateLimit({
         identifier,
         limit: 50,
         windowSeconds: 3600, // 1 hour
+      })
+
+      console.log(`[Waitlist ${timestamp}] Rate limit check:`, {
+        identifier,
+        remaining: rateLimitResult.remaining,
+        success: rateLimitResult.success,
       })
 
       // If rate limit exceeded, return 429
@@ -87,13 +94,50 @@ export async function POST(request: NextRequest) {
       }
 
       // Parse and validate request body
-      const body = await request.json()
+      let body
+      try {
+        body = await request.json()
+        console.log(`[Waitlist ${timestamp}] Request body:`, {
+          full_name: body.full_name,
+          email: body.email?.substring(0, 3) + '***',
+          source: body.source,
+        })
+      } catch (parseError) {
+        console.error(`[Waitlist ${timestamp}] JSON parse error:`, parseError)
+        return NextResponse.json(
+          {
+            error: 'Invalid JSON',
+            message: 'Request body must be valid JSON',
+            details: parseError instanceof Error ? parseError.message : 'Unknown parse error',
+          },
+          { status: 400 }
+        )
+      }
+
       const validatedData = waitlistSubscribeSchema.parse(body)
+      console.log(`[Waitlist ${timestamp}] Validation passed`)
 
       // Connect to Supabase
+      console.log(`[Waitlist ${timestamp}] Connecting to Supabase...`)
       const supabase = createNextServerClient()
 
+      // Test connection
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        console.error(`[Waitlist ${timestamp}] Supabase env vars missing`)
+        return NextResponse.json(
+          {
+            error: 'Configuration error',
+            message: 'Database connection not configured',
+            details: 'NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing',
+          },
+          { status: 500 }
+        )
+      }
+
+      console.log(`[Waitlist ${timestamp}] Supabase client created`)
+
       // Check if email already exists
+      console.log(`[Waitlist ${timestamp}] Checking if email exists...`)
       const { data: existingSubscriber, error: checkError } = await supabase
         .from('waitlist_subscribers')
         .select('id, email, full_name, subscribed_at, is_active')
@@ -102,16 +146,27 @@ export async function POST(request: NextRequest) {
 
       if (checkError && checkError.code !== 'PGRST116') {
         // PGRST116 = no rows returned (expected if email doesn't exist)
-        console.error('[Waitlist] Database check error:', checkError)
+        console.error(`[Waitlist ${timestamp}] Database check error:`, {
+          code: checkError.code,
+          message: checkError.message,
+          details: checkError.details,
+          hint: checkError.hint,
+        })
         return NextResponse.json(
           {
             error: 'Database error',
             message: 'Failed to check subscription status',
-            debug: process.env.NODE_ENV === 'development' ? checkError.message : undefined,
+            details: checkError.message,
+            code: checkError.code,
+            timestamp,
           },
           { status: 500 }
         )
       }
+
+      console.log(`[Waitlist ${timestamp}] Email check complete:`, {
+        exists: !!existingSubscriber,
+      })
 
       // If email already exists, return 409 Conflict
       if (existingSubscriber) {
@@ -129,6 +184,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Insert new subscriber
+      console.log(`[Waitlist ${timestamp}] Inserting new subscriber...`)
       const { data: newSubscriber, error: insertError } = await supabase
         .from('waitlist_subscribers')
         .insert({
@@ -142,7 +198,12 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (insertError) {
-        console.error('[Waitlist] Database insert error:', insertError)
+        console.error(`[Waitlist ${timestamp}] Database insert error:`, {
+          code: insertError.code,
+          message: insertError.message,
+          details: insertError.details,
+          hint: insertError.hint,
+        })
 
         // Handle unique constraint violation (race condition)
         if (insertError.code === '23505') {
@@ -162,11 +223,17 @@ export async function POST(request: NextRequest) {
           {
             error: 'Database error',
             message: 'Failed to subscribe to waitlist',
-            debug: process.env.NODE_ENV === 'development' ? insertError.message : undefined,
+            details: insertError.message,
+            code: insertError.code,
+            timestamp,
+            // Include more debug info
+            ...(insertError.hint && { hint: insertError.hint }),
           },
           { status: 500 }
         )
       }
+
+      console.log(`[Waitlist ${timestamp}] Insert successful`)
 
       // Success response
       const subscriber = newSubscriber as any
@@ -189,8 +256,11 @@ export async function POST(request: NextRequest) {
         }
       )
     } catch (error) {
+      console.error(`[Waitlist ${timestamp}] Error caught:`, error)
+
       // Validation errors
       if (error instanceof z.ZodError) {
+        console.error(`[Waitlist ${timestamp}] Validation error:`, error.issues)
         return NextResponse.json(
           {
             error: 'Validation error',
@@ -206,21 +276,38 @@ export async function POST(request: NextRequest) {
 
       // JSON parse errors
       if (error instanceof SyntaxError) {
+        console.error(`[Waitlist ${timestamp}] JSON syntax error:`, error.message)
         return NextResponse.json(
           {
             error: 'Invalid JSON',
             message: 'Request body must be valid JSON',
+            details: error.message,
           },
           { status: 400 }
         )
       }
 
-      // Unexpected errors
-      console.error('Waitlist subscription error:', error)
+      // Unexpected errors - provide detailed info
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorStack = error instanceof Error ? error.stack : undefined
+
+      console.error(`[Waitlist ${timestamp}] Unexpected error:`, {
+        message: errorMessage,
+        stack: errorStack,
+        error: error,
+      })
+
       return NextResponse.json(
         {
           error: 'Internal server error',
           message: 'An unexpected error occurred',
+          details: errorMessage,
+          timestamp,
+          // Include stack trace in development
+          ...(process.env.NODE_ENV === 'development' && {
+            stack: errorStack,
+            errorType: error?.constructor?.name,
+          }),
         },
         { status: 500 }
       )

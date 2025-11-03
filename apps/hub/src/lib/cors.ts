@@ -120,15 +120,37 @@ export async function withCors(
   request: NextRequest,
   handler: () => Promise<NextResponse>
 ): Promise<NextResponse> {
+  const origin = request.headers.get('origin')
+  
+  // Log CORS check
+  console.log('[CORS] Request:', {
+    method: request.method,
+    origin,
+    allowed: isOriginAllowed(origin),
+  })
+  
   // Handle preflight request
   if (request.method === 'OPTIONS') {
+    console.log('[CORS] Preflight request from:', origin)
     return handleCorsPreflightRequest(request)
   }
 
   // Execute the handler
-  const response = await handler()
-
-  // Add CORS headers to response
-  return addCorsHeaders(response, request)
+  try {
+    const response = await handler()
+    
+    // Add CORS headers to response
+    const finalResponse = addCorsHeaders(response, request)
+    
+    console.log('[CORS] Response:', {
+      status: finalResponse.status,
+      hasCorsHeaders: finalResponse.headers.has('Access-Control-Allow-Origin'),
+    })
+    
+    return finalResponse
+  } catch (error) {
+    console.error('[CORS] Handler error:', error)
+    throw error
+  }
 }
 
