@@ -41,7 +41,12 @@ const ALLOWED_ORIGINS = [
  * Check if an origin is allowed
  */
 export function isOriginAllowed(origin: string | null): boolean {
-  if (!origin) return false
+  // TEMPORARY: Allow null origin for server-side requests
+  // This happens when fetch is made from Next.js server components or API routes
+  if (!origin) {
+    console.log('[CORS] Warning: null origin detected - likely server-side request')
+    return true // Temporarily allow
+  }
 
   // Allow all localhost in development
   if (process.env.NODE_ENV === 'development') {
@@ -68,9 +73,14 @@ export function getCorsHeaders(origin: string | null): HeadersInit {
     'Access-Control-Max-Age': '86400', // 24 hours
   }
 
-  if (origin && isOriginAllowed(origin)) {
-    headers['Access-Control-Allow-Origin'] = origin
-    headers['Access-Control-Allow-Credentials'] = 'true'
+  if (isOriginAllowed(origin)) {
+    // For null origin (server-side requests), use wildcard temporarily
+    if (!origin) {
+      headers['Access-Control-Allow-Origin'] = '*'
+    } else {
+      headers['Access-Control-Allow-Origin'] = origin
+      headers['Access-Control-Allow-Credentials'] = 'true'
+    }
   }
 
   return headers
