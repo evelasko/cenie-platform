@@ -59,11 +59,15 @@ function getClientIdentifier(request: NextRequest): string {
 export async function POST(request: NextRequest) {
   return withCors(request, async () => {
     try {
-      // Rate limiting: 5 requests per hour per IP
+      // Log request origin for debugging
+      const origin = request.headers.get('origin')
+      console.log('[Waitlist] POST request from origin:', origin)
+
+      // Rate limiting: 50 requests per hour per IP (relaxed for external apps)
       const identifier = getClientIdentifier(request)
       const rateLimitResult = rateLimit({
         identifier,
-        limit: 5,
+        limit: 50,
         windowSeconds: 3600, // 1 hour
       })
 
@@ -98,11 +102,12 @@ export async function POST(request: NextRequest) {
 
       if (checkError && checkError.code !== 'PGRST116') {
         // PGRST116 = no rows returned (expected if email doesn't exist)
-        console.error('Database check error:', checkError)
+        console.error('[Waitlist] Database check error:', checkError)
         return NextResponse.json(
           {
             error: 'Database error',
             message: 'Failed to check subscription status',
+            debug: process.env.NODE_ENV === 'development' ? checkError.message : undefined,
           },
           { status: 500 }
         )
@@ -137,7 +142,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (insertError) {
-        console.error('Database insert error:', insertError)
+        console.error('[Waitlist] Database insert error:', insertError)
 
         // Handle unique constraint violation (race condition)
         if (insertError.code === '23505') {
@@ -157,6 +162,7 @@ export async function POST(request: NextRequest) {
           {
             error: 'Database error',
             message: 'Failed to subscribe to waitlist',
+            debug: process.env.NODE_ENV === 'development' ? insertError.message : undefined,
           },
           { status: 500 }
         )
@@ -164,6 +170,7 @@ export async function POST(request: NextRequest) {
 
       // Success response
       const subscriber = newSubscriber as any
+      console.log('[Waitlist] New subscriber added:', subscriber.email, 'from:', origin)
       return NextResponse.json(
         {
           success: true,

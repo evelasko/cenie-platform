@@ -50,6 +50,11 @@ export function isOriginAllowed(origin: string | null): boolean {
     }
   }
 
+  // Allow any evelas.co subdomain
+  if (origin.endsWith('.evelas.co') || origin === 'https://evelas.co') {
+    return true
+  }
+
   return ALLOWED_ORIGINS.includes(origin)
 }
 
