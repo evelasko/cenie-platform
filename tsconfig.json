@@ -30,20 +30,16 @@
     "paths": {
       "@cenie/ui": ["./packages/ui/src"],
       "@cenie/ui/*": ["./packages/ui/src/*"],
-      "@cenie/design-system": ["./packages/design-system/src"],
-      "@cenie/design-system/*": ["./packages/design-system/src/*"],
-      "@cenie/config": ["./packages/config/src"],
-      "@cenie/config/*": ["./packages/config/src/*"],
       "@cenie/firebase": ["./packages/firebase/src"],
       "@cenie/firebase/*": ["./packages/firebase/src/*"],
       "@cenie/auth-client": ["./packages/auth-client/src"],
       "@cenie/auth-client/*": ["./packages/auth-client/src/*"],
       "@cenie/supabase": ["./packages/supabase/src"],
       "@cenie/supabase/*": ["./packages/supabase/src/*"],
-      "@cenie/analytics": ["./packages/analytics/src"],
-      "@cenie/analytics/*": ["./packages/analytics/src/*"],
-      "@cenie/utils": ["./packages/utils/src"],
-      "@cenie/utils/*": ["./packages/utils/src/*"]
+      "@cenie/logger": ["./packages/logger/src"],
+      "@cenie/logger/*": ["./packages/logger/src/*"],
+      "@cenie/errors": ["./packages/errors/src"],
+      "@cenie/errors/*": ["./packages/errors/src/*"]
     }
   },
   "exclude": [

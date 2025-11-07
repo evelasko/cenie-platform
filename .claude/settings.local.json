@@ -36,7 +36,12 @@
       "Bash(xargs kill -9)",
       "Bash(cat .next/trace)",
       "Bash(node --version)",
-      "Bash(cat apps/editorial/.env.local)"
+      "Bash(cat apps/editorial/.env.local)",
+      "Bash(pnpm --filter=@cenie/logger type-check:*)",
+      "Bash(pnpm --filter=@cenie/errors type-check:*)",
+      "Bash(pnpm --filter=@cenie/logger lint:*)",
+      "Bash(pnpm --filter=@cenie/errors lint:*)",
+      "Bash(pnpm eslint:*)"
     ],
     "deny": []
   }
