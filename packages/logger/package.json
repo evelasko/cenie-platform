@@ -16,7 +16,11 @@
   "scripts": {
     "lint": "eslint . --max-warnings 60",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf .turbo node_modules dist"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf .turbo node_modules dist coverage"
   },
   "dependencies": {
     "chalk": "^5.3.0",

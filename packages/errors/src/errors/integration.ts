@@ -11,10 +11,10 @@ export class ExternalServiceError extends AppError {
 
   constructor(service: string, message: string, options: ErrorOptions = {}) {
     super(`EXTERNAL_SERVICE_ERROR_${service.toUpperCase()}`, message, 502, 'high', {
-      userMessage: options.userMessage || 'An external service is temporarily unavailable',
-      retryable: true,
-      metadata: { service, ...options.metadata },
       ...options,
+      userMessage: options.userMessage || 'An external service is temporarily unavailable',
+      retryable: options.retryable ?? true,
+      metadata: { service, ...options.metadata },
     })
 
     this.service = service
