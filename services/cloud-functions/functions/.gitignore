@@ -1,0 +1,39 @@
+# Compiled JavaScript files
+lib/
+dist/
+# Allow build script
+!build.mjs
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Firebase
+.firebase/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+firebase-debug*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test coverage
+coverage/
+
+# Turbo
+.turbo/

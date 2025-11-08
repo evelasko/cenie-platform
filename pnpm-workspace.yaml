@@ -1,10 +1,12 @@
 packages:
   - apps/*
   - packages/*
+  - services/*
+  - services/cloud-functions/functions
 
 onlyBuiltDependencies:
-  - '@firebase/util'
-  - '@tailwindcss/oxide'
+  - "@firebase/util"
+  - "@tailwindcss/oxide"
   - protobufjs
   - sharp
   - unrs-resolver
