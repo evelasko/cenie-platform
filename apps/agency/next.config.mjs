@@ -1,6 +1,7 @@
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
+import withMDX from '@next/mdx'
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -19,6 +20,15 @@ const nextConfig = {
     '@cenie/logger',
     '@cenie/errors',
   ],
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  webpack: (config, { isServer }) => {
+    // Ensure proper resolution of conditional exports
+    config.resolve.conditionNames = isServer
+      ? ['node', 'import', 'require', 'default']
+      : ['browser', 'module', 'import', 'require', 'default']
+
+    return config
+  },
   images: {
     remotePatterns: [
       {
@@ -29,4 +39,11 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+const withMDXPlugin = withMDX({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+export default withMDXPlugin(nextConfig)
