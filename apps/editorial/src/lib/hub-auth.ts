@@ -2,6 +2,8 @@
 const HUB_API_URL =
   process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_HUB_API_URL : '/api' // Use Editorial app's local API endpoints
 
+import { logger } from './logger-client'
+
 export interface SignUpData {
   email: string
   password: string
@@ -151,7 +153,7 @@ class HubAuthAPI {
       accessData.length > 0
     )
 
-    console.log('🔍 [checkAppAccess] Access check result:', {
+    logger.debug('[HubAuth] Access check result', {
       hasAccess,
       responseSuccess: response.success,
       accessDataLength: Array.isArray(accessData) ? accessData.length : 0,

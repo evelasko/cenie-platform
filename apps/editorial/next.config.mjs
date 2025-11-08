@@ -20,6 +20,15 @@ const nextConfig = {
     '@cenie/logger',
     '@cenie/errors',
   ],
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  webpack: (config, { isServer }) => {
+    // Ensure proper resolution of conditional exports
+    config.resolve.conditionNames = isServer
+      ? ['node', 'import', 'require', 'default']
+      : ['browser', 'module', 'import', 'require', 'default']
+
+    return config
+  },
   // Mark server-only packages as external (not to be bundled)
   serverExternalPackages: ['firebase-admin'],
   images: {

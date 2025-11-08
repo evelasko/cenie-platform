@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { DatabaseError, ValidationError, ConflictError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 import type { PublisherCreateInput } from '@/types/books'
 
 /**
@@ -10,8 +14,8 @@ import type { PublisherCreateInput } from '@/types/books'
  * - active: filter by is_active (optional, default: true)
  * - limit: number of results (optional, default: 50)
  */
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
     if (authResult instanceof NextResponse) {
@@ -22,7 +26,15 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
 
     const activeParam = searchParams.get('active')
-    const limit = parseInt(searchParams.get('limit') || '50')
+    const limitParam = searchParams.get('limit')
+    const limit = limitParam ? parseInt(limitParam) : 50
+
+    if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
+      throw new ValidationError('Invalid limit parameter', {
+        userMessage: 'Limit must be between 1 and 100',
+        metadata: { limit: limitParam },
+      })
+    }
 
     let query = supabase
       .from('publishers')
@@ -37,30 +49,27 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      throw new DatabaseError('Failed to fetch publishers', {
+        cause: error,
+        metadata: {
+          isActive,
+          limit,
+        },
+      })
     }
 
+    logger.debug('[Publishers] Listed publishers', { count: data?.length, isActive })
     return NextResponse.json({ publishers: data })
-  } catch (error) {
-    console.error('List publishers error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to list publishers',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)
 
 /**
  * POST /api/publishers
  * Create a new publisher
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require editor or admin role
     const authResult = await requireRole('editor')
     if (authResult instanceof NextResponse) {
@@ -69,28 +78,50 @@ export async function POST(request: NextRequest) {
 
     const { user } = authResult
     const supabase = createNextServerClient()
-    const body: PublisherCreateInput = await request.json()
+    let body: PublisherCreateInput
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      throw new ValidationError('Invalid JSON body', {
+        cause: parseError,
+        userMessage: 'Request body must be valid JSON',
+      })
+    }
 
     // Validate required fields
     if (!body.name || !body.slug) {
-      return NextResponse.json({ error: 'name and slug are required' }, { status: 400 })
+      throw new ValidationError('Missing required fields', {
+        userMessage: 'name and slug are required',
+        metadata: {
+          hasName: !!body.name,
+          hasSlug: !!body.slug,
+        },
+      })
     }
 
     // Check if slug already exists
-    const { data: existingPublisher } = await supabase
+    const { data: existingPublisher, error: checkError } = await supabase
       .from('publishers')
       .select('id, name, slug')
       .eq('slug', body.slug)
       .single()
 
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 = no rows returned (expected if slug doesn't exist)
+      throw new DatabaseError('Failed to check for existing publisher', {
+        cause: checkError,
+        metadata: { slug: body.slug },
+      })
+    }
+
     if (existingPublisher) {
-      return NextResponse.json(
-        {
-          error: 'A publisher with this slug already exists',
-          publisher: existingPublisher,
+      throw new ConflictError('A publisher with this slug already exists', {
+        userMessage: 'A publisher with this slug already exists',
+        metadata: {
+          slug: body.slug,
+          existingPublisherId: (existingPublisher as any).id,
         },
-        { status: 409 }
-      )
+      })
     }
 
     // Insert publisher
@@ -111,19 +142,33 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Database insert error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // Handle unique constraint violation (race condition)
+      if (error.code === '23505') {
+        throw new ConflictError('A publisher with this slug already exists', {
+          userMessage: 'A publisher with this slug already exists',
+          metadata: {
+            slug: body.slug,
+            code: error.code,
+          },
+        })
+      }
+
+      throw new DatabaseError('Failed to create publisher', {
+        cause: error,
+        metadata: {
+          slug: body.slug,
+          name: body.name,
+        },
+      })
     }
 
+    logger.info('[Publishers] Created publisher', {
+      publisherId: (data as any).id,
+      slug: body.slug,
+      name: body.name,
+      userId: user.uid,
+    })
+
     return NextResponse.json({ publisher: data }, { status: 201 })
-  } catch (error) {
-    console.error('Create publisher error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to create publisher',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)

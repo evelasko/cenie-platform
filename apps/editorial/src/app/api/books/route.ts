@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { DatabaseError, ValidationError, ConflictError, APIError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 import { googleBooks } from '@/lib/google-books'
 import type { BookCreateInput } from '@/types/books'
 
@@ -12,8 +16,8 @@ import type { BookCreateInput } from '@/types/books'
  * - selected: filter selected for translation (optional)
  * - limit: number of results (optional, default: 50)
  */
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
     if (authResult instanceof NextResponse) {
@@ -25,7 +29,15 @@ export async function GET(request: NextRequest) {
 
     const status = searchParams.get('status')
     const selectedParam = searchParams.get('selected')
-    const limit = parseInt(searchParams.get('limit') || '50')
+    const limitParam = searchParams.get('limit')
+    const limit = limitParam ? parseInt(limitParam) : 50
+
+    if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
+      throw new ValidationError('Invalid limit parameter', {
+        userMessage: 'Limit must be between 1 and 100',
+        metadata: { limit: limitParam },
+      })
+    }
 
     let query = supabase
       .from('books')
@@ -45,22 +57,20 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      throw new DatabaseError('Failed to fetch books', {
+        cause: error,
+        metadata: {
+          status,
+          selectedParam,
+          limit,
+        },
+      })
     }
 
+    logger.debug('[Books] Listed books', { count: data?.length, status, selectedParam })
     return NextResponse.json({ books: data })
-  } catch (error) {
-    console.error('List books error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to list books',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)
 
 /**
  * POST /api/books
@@ -69,8 +79,8 @@ export async function GET(request: NextRequest) {
  * - googleBooksId: Google Books volume ID (required)
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require editor or admin role
     const authResult = await requireRole('editor')
     if (authResult instanceof NextResponse) {
@@ -79,33 +89,62 @@ export async function POST(request: NextRequest) {
 
     const { user } = authResult
     const supabase = createNextServerClient()
-    const body: BookCreateInput = await request.json()
+    let body: BookCreateInput
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      throw new ValidationError('Invalid JSON body', {
+        cause: parseError,
+        userMessage: 'Request body must be valid JSON',
+      })
+    }
 
     const { googleBooksId } = body
 
     if (!googleBooksId) {
-      return NextResponse.json({ error: 'googleBooksId is required' }, { status: 400 })
+      throw new ValidationError('Missing required field', {
+        userMessage: 'googleBooksId is required',
+        metadata: { hasGoogleBooksId: false },
+      })
     }
 
     // Check if book already exists
-    const { data: existingBook } = await supabase
+    const { data: existingBook, error: checkError } = await supabase
       .from('books')
       .select('id, title, status')
       .eq('google_books_id', googleBooksId)
       .single()
 
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 = no rows returned (expected if book doesn't exist)
+      throw new DatabaseError('Failed to check for existing book', {
+        cause: checkError,
+        metadata: { googleBooksId },
+      })
+    }
+
     if (existingBook) {
-      return NextResponse.json(
-        {
-          error: 'Book already exists in database',
-          book: existingBook,
+      throw new ConflictError('Book already exists in database', {
+        userMessage: 'This book is already in the database',
+        metadata: {
+          googleBooksId,
+          existingBookId: (existingBook as any).id,
         },
-        { status: 409 }
-      )
+      })
     }
 
     // Fetch full details from Google Books
-    const bookData = await googleBooks.getBook(googleBooksId)
+    let bookData
+    try {
+      bookData = await googleBooks.getBook(googleBooksId)
+    } catch (googleError) {
+      throw new APIError('google-books', 'Failed to fetch book from Google Books', {
+        cause: googleError,
+        userMessage: 'Could not retrieve book information from Google Books',
+        metadata: { googleBooksId },
+      })
+    }
+
     const isbns = googleBooks.getISBNs(bookData)
 
     // Insert book into database
@@ -127,19 +166,33 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Database insert error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // Handle unique constraint violation (race condition)
+      if (error.code === '23505') {
+        throw new ConflictError('Book already exists in database', {
+          userMessage: 'This book is already in the database',
+          metadata: {
+            googleBooksId,
+            code: error.code,
+          },
+        })
+      }
+
+      throw new DatabaseError('Failed to add book', {
+        cause: error,
+        metadata: {
+          googleBooksId,
+          title: bookData.volumeInfo.title,
+        },
+      })
     }
 
+    logger.info('[Books] Added book', {
+      bookId: (data as any).id,
+      googleBooksId,
+      title: bookData.volumeInfo.title,
+      userId: user.uid,
+    })
+
     return NextResponse.json({ book: data }, { status: 201 })
-  } catch (error) {
-    console.error('Add book error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to add book',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)

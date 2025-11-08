@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { DatabaseError, ValidationError, ConflictError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 import type { CatalogVolumeCreateInput } from '@/types/books'
 
 /**
@@ -11,8 +15,8 @@ import type { CatalogVolumeCreateInput } from '@/types/books'
  * - type: filter by volume_type (optional)
  * - limit: number of results (optional, default: 50)
  */
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
     if (authResult instanceof NextResponse) {
@@ -24,7 +28,15 @@ export async function GET(request: NextRequest) {
 
     const status = searchParams.get('status')
     const type = searchParams.get('type')
-    const limit = parseInt(searchParams.get('limit') || '50')
+    const limitParam = searchParams.get('limit')
+    const limit = limitParam ? parseInt(limitParam) : 50
+
+    if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
+      throw new ValidationError('Invalid limit parameter', {
+        userMessage: 'Limit must be between 1 and 100',
+        metadata: { limit: limitParam },
+      })
+    }
 
     let query = supabase
       .from('catalog_volumes')
@@ -43,30 +55,28 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      throw new DatabaseError('Failed to fetch catalog volumes', {
+        cause: error,
+        metadata: {
+          status,
+          type,
+          limit,
+        },
+      })
     }
 
+    logger.debug('[Catalog] Listed volumes', { count: data?.length, status, type })
     return NextResponse.json({ volumes: data })
-  } catch (error) {
-    console.error('List catalog volumes error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to list catalog volumes',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)
 
 /**
  * POST /api/catalog
  * Create a new catalog volume (for original publications)
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require editor or admin role
     const authResult = await requireRole('editor')
     if (authResult instanceof NextResponse) {
@@ -75,11 +85,25 @@ export async function POST(request: NextRequest) {
 
     const { user } = authResult
     const supabase = createNextServerClient()
-    const body: CatalogVolumeCreateInput = await request.json()
+    let body: CatalogVolumeCreateInput
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      throw new ValidationError('Invalid JSON body', {
+        cause: parseError,
+        userMessage: 'Request body must be valid JSON',
+      })
+    }
 
     // Validate required fields
     if (!body.title || !body.description) {
-      return NextResponse.json({ error: 'title and description are required' }, { status: 400 })
+      throw new ValidationError('Missing required fields', {
+        userMessage: 'title and description are required',
+        metadata: {
+          hasTitle: !!body.title,
+          hasDescription: !!body.description,
+        },
+      })
     }
 
     // Generate slug if not provided
@@ -93,20 +117,28 @@ export async function POST(request: NextRequest) {
         .replace(/^-+|-+$/g, '')
 
     // Check if slug already exists
-    const { data: existingVolume } = await supabase
+    const { data: existingVolume, error: checkError } = await supabase
       .from('catalog_volumes')
       .select('id, title, slug')
       .eq('slug', slug)
       .single()
 
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 = no rows returned (expected if slug doesn't exist)
+      throw new DatabaseError('Failed to check for existing volume', {
+        cause: checkError,
+        metadata: { slug },
+      })
+    }
+
     if (existingVolume) {
-      return NextResponse.json(
-        {
-          error: 'A volume with this slug already exists',
-          volume: existingVolume,
+      throw new ConflictError('A volume with this slug already exists', {
+        userMessage: 'A volume with this slug already exists',
+        metadata: {
+          slug,
+          existingVolumeId: (existingVolume as any).id,
         },
-        { status: 409 }
-      )
+      })
     }
 
     // Insert catalog volume
@@ -144,19 +176,33 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Database insert error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // Handle unique constraint violation (race condition)
+      if (error.code === '23505') {
+        throw new ConflictError('A volume with this slug already exists', {
+          userMessage: 'A volume with this slug already exists',
+          metadata: {
+            slug,
+            code: error.code,
+          },
+        })
+      }
+
+      throw new DatabaseError('Failed to create catalog volume', {
+        cause: error,
+        metadata: {
+          slug,
+          title: body.title,
+        },
+      })
     }
 
+    logger.info('[Catalog] Created volume', {
+      volumeId: (data as any).id,
+      slug,
+      title: body.title,
+      userId: user.uid,
+    })
+
     return NextResponse.json({ volume: data }, { status: 201 })
-  } catch (error) {
-    console.error('Create catalog volume error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to create catalog volume',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)

@@ -1,4 +1,5 @@
 import { compareTwoStrings } from 'string-similarity'
+import { logger } from './logger'
 import { googleBooks } from './google-books'
 import type {
   Book,
@@ -131,7 +132,7 @@ async function searchByISBN(isbn: string): Promise<GoogleBookVolume[]> {
     const results = await googleBooks.search(`isbn:${isbn} language:es`, 10)
     return results.items || []
   } catch (error) {
-    console.error('ISBN search error:', error)
+    logger.error('[TranslationFinder] ISBN search error', { error, isbn })
     return []
   }
 }
@@ -154,7 +155,7 @@ async function searchByTitleAuthor(title: string, authors: string[]): Promise<Go
     // Deduplicate by volume ID
     return Array.from(new Map(combined.map((book) => [book.id, book])).values())
   } catch (error) {
-    console.error('Title+Author search error:', error)
+    logger.error('[TranslationFinder] Title+Author search error', { error, title, authors })
     return []
   }
 }
@@ -180,7 +181,7 @@ async function searchFuzzy(originalBook: Book): Promise<GoogleBookVolume[]> {
 
     return results.items || []
   } catch (error) {
-    console.error('Fuzzy search error:', error)
+    logger.error('[TranslationFinder] Fuzzy search error', { error, title: originalBook.title })
     return []
   }
 }

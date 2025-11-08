@@ -302,9 +302,15 @@ importers:
       '@cenie/auth-client':
         specifier: workspace:*
         version: link:../../packages/auth-client
+      '@cenie/errors':
+        specifier: workspace:*
+        version: link:../../packages/errors
       '@cenie/firebase':
         specifier: workspace:*
         version: link:../../packages/firebase
+      '@cenie/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@cenie/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase

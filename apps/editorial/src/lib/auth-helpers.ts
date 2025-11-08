@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getServerSession, initializeAdminApp } from '@cenie/firebase/server'
+import { logger } from './logger'
 import type { DecodedIdToken } from 'firebase-admin/auth'
 
 /**
@@ -73,7 +74,7 @@ export async function checkEditorialAccess(userId: string): Promise<{
       isActive: accessDoc.isActive,
     }
   } catch (error) {
-    console.error('Error checking editorial access:', error)
+    logger.error('[AuthHelpers] Error checking editorial access', { error })
     return null
   }
 }

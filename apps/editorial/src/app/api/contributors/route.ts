@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { DatabaseError, ValidationError, ConflictError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 import type { ContributorCreateInput } from '@/types/books'
 
 /**
@@ -12,8 +16,8 @@ import type { ContributorCreateInput } from '@/types/books'
  * - search: search by name (optional)
  * - limit: number of results (optional, default: 50)
  */
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require authentication and editorial access
     const authResult = await requireEditorialAccess()
     if (authResult instanceof NextResponse) {
@@ -26,7 +30,15 @@ export async function GET(request: NextRequest) {
     const role = searchParams.get('role')
     const activeParam = searchParams.get('active')
     const searchQuery = searchParams.get('search')
-    const limit = parseInt(searchParams.get('limit') || '50')
+    const limitParam = searchParams.get('limit')
+    const limit = limitParam ? parseInt(limitParam) : 50
+
+    if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
+      throw new ValidationError('Invalid limit parameter', {
+        userMessage: 'Limit must be between 1 and 100',
+        metadata: { limit: limitParam },
+      })
+    }
 
     let query = supabase
       .from('contributors')
@@ -51,30 +63,34 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      throw new DatabaseError('Failed to fetch contributors', {
+        cause: error,
+        metadata: {
+          role,
+          isActive,
+          searchQuery,
+          limit,
+        },
+      })
     }
 
+    logger.debug('[Contributors] Listed contributors', {
+      count: data?.length,
+      role,
+      isActive,
+      hasSearch: !!searchQuery,
+    })
     return NextResponse.json({ contributors: data })
-  } catch (error) {
-    console.error('List contributors error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to list contributors',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)
 
 /**
  * POST /api/contributors
  * Create a new contributor
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Require editor or admin role
     const authResult = await requireRole('editor')
     if (authResult instanceof NextResponse) {
@@ -83,31 +99,51 @@ export async function POST(request: NextRequest) {
 
     const { user } = authResult
     const supabase = createNextServerClient()
-    const body: ContributorCreateInput = await request.json()
+    let body: ContributorCreateInput
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      throw new ValidationError('Invalid JSON body', {
+        cause: parseError,
+        userMessage: 'Request body must be valid JSON',
+      })
+    }
 
     // Validate required fields
     if (!body.full_name || !body.slug || !body.primary_role) {
-      return NextResponse.json(
-        { error: 'full_name, slug, and primary_role are required' },
-        { status: 400 }
-      )
+      throw new ValidationError('Missing required fields', {
+        userMessage: 'full_name, slug, and primary_role are required',
+        metadata: {
+          hasFullName: !!body.full_name,
+          hasSlug: !!body.slug,
+          hasPrimaryRole: !!body.primary_role,
+        },
+      })
     }
 
     // Check if slug already exists
-    const { data: existingContributor } = await supabase
+    const { data: existingContributor, error: checkError } = await supabase
       .from('contributors')
       .select('id, full_name, slug')
       .eq('slug', body.slug)
       .single()
 
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 = no rows returned (expected if slug doesn't exist)
+      throw new DatabaseError('Failed to check for existing contributor', {
+        cause: checkError,
+        metadata: { slug: body.slug },
+      })
+    }
+
     if (existingContributor) {
-      return NextResponse.json(
-        {
-          error: 'A contributor with this slug already exists',
-          contributor: existingContributor,
+      throw new ConflictError('A contributor with this slug already exists', {
+        userMessage: 'A contributor with this slug already exists',
+        metadata: {
+          slug: body.slug,
+          existingContributorId: (existingContributor as any).id,
         },
-        { status: 409 }
-      )
+      })
     }
 
     // Insert contributor
@@ -137,19 +173,33 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Database insert error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // Handle unique constraint violation (race condition)
+      if (error.code === '23505') {
+        throw new ConflictError('A contributor with this slug already exists', {
+          userMessage: 'A contributor with this slug already exists',
+          metadata: {
+            slug: body.slug,
+            code: error.code,
+          },
+        })
+      }
+
+      throw new DatabaseError('Failed to create contributor', {
+        cause: error,
+        metadata: {
+          slug: body.slug,
+          fullName: body.full_name,
+        },
+      })
     }
 
+    logger.info('[Contributors] Created contributor', {
+      contributorId: (data as any).id,
+      slug: body.slug,
+      fullName: body.full_name,
+      userId: user.uid,
+    })
+
     return NextResponse.json({ contributor: data }, { status: 201 })
-  } catch (error) {
-    console.error('Create contributor error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to create contributor',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
-  }
-}
+  })
+)
