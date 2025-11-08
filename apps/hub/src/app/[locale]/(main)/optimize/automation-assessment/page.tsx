@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { logger } from '@/lib/logger-client'
 
 export default function AutomationAssessmentPage() {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ export default function AutomationAssessmentPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle form submission here
-    console.log('Form submitted:', formData)
+    logger.debug('Form submitted', { formData })
   }
 
   return (

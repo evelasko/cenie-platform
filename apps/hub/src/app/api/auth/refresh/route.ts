@@ -1,20 +1,18 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
 import { getAdminAuth } from '../../../../lib/firebase-admin'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
+import { createSuccessResponse, parseRequestBody } from '../../../../lib/api-utils'
+import { logger } from '../../../../lib/logger'
 
 const refreshSchema = z.object({
   refreshToken: z.string(),
   userId: z.string(),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const body = await parseRequestBody(request)
     const { userId } = refreshSchema.parse(body)
 
@@ -26,6 +24,8 @@ export async function POST(request: NextRequest) {
     // Get user data
     const userRecord = await auth.getUser(userId)
 
+    logger.info('Token refreshed', { userId })
+
     return createSuccessResponse({
       customToken,
       user: {
@@ -34,10 +34,5 @@ export async function POST(request: NextRequest) {
         fullName: userRecord.displayName,
       },
     })
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
-    }
-    return handleApiError(error)
-  }
-}
+  })
+)

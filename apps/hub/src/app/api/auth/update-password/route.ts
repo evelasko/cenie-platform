@@ -1,44 +1,47 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { NotFoundError, ValidationError } from '@cenie/errors'
 import { getAdminAuth } from '../../../../lib/firebase-admin'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
+import { createSuccessResponse, parseRequestBody } from '../../../../lib/api-utils'
+import { logger } from '../../../../lib/logger'
 
 const updatePasswordSchema = z.object({
   userId: z.string(),
   newPassword: z.string().min(6),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const body = await parseRequestBody(request)
     const { userId, newPassword } = updatePasswordSchema.parse(body)
 
     const auth = getAdminAuth()
 
-    // Update password
-    await auth.updateUser(userId, {
-      password: newPassword,
-    })
+    try {
+      // Update password
+      await auth.updateUser(userId, {
+        password: newPassword,
+      })
 
-    return createSuccessResponse({ message: 'Password updated successfully' })
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
+      logger.info('Password updated', { userId })
+
+      return createSuccessResponse({ message: 'Password updated successfully' })
+    } catch (error: any) {
+      if (error.code === 'auth/user-not-found') {
+        throw new NotFoundError('User not found', {
+          metadata: { userId },
+        })
+      }
+
+      if (error.code === 'auth/weak-password') {
+        throw new ValidationError('Password is too weak', {
+          metadata: { userId },
+        })
+      }
+
+      throw error
     }
-
-    if (error.code === 'auth/user-not-found') {
-      return createErrorResponse('User not found', 404)
-    }
-
-    if (error.code === 'auth/weak-password') {
-      return createErrorResponse('Password is too weak', 400)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)

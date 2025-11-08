@@ -1,46 +1,44 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
 import { getAdminAuth } from '../../../../lib/firebase-admin'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
+import { createSuccessResponse, parseRequestBody } from '../../../../lib/api-utils'
+import { logger } from '../../../../lib/logger'
 
 const resetPasswordSchema = z.object({
   email: z.string().email(),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const body = await parseRequestBody(request)
     const { email } = resetPasswordSchema.parse(body)
 
     const auth = getAdminAuth()
 
-    // Generate password reset link
-    const link = await auth.generatePasswordResetLink(email, {
-      url: process.env.PASSWORD_RESET_URL || 'https://cenie.org/reset-password',
-    })
+    try {
+      // Generate password reset link
+      const link = await auth.generatePasswordResetLink(email, {
+        url: process.env.PASSWORD_RESET_URL || 'https://cenie.org/reset-password',
+      })
 
-    // In production, you would send this link via email
-    // For now, we'll return it in the response (remove in production)
-    return createSuccessResponse({
-      message: 'Password reset email sent',
-      // Remove this in production - only for development
-      resetLink: process.env.NODE_ENV === 'development' ? link : undefined,
-    })
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
+      logger.info('Password reset link generated', { email })
+
+      // In production, you would send this link via email
+      // For now, we'll return it in the response (remove in production)
+      return createSuccessResponse({
+        message: 'Password reset email sent',
+        // Remove this in production - only for development
+        resetLink: process.env.NODE_ENV === 'development' ? link : undefined,
+      })
+    } catch (error: any) {
+      if (error.code === 'auth/user-not-found') {
+        // Don't reveal that the user doesn't exist for security
+        logger.debug('Password reset requested for non-existent user', { email })
+        return createSuccessResponse({ message: 'Password reset email sent' })
+      }
+      throw error
     }
-
-    if (error.code === 'auth/user-not-found') {
-      // Don't reveal that the user doesn't exist for security
-      return createSuccessResponse({ message: 'Password reset email sent' })
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)

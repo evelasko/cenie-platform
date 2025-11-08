@@ -5,6 +5,7 @@ import TinyTitle from '../components/elements/TinyTitle'
 import MarginBlock from '../components/layouts/MarginBlock'
 import { StepCard, type StepCardRootProps } from '../ui/components/StepCard'
 import Image from 'next/image'
+import { logger } from '../lib/logger-client'
 
 interface WhatWeDoForProps {
   heading: string[]
@@ -83,7 +84,7 @@ export default function WhatWeDoFor({
                 ctaButtonLabel={ctaLabel}
                 onClick={() => {
                   // TODO: Implement onClick
-                  console.log(ctaLink)
+                  logger.debug('CTA clicked', { ctaLink })
                 }}
               />
             }

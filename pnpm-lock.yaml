@@ -429,9 +429,15 @@ importers:
       '@cenie/auth-client':
         specifier: workspace:*
         version: link:../../packages/auth-client
+      '@cenie/errors':
+        specifier: workspace:*
+        version: link:../../packages/errors
       '@cenie/firebase':
         specifier: workspace:*
         version: link:../../packages/firebase
+      '@cenie/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@cenie/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase
@@ -780,58 +786,6 @@ importers:
         version: 19.2.0(react@19.2.0)
       typescript:
         specifier: ^5.9.3
-        version: 5.9.3
-
-  services/auth-api:
-    dependencies:
-      '@cenie/supabase':
-        specifier: workspace:*
-        version: link:../../packages/supabase
-      '@supabase/supabase-js':
-        specifier: ^2.54.0
-        version: 2.76.1
-      cors:
-        specifier: ^2.8.5
-        version: 2.8.5
-      dotenv:
-        specifier: ^17.2.1
-        version: 17.2.3
-      express:
-        specifier: ^4.21.2
-        version: 4.21.2
-      firebase-admin:
-        specifier: ^13.4.0
-        version: 13.5.0
-      helmet:
-        specifier: ^8.1.0
-        version: 8.1.0
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
-      zod:
-        specifier: ^4.0.17
-        version: 4.1.12
-    devDependencies:
-      '@types/cors':
-        specifier: ^2.8.19
-        version: 2.8.19
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.24
-      '@types/jsonwebtoken':
-        specifier: ^9.0.10
-        version: 9.0.10
-      '@types/node':
-        specifier: ^24.2.1
-        version: 24.9.1
-      eslint:
-        specifier: ^9.33.0
-        version: 9.38.0(jiti@2.6.1)
-      tsx:
-        specifier: ^4.20.3
-        version: 4.20.6
-      typescript:
-        specifier: ^5.9.2
         version: 5.9.3
 
   services/cloud-functions/functions:
@@ -5410,10 +5364,6 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
 
-  helmet@8.1.0:
-    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
-    engines: {node: '>=18.0.0'}
-
   hermes-estree@0.25.1:
     resolution: {integrity: sha512-0wUoCcLp+5Ev5pDW2OriHC2MJCbwLwuRx+gAqMTOkGKJJiBCLjtrvy4PWUGn6MIVefecRpzoOZ/UV6iGdOr+Cw==}
 
@@ -7279,11 +7229,6 @@ packages:
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
-
-  tsx@4.20.6:
-    resolution: {integrity: sha512-ytQKuwgmrrkDTFP4LjR0ToE2nqgy886GpvRSpU0JAnrdBYppuY5rLkRUYPU1yCryb24SsKBTL/hlDQAEFVwtZg==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
 
   turbo-darwin-64@2.6.0:
     resolution: {integrity: sha512-6vHnLAubHj8Ib45Knu+oY0ZVCLO7WcibzAvt5b1E72YHqAs4y8meMAGMZM0jLqWPh/9maHDc16/qBCMxtW4pXg==}
@@ -13012,8 +12957,6 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
-  helmet@8.1.0: {}
-
   hermes-estree@0.25.1: {}
 
   hermes-parser@0.25.1:
@@ -15431,13 +15374,6 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.8.1: {}
-
-  tsx@4.20.6:
-    dependencies:
-      esbuild: 0.25.12
-      get-tsconfig: 4.13.0
-    optionalDependencies:
-      fsevents: 2.3.3
 
   turbo-darwin-64@2.6.0:
     optional: true

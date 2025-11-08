@@ -1,14 +1,13 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
-import { COLLECTIONS, Profile, UserAppAccess } from '../../../../lib/types'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
-import { authenticateRequest } from '../../../../lib/auth-middleware'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { NotFoundError } from '@cenie/errors'
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
+import { COLLECTIONS, Profile, UserAppAccess } from '@/lib/types'
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { authenticateRequest } from '@/lib/auth-middleware'
+import { logger } from '@/lib/logger'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const oauthSignInSchema = z.object({
@@ -29,14 +28,10 @@ const oauthSignInSchema = z.object({
   }),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Authenticate the request using Firebase ID token
     const authResult = await authenticateRequest(request)
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId } = authResult
 
     const body = await parseRequestBody(request)
@@ -107,6 +102,12 @@ export async function POST(request: NextRequest) {
       ...doc.data(),
     })) as (UserAppAccess & { id: string })[]
 
+    logger.info('OAuth sign-in successful', {
+      userId,
+      provider,
+      isNewUser: isUserCreated,
+    })
+
     return createSuccessResponse(
       {
         message: isUserCreated ? 'User created successfully' : 'User signed in successfully',
@@ -123,35 +124,16 @@ export async function POST(request: NextRequest) {
       },
       isUserCreated ? 201 : 200
     )
-  } catch (error: any) {
-    console.error('OAuth sign-in error:', error)
-
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Invalid request data', 400)
-    }
-
-    if (error.code === 'auth/user-not-found') {
-      return createErrorResponse('User not found', 404)
-    }
-
-    if (error.code === 'auth/invalid-id-token') {
-      return createErrorResponse('Invalid authentication token', 401)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)
 
 // GET route to handle OAuth redirect results
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // This endpoint can be used by clients to verify OAuth redirect results
     const authResult = await authenticateRequest(request)
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId } = authResult
+
     const firestore = getAdminFirestore()
 
     // Get user profile and access permissions
@@ -165,7 +147,9 @@ export async function GET(request: NextRequest) {
     ])
 
     if (!profileDoc.exists) {
-      return createErrorResponse('User profile not found', 404)
+      throw new NotFoundError('User profile not found', {
+        metadata: { userId },
+      })
     }
 
     const profile = profileDoc.data() as Profile
@@ -183,7 +167,5 @@ export async function GET(request: NextRequest) {
       },
       appAccess,
     })
-  } catch (error: any) {
-    return handleApiError(error)
-  }
-}
+  })
+)

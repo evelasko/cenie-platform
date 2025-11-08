@@ -1,14 +1,13 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
-import { COLLECTIONS } from '../../../../lib/types'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
-import { authenticateRequest } from '../../../../lib/auth-middleware'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { ValidationError } from '@cenie/errors'
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
+import { COLLECTIONS } from '@/lib/types'
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { authenticateRequest } from '@/lib/auth-middleware'
+import { logger } from '@/lib/logger'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const linkAccountSchema = z.object({
@@ -17,15 +16,12 @@ const linkAccountSchema = z.object({
   existingProviders: z.array(z.string()),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     // Authenticate the request using Firebase ID token
     const authResult = await authenticateRequest(request)
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId } = authResult
+
     const body = await parseRequestBody(request)
     const { provider, email } = linkAccountSchema.parse(body)
 
@@ -37,7 +33,9 @@ export async function POST(request: NextRequest) {
 
     // Verify that the email matches
     if (userRecord.email !== email) {
-      return createErrorResponse('Email mismatch', 400)
+      throw new ValidationError('Email mismatch', {
+        metadata: { userId, providedEmail: email, userEmail: userRecord.email },
+      })
     }
 
     // Update the user profile with the latest information from the OAuth provider
@@ -60,6 +58,12 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    logger.info('Account linked successfully', {
+      userId,
+      provider,
+      email,
+    })
+
     return createSuccessResponse({
       message: `${provider} account linked successfully`,
       user: {
@@ -70,29 +74,19 @@ export async function POST(request: NextRequest) {
         emailVerified: userRecord.emailVerified,
       },
     })
-  } catch (error: any) {
-    console.error('Account linking error:', error)
-
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Invalid request data', 400)
-    }
-
-    if (error.code === 'auth/user-not-found') {
-      return createErrorResponse('User not found', 404)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)
 
 // GET endpoint to check existing sign-in methods for an email
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const url = new URL(request.url)
     const email = url.searchParams.get('email')
 
     if (!email) {
-      return createErrorResponse('Email parameter is required', 400)
+      throw new ValidationError('Email parameter is required', {
+        metadata: { hasEmailParam: false },
+      })
     }
 
     const auth = getAdminAuth()
@@ -121,7 +115,5 @@ export async function GET(request: NextRequest) {
       }
       throw error
     }
-  } catch (error: any) {
-    return handleApiError(error)
-  }
-}
+  })
+)

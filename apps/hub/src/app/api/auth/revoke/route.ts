@@ -1,19 +1,17 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { getAdminAuth } from '../../../../lib/firebase-admin'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+import { getAdminAuth } from '@/lib/firebase-admin'
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { logger } from '@/lib/logger'
 
 const revokeSchema = z.object({
   userId: z.string(),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const body = await parseRequestBody(request)
     const { userId } = revokeSchema.parse(body)
 
@@ -22,16 +20,8 @@ export async function POST(request: NextRequest) {
     // Revoke all refresh tokens for the user
     await auth.revokeRefreshTokens(userId)
 
+    logger.info('Session revoked', { userId })
+
     return createSuccessResponse({ message: 'Session revoked successfully' })
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
-    }
-
-    if (error.code === 'auth/user-not-found') {
-      return createErrorResponse('User not found', 404)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)

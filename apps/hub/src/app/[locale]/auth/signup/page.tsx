@@ -11,6 +11,7 @@ import { Button } from '@cenie/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
+import { logger } from '@/lib/logger-client'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -53,7 +54,7 @@ export default function SignUpPage() {
 
         router.push('/dashboard')
       } catch (error: unknown) {
-        console.error('OAuth success handling error:', error)
+        logger.error('OAuth success handling error', error)
         setError('Failed to complete sign-up. Please try again.')
       }
     },
@@ -82,7 +83,7 @@ export default function SignUpPage() {
         result.additionalUserInfo?.providerId || provider + '.com'
       )
     } catch (error: unknown) {
-      console.error(`${provider} sign-up error:`, error)
+      logger.error(`${provider} sign-up error`, error)
 
       if (
         error instanceof Object &&
@@ -110,12 +111,12 @@ export default function SignUpPage() {
           )
         }
       } catch (error: unknown) {
-        console.error('OAuth redirect error:', error)
+        logger.error('OAuth redirect error', error)
         setError(error instanceof Error ? error.message : 'OAuth sign-up failed')
       }
     }
 
-    handleRedirectResult().catch(console.error)
+    handleRedirectResult().catch((error) => logger.error('OAuth redirect error', error))
   }, [handleOAuthSuccess])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -146,7 +147,7 @@ export default function SignUpPage() {
       // For now, we'll redirect to dashboard
       router.push('/dashboard')
     } catch (error: unknown) {
-      console.error('Sign up error:', error)
+      logger.error('Sign up error', error)
       let errorMessage = 'Sign up failed'
       if (error && typeof error === 'object' && 'code' in error) {
         if (error.code === 'auth/email-already-in-use') {
@@ -183,7 +184,7 @@ export default function SignUpPage() {
         <form
           className="mt-8 space-y-6"
           onSubmit={(e) => {
-            handleSubmit(e).catch(console.error)
+            handleSubmit(e).catch((error) => logger.error('Sign up error', error))
           }}
         >
           {error && (
@@ -287,7 +288,9 @@ export default function SignUpPage() {
             {/* Google Sign-Up Button */}
             <Button
               onClick={() => {
-                handleOAuthSignUp('google').catch(console.error)
+                handleOAuthSignUp('google').catch((error) =>
+                  logger.error('OAuth sign-up error', error)
+                )
               }}
               disabled={loading || oauthLoading !== null}
               variant="outline"
@@ -317,7 +320,9 @@ export default function SignUpPage() {
             {/* Apple Sign-Up Button */}
             <Button
               onClick={() => {
-                handleOAuthSignUp('apple').catch(console.error)
+                handleOAuthSignUp('apple').catch((error) =>
+                  logger.error('OAuth sign-up error', error)
+                )
               }}
               disabled={loading || oauthLoading !== null}
               variant="outline"

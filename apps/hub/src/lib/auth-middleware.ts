@@ -1,4 +1,6 @@
 import { type NextRequest } from 'next/server'
+import { AuthenticationError, AuthorizationError, DatabaseError } from '@cenie/errors'
+import { logger } from './logger'
 import { getAdminAuth, getAdminFirestore } from './firebase-admin'
 import { COLLECTIONS, type UserAppAccess } from './types'
 
@@ -9,13 +11,15 @@ export interface AuthenticatedRequest extends NextRequest {
 
 export async function authenticateRequest(
   request: NextRequest
-): Promise<{ userId: string; user: unknown } | { error: string; status: number }> {
+): Promise<{ userId: string; user: unknown }> {
   try {
     const authHeader = request.headers.get('authorization')
     const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN
 
     if (!token) {
-      return { error: 'Access token required', status: 401 }
+      throw new AuthenticationError('Access token required', {
+        metadata: { hasAuthHeader: !!authHeader },
+      })
     }
 
     // Verify Firebase ID token
@@ -32,25 +36,37 @@ export async function authenticateRequest(
       },
     }
   } catch (error: unknown) {
+    if (error instanceof AuthenticationError || error instanceof AuthorizationError) {
+      throw error
+    }
+
     if (error instanceof Error && error.message.includes('auth/id-token-expired')) {
-      return { error: 'Token expired', status: 401 }
+      throw new AuthenticationError('Token expired', {
+        cause: error,
+        metadata: { tokenType: 'id-token' },
+      })
     }
 
     if (error instanceof Error && error.message.includes('auth/invalid-id-token')) {
-      return { error: 'Invalid token', status: 401 }
+      throw new AuthenticationError('Invalid token', {
+        cause: error,
+        metadata: { tokenType: 'id-token' },
+      })
     }
 
-    console.error('Authentication error:', error)
-    return { error: 'Authentication failed', status: 401 }
+    logger.error('Authentication error', error, {
+      hasAuthHeader: !!request.headers.get('authorization'),
+    })
+    throw new AuthenticationError('Authentication failed', {
+      cause: error,
+    })
   }
 }
 
-export async function requireAdmin(
-  userId: string
-): Promise<{ success: boolean; error?: string; status?: number }> {
+export async function requireAdmin(userId: string): Promise<void> {
   try {
     if (!userId) {
-      return { success: false, error: 'Authentication required', status: 401 }
+      throw new AuthenticationError('Authentication required')
     }
 
     // Check if user has admin role in any app
@@ -64,23 +80,30 @@ export async function requireAdmin(
       .get()
 
     if (adminAccessSnapshot.empty) {
-      return { success: false, error: 'Admin access required', status: 403 }
+      throw new AuthorizationError('Admin access required', {
+        metadata: { userId },
+      })
+    }
+  } catch (error: unknown) {
+    if (error instanceof AuthenticationError || error instanceof AuthorizationError) {
+      throw error
     }
 
-    return { success: true }
-  } catch (error) {
-    console.error('Admin check error:', error)
-    return { success: false, error: 'Authorization failed', status: 500 }
+    logger.error('Admin check error', error, { userId })
+    throw new DatabaseError('Authorization check failed', {
+      cause: error,
+      metadata: { userId },
+    })
   }
 }
 
 export async function requireAppAccess(
   userId: string,
   appName: string
-): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
+): Promise<UserAppAccess & { id: string }> {
   try {
     if (!userId) {
-      return { success: false, error: 'Authentication required', status: 401 }
+      throw new AuthenticationError('Authentication required')
     }
 
     const firestore = getAdminFirestore()
@@ -93,18 +116,23 @@ export async function requireAppAccess(
       .get()
 
     if (accessSnapshot.empty) {
-      return {
-        success: false,
-        error: `Access denied to ${appName}`,
-        status: 403,
-      }
+      throw new AuthorizationError(`Access denied to ${appName}`, {
+        metadata: { userId, appName },
+      })
     }
 
     const access = accessSnapshot.docs[0].data() as UserAppAccess
-    return { success: true, access: { ...access, id: accessSnapshot.docs[0].id } }
-  } catch (error) {
-    console.error('App access error:', error)
-    return { success: false, error: 'Authorization failed', status: 500 }
+    return { ...access, id: accessSnapshot.docs[0].id }
+  } catch (error: unknown) {
+    if (error instanceof AuthenticationError || error instanceof AuthorizationError) {
+      throw error
+    }
+
+    logger.error('App access error', error, { userId, appName })
+    throw new DatabaseError('Authorization check failed', {
+      cause: error,
+      metadata: { userId, appName },
+    })
   }
 }
 
@@ -112,13 +140,13 @@ export async function requireRole(
   userId: string,
   appName: string,
   requiredRole: string
-): Promise<{ success: boolean; access?: UserAppAccess; error?: string; status?: number }> {
+): Promise<UserAppAccess & { id: string }> {
   const roleHierarchy = ['viewer', 'user', 'editor', 'admin']
   const requiredRoleLevel = roleHierarchy.indexOf(requiredRole)
 
   try {
     if (!userId) {
-      return { success: false, error: 'Authentication required', status: 401 }
+      throw new AuthenticationError('Authentication required')
     }
 
     const firestore = getAdminFirestore()
@@ -131,27 +159,33 @@ export async function requireRole(
       .get()
 
     if (accessSnapshot.empty) {
-      return {
-        success: false,
-        error: `Access denied to ${appName}`,
-        status: 403,
-      }
+      throw new AuthorizationError(`Access denied to ${appName}`, {
+        metadata: { userId, appName },
+      })
     }
 
     const access = accessSnapshot.docs[0].data() as UserAppAccess
     const userRoleLevel = roleHierarchy.indexOf(access.role)
 
     if (userRoleLevel < requiredRoleLevel) {
-      return {
-        success: false,
-        error: `Insufficient permissions. Required: ${requiredRole}, Current: ${access.role}`,
-        status: 403,
-      }
+      throw new AuthorizationError(
+        `Insufficient permissions. Required: ${requiredRole}, Current: ${access.role}`,
+        {
+          metadata: { userId, appName, requiredRole, currentRole: access.role },
+        }
+      )
     }
 
-    return { success: true, access: { ...access, id: accessSnapshot.docs[0].id } }
-  } catch (error) {
-    console.error('Role check error:', error)
-    return { success: false, error: 'Authorization failed', status: 500 }
+    return { ...access, id: accessSnapshot.docs[0].id }
+  } catch (error: unknown) {
+    if (error instanceof AuthenticationError || error instanceof AuthorizationError) {
+      throw error
+    }
+
+    logger.error('Role check error', error, { userId, appName, requiredRole })
+    throw new DatabaseError('Authorization check failed', {
+      cause: error,
+      metadata: { userId, appName, requiredRole },
+    })
   }
 }

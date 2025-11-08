@@ -1,11 +1,10 @@
 'use client'
 
 import { getFirebaseConfig } from '@cenie/firebase/client'
-import { type FirebaseConfig } from 'packages/firebase/src'
 import { useState } from 'react'
 
 export default function TestFirebasePage() {
-  const [config, setConfig] = useState<FirebaseConfig | null>(null)
+  const [config, setConfig] = useState<ReturnType<typeof getFirebaseConfig> | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const testFirebaseConfig = () => {

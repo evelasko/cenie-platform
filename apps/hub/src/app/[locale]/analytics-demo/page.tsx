@@ -7,6 +7,7 @@ import {
   useErrorTracking,
 } from '@cenie/firebase/analytics'
 import { useEffect, useState } from 'react'
+import { logger } from '../../../lib/logger-client'
 
 export default function AnalyticsDemoPage() {
   const { logEvent, logPageView, logUserAction, isReady, appName } = useAnalytics()
@@ -19,7 +20,7 @@ export default function AnalyticsDemoPage() {
 
   useEffect(() => {
     if (isReady) {
-      console.log(`Analytics ready for app: ${appName}`)
+      logger.debug('Analytics ready', { appName })
     }
   }, [isReady, appName])
 

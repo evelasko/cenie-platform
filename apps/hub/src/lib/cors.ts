@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { logger } from './logger'
 
 /**
  * Allowed origins for CORS requests
@@ -44,7 +45,7 @@ export function isOriginAllowed(origin: string | null): boolean {
   // TEMPORARY: Allow null origin for server-side requests
   // This happens when fetch is made from Next.js server components or API routes
   if (!origin) {
-    console.log('[CORS] Warning: null origin detected - likely server-side request')
+    logger.debug('[CORS] Warning: null origin detected - likely server-side request')
     return true // Temporarily allow
   }
 
@@ -133,7 +134,7 @@ export async function withCors(
   const origin = request.headers.get('origin')
   
   // Log CORS check
-  console.log('[CORS] Request:', {
+  logger.debug('[CORS] Request', {
     method: request.method,
     origin,
     allowed: isOriginAllowed(origin),
@@ -141,7 +142,7 @@ export async function withCors(
   
   // Handle preflight request
   if (request.method === 'OPTIONS') {
-    console.log('[CORS] Preflight request from:', origin)
+    logger.debug('[CORS] Preflight request', { origin })
     return handleCorsPreflightRequest(request)
   }
 
@@ -152,14 +153,14 @@ export async function withCors(
     // Add CORS headers to response
     const finalResponse = addCorsHeaders(response, request)
     
-    console.log('[CORS] Response:', {
+    logger.debug('[CORS] Response', {
       status: finalResponse.status,
       hasCorsHeaders: finalResponse.headers.has('Access-Control-Allow-Origin'),
     })
     
     return finalResponse
   } catch (error) {
-    console.error('[CORS] Handler error:', error)
+    logger.error('[CORS] Handler error', error)
     throw error
   }
 }

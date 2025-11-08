@@ -1,13 +1,12 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
-import { COLLECTIONS, Profile, UserAppAccess } from '../../../../lib/types'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-} from '../../../../lib/api-utils'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
+// ConflictError imported but handled by withErrorHandling
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
+import { COLLECTIONS, Profile, UserAppAccess } from '@/lib/types'
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { logger } from '@/lib/logger'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const signUpSchema = z.object({
@@ -16,8 +15,8 @@ const signUpSchema = z.object({
   fullName: z.string().optional(),
 })
 
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const body = await parseRequestBody(request)
     const { email, password, fullName } = signUpSchema.parse(body)
 
@@ -56,6 +55,11 @@ export async function POST(request: NextRequest) {
 
     await firestore.collection(COLLECTIONS.USER_APP_ACCESS).add(accessData)
 
+    logger.info('User signup successful', {
+      userId: userRecord.uid,
+      email,
+    })
+
     return createSuccessResponse(
       {
         message: 'User created successfully',
@@ -67,15 +71,5 @@ export async function POST(request: NextRequest) {
       },
       201
     )
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
-    }
-
-    if (error.code === 'auth/email-already-exists') {
-      return createErrorResponse('Email already exists', 400)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)

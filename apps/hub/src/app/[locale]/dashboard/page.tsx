@@ -5,6 +5,7 @@ import { signOut } from '@cenie/firebase/auth'
 import { Button } from '@cenie/ui'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { logger } from '../../../lib/logger-client'
 
 export default function DashboardPage() {
   const { user, loading } = useAuthContext()
@@ -21,7 +22,7 @@ export default function DashboardPage() {
       await signOut()
       router.push('/auth/signin')
     } catch (error) {
-      console.error('Sign out error:', error)
+      logger.error('Sign out error', error)
     }
   }
 
@@ -52,7 +53,7 @@ export default function DashboardPage() {
               <span className="text-gray-600">Welcome, {user.displayName || user.email}</span>
               <Button
                 onClick={() => {
-                  handleSignOut().catch(console.error)
+                  handleSignOut().catch((error) => logger.error('Sign out error', error))
                 }}
                 variant="outline"
               >

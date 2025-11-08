@@ -1,23 +1,18 @@
 import { type NextRequest } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
 import { getAdminAuth, getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS } from '../../../../lib/types'
 import { authenticateRequest } from '../../../../lib/auth-middleware'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-} from '../../../../lib/api-utils'
+import { createSuccessResponse } from '../../../../lib/api-utils'
+import { logger } from '../../../../lib/logger'
 
 // Delete user account
-export async function DELETE(request: NextRequest) {
-  try {
+export const DELETE = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const authResult = await authenticateRequest(request)
-
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId } = authResult
+
     const firestore = getAdminFirestore()
     const auth = getAdminAuth()
 
@@ -54,8 +49,8 @@ export async function DELETE(request: NextRequest) {
     // Delete auth user
     await auth.deleteUser(userId)
 
+    logger.info('Account deleted', { userId })
+
     return createSuccessResponse({ message: 'Account deleted successfully' })
-  } catch (error) {
-    return handleApiError(error)
-  }
-}
+  })
+)

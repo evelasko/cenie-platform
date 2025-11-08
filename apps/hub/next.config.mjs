@@ -22,6 +22,14 @@ const nextConfig = {
     '@cenie/errors',
   ],
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+  webpack: (config, { isServer }) => {
+    // Ensure proper resolution of conditional exports
+    config.resolve.conditionNames = isServer
+      ? ['node', 'import', 'require', 'default']
+      : ['browser', 'module', 'import', 'require', 'default']
+
+    return config
+  },
   images: {
     remotePatterns: [
       {

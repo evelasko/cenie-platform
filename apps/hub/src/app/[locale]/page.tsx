@@ -18,6 +18,7 @@ import { DynamicIcon } from 'lucide-react/dynamic'
 import { BulletList } from '@/ui/components/BulletList'
 import { BulletListItem } from '@/ui/components/BulletListItem'
 import WhatWeDoFor from '@/widgets/WhatWeDoFor'
+import { logger } from '@/lib/logger-client'
 import LightSection from '@/components/layouts/LightSection'
 import Link from 'next/link'
 import { CircleArrowRight } from 'lucide-react'
@@ -335,7 +336,7 @@ export default function HubHomePage() {
                               iconRight={<FeatherArrowUpRight />}
                               onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
                                 // TODO: Implement onClick
-                                console.log(ctaLink)
+                                logger.debug('CTA clicked', { ctaLink })
                               }}
                             />
                           </div>
@@ -389,7 +390,7 @@ export default function HubHomePage() {
                           iconRight={<FeatherArrowUpRight />}
                           onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
                             // TODO: Implement onClick
-                            console.log(ctaLink)
+                            logger.debug('CTA clicked', { ctaLink })
                           }}
                         >
                           {ctaLabel}
@@ -545,7 +546,8 @@ export default function HubHomePage() {
                 <Button
                   onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
                     // TODO: Implement onClick
-                    console.log('ctaLink')
+                    const link = '/insights'
+                    logger.debug('CTA clicked', { ctaLink: link })
                   }}
                 >
                   Visit our Insights Section
@@ -579,7 +581,7 @@ export default function HubHomePage() {
                       iconRight={<FeatherArrowUpRight />}
                       onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
                         // TODO: Implement onClick
-                        console.log('ctaLink')
+                        logger.debug('CTA clicked', { ctaLink: 'about-section' })
                       }}
                     >
                       Visit our About Section
@@ -639,7 +641,7 @@ export default function HubHomePage() {
                       iconRight={<FeatherArrowUpRight />}
                       onClick={(_event: React.MouseEvent<HTMLButtonElement>) => {
                         // TODO: Implement onClick
-                        console.log('ctaLink')
+                        logger.debug('CTA clicked', { ctaLink: 'about-section' })
                       }}
                     >
                       About Section

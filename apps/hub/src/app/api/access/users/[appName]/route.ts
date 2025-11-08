@@ -1,33 +1,22 @@
 import { NextRequest } from 'next/server'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
 import { getAdminFirestore } from '../../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess, Profile } from '../../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../../lib/auth-middleware'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  serializeAccess,
-} from '../../../../../lib/api-utils'
+import { createSuccessResponse, serializeAccess } from '../../../../../lib/api-utils'
 
 // List all users with app access (admin only)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ appName: string }> }
-) {
-  try {
+export const GET = withErrorHandling(
+  withLogging(async (
+    request: NextRequest,
+    { params }: { params: Promise<{ appName: string }> }
+  ) => {
     const authResult = await authenticateRequest(request)
-
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId } = authResult
 
     // Check admin privileges
-    const adminCheck = await requireAdmin(userId)
-    if (!adminCheck.success) {
-      return createErrorResponse(adminCheck.error!, adminCheck.status!)
-    }
+    await requireAdmin(userId)
 
     const { appName } = await params
     const { searchParams } = new URL(request.url)
@@ -72,7 +61,5 @@ export async function GET(
     )
 
     return createSuccessResponse({ users, page, limit })
-  } catch (error) {
-    return handleApiError(error)
-  }
-}
+  })
+)

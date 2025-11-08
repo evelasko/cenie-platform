@@ -1,15 +1,12 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
+import { withErrorHandling } from '@cenie/errors/next'
+import { withLogging } from '@cenie/logger/next'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess } from '../../../../lib/types'
 import { authenticateRequest, requireAdmin } from '../../../../lib/auth-middleware'
-import {
-  createErrorResponse,
-  createSuccessResponse,
-  handleApiError,
-  parseRequestBody,
-  serializeAccess,
-} from '../../../../lib/api-utils'
+import { createSuccessResponse, parseRequestBody, serializeAccess } from '../../../../lib/api-utils'
+import { logger } from '../../../../lib/logger'
 import { Timestamp } from 'firebase-admin/firestore'
 
 const grantAccessSchema = z.object({
@@ -19,21 +16,13 @@ const grantAccessSchema = z.object({
 })
 
 // Grant app access to user (admin only)
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withErrorHandling(
+  withLogging(async (request: NextRequest) => {
     const authResult = await authenticateRequest(request)
-
-    if ('error' in authResult) {
-      return createErrorResponse(authResult.error, authResult.status)
-    }
-
     const { userId: adminUserId } = authResult
 
     // Check admin privileges
-    const adminCheck = await requireAdmin(adminUserId)
-    if (!adminCheck.success) {
-      return createErrorResponse(adminCheck.error!, adminCheck.status!)
-    }
+    await requireAdmin(adminUserId)
 
     const body = await parseRequestBody(request)
     const { userId, appName, role } = grantAccessSchema.parse(body)
@@ -62,6 +51,9 @@ export async function POST(request: NextRequest) {
       const updatedDoc = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).doc(docId).get()
 
       const access = { ...(updatedDoc.data() as UserAppAccess), id: docId }
+
+      logger.info('Access updated', { userId, appName, role, adminUserId })
+
       return createSuccessResponse({
         message: 'Access updated successfully',
         access: serializeAccess(access),
@@ -81,6 +73,9 @@ export async function POST(request: NextRequest) {
     const docRef = await firestore.collection(COLLECTIONS.USER_APP_ACCESS).add(accessData)
 
     const access = { ...accessData, id: docRef.id }
+
+    logger.info('Access granted', { userId, appName, role, adminUserId })
+
     return createSuccessResponse(
       {
         message: 'Access granted successfully',
@@ -88,11 +83,5 @@ export async function POST(request: NextRequest) {
       },
       201
     )
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return createErrorResponse('Validation error', 400)
-    }
-
-    return handleApiError(error)
-  }
-}
+  })
+)

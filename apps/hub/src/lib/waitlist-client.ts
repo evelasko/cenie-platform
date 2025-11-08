@@ -47,14 +47,86 @@ export interface WaitlistListResponse {
   }
 }
 
-export class WaitlistAPIError extends Error {
-  constructor(
-    message: string,
-    public status?: number,
-    public details?: any
-  ) {
-    super(message)
-    this.name = 'WaitlistAPIError'
+/**
+ * Waitlist API Client
+ * 
+ * Helper functions for interacting with the waitlist API
+ * Can be used in client-side components or server-side code
+ */
+
+import {
+  ValidationError,
+  ConflictError,
+  RateLimitError,
+  DatabaseError,
+  InternalError,
+  AppError,
+} from '@cenie/errors'
+
+export interface WaitlistSubscriber {
+  id: string
+  full_name: string
+  email: string
+  source: string | null
+  subscribed_at: string
+  is_active: boolean
+  metadata: Record<string, any>
+}
+
+export interface WaitlistSubscribeInput {
+  full_name: string
+  email: string
+  source?: 'hub' | 'editorial' | 'academy' | 'agency' | 'evelas' | 'other'
+  metadata?: Record<string, any>
+}
+
+export interface WaitlistSubscribeResponse {
+  success: boolean
+  message: string
+  subscriber?: {
+    id: string
+    full_name: string
+    email: string
+    source: string
+    subscribed_at: string
+  }
+  error?: string
+  details?: Array<{ field: string; message: string }>
+  resetInSeconds?: number
+}
+
+export interface WaitlistListResponse {
+  subscribers: WaitlistSubscriber[]
+  pagination: {
+    page: number
+    per_page: number
+    total: number
+    total_pages: number
+  }
+}
+
+/**
+ * Map API error response to appropriate error class
+ */
+function mapApiErrorToErrorClass(
+  status: number,
+  message: string,
+  details?: any
+): AppError {
+  switch (status) {
+    case 400:
+      return new ValidationError(message, { metadata: { details } })
+    case 409:
+      return new ConflictError(message, { metadata: { details } })
+    case 429:
+      return new RateLimitError(message, {
+        metadata: { details, resetInSeconds: details?.resetInSeconds },
+      })
+    case 500:
+    case 502:
+      return new DatabaseError(message, { metadata: { details } })
+    default:
+      return new InternalError(message, { metadata: { details, status } })
   }
 }
 
@@ -70,8 +142,10 @@ export class WaitlistAPIError extends Error {
  *   })
  *   console.log('Success:', result.message)
  * } catch (error) {
- *   if (error instanceof WaitlistAPIError) {
- *     console.error('Error:', error.message, error.details)
+ *   if (error instanceof ValidationError) {
+ *     console.error('Validation error:', error.message)
+ *   } else if (error instanceof ConflictError) {
+ *     console.error('Already subscribed:', error.message)
  *   }
  * }
  */
@@ -95,24 +169,27 @@ export async function subscribeToWaitlist(
     const data: WaitlistSubscribeResponse = await response.json()
 
     if (!response.ok) {
-      throw new WaitlistAPIError(
-        data.message || data.error || 'Subscription failed',
+      const error = mapApiErrorToErrorClass(
         response.status,
+        data.message || data.error || 'Subscription failed',
         data.details
       )
+      throw error
     }
 
     return data
   } catch (error) {
-    if (error instanceof WaitlistAPIError) {
+    if (error instanceof AppError) {
       throw error
     }
 
     if (error instanceof Error) {
-      throw new WaitlistAPIError(error.message)
+      throw new InternalError('Failed to subscribe to waitlist', {
+        cause: error,
+      })
     }
 
-    throw new WaitlistAPIError('An unexpected error occurred')
+    throw new InternalError('An unexpected error occurred')
   }
 }
 
@@ -147,24 +224,27 @@ export async function subscribeToWaitlistExternal(
     const data: WaitlistSubscribeResponse = await response.json()
 
     if (!response.ok) {
-      throw new WaitlistAPIError(
-        data.message || data.error || 'Subscription failed',
+      const error = mapApiErrorToErrorClass(
         response.status,
+        data.message || data.error || 'Subscription failed',
         data.details
       )
+      throw error
     }
 
     return data
   } catch (error) {
-    if (error instanceof WaitlistAPIError) {
+    if (error instanceof AppError) {
       throw error
     }
 
     if (error instanceof Error) {
-      throw new WaitlistAPIError(error.message)
+      throw new InternalError('Failed to subscribe to waitlist', {
+        cause: error,
+      })
     }
 
-    throw new WaitlistAPIError('An unexpected error occurred')
+    throw new InternalError('An unexpected error occurred')
   }
 }
 
@@ -211,23 +291,27 @@ export async function listWaitlistSubscribers(
     const data = await response.json()
 
     if (!response.ok) {
-      throw new WaitlistAPIError(
+      const error = mapApiErrorToErrorClass(
+        response.status,
         data.message || data.error || 'Failed to fetch subscribers',
-        response.status
+        data.details
       )
+      throw error
     }
 
     return data
   } catch (error) {
-    if (error instanceof WaitlistAPIError) {
+    if (error instanceof AppError) {
       throw error
     }
 
     if (error instanceof Error) {
-      throw new WaitlistAPIError(error.message)
+      throw new InternalError('Failed to fetch waitlist subscribers', {
+        cause: error,
+      })
     }
 
-    throw new WaitlistAPIError('An unexpected error occurred')
+    throw new InternalError('An unexpected error occurred')
   }
 }
 
@@ -250,8 +334,8 @@ export function isValidFullName(name: string): boolean {
  * Get user-friendly error message
  */
 export function getErrorMessage(error: unknown): string {
-  if (error instanceof WaitlistAPIError) {
-    return error.message
+  if (error instanceof AppError) {
+    return error.getUserMessage()
   }
 
   if (error instanceof Error) {

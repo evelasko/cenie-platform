@@ -13,6 +13,8 @@
  * - Suitable for protecting against basic abuse
  */
 
+import { logger } from './logger'
+
 interface RateLimitEntry {
   count: number
   resetAt: number
@@ -49,7 +51,9 @@ function startCleanup() {
 
     // Log cleanup stats in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[RateLimiter] Cleaned up ${keysToDelete.length} expired entries`)
+      logger.debug('[RateLimiter] Cleaned up expired entries', {
+        count: keysToDelete.length,
+      })
     }
   }, CLEANUP_INTERVAL)
 }

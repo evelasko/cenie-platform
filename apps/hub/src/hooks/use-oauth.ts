@@ -12,6 +12,7 @@ import {
 } from '@cenie/firebase/auth'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import { logger } from '../lib/logger-client'
 
 interface UseOAuthOptions {
   redirectTo?: string
@@ -82,7 +83,7 @@ export function useOAuth(options: UseOAuthOptions = {}) {
           router.push(redirectTo)
         }, 1000)
       } catch (error: unknown) {
-        console.error('OAuth success handling error:', error)
+        logger.error('OAuth success handling error', error)
         const errorMessage = 'Failed to complete authentication. Please try again.'
         setError(errorMessage)
         onError?.(errorMessage)
@@ -99,14 +100,14 @@ export function useOAuth(options: UseOAuthOptions = {}) {
           await handleOAuthSuccess(result)
         }
       } catch (error: unknown) {
-        console.error('OAuth redirect error:', error)
+        logger.error('OAuth redirect error', error)
         const errorMessage = error instanceof Error ? error.message : 'OAuth authentication failed'
         setError(errorMessage)
         onError?.(errorMessage)
       }
     }
 
-    handleRedirectResult().catch(console.error)
+    handleRedirectResult().catch((error) => logger.error('OAuth redirect error', error))
   }, [onError, handleOAuthSuccess])
 
   const signInWithProvider = useCallback(
@@ -131,7 +132,7 @@ export function useOAuth(options: UseOAuthOptions = {}) {
 
         await handleOAuthSuccess(result)
       } catch (error: unknown) {
-        console.error(`${provider} OAuth error:`, error)
+        logger.error(`${provider} OAuth error`, error)
 
         // Handle account exists with different credential error
         if (

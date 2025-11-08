@@ -15,6 +15,7 @@ import {
 } from '@cenie/firebase/auth'
 import { Button } from '@cenie/ui'
 import Link from 'next/link'
+import { logger } from '@/lib/logger-client'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
@@ -60,7 +61,7 @@ export default function SignInPage() {
 
         router.push('/dashboard')
       } catch (error: unknown) {
-        console.error('OAuth success handling error:', error)
+        logger.error('OAuth success handling error', error)
         setError('Failed to complete sign-in. Please try again.')
       }
     },
@@ -90,7 +91,7 @@ export default function SignInPage() {
         result.additionalUserInfo?.providerId || provider + '.com'
       )
     } catch (error: unknown) {
-      console.error(`${provider} sign-in error:`, error)
+      logger.error(`${provider} sign-in error`, error)
 
       // Handle account exists with different credential error
       if (
@@ -165,12 +166,12 @@ export default function SignInPage() {
           )
         }
       } catch (error: unknown) {
-        console.error('OAuth redirect error:', error)
+        logger.error('OAuth redirect error', error)
         setError(error instanceof Error ? error.message : 'OAuth sign-in failed')
       }
     }
 
-    handleRedirectResult().catch(console.error)
+    handleRedirectResult().catch((error) => logger.error('OAuth redirect error', error))
   }, [handleOAuthSuccess])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -188,7 +189,7 @@ export default function SignInPage() {
       await signIn(email, password)
       router.push('/dashboard')
     } catch (error: unknown) {
-      console.error('Sign in error:', error)
+      logger.error('Sign in error', error)
 
       let errorMessage = 'Sign in failed'
       if (error instanceof Object && 'code' in error) {
