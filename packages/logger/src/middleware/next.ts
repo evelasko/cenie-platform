@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import { logContext, ContextKeys } from '../context/async-context'
+import { logContext, ContextKeys } from '../context/async-context.server'
 
 /**
  * Extract client IP from Next.js request

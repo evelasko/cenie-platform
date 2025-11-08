@@ -6,12 +6,45 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./middleware": "./src/middleware/index.ts",
-    "./next": "./src/middleware/next.ts",
-    "./express": "./src/middleware/express.ts",
-    "./context": "./src/context/index.ts",
-    "./utils": "./src/utils/index.ts"
+    ".": {
+      "react-server": "./src/index.server.ts",
+      "edge-light": "./src/index.client.ts",
+      "browser": "./src/index.client.ts",
+      "worker": "./src/index.client.ts",
+      "types": "./src/index.ts",
+      "default": "./src/index.server.ts"
+    },
+    "./client": {
+      "types": "./src/index.client.ts",
+      "default": "./src/index.client.ts"
+    },
+    "./server": {
+      "types": "./src/index.server.ts",
+      "default": "./src/index.server.ts"
+    },
+    "./middleware": {
+      "types": "./src/middleware/index.ts",
+      "default": "./src/middleware/index.ts"
+    },
+    "./next": {
+      "types": "./src/middleware/next.ts",
+      "default": "./src/middleware/next.ts"
+    },
+    "./express": {
+      "types": "./src/middleware/express.ts",
+      "default": "./src/middleware/express.ts"
+    },
+    "./context": {
+      "react-server": "./src/context/async-context.server.ts",
+      "edge-light": "./src/context/async-context.client.ts",
+      "browser": "./src/context/async-context.client.ts",
+      "types": "./src/context/index.ts",
+      "default": "./src/context/async-context.server.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "default": "./src/utils/index.ts"
+    }
   },
   "scripts": {
     "lint": "eslint . --max-warnings 60",

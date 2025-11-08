@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { logContext } from '../context/async-context.server'
+import { logContext } from '../context/async-context.client'
 import { sanitize, DEFAULT_REDACT_FIELDS } from '../utils/sanitizer'
 import { serialize, serializeError } from '../utils/serializer'
 
@@ -16,7 +16,7 @@ import type {
 import { LogLevel } from './types'
 
 /**
- * Core Logger implementation
+ * Core Logger implementation (client-side)
  */
 export class Logger implements ILogger {
   private readonly name: string
@@ -41,9 +41,11 @@ export class Logger implements ILogger {
    * Detect environment from NODE_ENV
    */
   private detectEnvironment(): Environment {
-    const env = process.env.NODE_ENV
-    if (env === 'production') return 'production'
-    if (env === 'test') return 'test'
+    if (typeof process !== 'undefined' && process.env) {
+      const env = process.env.NODE_ENV
+      if (env === 'production') return 'production'
+      if (env === 'test') return 'test'
+    }
     return 'development'
   }
 
@@ -184,7 +186,7 @@ export class Logger implements ILogger {
 }
 
 /**
- * Create a new logger instance
+ * Create a new logger instance (client-side)
  */
 export function createLogger(config: LoggerConfig): ILogger {
   return new Logger(config)

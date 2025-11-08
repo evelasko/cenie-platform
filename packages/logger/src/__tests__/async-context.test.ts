@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { logContext, ContextKeys } from '../context/async-context'
+
+import { logContext, ContextKeys } from '../context/async-context.server'
 
 describe('Async Context', () => {
   beforeEach(() => {
@@ -416,4 +417,3 @@ describe('Async Context', () => {
     })
   })
 })
-

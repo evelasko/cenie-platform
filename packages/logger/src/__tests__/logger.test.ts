@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
+import { logContext } from '../context/async-context.server'
 import { Logger, createLogger } from '../core/logger'
 import { LogLevel } from '../core/types'
 import type { Transport, LogEntry } from '../core/types'
-import { logContext } from '../context/async-context'
 
 // Mock transport for testing
 class MockTransport implements Transport {
@@ -336,6 +337,7 @@ describe('Logger', () => {
       logger.info('No metadata')
       expect(mockTransport.getLastLog()?.metadata).toBeUndefined()
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       logger.info('Null metadata', null as any)
       // Null metadata results in no metadata being added
       const log = mockTransport.getLastLog()
@@ -606,9 +608,9 @@ describe('Logger', () => {
 
       const log = mockTransport.getLastLog()
       expect(log?.timestamp).toBeDefined()
-      expect(log?.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
-      expect(log?.timestamp! >= beforeLog).toBe(true)
-      expect(log?.timestamp! <= afterLog).toBe(true)
+      expect(log!.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+      expect(log!.timestamp >= beforeLog).toBe(true)
+      expect(log!.timestamp <= afterLog).toBe(true)
     })
   })
 
@@ -656,6 +658,7 @@ describe('Logger', () => {
         transports: [mockTransport],
       })
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const circular: any = { a: 1 }
       circular.self = circular
 
@@ -668,4 +671,3 @@ describe('Logger', () => {
     })
   })
 })
-
