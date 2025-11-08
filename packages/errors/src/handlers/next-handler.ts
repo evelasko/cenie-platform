@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createLogger } from '@cenie/logger'
 import { logContext } from '@cenie/logger/context'
 import { type NextRequest, NextResponse } from 'next/server'

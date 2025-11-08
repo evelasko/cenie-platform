@@ -1,28 +1,28 @@
 'use client'
 
-import MediaHero from '../../components/heroes/MediaHero'
-import MarginBlock from '../../components/layouts/MarginBlock'
-import DarkSection from '../../components/layouts/DarkSection'
+import MediaHero from '@/components/heroes/MediaHero'
+import MarginBlock from '@/components/layouts/MarginBlock'
+import DarkSection from '@/components/layouts/DarkSection'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import clsx from 'clsx'
-import TinyTitle from '../../components/elements/TinyTitle'
-import { BrandAccordion } from '../../ui/components/BrandAccordion'
-import { ButtonThemed } from '../../ui/components/ButtonThemed'
+import TinyTitle from '@/components/elements/TinyTitle'
+import { BrandAccordion } from '@/ui/components/BrandAccordion'
+import { ButtonThemed } from '@/ui/components/ButtonThemed'
 import { FeatherArrowUpRight } from '@subframe/core'
 import Image from 'next/image'
-import Spacer from '../../components/layouts/Spacer'
-import { Button } from '../../ui/components/Button'
-import { AccordionFaq } from '../../ui/components/AccordionFaq'
+import Spacer from '@/components/layouts/Spacer'
+import { Button } from '@/ui/components/Button'
+import { AccordionFaq } from '@/ui/components/AccordionFaq'
 import { DynamicIcon } from 'lucide-react/dynamic'
-import { BulletList } from '../../ui/components/BulletList'
-import { BulletListItem } from '../../ui/components/BulletListItem'
-import WhatWeDoFor from '../../widgets/WhatWeDoFor'
-import LightSection from '../../components/layouts/LightSection'
+import { BulletList } from '@/ui/components/BulletList'
+import { BulletListItem } from '@/ui/components/BulletListItem'
+import WhatWeDoFor from '@/widgets/WhatWeDoFor'
+import LightSection from '@/components/layouts/LightSection'
 import Link from 'next/link'
 import { CircleArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import richtextSolver from '../../i18n/richtext'
+import richtextSolver from '@/i18n/richtext'
 
 // export const metadata: Metadata = {
 //   // TODO Tranlsate this to Spanish
@@ -114,8 +114,8 @@ export default function HubHomePage() {
         ref={revealerRef}
         className={clsx(
           'h-[calc(100vh-4rem)] px-1 md:px-1.5',
-          'bg-gradient-to-b from-[var(--color-nav-background)] to-background',
-          'z-[5]'
+          'bg-linear-to-b from-(--color-nav-background) to-background',
+          'z-5'
         )}
         // style={{
         //   scaleX: revealerScaleX,
@@ -127,7 +127,7 @@ export default function HubHomePage() {
       >
         <MediaHero backgroundVideo="/media/videos/hub-hero-loop.mp4" backgroundClassName="mb-1">
           <div id="logo-type" className="text-center relative w-full p-1.5 lg:p-1">
-            <div className="w-full aspect-[4/1] flex items-end justify-end">
+            <div className="w-full aspect-4/1 flex items-end justify-end">
               <div className="w-1/2 text-right text-display-text-small pr-1">
                 <p className="text-white opacity-80 uppercase tracking-[0.2em] leading-[1.6em] text-[10px] lg:text-[16px]">
                   centro de
@@ -139,7 +139,7 @@ export default function HubHomePage() {
               </div>
             </div>
             {/* Blank space with 4:1 aspect ratio */}
-            <div className="relative w-full aspect-[4/1]">
+            <div className="relative w-full aspect-4/1">
               {/* Container for image with 4:1 aspect ratio */}
               <Image
                 className="opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] filter-[brightness(1.5)]"
@@ -175,7 +175,7 @@ export default function HubHomePage() {
       </motion.div>
       <motion.div
         id="revealer-content"
-        className="z-[1]"
+        className="z-1"
         ref={containerRef}
         // style={{
         //   y: contentTranslateY,
@@ -267,7 +267,7 @@ export default function HubHomePage() {
                 header={<TinyTitle text="What we do" className="mb-4 lg:mb-0" variant="light" />}
               >
                 <h2 className="text-heading-2">Solutions.</h2>
-                <p className="pt-8 text-body md:!text-body-large">
+                <p className="pt-8 text-body md:text-body-large!">
                   CENIE addresses these challenges through an integrated ecosystem of seven
                   initiatives that work seamlessly together:
                 </p>
@@ -325,7 +325,7 @@ export default function HubHomePage() {
                           >
                             <div className="w-full">
                               <div className="text-body-large text-brand-700 pb-2">{heading}</div>
-                              <div className="text-body-small md:!text-body text-neutral-500">
+                              <div className="text-body-small md:text-body! text-neutral-500">
                                 {details}
                               </div>
                             </div>
@@ -378,7 +378,7 @@ export default function HubHomePage() {
                   >
                     <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2">
                       <div className="flex w-full grow shrink-0 basis-0 flex-col items-start gap-2 px-3 pb-2">
-                        <span className="text-body md:!text-body-large  text-neutral-500">
+                        <span className="text-body md:text-body-large!  text-neutral-500">
                           {details ?? detailsNode}
                         </span>
                       </div>
@@ -623,11 +623,11 @@ export default function HubHomePage() {
                               className="text-neutral-600 w-6 md:w-8 h-6 md:h-8"
                             />
                           </div>
-                          <p className="text-body md:!text-body-large text-default-font-light !font-bold">
+                          <p className="text-body md:text-body-large! text-default-font-light font-bold!">
                             {heading}
                           </p>
                         </div>
-                        <p className="text-subtitle md:!text-body text-neutral-600">{details}</p>
+                        <p className="text-subtitle md:text-body! text-neutral-600">{details}</p>
                       </div>
                     ))}
                   </div>
@@ -660,7 +660,7 @@ export default function HubHomePage() {
                 <br />
                 <span className="text-subtext-color">Your Artistic Future?</span>
               </p>
-              <p className="text-display-text-small !font-medium !tracking-tighter pt-12 text-subtext-color">
+              <p className="text-display-text-small font-medium! tracking-tighter! pt-12 text-subtext-color">
                 The performing arts industry is evolving rapidly, and the artists and organizations
                 that embrace this transformation{' '}
                 <span className="text-default-font">
@@ -698,7 +698,7 @@ export default function HubHomePage() {
                 <div className="flex flex-row lg:flex-col items-start gap-2">
                   <span className="shrink text-heading-1 text-subtext-color">{index + 1}.</span>
                   <div className="flex grow shrink-0 basis-0 flex-col gap-2">
-                    <span className="text-display-text-large md:!text-caption md:!leading-6 md:!font-extrabold md:!tracking-tighter pt-0 md:!pt-4 lg:!pt-12">
+                    <span className="text-display-text-large md:text-caption! md:leading-6! md:font-extrabold! md:tracking-tighter! pt-0 md:pt-4! lg:pt-12!">
                       {heading.split('\n').map((line, index) => (
                         <div key={index} className="whitespace-pre-line">
                           {line}
@@ -825,7 +825,7 @@ export default function HubHomePage() {
         <section id="newsletter-signup">
           <div className="flex w-full flex-col-reverse sm:flex-row items-start gap-8 sm:gap-16 content-wrapper">
             <div className="w-full sm:w-1/2">
-              <p className="text-display-text-small !font-medium !tracking-tighter pt-12 md:!pt-1 pr-0 md:pr-12">
+              <p className="text-display-text-small font-medium! tracking-tighter! pt-12 md:pt-1! pr-0 md:pr-12">
                 Stay ahead of the curve with CENIE&apos;s exclusive insights, research findings, and
                 industry updates.{' '}
                 <span className="text-subtext-color">
