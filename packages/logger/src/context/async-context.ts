@@ -4,12 +4,13 @@ import { AsyncLocalStorage } from 'async_hooks'
  * Context storage for request-scoped data
  */
 class LogContextStore {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private storage = new AsyncLocalStorage<Map<string, any>>()
 
   /**
    * Run a function with the given context
    */
-  run<T>(context: Record<string, any>, callback: () => T): T {
+  run<T>(context: Record<string, unknown>, callback: () => T): T {
     const store = new Map(Object.entries(context))
     return this.storage.run(store, callback)
   }
@@ -17,14 +18,14 @@ class LogContextStore {
   /**
    * Get a specific context value
    */
-  get(key: string): any {
-    return this.storage.getStore()?.get(key)
+  get<T>(key: string): T | undefined {
+    return this.storage.getStore()?.get(key) as T | undefined
   }
 
   /**
    * Set a context value in the current store
    */
-  set(key: string, value: any): void {
+  set<T>(key: string, value: T): void {
     const store = this.storage.getStore()
     if (store) {
       store.set(key, value)
@@ -34,6 +35,7 @@ class LogContextStore {
   /**
    * Get all context values
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAll(): Record<string, any> {
     const store = this.storage.getStore()
     if (!store) return {}
