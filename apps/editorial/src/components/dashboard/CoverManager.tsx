@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Upload, Image as ImageIcon, Loader2, X, Check, Search } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import Button from '@/components/ui/Button'
 
 interface CoverFile {
   filename: string
@@ -81,6 +80,7 @@ export function CoverManager({
       }, 300)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [searchQuery, activeTab])
 
   const handleDrag = (e: React.DragEvent) => {
@@ -198,9 +198,7 @@ export function CoverManager({
       {/* Current Cover Preview */}
       {currentCoverUrl && (
         <div className="border border-border rounded-none p-4 bg-muted">
-          <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mb-2')}>
-            Current Cover:
-          </p>
+          <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mb-2')}>Current Cover:</p>
           <div className="flex items-start gap-4">
             <img
               src={currentCoverUrl}
@@ -360,7 +358,7 @@ export function CoverManager({
                     )}
 
                     {/* Thumbnail */}
-                    <div className="aspect-[2/3] relative">
+                    <div className="aspect-2/3 relative">
                       <img
                         src={file.thumbnail_url}
                         alt={file.filename}
@@ -368,9 +366,7 @@ export function CoverManager({
                       />
                       {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <span className={clsx(TYPOGRAPHY.bodySmall, 'text-white')}>
-                          Select
-                        </span>
+                        <span className={clsx(TYPOGRAPHY.bodySmall, 'text-white')}>Select</span>
                       </div>
                     </div>
 
@@ -410,13 +406,14 @@ export function CoverManager({
           <strong>Tip:</strong>{' '}
           {activeTab === 'upload' ? (
             <>
-              Upload will save as <code className="font-mono">{slug}.jpg</code>. If a file with
-              this name exists, it will be replaced.
+              Upload will save as <code className="font-mono">{slug}.jpg</code>. If a file with this
+              name exists, it will be replaced.
             </>
           ) : (
             <>
-              Select an existing cover from your <code className="font-mono">public/images/covers/</code> folder,
-              or switch to Upload to add a new one.
+              Select an existing cover from your{' '}
+              <code className="font-mono">public/images/covers/</code> folder, or switch to Upload
+              to add a new one.
             </>
           )}
         </p>
@@ -424,4 +421,3 @@ export function CoverManager({
     </div>
   )
 }
-

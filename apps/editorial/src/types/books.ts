@@ -108,7 +108,8 @@ export type InvestigationMethod = 'google_books_auto' | 'manual' | 'llm_assisted
 export interface ConfidenceBreakdown {
   authorMatch: number
   titleSimilarity: number
-  isbnMatch: number
+  publisherKnown: number
+  isbnLinked: number
   categoryMatch: number
   dateReasonable: number
   total: number
@@ -692,9 +693,8 @@ export interface BatchInvestigationProgress {
   total: number
   completed: number
   failed: number
-  results: {
-    book_id: string
-    success: boolean
-    error?: string
-  }[]
+  found: number
+  not_found: number
+  needs_review: number
+  current_book?: string
 }

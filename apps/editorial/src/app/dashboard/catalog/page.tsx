@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Loader2, AlertCircle, Plus, BookOpen, Eye, Edit, Archive } from 'lucide-react'
+import { Loader2, AlertCircle, Plus, BookOpen, Eye, Edit } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -218,8 +218,7 @@ export default function CatalogManagementPage() {
                       className={clsx(
                         TYPOGRAPHY.bodySmall,
                         'px-2 py-0.5 rounded-full',
-                        volume.publication_status === 'published' &&
-                          'bg-green-100 text-green-800',
+                        volume.publication_status === 'published' && 'bg-green-100 text-green-800',
                         volume.publication_status === 'draft' && 'bg-yellow-100 text-yellow-800',
                         volume.publication_status === 'archived' && 'bg-gray-100 text-gray-800'
                       )}
@@ -289,7 +288,7 @@ export default function CatalogManagementPage() {
                   </Link>
                   {volume.slug && volume.publication_status === 'published' && (
                     <Link href={`/catalogo/${volume.slug}`} target="_blank">
-                      <Button variant="ghost" size="sm" leadingIcon={BookOpen}>
+                      <Button variant="outlined" size="sm" leadingIcon={BookOpen}>
                         View Public
                       </Button>
                     </Link>
@@ -303,4 +302,3 @@ export default function CatalogManagementPage() {
     </div>
   )
 }
-

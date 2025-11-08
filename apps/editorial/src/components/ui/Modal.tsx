@@ -4,7 +4,6 @@ import { useEffect, ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import Button from './Button'
 
 export interface ModalProps {
   isOpen: boolean
@@ -15,7 +14,14 @@ export interface ModalProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export default function Modal({ isOpen, onClose, title, children, footer, size = 'md' }: ModalProps) {
+export default function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+  size = 'md',
+}: ModalProps) {
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -80,9 +86,7 @@ export default function Modal({ isOpen, onClose, title, children, footer, size =
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {children}
-        </div>
+        <div className="p-6">{children}</div>
 
         {/* Footer */}
         {footer && (
@@ -94,4 +98,3 @@ export default function Modal({ isOpen, onClose, title, children, footer, size =
     </div>
   )
 }
-

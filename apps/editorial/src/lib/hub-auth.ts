@@ -139,24 +139,24 @@ class HubAuthAPI {
 
   async checkAppAccess(idToken: string, appName: string): Promise<boolean> {
     const response = await this.getUserAppAccess(idToken, appName)
-    
+
     // The API returns { success: true, data: [...] }
     // But makeRequest wraps it again as { success: true, data: { success: true, data: [...] } }
     // So we need to access response.data.data for the actual array
-    const accessData = response.data?.data || response.data
+    const accessData = response.data
     const hasAccess = !!(
-      response.success && 
-      accessData && 
-      Array.isArray(accessData) && 
+      response.success &&
+      accessData &&
+      Array.isArray(accessData) &&
       accessData.length > 0
     )
-    
+
     console.log('🔍 [checkAppAccess] Access check result:', {
       hasAccess,
       responseSuccess: response.success,
       accessDataLength: Array.isArray(accessData) ? accessData.length : 0,
     })
-    
+
     return hasAccess
   }
 }

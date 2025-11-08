@@ -49,7 +49,13 @@ const toastStyles = {
   },
 }
 
-export default function Toast({ id, message, type = 'info', duration = 5000, onClose }: ToastProps) {
+export default function Toast({
+  id,
+  message,
+  type = 'info',
+  duration = 5000,
+  onClose,
+}: ToastProps) {
   const Icon = toastIcons[type]
   const styles = toastStyles[type]
 
@@ -61,6 +67,7 @@ export default function Toast({ id, message, type = 'info', duration = 5000, onC
 
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [duration, id, onClose])
 
   return (
@@ -97,4 +104,3 @@ export default function Toast({ id, message, type = 'info', duration = 5000, onC
     </div>
   )
 }
-

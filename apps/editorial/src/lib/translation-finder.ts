@@ -51,10 +51,7 @@ export async function findSpanishTranslation(
     // Strategy 2: Exact title + author search
     if (candidates.length === 0 && originalBook.authors && originalBook.authors.length > 0) {
       notes.push(`Tier 2: Searching by exact title + author`)
-      const titleAuthorResults = await searchByTitleAuthor(
-        originalBook.title,
-        originalBook.authors
-      )
+      const titleAuthorResults = await searchByTitleAuthor(originalBook.title, originalBook.authors)
       candidates = [...candidates, ...titleAuthorResults]
       notes.push(`Found ${titleAuthorResults.length} results via title+author search`)
     }
@@ -74,12 +71,10 @@ export async function findSpanishTranslation(
     if (spanishCandidates.length === 0) {
       notes.push('No Spanish translations found')
       return {
-        success: true,
         translation_found: false,
         confidence_score: 0,
         confidence_breakdown: createEmptyBreakdown(),
         investigation_notes: notes.join('\n'),
-        checked_at: new Date().toISOString(),
         method: 'google_books_auto',
       }
     }
@@ -97,7 +92,6 @@ export async function findSpanishTranslation(
     notes.push(`Investigation completed in ${duration}s`)
 
     return {
-      success: true,
       translation_found: true,
       confidence_score: bestMatch.confidence,
       confidence_breakdown: bestMatch.breakdown,
@@ -110,22 +104,20 @@ export async function findSpanishTranslation(
         published_date: bestMatch.book.volumeInfo.publishedDate,
         isbn_13: isbns.isbn13,
         isbn_10: isbns.isbn10,
-        preview_link: bestMatch.book.volumeInfo.previewLink,
       },
       investigation_notes: notes.join('\n'),
-      checked_at: new Date().toISOString(),
       method: 'google_books_auto',
     }
   } catch (error) {
-    notes.push(`Error during investigation: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    notes.push(
+      `Error during investigation: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
 
     return {
-      success: false,
       translation_found: false,
       confidence_score: 0,
       confidence_breakdown: createEmptyBreakdown(),
       investigation_notes: notes.join('\n'),
-      checked_at: new Date().toISOString(),
       method: 'google_books_auto',
     }
   }
@@ -147,10 +139,7 @@ async function searchByISBN(isbn: string): Promise<GoogleBookVolume[]> {
 /**
  * Search by exact title and author with Spanish filter
  */
-async function searchByTitleAuthor(
-  title: string,
-  authors: string[]
-): Promise<GoogleBookVolume[]> {
+async function searchByTitleAuthor(title: string, authors: string[]): Promise<GoogleBookVolume[]> {
   try {
     const author = authors[0] // Use first author for search
     // Try with "traducción" keyword
@@ -323,7 +312,9 @@ function calculateConfidence(
   }
 
   // Factor 6: Date Reasonable (5 points)
-  const originalYear = original.published_date ? parseInt(original.published_date.substring(0, 4)) : null
+  const originalYear = original.published_date
+    ? parseInt(original.published_date.substring(0, 4))
+    : null
   const candidateYear = candidate.volumeInfo.publishedDate
     ? parseInt(candidate.volumeInfo.publishedDate.substring(0, 4))
     : null
