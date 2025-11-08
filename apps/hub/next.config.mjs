@@ -14,7 +14,13 @@ config({ path: resolve(__dirname, '../../.env') })
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cenie/ui', '@cenie/design-system'],
+  transpilePackages: [
+    '@cenie/ui',
+    '@cenie/firebase',
+    '@cenie/supabase',
+    '@cenie/logger',
+    '@cenie/errors',
+  ],
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   images: {
     remotePatterns: [

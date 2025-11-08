@@ -13,13 +13,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@cenie/ui": ["../../packages/ui/src"],
+      "@cenie/ui/*": ["../../packages/ui/src/*"],
+      "@cenie/firebase": ["../../packages/firebase/src"],
+      "@cenie/firebase/*": ["../../packages/firebase/src/*"],
+      "@cenie/auth-client": ["../../packages/auth-client/src"],
+      "@cenie/auth-client/*": ["../../packages/auth-client/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

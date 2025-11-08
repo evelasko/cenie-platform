@@ -1,13 +1,25 @@
-const path = require('path')
-const dotenv = require('dotenv')
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+import { config } from 'dotenv'
+import withMDX from '@next/mdx'
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Load environment variables from root .env file
-dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+config({ path: resolve(__dirname, '../../.env') })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cenie/ui', '@cenie/design-system', '@cenie/firebase', '@cenie/supabase'],
+  transpilePackages: [
+    '@cenie/ui',
+    '@cenie/firebase',
+    '@cenie/supabase',
+    '@cenie/logger',
+    '@cenie/errors',
+  ],
   // Mark server-only packages as external (not to be bundled)
   serverExternalPackages: ['firebase-admin'],
   images: {
@@ -42,4 +54,11 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+const withMDXPlugin = withMDX({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+export default withMDXPlugin(nextConfig)
