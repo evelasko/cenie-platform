@@ -22,18 +22,21 @@ Create a shared email sending infrastructure that all apps will use for transact
 ### Email Architecture Philosophy
 
 **Shared Operations** (@cenie/email):
+
 - Email sending (single, bulk, priority)
 - Provider abstraction (Resend primary, SendGrid backup)
 - Template rendering (React Email)
 - Error handling and logging
 - Rate limiting and batching
 
-**Per-App Branding** (apps/*/src/email/):
+**Per-App Branding** (apps/\*/src/email/):
+
 - Brand colors, fonts, logos
 - Email templates (verification, reset, welcome, app-specific)
-- Sender identity (noreply@hub.cenie.org vs noreply@editorial.cenie.org)
+- Sender identity (<noreply@hub.cenie.org> vs <noreply@editorial.cenie.org>)
 
 **Why Separate?**:
+
 - Fixing email sending bug → all apps benefit
 - Changing Editorial's email design → only Editorial affected
 - Same philosophy as @cenie/logger and @cenie/errors
@@ -41,6 +44,7 @@ Create a shared email sending infrastructure that all apps will use for transact
 ### Resend Integration
 
 **Why Resend**:
+
 - Modern API (simple, fast)
 - Great DX (testing, logs)
 - React Email support
@@ -48,6 +52,7 @@ Create a shared email sending infrastructure that all apps will use for transact
 - Already have API key
 
 **Single Account, Multiple Domains**:
+
 - All 4 apps share one Resend account ($20/month for 50K emails)
 - Each app has verified domain (hub.cenie.org, editorial.cenie.org, etc.)
 - Proper sender reputation per domain
@@ -57,10 +62,12 @@ Create a shared email sending infrastructure that all apps will use for transact
 ## REFERENCE DOCUMENTS
 
 **Primary Reference**:
+
 - `/docs/evaluations/EMAIL-IMPLEMENTATION.md` (832 lines)
 - Read the entire document - it contains the complete architecture rationale
 
 **Key Sections**:
+
 - Lines 21-84: Architecture explanation ("Shared Engine, Branded Templates")
 - Lines 108-305: Email Branding Configuration examples
 - Lines 307-428: Sender Implementation details
@@ -119,7 +126,7 @@ export interface EmailBrandConfig {
     name: string
     email: string
   }
-  
+
   // Visual Branding
   branding: {
     primaryColor: string
@@ -128,7 +135,7 @@ export interface EmailBrandConfig {
     fontFamily: string
     logoUrl: string
   }
-  
+
   // Typography
   typography: {
     headingFont: string
@@ -136,7 +143,7 @@ export interface EmailBrandConfig {
     headingWeight: number
     bodyWeight: number
   }
-  
+
   // Footer
   footer?: {
     organizationName: string
@@ -149,7 +156,7 @@ export interface EmailBrandConfig {
       instagram?: string
     }
   }
-  
+
   // Base URL for email links
   baseUrl: string
 }
@@ -425,7 +432,7 @@ export class ResendProvider implements EmailProvider {
 
   constructor() {
     this.logger = createLogger({ name: 'resend-provider' })
-    
+
     const apiKey = process.env.RESEND_API_KEY
 
     if (!apiKey) {
@@ -644,7 +651,7 @@ Export them from `packages/errors/src/index.ts`.
 
 ### 1. Resend Account Configuration
 
-**Access Resend Dashboard**: https://resend.com/
+**Access Resend Dashboard**: <https://resend.com/>
 
 1. **API Key**: Should already exist (RESEND_API_KEY in env)
 2. **Verify domains** (will be done in Phase 5, but plan now):
@@ -656,6 +663,7 @@ Export them from `packages/errors/src/index.ts`.
 ### 2. Environment Variables
 
 Each app will need (in Phase 5):
+
 ```bash
 RESEND_API_KEY=re_xxxxx  # Shared across all apps
 EMAIL_FROM=noreply@[app].cenie.org
@@ -694,7 +702,7 @@ const TestEmail: EmailTemplate<{ name: string }> = {
   subject: 'Test Email from CENIE',
   component: ({ name, branding }) => {
     const { Html, Body, Container, Heading, Text } = require('@react-email/components')
-    
+
     return (
       <Html>
         <Body style={{ backgroundColor: branding.backgroundColor }}>
@@ -736,7 +744,7 @@ async function test() {
     template: TestEmail,
     data: { name: 'Developer' },
   })
-  
+
   console.log('Result:', result)
 }
 
@@ -744,14 +752,16 @@ test().catch(console.error)
 ```
 
 Run:
+
 ```bash
 RESEND_API_KEY=your_key tsx packages/email/src/__tests__/send-test.ts
 ```
 
-**Expected**: 
+**Expected**:
+
 - Console log shows success
 - Check Resend dashboard - email should appear in logs
-- Email sent to delivered@resend.dev (Resend's test inbox)
+- Email sent to <delivered@resend.dev> (Resend's test inbox)
 
 ### Test 3: Bulk Sending
 
@@ -768,6 +778,7 @@ console.log('Bulk result:', result)
 ```
 
 **Expected**:
+
 - All 25 emails sent successfully
 - Batched in groups of 10
 - Check Resend dashboard for all 25 emails
@@ -808,7 +819,7 @@ console.log(html) // Should see HTML output
 
 ## COMMON PITFALLS
 
-1. **Don't send to real emails in tests**: Use Resend's test addresses (delivered@resend.dev)
+1. **Don't send to real emails in tests**: Use Resend's test addresses (<delivered@resend.dev>)
 
 2. **Don't forget test mode check**: Development should use Resend test mode
 
@@ -835,6 +846,7 @@ Use these for testing!
 ## HANDOFF
 
 When complete:
+
 - [ ] Package functional and tested
 - [ ] Can send emails via Resend
 - [ ] Bulk sending tested
@@ -848,4 +860,3 @@ When complete:
 **Estimated Time**: 8-12 hours (2 days)
 
 **Critical**: This is the foundation for all email operations. Take time to test thoroughly with Resend sandbox before moving to branded templates.
-

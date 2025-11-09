@@ -167,11 +167,14 @@ export function withAuth<TParams = unknown>(
    - Get cookie store: `const cookieStore = await cookies()`
    - Get session cookie: `const sessionCookie = cookieStore.get('session')`
    - If no cookie:
+
      ```typescript
      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
      ```
+
    - Verify session: `const decoded = await verifySession(sessionCookie.value)`
    - If invalid (null):
+
      ```typescript
      return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 })
      ```
@@ -274,6 +277,7 @@ export function withRole<TParams = unknown>(
    - Then add role checking on top
 
 3. **Implementation Pattern**:
+
    ```typescript
    export function withRole<TParams = unknown>(
      appName: AppName,
@@ -406,13 +410,13 @@ export const GET = withAuth(async (request, { user }) => {
 **Test**:
 
 1. Sign in to Editorial
-2. Visit http://localhost:3001/api/test-auth
+2. Visit `http://localhost:3001/api/test-auth`
 3. Should see user data
 
 **Test without session**:
 
 1. Clear browser cookies
-2. Visit http://localhost:3001/api/test-auth
+2. Visit `http://localhost:3001/api/test-auth`
 3. Should get 401 Unauthorized
 
 **After testing**: Delete test route.
@@ -438,13 +442,13 @@ export const GET = withRole('editorial', 'editor', async (request, { user }) => 
 **Test** (after dependencies complete):
 
 1. Sign in as user with 'editor' role
-2. Visit http://localhost:3001/api/test-role
+2. Visit `http://localhost:3001/api/test-role`
 3. Should succeed
 
 **Test with lower role**:
 
 1. Sign in as user with 'viewer' role
-2. Visit http://localhost:3001/api/test-role
+2. Visit `http://localhost:3001/api/test-role`
 3. Should get 403 Forbidden
 
 ---

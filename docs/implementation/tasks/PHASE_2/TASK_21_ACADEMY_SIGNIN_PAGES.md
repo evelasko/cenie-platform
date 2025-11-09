@@ -22,6 +22,7 @@ Create fully functional sign-in and sign-up pages for Academy app with email/pas
 ### Authentication User Journey
 
 **New User (Student)**:
+
 ```
 Visit academy.cenie.org
   → Click "Get Started"
@@ -33,6 +34,7 @@ Visit academy.cenie.org
 ```
 
 **Returning User**:
+
 ```
 Visit academy.cenie.org
   → Click "Sign In"
@@ -45,6 +47,7 @@ Visit academy.cenie.org
 ```
 
 **Account Linking** (edge case handled):
+
 ```
 User signs up with email
   → Later tries Google with same email
@@ -137,20 +140,20 @@ export const ACADEMY_CONFIG = {
   appName: 'academy' as const,
   displayName: 'CENIE Academy',
   baseUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3002',
-  
+
   // OAuth redirect URLs
   oauth: {
     redirectTo: '/dashboard',
     signInUrl: '/sign-in',
     signUpUrl: '/sign-up',
   },
-  
+
   // Session configuration
   session: {
     cookieName: 'session',
     maxAge: 14 * 24 * 60 * 60, // 14 days
   },
-  
+
   // Role configuration
   defaultRole: 'student' as const,
   roles: {
@@ -223,7 +226,7 @@ export default function AcademySignInPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || ACADEMY_CONFIG.oauth.redirectTo
@@ -269,41 +272,41 @@ export default function AcademySignInPage() {
     try {
       // Get ID token
       const idToken = await user.getIdToken()
-      
+
       // Check Academy access
       const accessResponse = await fetch('/api/users/apps/academy/access', {
         headers: { Authorization: `Bearer ${idToken}` },
       })
-      
+
       if (!accessResponse.ok) {
         setError('You do not have access to Academy. Please contact support.')
         logger.warn('User has no Academy access', { userId: user.uid })
         return
       }
-      
+
       const accessData = await accessResponse.json()
-      
+
       if (!accessData.hasAccess) {
         setError('Academy access not granted. Please contact support.')
         return
       }
-      
+
       // Create session
       const sessionResponse = await fetch('/api/auth/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken }),
       })
-      
+
       if (!sessionResponse.ok) {
         setError('Failed to create session. Please try again.')
         return
       }
-      
+
       // Success - redirect to role-appropriate dashboard
       const dashboardPath = ACADEMY_CONFIG.roles[accessData.role]?.dashboardPath || '/dashboard'
       router.push(dashboardPath)
-      
+
     } catch (err) {
       logger.error('Access check or session creation failed', { error: err })
       setError('Authentication failed. Please try again.')
@@ -349,7 +352,7 @@ export default function AcademySignInPage() {
           loading={oauthLoading === 'google'}
           className="w-full"
         />
-        
+
         <OAuthButton
           provider="apple"
           onClick={signInWithApple}
@@ -405,7 +408,7 @@ export default function AcademySignInPage() {
             <input type="checkbox" className="rounded border-gray-300 text-blue-600" />
             <span className="ml-2 text-sm text-gray-600">Remember me</span>
           </label>
-          
+
           <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
             Forgot password?
           </Link>
@@ -462,7 +465,7 @@ export default function AcademySignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  
+
   const router = useRouter()
 
   const {
@@ -497,21 +500,21 @@ export default function AcademySignUpPage() {
 
     try {
       const auth = getFirebaseAuth()
-      
+
       // Create Firebase user
       const result = await createUserWithEmailAndPassword(auth, email, password)
-      
+
       // Update profile with full name
       if (fullName) {
         await updateProfile(result.user, { displayName: fullName })
       }
-      
+
       logger.info('User created successfully', { userId: result.user.uid })
-      
+
       await handlePostSignup(result.user)
     } catch (err: any) {
       logger.error('Email signup failed', { error: err })
-      
+
       if (err.code === 'auth/email-already-in-use') {
         setError('An account with this email already exists. Please sign in.')
       } else if (err.code === 'auth/weak-password') {
@@ -527,7 +530,7 @@ export default function AcademySignUpPage() {
   const handlePostSignup = async (user: any) => {
     try {
       const idToken = await user.getIdToken()
-      
+
       // Call server to grant Academy access and create profile
       const response = await fetch('/api/auth/oauth', {
         method: 'POST',
@@ -541,22 +544,22 @@ export default function AcademySignUpPage() {
           isNewUser: true,
         }),
       })
-      
+
       if (!response.ok) {
         throw new Error('Failed to complete signup')
       }
-      
+
       // Create session
       const sessionResponse = await fetch('/api/auth/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken }),
       })
-      
+
       if (!sessionResponse.ok) {
         throw new Error('Failed to create session')
       }
-      
+
       // Success - redirect to student dashboard
       router.push('/dashboard')
     } catch (err) {
@@ -593,7 +596,7 @@ export default function AcademySignUpPage() {
           loading={oauthLoading === 'google'}
           className="w-full"
         />
-        
+
         <OAuthButton
           provider="apple"
           onClick={signInWithApple}
@@ -728,6 +731,7 @@ export default function AcademySignUpPage() {
 ### Typography
 
 Already using Geist font (modern, clean, educational vibe):
+
 ```typescript
 import { Geist } from 'next/font/google'
 
@@ -748,10 +752,10 @@ Apply with `className={geist.className}` in layout.
 pnpm --filter=@cenie/academy dev
 ```
 
-1. Visit http://localhost:3002/sign-up
+1. Visit <http://localhost:3002/sign-up>
 2. Fill in form:
    - Full Name: "Test Student"
-   - Email: "test.student@example.com"
+   - Email: "<test.student@example.com>"
    - Password: "test123"
    - Confirm: "test123"
 3. Submit
@@ -760,6 +764,7 @@ pnpm --filter=@cenie/academy dev
 6. Should attempt to create session (will work after TASK_22)
 
 **Expected**:
+
 - Form validation working
 - Password confirmation working
 - Firebase user created
@@ -767,7 +772,7 @@ pnpm --filter=@cenie/academy dev
 
 ### Test 2: Google OAuth
 
-1. Visit http://localhost:3002/sign-in
+1. Visit <http://localhost:3002/sign-in>
 2. Click "Continue with Google"
 3. Google popup opens
 4. Select account
@@ -776,6 +781,7 @@ pnpm --filter=@cenie/academy dev
 7. Should check Academy access (will work after TASK_22)
 
 **Expected**:
+
 - OAuth popup working
 - No JavaScript errors in console
 - Success handler called
@@ -783,6 +789,7 @@ pnpm --filter=@cenie/academy dev
 ### Test 3: UI/UX
 
 **Visual checks**:
+
 - [ ] Page centered vertically and horizontally
 - [ ] Blue gradient background
 - [ ] White card with shadow
@@ -794,7 +801,7 @@ pnpm --filter=@cenie/academy dev
 
 ### Test 4: Account Linking (after TASK_22 complete)
 
-1. Sign up with email: test@example.com
+1. Sign up with email: <test@example.com>
 2. Sign out
 3. Try Google OAuth with same email
 4. Should show account linking dialog
@@ -836,6 +843,7 @@ pnpm --filter=@cenie/academy dev
 ## STYLING NOTES
 
 **Academy Theme**:
+
 - Primary action: Blue-600 (#2563eb)
 - Hover states: Blue-700 (#1d4ed8)
 - Background: Blue-50 gradient (#eff6ff)
@@ -843,6 +851,7 @@ pnpm --filter=@cenie/academy dev
 - Accent: Blue-400 for links
 
 **Use Tailwind v4** (already configured in Academy):
+
 ```bash
 # Check Academy has Tailwind configured
 cat apps/academy/postcss.config.mjs
@@ -863,15 +872,17 @@ cat apps/academy/postcss.config.mjs
    - Add authorized domains
 
 **OAuth Consent Screen**:
+
 - App name: "CENIE Academy"
 - App logo: Academy logo
-- Support email: academy@cenie.org
+- Support email: <academy@cenie.org>
 
 ---
 
 ## HANDOFF
 
 When complete:
+
 - [ ] Auth pages functional
 - [ ] OAuth providers configured
 - [ ] UI polished and branded
@@ -884,4 +895,3 @@ When complete:
 **Estimated Time**: 6-8 hours
 
 **Note**: Pages will be fully functional after TASK_22 adds the API routes they depend on. For now, focus on UI/UX and client-side auth flows.
-
