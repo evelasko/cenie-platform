@@ -1,14 +1,15 @@
-import { NextRequest } from 'next/server'
-import { z } from 'zod'
+import { NotFoundError } from '@cenie/errors'
 import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
-import { NotFoundError } from '@cenie/errors'
-import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
-import { COLLECTIONS, Profile, UserAppAccess } from '@/lib/types'
-import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
-import { authenticateRequest } from '@/lib/auth-middleware'
-import { logger } from '@/lib/logger'
+import { verifyIdToken } from '@cenie/auth-server/helpers'
 import { Timestamp } from 'firebase-admin/firestore'
+import { NextRequest } from 'next/server'
+import { z } from 'zod'
+
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
+import { logger } from '@/lib/logger'
+import { COLLECTIONS, type Profile, type UserAppAccess } from '@/lib/types'
 
 const oauthSignInSchema = z.object({
   provider: z.enum(['google', 'apple']),
@@ -31,8 +32,15 @@ const oauthSignInSchema = z.object({
 export const POST = withErrorHandling(
   withLogging(async (request: NextRequest) => {
     // Authenticate the request using Firebase ID token
-    const authResult = await authenticateRequest(request)
-    const { userId } = authResult
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.split(' ')[1] // Bearer TOKEN
+    
+    if (!token) {
+      throw new NotFoundError('Access token required')
+    }
+    
+    const decoded = await verifyIdToken(token)
+    const userId = decoded.uid
 
     const body = await parseRequestBody(request)
     const { provider, isNewUser, userData } = oauthSignInSchema.parse(body)
@@ -131,8 +139,15 @@ export const POST = withErrorHandling(
 export const GET = withErrorHandling(
   withLogging(async (request: NextRequest) => {
     // This endpoint can be used by clients to verify OAuth redirect results
-    const authResult = await authenticateRequest(request)
-    const { userId } = authResult
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.split(' ')[1] // Bearer TOKEN
+    
+    if (!token) {
+      throw new NotFoundError('Access token required')
+    }
+    
+    const decoded = await verifyIdToken(token)
+    const userId = decoded.uid
 
     const firestore = getAdminFirestore()
 

@@ -3,7 +3,7 @@ import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
 import { DatabaseError, ValidationError, ConflictError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { requireViewer, requireEditor } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import type { CatalogVolumeCreateInput } from '@/types/books'
 
@@ -16,14 +16,10 @@ import type { CatalogVolumeCreateInput } from '@/types/books'
  * - limit: number of results (optional, default: 50)
  */
 export const GET = withErrorHandling(
-  withLogging(async (request: NextRequest) => {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
-    const supabase = createNextServerClient()
+  withLogging(
+    requireViewer(async (request: NextRequest) => {
+      // User is authenticated and has viewer role or higher
+      const supabase = createNextServerClient()
     const searchParams = request.nextUrl.searchParams
 
     const status = searchParams.get('status')
@@ -65,9 +61,10 @@ export const GET = withErrorHandling(
       })
     }
 
-    logger.debug('[Catalog] Listed volumes', { count: data?.length, status, type })
-    return NextResponse.json({ volumes: data })
-  })
+      logger.debug('[Catalog] Listed volumes', { count: data?.length, status, type })
+      return NextResponse.json({ volumes: data })
+    })
+  )
 )
 
 /**
@@ -76,15 +73,10 @@ export const GET = withErrorHandling(
  * Requires: editor or admin role
  */
 export const POST = withErrorHandling(
-  withLogging(async (request: NextRequest) => {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
-    const { user } = authResult
-    const supabase = createNextServerClient()
+  withLogging(
+    requireEditor(async (request: NextRequest, { user }) => {
+      // User is authenticated and has editor role or higher
+      const supabase = createNextServerClient()
     let body: CatalogVolumeCreateInput
     try {
       body = await request.json()
@@ -196,13 +188,14 @@ export const POST = withErrorHandling(
       })
     }
 
-    logger.info('[Catalog] Created volume', {
-      volumeId: (data as any).id,
-      slug,
-      title: body.title,
-      userId: user.uid,
-    })
+      logger.info('[Catalog] Created volume', {
+        volumeId: (data as any).id,
+        slug,
+        title: body.title,
+        userId: user.uid,
+      })
 
-    return NextResponse.json({ volume: data }, { status: 201 })
-  })
+      return NextResponse.json({ volume: data }, { status: 201 })
+    })
+  )
 )

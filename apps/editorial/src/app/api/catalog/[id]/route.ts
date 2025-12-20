@@ -1,174 +1,186 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { requireViewer, requireEditor } from '@/lib/auth'
 import type { CatalogVolumeUpdateInput } from '@/types/books'
 
 /**
  * GET /api/catalog/[id]
  * Get a single catalog volume by ID with contributors
  */
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const GET = requireViewer(
+  async (_request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    try {
+      // User is authenticated and has viewer role or higher
+      const { id } = await params
+      const supabase = createNextServerClient()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
+      // Get volume
+      const { data: volume, error: volumeError } = await supabase
+        .from('catalog_volumes')
+        .select('*')
+        .eq('id', id)
+        .single()
 
-    // Get volume
-    const { data: volume, error: volumeError } = await supabase
-      .from('catalog_volumes')
-      .select('*')
-      .eq('id', id)
-      .single()
-
-    if (volumeError) {
-      if (volumeError.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
+      if (volumeError) {
+        if (volumeError.code === 'PGRST116') {
+          return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
+        }
+        console.error('Database error:', volumeError)
+        return NextResponse.json({ error: volumeError.message }, { status: 500 })
       }
-      console.error('Database error:', volumeError)
-      return NextResponse.json({ error: volumeError.message }, { status: 500 })
+
+      // Get contributors for this volume
+      const { data: contributors, error: contributorsError } = await supabase.rpc(
+        'get_volume_contributors' as any,
+        { volume_uuid: id } as any
+      )
+
+      if (contributorsError) {
+        console.error('Contributors fetch error:', contributorsError)
+        // Don't fail, just return empty array
+      }
+
+      return NextResponse.json({
+        volume,
+        contributors: contributors || [],
+      })
+    } catch (error) {
+      console.error('Get volume error:', error)
+      return NextResponse.json(
+        {
+          error: 'Failed to get volume',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
     }
-
-    // Get contributors for this volume
-    const { data: contributors, error: contributorsError } = await supabase.rpc(
-      'get_volume_contributors' as any,
-      { volume_uuid: id } as any
-    )
-
-    if (contributorsError) {
-      console.error('Contributors fetch error:', contributorsError)
-      // Don't fail, just return empty array
-    }
-
-    return NextResponse.json({
-      volume,
-      contributors: contributors || [],
-    })
-  } catch (error) {
-    console.error('Get volume error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to get volume',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
   }
-}
+)
 
 /**
  * PATCH /api/catalog/[id]
  * Update a catalog volume
  * Requires: editor or admin role
  */
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const PATCH = requireEditor(
+  async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    try {
+      // User is authenticated and has editor role or higher
+      const { id } = await params
+      const supabase = createNextServerClient()
+      const body: CatalogVolumeUpdateInput = await request.json()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
-    const body: CatalogVolumeUpdateInput = await request.json()
+      // If slug is being changed, check it's unique
+      if (body.slug) {
+        const { data: existingVolume, error: checkError } = await supabase
+          .from('catalog_volumes')
+          .select('id')
+          .eq('slug', body.slug)
+          .neq('id', id)
+          .single()
 
-    // If slug is being changed, check it's unique
-    if (body.slug) {
-      const { data: existingVolume } = await supabase
+        if (checkError && checkError.code !== 'PGRST116') {
+          console.error('Slug check error:', checkError)
+          return NextResponse.json(
+            { error: 'Failed to validate slug uniqueness' },
+            { status: 500 }
+          )
+        }
+
+        if (existingVolume) {
+          return NextResponse.json(
+            {
+              error: 'A volume with this slug already exists',
+              slug: body.slug,
+            },
+            { status: 409 }
+          )
+        }
+      }
+
+      // Update the volume
+      const { data, error } = await supabase
         .from('catalog_volumes')
-        .select('id')
-        .eq('slug', body.slug)
-        .neq('id', id)
+        .update({
+          title: body.title,
+          subtitle: body.subtitle,
+          description: body.description,
+          publisher_id: body.publisher_id,
+          publisher_name: body.publisher_name,
+          publication_year: body.publication_year,
+          isbn_13: body.isbn_13,
+          isbn_10: body.isbn_10,
+          language: body.language,
+          page_count: body.page_count,
+          cover_twicpics_path: body.cover_twicpics_path,
+          cover_fallback_url: body.cover_fallback_url,
+          categories: body.categories,
+          tags: body.tags,
+          featured: body.featured,
+          table_of_contents: body.table_of_contents,
+          excerpt: body.excerpt,
+          reviews_quotes: body.reviews_quotes,
+          editorial_team: body.editorial_team,
+          compilation_notes: body.compilation_notes,
+          seo_description: body.seo_description,
+          seo_keywords: body.seo_keywords,
+          slug: body.slug,
+        })
+        .eq('id', id)
+        .select()
         .single()
 
-      if (existingVolume) {
-        return NextResponse.json(
-          { error: 'A volume with this slug already exists' },
-          { status: 409 }
-        )
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
+        }
+        console.error('Database error:', error)
+        return NextResponse.json({ error: error.message }, { status: 500 })
       }
+
+      return NextResponse.json({ volume: data })
+    } catch (error) {
+      console.error('Update volume error:', error)
+      return NextResponse.json(
+        {
+          error: 'Failed to update volume',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
     }
-
-    // Update volume
-    const { data, error } = await supabase
-      .from('catalog_volumes')
-      // @ts-expect-error - catalog_volumes table not in auto-generated types
-      .update(body)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
-      }
-      console.error('Database update error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    return NextResponse.json({ volume: data })
-  } catch (error) {
-    console.error('Update volume error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to update volume',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
   }
-}
+)
 
 /**
  * DELETE /api/catalog/[id]
- * Archive a catalog volume (set publication_status = 'archived')
- * Requires: admin role
+ * Delete a catalog volume
+ * Requires: editor or admin role
  */
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    // Require admin role
-    const authResult = await requireRole('admin')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const DELETE = requireEditor(
+  async (_request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    try {
+      // User is authenticated and has editor role or higher
+      const { id } = await params
+      const supabase = createNextServerClient()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
+      const { error } = await supabase.from('catalog_volumes').delete().eq('id', id)
 
-    // Archive by setting publication_status to 'archived'
-    const { data, error } = await supabase
-      .from('catalog_volumes')
-      // @ts-expect-error - catalog_volumes table not in auto-generated types
-      .update({ publication_status: 'archived' })
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
+      if (error) {
+        console.error('Database error:', error)
+        return NextResponse.json({ error: error.message }, { status: 500 })
       }
-      console.error('Database update error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
 
-    return NextResponse.json({ success: true, volume: data })
-  } catch (error) {
-    console.error('Archive volume error:', error)
-    return NextResponse.json(
-      {
-        error: 'Failed to archive volume',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
+      return NextResponse.json({ success: true })
+    } catch (error) {
+      console.error('Delete volume error:', error)
+      return NextResponse.json(
+        {
+          error: 'Failed to delete volume',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
+    }
   }
-}
+)

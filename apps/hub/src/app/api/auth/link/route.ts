@@ -1,14 +1,15 @@
-import { NextRequest } from 'next/server'
-import { z } from 'zod'
+import { ValidationError } from '@cenie/errors'
 import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
-import { ValidationError } from '@cenie/errors'
-import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
-import { COLLECTIONS } from '@/lib/types'
-import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
-import { authenticateRequest } from '@/lib/auth-middleware'
-import { logger } from '@/lib/logger'
+import { verifyIdToken } from '@cenie/auth-server/helpers'
 import { Timestamp } from 'firebase-admin/firestore'
+import { NextRequest } from 'next/server'
+import { z } from 'zod'
+
+import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase-admin'
+import { logger } from '@/lib/logger'
+import { COLLECTIONS } from '@/lib/types'
 
 const linkAccountSchema = z.object({
   provider: z.enum(['google', 'apple']),
@@ -19,8 +20,15 @@ const linkAccountSchema = z.object({
 export const POST = withErrorHandling(
   withLogging(async (request: NextRequest) => {
     // Authenticate the request using Firebase ID token
-    const authResult = await authenticateRequest(request)
-    const { userId } = authResult
+    const authHeader = request.headers.get('authorization')
+    const token = authHeader?.split(' ')[1] // Bearer TOKEN
+    
+    if (!token) {
+      throw new ValidationError('Access token required')
+    }
+    
+    const decoded = await verifyIdToken(token)
+    const userId = decoded.uid
 
     const body = await parseRequestBody(request)
     const { provider, email } = linkAccountSchema.parse(body)

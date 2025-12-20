@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireEditorialAccess } from '@/lib/auth-helpers'
+import { requireViewer } from '@/lib/auth'
 import { googleBooks } from '@/lib/google-books'
 
 /**
@@ -10,24 +10,16 @@ import { googleBooks } from '@/lib/google-books'
  * - maxResults: number of results (optional, default: 20)
  * - startIndex: pagination start index (optional, default: 0)
  */
-export async function GET(request: NextRequest) {
+export const GET = requireViewer(async (request: NextRequest) => {
   try {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
+    // User is authenticated and has viewer role or higher
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q')
     const maxResults = parseInt(searchParams.get('maxResults') || '20')
     const startIndex = parseInt(searchParams.get('startIndex') || '0')
 
     if (!query) {
-      return NextResponse.json(
-        { error: 'Query parameter "q" is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Query parameter "q" is required' }, { status: 400 })
     }
 
     const results = await googleBooks.search(query, maxResults, startIndex)
@@ -43,4 +35,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

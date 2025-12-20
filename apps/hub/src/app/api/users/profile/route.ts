@@ -5,7 +5,7 @@ import { withLogging } from '@cenie/logger/next'
 import { NotFoundError } from '@cenie/errors'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, type Profile } from '../../../../lib/types'
-import { authenticateRequest } from '../../../../lib/auth-middleware'
+import { authenticateRequest } from '../../../../lib/auth'
 import { createSuccessResponse, parseRequestBody, serializeProfile } from '../../../../lib/api-utils'
 import { Timestamp } from 'firebase-admin/firestore'
 

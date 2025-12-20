@@ -8,6 +8,9 @@ import { COLLECTIONS, Profile, UserAppAccess } from '@/lib/types'
 import { createSuccessResponse, parseRequestBody } from '@/lib/api-utils'
 import { logger } from '@/lib/logger'
 import { Timestamp } from 'firebase-admin/firestore'
+import { hubEmailSender } from '@/email/sender'
+import { HubWelcomeEmail } from '@/email/templates/welcome'
+import { HubVerificationEmail } from '@/email/templates/verification'
 
 const signUpSchema = z.object({
   email: z.string().email(),
@@ -54,6 +57,34 @@ export const POST = withErrorHandling(
     }
 
     await firestore.collection(COLLECTIONS.USER_APP_ACCESS).add(accessData)
+
+    // Generate verification link
+    const verificationUrl = await auth.generateEmailVerificationLink(email, {
+      url: process.env.EMAIL_VERIFICATION_URL || 'https://hub.cenie.org/auth/verify',
+    })
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://hub.cenie.org'
+    const userName = fullName || 'there'
+
+    // Send welcome email
+    await hubEmailSender.send({
+      to: email,
+      template: HubWelcomeEmail,
+      data: {
+        userName,
+        dashboardUrl: `${baseUrl}/dashboard`,
+      },
+    })
+
+    // Send verification email
+    await hubEmailSender.send({
+      to: email,
+      template: HubVerificationEmail,
+      data: {
+        userName,
+        verificationUrl,
+      },
+    })
 
     logger.info('User signup successful', {
       userId: userRecord.uid,

@@ -5,6 +5,8 @@ import { withLogging } from '@cenie/logger/next'
 import { getAdminAuth } from '../../../../lib/firebase-admin'
 import { createSuccessResponse, parseRequestBody } from '../../../../lib/api-utils'
 import { logger } from '../../../../lib/logger'
+import { hubEmailSender } from '../../../../email/sender'
+import { HubPasswordResetEmail } from '../../../../email/templates/password-reset'
 
 const resetPasswordSchema = z.object({
   email: z.string().email(),
@@ -18,19 +20,33 @@ export const POST = withErrorHandling(
     const auth = getAdminAuth()
 
     try {
+      // Get user to get display name
+      const user = await auth.getUserByEmail(email)
+
       // Generate password reset link
-      const link = await auth.generatePasswordResetLink(email, {
-        url: process.env.PASSWORD_RESET_URL || 'https://cenie.org/reset-password',
+      const resetUrl = await auth.generatePasswordResetLink(email, {
+        url: process.env.PASSWORD_RESET_URL || 'https://hub.cenie.org/auth/reset-password',
       })
 
       logger.info('Password reset link generated', { email })
 
-      // In production, you would send this link via email
-      // For now, we'll return it in the response (remove in production)
+      // Send branded password reset email
+      await hubEmailSender.send({
+        to: email,
+        template: HubPasswordResetEmail,
+        data: {
+          userName: user.displayName || 'there',
+          resetUrl,
+          expiresIn: '1 hour',
+        },
+      })
+
+      logger.info('Password reset email sent', { email })
+
       return createSuccessResponse({
         message: 'Password reset email sent',
-        // Remove this in production - only for development
-        resetLink: process.env.NODE_ENV === 'development' ? link : undefined,
+        // Include link in development for testing
+        resetLink: process.env.NODE_ENV === 'development' ? resetUrl : undefined,
       })
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {

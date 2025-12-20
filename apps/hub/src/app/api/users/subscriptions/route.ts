@@ -3,7 +3,7 @@ import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, type Subscription } from '../../../../lib/types'
-import { authenticateRequest } from '../../../../lib/auth-middleware'
+import { authenticateRequest } from '../../../../lib/auth'
 import { createSuccessResponse, serializeSubscription } from '../../../../lib/api-utils'
 
 // Get user subscriptions

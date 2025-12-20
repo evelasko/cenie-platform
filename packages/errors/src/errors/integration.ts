@@ -87,3 +87,45 @@ export class TimeoutError extends AppError {
     })
   }
 }
+
+/**
+ * Email Send Error
+ * For email sending failures
+ */
+export class EmailSendError extends ExternalServiceError {
+  constructor(message: string, options: ErrorOptions = {}) {
+    super('email', message, {
+      userMessage: options.userMessage || 'Failed to send email',
+      retryable: true,
+      ...options,
+    })
+  }
+}
+
+/**
+ * Email Render Error
+ * For email template rendering failures
+ */
+export class EmailRenderError extends AppError {
+  constructor(message: string, options: ErrorOptions = {}) {
+    super('EMAIL_RENDER_FAILED', message, 500, 'medium', {
+      userMessage: options.userMessage || 'Failed to render email template',
+      retryable: false,
+      ...options,
+    })
+  }
+}
+
+/**
+ * Email Configuration Error
+ * For email configuration issues
+ */
+export class EmailConfigError extends AppError {
+  constructor(message: string, options: ErrorOptions = {}) {
+    super('EMAIL_CONFIG_INVALID', message, 500, 'high', {
+      userMessage: options.userMessage || 'Email service is not configured correctly',
+      retryable: false,
+      ...options,
+    })
+  }
+}

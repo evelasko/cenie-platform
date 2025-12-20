@@ -39,7 +39,9 @@
       "@cenie/logger": ["./packages/logger/src"],
       "@cenie/logger/*": ["./packages/logger/src/*"],
       "@cenie/errors": ["./packages/errors/src"],
-      "@cenie/errors/*": ["./packages/errors/src/*"]
+      "@cenie/errors/*": ["./packages/errors/src/*"],
+      "@cenie/email": ["./packages/email/src"],
+      "@cenie/email/*": ["./packages/email/src/*"]
     }
   },
   "exclude": [

@@ -12,7 +12,7 @@ import {
 import { createNextServerClient } from '@cenie/supabase/server'
 import { withCors } from '../../../lib/cors'
 import { rateLimit, getRateLimitHeaders } from '../../../lib/rate-limiter'
-import { authenticateRequest, requireAdmin } from '../../../lib/auth-middleware'
+import { authenticateRequest, requireAdmin } from '../../../lib/auth'
 import { logger } from '../../../lib/logger'
 
 /**

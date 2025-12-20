@@ -3,7 +3,7 @@ import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
 import { DatabaseError, ValidationError, ConflictError, APIError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { requireViewer, requireEditor } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { googleBooks } from '@/lib/google-books'
 import type { BookCreateInput } from '@/types/books'
@@ -17,14 +17,10 @@ import type { BookCreateInput } from '@/types/books'
  * - limit: number of results (optional, default: 50)
  */
 export const GET = withErrorHandling(
-  withLogging(async (request: NextRequest) => {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
-    const supabase = createNextServerClient()
+  withLogging(
+    requireViewer(async (request: NextRequest) => {
+      // User is authenticated and has viewer role or higher
+      const supabase = createNextServerClient()
     const searchParams = request.nextUrl.searchParams
 
     const status = searchParams.get('status')
@@ -67,9 +63,10 @@ export const GET = withErrorHandling(
       })
     }
 
-    logger.debug('[Books] Listed books', { count: data?.length, status, selectedParam })
-    return NextResponse.json({ books: data })
-  })
+      logger.debug('[Books] Listed books', { count: data?.length, status, selectedParam })
+      return NextResponse.json({ books: data })
+    })
+  )
 )
 
 /**
@@ -80,15 +77,10 @@ export const GET = withErrorHandling(
  * Requires: editor or admin role
  */
 export const POST = withErrorHandling(
-  withLogging(async (request: NextRequest) => {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
-    const { user } = authResult
-    const supabase = createNextServerClient()
+  withLogging(
+    requireEditor(async (request: NextRequest, { user }) => {
+      // User is authenticated and has editor role or higher
+      const supabase = createNextServerClient()
     let body: BookCreateInput
     try {
       body = await request.json()
@@ -186,13 +178,14 @@ export const POST = withErrorHandling(
       })
     }
 
-    logger.info('[Books] Added book', {
-      bookId: (data as any).id,
-      googleBooksId,
-      title: bookData.volumeInfo.title,
-      userId: user.uid,
-    })
+      logger.info('[Books] Added book', {
+        bookId: (data as any).id,
+        googleBooksId,
+        title: bookData.volumeInfo.title,
+        userId: user.uid,
+      })
 
-    return NextResponse.json({ book: data }, { status: 201 })
-  })
+      return NextResponse.json({ book: data }, { status: 201 })
+    })
+  )
 )

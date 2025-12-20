@@ -3,7 +3,7 @@ import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, type UserAppAccess } from '../../../../lib/types'
-import { authenticateRequest } from '../../../../lib/auth-middleware'
+import { authenticateRequest } from '../../../../lib/auth'
 import { createSuccessResponse, serializeAccess } from '../../../../lib/api-utils'
 
 // Get user app access

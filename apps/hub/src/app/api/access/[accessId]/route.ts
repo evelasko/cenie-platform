@@ -5,7 +5,7 @@ import { withLogging } from '@cenie/logger/next'
 import { NotFoundError } from '@cenie/errors'
 import { getAdminFirestore } from '../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess } from '../../../../lib/types'
-import { authenticateRequest, requireAdmin } from '../../../../lib/auth-middleware'
+import { authenticateRequest, requireAdmin } from '../../../../lib/auth'
 import { createSuccessResponse, parseRequestBody, serializeAccess } from '../../../../lib/api-utils'
 import { logger } from '../../../../lib/logger'
 

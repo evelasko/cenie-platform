@@ -2,6 +2,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
 import withMDX from '@next/mdx'
+import { withSentryConfig } from '@sentry/nextjs'
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url)
@@ -12,6 +13,7 @@ config({ path: resolve(__dirname, '../../.env') })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ['require-in-the-middle'],
   reactStrictMode: true,
   transpilePackages: [
     '@cenie/ui',
@@ -19,6 +21,12 @@ const nextConfig = {
     '@cenie/supabase',
     '@cenie/logger',
     '@cenie/errors',
+    '@cenie/email',
+    '@cenie/sentry',
+    '@cenie/auth-server',
+    '@cenie/auth-client',
+    '@cenie/oauth-handlers',
+    '@cenie/auth-utils',
   ],
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   webpack: (config, { isServer }) => {
@@ -70,4 +78,19 @@ const withMDXPlugin = withMDX({
     rehypePlugins: [],
   },
 })
-export default withMDXPlugin(nextConfig)
+
+export default withSentryConfig(withMDXPlugin(nextConfig), {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT || 'cenie-editorial',
+
+  // Auth token for source maps upload
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  // Suppress Sentry config logs
+  silent: true,
+
+  // Upload source maps on build
+  widenClientFileUpload: true,
+  hideSourceMaps: true,
+  disableLogger: true,
+})

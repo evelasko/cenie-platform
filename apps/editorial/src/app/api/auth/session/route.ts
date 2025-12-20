@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSession, clearServerSession } from '@cenie/firebase/server'
+import { createSession } from '@cenie/auth-server/session'
+import { cookies } from 'next/headers'
 
 /**
  * POST /api/auth/session
@@ -21,15 +22,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'ID token is required' }, { status: 400 })
     }
 
-    console.log('🔑 Creating session cookie with Firebase Admin...')
-    // Create session cookie
-    const success = await createServerSession(idToken)
-    console.log('Session creation result:', { success })
+    console.log('🔑 Creating session cookie with @cenie/auth-server...')
+    // Create session cookie using the new package
+    const sessionCookie = await createSession(idToken, 'editorial')
+    console.log('Session cookie created:', { length: sessionCookie.length })
 
-    if (!success) {
-      console.error('❌ createServerSession returned false')
-      return NextResponse.json({ error: 'Failed to create session' }, { status: 500 })
-    }
+    // Set the cookie
+    const cookieStore = await cookies()
+    cookieStore.set('session', sessionCookie, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 14, // 14 days
+      path: '/',
+    })
 
     console.log('✅ Session cookie created successfully!')
     return NextResponse.json({ success: true })
@@ -55,7 +61,8 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE() {
   try {
-    await clearServerSession()
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Session deletion error:', error)

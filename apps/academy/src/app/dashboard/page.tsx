@@ -1,160 +1,73 @@
-'use client'
+import { checkAppAccess, getAuthenticatedUser } from '@cenie/auth-server/helpers'
+import { Award, BarChart, BookOpen, Clock } from 'lucide-react'
 
-import { useAuthContext } from '@cenie/firebase/auth'
-import { signOut } from '@cenie/firebase/auth'
-import { Button } from '@cenie/ui'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+export default async function StudentDashboardPage() {
+  const user = await getAuthenticatedUser()
+  const access = await checkAppAccess(user!.uid, 'academy')
 
-export default function DashboardPage() {
-  const { user, loading } = useAuthContext()
-  const router = useRouter()
+  // Role check (this page accessible to all roles)
+  const role = access.role
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/sign-in')
-    }
-  }, [user, loading, router])
+  return (
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-2">
+        Welcome back{user!.email ? `, ${user!.email.split('@')[0]}` : ''}!
+      </h1>
+      <p className="text-gray-600 mb-8">
+        {role === 'student' && 'Continue your learning journey'}
+        {role === 'instructor' && 'Your teaching dashboard'}
+        {role === 'admin' && 'Academy administration'}
+      </p>
 
-  const handleSignOut = async () => {
-    try {
-      await signOut()
-      router.push('/sign-in')
-    } catch (error) {
-      console.error('Sign out error:', error)
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
-        </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <StatCard icon={BookOpen} label="Enrolled Courses" value="0" color="blue" />
+        <StatCard icon={Clock} label="Hours Learned" value="0" color="green" />
+        <StatCard icon={BarChart} label="Progress" value="0%" color="purple" />
+        <StatCard icon={Award} label="Certificates" value="0" color="yellow" />
       </div>
-    )
-  }
 
-  if (!user) {
-    return null // Will redirect to signin
+      {/* Enrolled Courses Section */}
+      <section className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold mb-4">My Courses</h2>
+
+        <div className="text-center py-12 text-gray-500">
+          <BookOpen className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+          <p>No courses enrolled yet</p>
+          <p className="text-sm mt-2">Browse the catalog to get started</p>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: string
+  color: string
+}) {
+  const colors: Record<string, string> = {
+    blue: 'bg-blue-50 text-blue-600',
+    green: 'bg-green-50 text-green-600',
+    purple: 'bg-purple-50 text-purple-600',
+    yellow: 'bg-yellow-50 text-yellow-600',
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900">
-                CENIE Dashboard
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">
-                Welcome, {user.displayName || user.email}
-              </span>
-              <Button 
-                onClick={() => {handleSignOut().catch(console.error)}}
-                variant="outline"
-              >
-                Sign Out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Authentication Details
-              </h2>
-              
-              <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    User ID
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900 font-mono">
-                    {user.uid}
-                  </dd>
-                </div>
-                
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Email
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {user.email}
-                  </dd>
-                </div>
-                
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Display Name
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {user.displayName || 'Not set'}
-                  </dd>
-                </div>
-                
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Email Verified
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.emailVerified 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {user.emailVerified ? 'Verified' : 'Not Verified'}
-                    </span>
-                  </dd>
-                </div>
-                
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Provider
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {user.providerId}
-                  </dd>
-                </div>
-                
-                <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Last Sign In
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString() : 'Unknown'}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-          
-          <div className="mt-6 bg-white overflow-hidden shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Next Steps
-              </h2>
-              <div className="prose">
-                <p className="text-gray-600 mb-4">
-                  🎉 Congratulations! Your Firebase authentication is working correctly.
-                </p>
-                <p className="text-gray-600">
-                  You can now integrate this authentication system with your auth-api service
-                  to manage user profiles, app access, and other user-related data.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+    <div className="bg-white rounded-lg shadow p-6">
+      <div
+        className={`w-12 h-12 rounded-lg ${colors[color]} flex items-center justify-center mb-4`}
+      >
+        <Icon className="w-6 h-6" />
+      </div>
+      <p className="text-2xl font-bold mb-1">{value}</p>
+      <p className="text-sm text-gray-600">{label}</p>
     </div>
   )
 }

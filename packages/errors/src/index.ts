@@ -17,6 +17,9 @@ export {
   StorageError,
   APIError,
   TimeoutError,
+  EmailSendError,
+  EmailRenderError,
+  EmailConfigError,
 } from './errors/integration'
 
 // Types

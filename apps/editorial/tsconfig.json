@@ -32,7 +32,17 @@
       "@cenie/logger": ["../../packages/logger/src"],
       "@cenie/logger/*": ["../../packages/logger/src/*"],
       "@cenie/errors": ["../../packages/errors/src"],
-      "@cenie/errors/*": ["../../packages/errors/src/*"]
+      "@cenie/errors/*": ["../../packages/errors/src/*"],
+      "@cenie/email": ["../../packages/email/src"],
+      "@cenie/email/*": ["../../packages/email/src/*"],
+      "@cenie/sentry": ["../../packages/sentry/src"],
+      "@cenie/sentry/*": ["../../packages/sentry/src/*"],
+      "@cenie/auth-server": ["../../packages/auth-server/src"],
+      "@cenie/auth-server/*": ["../../packages/auth-server/src/*"],
+      "@cenie/oauth-handlers": ["../../packages/oauth-handlers/src"],
+      "@cenie/oauth-handlers/*": ["../../packages/oauth-handlers/src/*"],
+      "@cenie/auth-utils": ["../../packages/auth-utils/src"],
+      "@cenie/auth-utils/*": ["../../packages/auth-utils/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

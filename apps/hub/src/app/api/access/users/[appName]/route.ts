@@ -3,7 +3,7 @@ import { withErrorHandling } from '@cenie/errors/next'
 import { withLogging } from '@cenie/logger/next'
 import { getAdminFirestore } from '../../../../../lib/firebase-admin'
 import { COLLECTIONS, UserAppAccess, Profile } from '../../../../../lib/types'
-import { authenticateRequest, requireAdmin } from '../../../../../lib/auth-middleware'
+import { authenticateRequest, requireAdmin } from '../../../../../lib/auth'
 import { createSuccessResponse, serializeAccess } from '../../../../../lib/api-utils'
 
 // List all users with app access (admin only)
