@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditor } from '@/lib/auth'
 import type { Book, PromoteToCatalogInput } from '@/types/books'
@@ -12,11 +12,12 @@ import type { Book, PromoteToCatalogInput } from '@/types/books'
  * - catalogData: CatalogVolumeCreateInput data
  * - contributors: Array of {contributor_id, role, display_order}
  */
-export const POST = requireEditor(
-  async (request: NextRequest, context: { params: Promise<{ id: string }>; user: any }) => {
+export const POST = requireEditor<Promise<{ id: string }>>(
+  async (request, context) => {
     try {
       // User is authenticated and has editor role or higher
       const { params, user } = context
+      if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
       const { id } = await params
       const supabase = createNextServerClient()
 

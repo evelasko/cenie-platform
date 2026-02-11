@@ -47,7 +47,7 @@ function EmptyState({
 
 export default function ManagerClientsPage() {
   const { user } = useAuthContext()
-  const [stats, setStats] = useState({
+  const [stats, _setStats] = useState({
     totalClients: 0,
     activeProjects: 0,
     avgProjectValue: 0,

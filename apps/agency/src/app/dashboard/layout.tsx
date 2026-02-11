@@ -1,11 +1,10 @@
 'use client'
 
-import { useAuthContext } from '@cenie/firebase/auth'
+import { useAuthContext, getIdToken } from '@cenie/firebase/auth'
 import { createLogger } from '@cenie/logger'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { AGENCY_CONFIG } from '@/lib/constants'
 import { DashboardNav } from '@/components/dashboard/nav'
 
 const logger = createLogger({ name: 'agency:dashboard' })
@@ -30,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       if (!user) return
 
       try {
-        const idToken = await user.getIdToken()
+        const idToken = await getIdToken()
         const response = await fetch('/api/users/apps/agency/access', {
           headers: { Authorization: `Bearer ${idToken}` },
         })
@@ -74,12 +73,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
       <DashboardNav user={user} role={role || 'client'} />
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {children}
-      </main>
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
     </div>
   )
 }
-

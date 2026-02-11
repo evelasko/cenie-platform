@@ -49,7 +49,7 @@ function EmptyState({
 
 export default function ManagerTemplatesPage() {
   const { user } = useAuthContext()
-  const [stats, setStats] = useState({
+  const [stats, _setStats] = useState({
     activeTemplates: 0,
     totalClients: 0,
     avgProjectValue: 0,

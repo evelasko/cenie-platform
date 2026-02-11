@@ -9,13 +9,21 @@ import { OAuthButton, OAuthErrorHandler } from '@cenie/oauth-handlers/components
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import { AGENCY_CONFIG } from '@/lib/constants'
 
 const logger = createLogger({ name: 'agency:signin' })
 
 export default function AgencySignInPage() {
+  return (
+    <Suspense fallback={<div className="text-center text-slate-300 p-8">Loading...</div>}>
+      <AgencySignInContent />
+    </Suspense>
+  )
+}
+
+function AgencySignInContent() {
   // Form state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

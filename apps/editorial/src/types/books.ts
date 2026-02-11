@@ -174,6 +174,9 @@ export interface BookCreateInput {
 }
 
 export interface BookUpdateInput {
+  title?: string | null
+  subtitle?: string | null
+  authors?: string[] | null
   status?: BookStatus
   translated_title?: string | null
   selected_for_translation?: boolean
@@ -182,6 +185,9 @@ export interface BookUpdateInput {
   relevance_score?: number | null
   internal_notes?: string | null
   rejection_reason?: string | null
+  source_language?: string | null
+  target_language?: string | null
+  translation_notes?: string | null
   publication_description_es?: string | null
   publication_excerpt_es?: string | null
   publication_table_of_contents?: TableOfContents | null
@@ -370,9 +376,11 @@ export interface CatalogVolumeUpdateInput {
   publication_year?: number
   isbn_13?: string
   isbn_10?: string
+  language?: string
   page_count?: number
   cover_twicpics_path?: string
   cover_url?: string
+  cover_fallback_url?: string
   categories?: string[]
   tags?: string[]
   featured?: boolean

@@ -35,7 +35,7 @@ export class ResendProvider implements EmailProvider {
         to: Array.isArray(options.to) ? options.to : [options.to],
         subject: options.subject,
         html: options.html,
-        reply_to: options.replyTo
+        replyTo: options.replyTo
           ? `${options.replyTo.name} <${options.replyTo.email}>`
           : undefined,
         cc: options.cc,

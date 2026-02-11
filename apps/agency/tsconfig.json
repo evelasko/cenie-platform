@@ -29,8 +29,6 @@
       "@cenie/auth-client/*": ["../../packages/auth-client/src/*"],
       "@cenie/supabase": ["../../packages/supabase/src"],
       "@cenie/supabase/*": ["../../packages/supabase/src/*"],
-      "@cenie/logger": ["../../packages/logger/src"],
-      "@cenie/logger/*": ["../../packages/logger/src/*"],
       "@cenie/errors": ["../../packages/errors/src"],
       "@cenie/errors/*": ["../../packages/errors/src/*"],
       "@cenie/email": ["../../packages/email/src"],

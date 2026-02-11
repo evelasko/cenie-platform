@@ -36,12 +36,15 @@ export class SentryTransport implements Transport {
       tracesSampleRate: this.options.sampleRate,
       
       // Don't capture console.log as breadcrumbs (we handle this explicitly)
-      integrations: [
-        Sentry.replayIntegration({
-          maskAllText: true,
-          blockAllMedia: true,
-        }),
-      ],
+      // replayIntegration is client-side only; conditionally include it
+      integrations: typeof Sentry.replayIntegration === 'function'
+        ? [
+            Sentry.replayIntegration({
+              maskAllText: true,
+              blockAllMedia: true,
+            }),
+          ]
+        : [],
       
       // Before sending, sanitize PII
       beforeSend: (event, hint) => {

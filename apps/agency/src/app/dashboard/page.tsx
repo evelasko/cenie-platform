@@ -57,7 +57,7 @@ function EmptyState({
 
 export default function ClientDashboard() {
   const { user } = useAuthContext()
-  const [stats, setStats] = useState({
+  const [stats, _setStats] = useState({
     activeProjects: 0,
     templatesUsed: 0,
     automationsRunning: 0,

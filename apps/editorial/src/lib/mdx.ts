@@ -103,7 +103,7 @@ export async function getContentBySlug<T extends Frontmatter = Frontmatter>(
   const { data, content } = matter(fileContents)
 
   // Calculate reading time
-  const readingTimeResult = readingTime(content, 200, 'es') // 200 wpm, Spanish
+  const readingTimeResult = readingTime(content, { wordsPerMinute: 200 })
 
   return {
     slug,

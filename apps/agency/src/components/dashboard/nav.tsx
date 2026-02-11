@@ -7,12 +7,12 @@ import { getFirebaseAuth } from '@cenie/firebase/client'
 import { signOut } from 'firebase/auth'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import type { User } from 'firebase/auth'
+import type { AuthUser } from '@cenie/firebase'
 
 const logger = createLogger({ name: 'agency:nav' })
 
 interface DashboardNavProps {
-  user: User
+  user: AuthUser
   role: string
 }
 

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import type { CatalogVolumeUpdateInput } from '@/types/books'
@@ -7,8 +7,10 @@ import type { CatalogVolumeUpdateInput } from '@/types/books'
  * GET /api/catalog/[id]
  * Get a single catalog volume by ID with contributors
  */
-export const GET = requireViewer(
-  async (_request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+export const GET = requireViewer<Promise<{ id: string }>>(
+  async (_request, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
     try {
       // User is authenticated and has viewer role or higher
       const { id } = await params
@@ -62,8 +64,10 @@ export const GET = requireViewer(
  * Update a catalog volume
  * Requires: editor or admin role
  */
-export const PATCH = requireEditor(
-  async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+export const PATCH = requireEditor<Promise<{ id: string }>>(
+  async (request, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
     try {
       // User is authenticated and has editor role or higher
       const { id } = await params
@@ -99,8 +103,8 @@ export const PATCH = requireEditor(
       }
 
       // Update the volume
-      const { data, error } = await supabase
-        .from('catalog_volumes')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase.from('catalog_volumes') as any)
         .update({
           title: body.title,
           subtitle: body.subtitle,
@@ -157,8 +161,10 @@ export const PATCH = requireEditor(
  * Delete a catalog volume
  * Requires: editor or admin role
  */
-export const DELETE = requireEditor(
-  async (_request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+export const DELETE = requireEditor<Promise<{ id: string }>>(
+  async (_request, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
     try {
       // User is authenticated and has editor role or higher
       const { id } = await params
