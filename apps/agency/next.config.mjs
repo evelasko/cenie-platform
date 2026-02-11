@@ -66,6 +66,8 @@ export default withSentryConfig(withMDXPlugin(nextConfig), {
 
   // Upload source maps on build
   widenClientFileUpload: true,
-  hideSourceMaps: true,
+  sourcemaps: {
+    disable: process.env.NODE_ENV === 'production',
+  },
   disableLogger: true,
 })

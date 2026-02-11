@@ -16,14 +16,13 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "dependencies": {
-    "@cenie/logger": "workspace:*",
     "@cenie/errors": "workspace:*",
-    "@sentry/nextjs": "^8.0.0"
+    "@cenie/logger": "workspace:*",
+    "@sentry/nextjs": "^10.32.1"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
-    "eslint": "^9.38.0",
+    "@types/node": "^25.0.3",
+    "eslint": "^9.39.2",
     "typescript": "^5.9.3"
   }
 }
-
