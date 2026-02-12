@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { existsSync } from 'fs'
 import { requireRole } from '@/lib/auth-helpers'
 import { getContributorPhotoUrl } from '@/lib/twicpics'
+import { uploadToStorage } from '@/lib/firebase-storage'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 /**
  * POST /api/upload/photo
- * Upload a contributor photo
+ * Upload a contributor photo to Firebase Storage
  * Requires: editor or admin role
  */
 export async function POST(request: NextRequest) {
@@ -53,26 +51,19 @@ export async function POST(request: NextRequest) {
     const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const filename = `${timestamp}-${sanitized.replace(/\.[^.]+$/, '')}.${extension}`
 
-    // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), 'public/images/contributors')
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true })
-    }
+    // Firebase Storage path (also serves as the TwicPics path)
+    const storagePath = `editorial/contributors/${filename}`
 
-    // Save file
+    // Upload to Firebase Storage
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    const filepath = join(uploadDir, filename)
-    await writeFile(filepath, buffer)
+    await uploadToStorage(buffer, storagePath, file.type)
 
-    // Generate TwicPics path
-    const twicpicsPath = `editorial/contributors/${filename}`
-
-    // Generate display URL (circular, optimized for faces)
-    const displayUrl = getContributorPhotoUrl(twicpicsPath, 200)
+    // Generate display URL via TwicPics CDN (circular, optimized for faces)
+    const displayUrl = getContributorPhotoUrl(storagePath, 200)
 
     return NextResponse.json({
-      twicpics_path: twicpicsPath,
+      twicpics_path: storagePath,
       display_url: displayUrl,
     })
   } catch (error) {

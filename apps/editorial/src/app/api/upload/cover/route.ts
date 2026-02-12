@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { existsSync } from 'fs'
 import { requireRole } from '@/lib/auth-helpers'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { uploadToStorage, fileExistsInStorage } from '@/lib/firebase-storage'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 /**
  * POST /api/upload/cover
- * Upload a book cover image (slug-based naming)
+ * Upload a book cover image to Firebase Storage (slug-based naming)
  * Body (multipart/form-data):
  * - file: Image file (required)
  * - slug: Publication slug for filename (required)
@@ -66,29 +64,22 @@ export async function POST(request: NextRequest) {
     // Generate slug-based filename
     const filename = `${slug}.${extension}`
 
-    // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), 'public/images/covers')
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true })
-    }
+    // Firebase Storage path (also serves as the TwicPics path)
+    const storagePath = `editorial/covers/${filename}`
 
     // Check if file already exists (will be overwritten)
-    const filepath = join(uploadDir, filename)
-    const fileExists = existsSync(filepath)
+    const fileExists = await fileExistsInStorage(storagePath)
 
-    // Save file (overwrites if exists)
+    // Upload to Firebase Storage
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    await writeFile(filepath, buffer)
+    await uploadToStorage(buffer, storagePath, file.type)
 
-    // Generate TwicPics path
-    const twicpicsPath = `editorial/covers/${filename}`
-
-    // Generate display URL
-    const displayUrl = getBookCoverUrl(twicpicsPath, 'medium')
+    // Generate display URL via TwicPics CDN
+    const displayUrl = getBookCoverUrl(storagePath, 'medium')
 
     return NextResponse.json({
-      twicpics_path: twicpicsPath,
+      twicpics_path: storagePath,
       display_url: displayUrl,
       filename,
       overwritten: fileExists,

@@ -194,6 +194,12 @@ export const POST = withErrorHandling(
       })
     }
 
+    // Compute the denormalized cover_url from the TwicPics path
+    // This is the URL used by public-facing pages to display the cover
+    const coverUrl = body.cover_twicpics_path
+      ? getBookCoverUrl(body.cover_twicpics_path, 'medium')
+      : null
+
     // Insert catalog volume
     const { data, error } = await supabase
       .from('catalog_volumes')
@@ -210,6 +216,7 @@ export const POST = withErrorHandling(
         language: body.language || 'es',
         page_count: body.page_count || null,
         cover_twicpics_path: body.cover_twicpics_path || null,
+        cover_url: coverUrl,
         cover_fallback_url: body.cover_fallback_url || null,
         categories: body.categories || null,
         tags: body.tags || null,

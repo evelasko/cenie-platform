@@ -1,47 +1,89 @@
-# TwicPics Integration Guide
+# TwicPics + Firebase Storage Integration Guide
 
-## Why TwicPics?
+## Architecture Overview
 
-TwicPics was chosen over Cloudinary for several advantages:
+```
+Editor uploads image via Dashboard
+  → Next.js API route validates & processes
+  → Firebase Admin SDK uploads to Firebase Storage
+  → Storage path saved to Firestore (e.g. "editorial/covers/slug.jpg")
+  → TwicPics CDN proxies from Firebase Storage public URL
+  → TwicPics applies transforms (resize, crop, format) and caches
+  → Browser receives optimized image
+```
 
-✅ **More cost-effective** - Better pricing for growing catalogs  
-✅ **Simpler API** - Path-based transformations (no complex SDKs)  
-✅ **Better performance** - Automatic format selection (WebP, AVIF)  
-✅ **Native responsive** - Built-in srcset generation  
-✅ **Real-time transformations** - No upload presets needed  
-✅ **Excellent DX** - Clean, intuitive API
+### Why This Architecture?
+
+| Concern | Solution |
+|---------|----------|
+| **Persistent storage** | Firebase Storage (not local filesystem) |
+| **Image optimization** | TwicPics CDN (auto format, resize, crop) |
+| **No git bloat** | Images never committed to repository |
+| **Works on Vercel** | No dependency on writable filesystem |
+| **No vendor lock-in** | Images owned in Firebase Storage; TwicPics is just a CDN layer |
+| **Cost-effective** | Firebase free tier (5GB storage); TwicPics for transforms only |
+
+### Why TwicPics Over Cloudinary?
+
+- **More cost-effective** for growing catalogs
+- **Simpler API** - Path-based transformations (no complex SDKs)
+- **Better performance** - Automatic format selection (WebP, AVIF)
+- **Real-time transformations** - No upload presets needed
+- **Clean DX** - Intuitive URL-based API
 
 ## Setup
 
-### 1. Create TwicPics Account
+### 1. Firebase Storage (Already Configured)
 
-1. Go to https://www.twicpics.com
-2. Sign up for free account
-3. Create a domain (e.g., `cenie.twic.pics`)
-4. Configure source (upload or external URL)
+Firebase Storage is configured in the CENIE project (`cenie-platform`).
 
-### 2. Environment Variables
+**Storage rules** (`services/cloud-functions/storage.rules`):
+- `editorial/**` paths are publicly readable (so TwicPics can fetch originals)
+- Writes are handled server-side via Admin SDK (bypasses rules)
 
-Add to your `.env`:
-
+**Deploy rules:**
 ```bash
-TWICPICS_DOMAIN=cenie.twic.pics
-NEXT_PUBLIC_TWICPICS_DOMAIN=cenie.twic.pics
+cd services/cloud-functions
+firebase deploy --only storage
 ```
 
-### 3. Database Pattern
+### 2. TwicPics Configuration
 
-**Storage:**
-- Store the **path** in database (not full URL)
-- Generate URLs dynamically with transformations
+**TwicPics Dashboard:**
+1. Go to https://www.twicpics.com
+2. Domain: `cenie.twic.pics`
+3. **Source**: Configure to fetch from Firebase Storage:
+   ```
+   Origin URL: https://storage.googleapis.com/YOUR_BUCKET_NAME/
+   Path prefix: (leave empty or match your domain path)
+   ```
+4. This tells TwicPics: when a request comes in for `editorial/covers/slug.jpg`,
+   fetch the original from `https://storage.googleapis.com/BUCKET/editorial/covers/slug.jpg`
 
-**Example:**
+### 3. Environment Variables
+
+Already configured in `.env`:
+
+```bash
+# TwicPics CDN
+TWICPICS_DOMAIN=cenie.twic.pics
+NEXT_PUBLIC_TWICPICS_DOMAIN=cenie.twic.pics
+TWICPICS_API_KEY=your-twicpics-api-key  # Only needed for TwicPics API (optional)
+
+# Firebase Storage (per-app .env.local)
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+```
+
+### 4. Database Pattern
+
+**Store the storage path** in the database (not a full URL):
 ```typescript
 // Database stores
-cover_twicpics_path: "covers/stanislavski-acting.jpg"
+cover_twicpics_path: "editorial/covers/stanislavski-acting.jpg"
 
-// Generate URL in code
-const coverUrl = `https://${process.env.NEXT_PUBLIC_TWICPICS_DOMAIN}/cover?url=${cover_twicpics_path}&width=400&height=600`
+// This path is both:
+// 1. The Firebase Storage path
+// 2. The TwicPics path (TwicPics maps it to Storage URL automatically)
 ```
 
 ## Usage
@@ -50,16 +92,18 @@ const coverUrl = `https://${process.env.NEXT_PUBLIC_TWICPICS_DOMAIN}/cover?url=$
 
 **Database field:** `catalog_volumes.cover_twicpics_path`
 
-**Display sizes:**
+**Display sizes (via TwicPics):**
 ```typescript
-// Thumbnail (grid view)
-const thumbnailUrl = `https://${domain}/cover?url=${path}&width=200&height=300`
+import { getBookCoverUrl } from '@/lib/twicpics'
 
-// Medium (detail page)
-const mediumUrl = `https://${domain}/cover?url=${path}&width=400&height=600`
+// Thumbnail (200x300, grid view)
+const thumbnail = getBookCoverUrl("editorial/covers/book.jpg", "thumbnail")
 
-// Large (full view)
-const largeUrl = `https://${domain}/cover?url=${path}&width=800&height=1200`
+// Medium (400x600, detail page)
+const medium = getBookCoverUrl("editorial/covers/book.jpg", "medium")
+
+// Large (800x1200, full view)
+const large = getBookCoverUrl("editorial/covers/book.jpg", "large")
 ```
 
 **Next.js Image Component:**
@@ -81,47 +125,55 @@ import Image from 'next/image'
 
 **Database field:** `contributors.photo_twicpics_path`
 
-**Circular avatar:**
 ```typescript
-const avatarUrl = `https://${domain}/cover?url=${path}&width=200&height=200&crop=1:1&focus=faces`
-```
+import { getContributorPhotoUrl } from '@/lib/twicpics'
 
-**Profile photo:**
-```typescript
-const profileUrl = `https://${domain}/cover?url=${path}&width=400&height=400&crop=1:1`
+// Circular avatar (200x200, face detection)
+const avatar = getContributorPhotoUrl("editorial/contributors/elena-torres.jpg", 200)
+
+// Profile photo (400x400)
+const profile = getContributorPhotoUrl("editorial/contributors/elena-torres.jpg", 400)
 ```
 
 ## Upload Workflow
 
-### Option 1: Direct Upload to TwicPics
+Uploads go through Next.js API routes that use the Firebase Admin SDK.
 
-```typescript
-async function uploadToTwicPics(file: File, path: string) {
-  const formData = new FormData()
-  formData.append('file', file)
-  formData.append('path', path)
-  
-  const response = await fetch(`https://api.twicpics.com/v1/upload`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.TWICPICS_API_KEY}`
-    },
-    body: formData
-  })
-  
-  const data = await response.json()
-  return data.path // Store this in database
-}
+### Cover Upload
+
+```
+POST /api/upload/cover
+Content-Type: multipart/form-data
+Body: { file: File, slug: string }
+Requires: editor role
+
+→ Validates file (type, size, slug format)
+→ Uploads to Firebase Storage: editorial/covers/{slug}.{ext}
+→ Returns: { twicpics_path, display_url, filename, overwritten }
 ```
 
-### Option 2: Upload to Your Storage + TwicPics as Proxy
+### Photo Upload
 
-1. Upload image to your own storage (S3, Supabase Storage, etc.)
-2. Configure TwicPics to use your storage as source
-3. TwicPics will fetch and transform on-demand
-4. Store the path in database
+```
+POST /api/upload/photo
+Content-Type: multipart/form-data
+Body: { file: File }
+Requires: editor role
 
-**Recommended:** Option 2 (more flexible, no vendor lock-in)
+→ Validates file (type, size)
+→ Uploads to Firebase Storage: editorial/contributors/{timestamp}-{name}.{ext}
+→ Returns: { twicpics_path, display_url }
+```
+
+### Browse Existing Covers
+
+```
+GET /api/files/covers?search=keyword
+Requires: editorial access
+
+→ Lists files from Firebase Storage under editorial/covers/
+→ Returns: { files: [...], total_count }
+```
 
 ## Transformations
 
@@ -137,257 +189,116 @@ async function uploadToTwicPics(file: File, path: string) {
 
 ### Aspect Ratios for Books
 
-**Portrait books (most common):**
-```
-crop=2:3  // Standard book cover ratio
-```
+| Type | Crop | Example |
+|------|------|---------|
+| Portrait (standard) | `2:3` | Most book covers |
+| Square | `1:1` | Contributor photos |
+| Landscape (rare) | `3:2` | Wide format books |
 
-**Square covers:**
-```
-crop=1:1
-```
-
-**Landscape (rare):**
-```
-crop=3:2
-```
-
-### Example URLs
+### Example TwicPics URLs
 
 **Book cover thumbnail:**
 ```
-https://cenie.twic.pics/cover?url=covers/stanislavski.jpg&width=200&height=300&crop=2:3
+https://cenie.twic.pics/editorial/covers/stanislavski.jpg?twic=v1/cover=200x300
 ```
 
 **Contributor photo (circular):**
 ```
-https://cenie.twic.pics/cover?url=contributors/elena-torres.jpg&width=200&height=200&crop=1:1&focus=faces
+https://cenie.twic.pics/editorial/contributors/elena-torres.jpg?twic=v1/cover=200x200/focus=faces
 ```
 
 **High-res cover for detail page:**
 ```
-https://cenie.twic.pics/cover?url=covers/stanislavski.jpg&width=800&height=1200&quality=90
+https://cenie.twic.pics/editorial/covers/stanislavski.jpg?twic=v1/cover=800x1200/quality=90
 ```
 
-## React Component Example
+## Key Files
 
-```tsx
-import { FC } from 'react'
-import Image from 'next/image'
-
-interface BookCoverProps {
-  coverPath: string
-  title: string
-  size?: 'sm' | 'md' | 'lg'
-}
-
-const sizeMap = {
-  sm: { width: 200, height: 300 },
-  md: { width: 400, height: 600 },
-  lg: { width: 800, height: 1200 }
-}
-
-export const BookCover: FC<BookCoverProps> = ({ 
-  coverPath, 
-  title, 
-  size = 'md' 
-}) => {
-  const { width, height } = sizeMap[size]
-  const domain = process.env.NEXT_PUBLIC_TWICPICS_DOMAIN
-  
-  // Build TwicPics URL
-  const src = `https://${domain}/cover?url=${coverPath}&width=${width}&height=${height}&crop=2:3`
-  
-  return (
-    <Image
-      src={src}
-      alt={title}
-      width={width}
-      height={height}
-      className="object-cover"
-    />
-  )
-}
-```
-
-## Upload Component Example
-
-```tsx
-'use client'
-
-import { useState } from 'react'
-
-export function CoverUpload({ onUpload }: { onUpload: (path: string) => void }) {
-  const [uploading, setUploading] = useState(false)
-  
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    
-    setUploading(true)
-    
-    try {
-      // Upload to your storage
-      const formData = new FormData()
-      formData.append('file', file)
-      
-      const response = await fetch('/api/upload/cover', {
-        method: 'POST',
-        body: formData
-      })
-      
-      const data = await response.json()
-      
-      // data.path will be stored in database
-      // TwicPics will fetch from your storage
-      onUpload(data.path)
-      
-    } catch (error) {
-      console.error('Upload failed:', error)
-    } finally {
-      setUploading(false)
-    }
-  }
-  
-  return (
-    <div>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
-      {uploading && <p>Uploading...</p>}
-    </div>
-  )
-}
-```
-
-## API Route Example
-
-```typescript
-// app/api/upload/cover/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-
-export async function POST(request: NextRequest) {
-  const formData = await request.formData()
-  const file = formData.get('file') as File
-  
-  if (!file) {
-    return NextResponse.json({ error: 'No file provided' }, { status: 400 })
-  }
-  
-  // Generate unique filename
-  const timestamp = Date.now()
-  const sanitized = file.name.replace(/[^a-z0-9.]/gi, '-').toLowerCase()
-  const filename = `${timestamp}-${sanitized}`
-  const path = `covers/${filename}`
-  
-  // Upload to your storage (example: Supabase Storage)
-  // TwicPics will be configured to use your storage as source
-  const bytes = await file.arrayBytes()
-  const buffer = Buffer.from(bytes)
-  
-  // Upload to your storage...
-  // await uploadToSupabaseStorage(path, buffer)
-  
-  // Return path to store in database
-  return NextResponse.json({ path })
-}
-```
+| File | Purpose |
+|------|---------|
+| `src/lib/twicpics.ts` | TwicPics URL generation helpers |
+| `src/lib/firebase-storage.ts` | Firebase Storage upload/list/delete helpers |
+| `src/app/api/upload/cover/route.ts` | Cover upload API route |
+| `src/app/api/upload/photo/route.ts` | Contributor photo upload API route |
+| `src/app/api/files/covers/route.ts` | Cover file browser API route |
+| `src/components/dashboard/CoverManager.tsx` | Cover upload & browse UI component |
+| `src/components/dashboard/ImageUpload.tsx` | Simple image upload UI component |
 
 ## Best Practices
 
-### 1. Consistent Naming
-```
-covers/{slug}-{timestamp}.jpg
-contributors/{slug}-{timestamp}.jpg
-```
+### 1. Store Paths, Not URLs
 
-### 2. Store Paths, Not URLs
-✅ Good:
 ```typescript
-cover_twicpics_path: "covers/stanislavski-123456.jpg"
+// Good - path can be used with both Firebase Storage and TwicPics
+cover_twicpics_path: "editorial/covers/stanislavski-123456.jpg"
+
+// Bad - locked to a specific CDN configuration
+cover_url: "https://cenie.twic.pics/editorial/covers/stanislavski.jpg?twic=v1/cover=400x600"
 ```
 
-❌ Bad:
-```typescript
-cover_url: "https://cenie.twic.pics/cover?url=covers/stanislavski.jpg&width=400"
+### 2. Generate URLs Dynamically
+
+Using `getBookCoverUrl()` and `getContributorPhotoUrl()` allows changing transformation
+parameters without updating the database.
+
+### 3. Consistent Naming
+
+```
+editorial/covers/{slug}.{ext}           → Book covers
+editorial/contributors/{timestamp}-{name}.{ext} → Contributor photos
 ```
 
-### 3. Generate URLs Dynamically
-This allows you to change transformation parameters without updating database.
-
-### 4. Use Next.js Image Loader
-Leverage Next.js optimization with TwicPics transformations:
+### 4. Use Responsive Images
 
 ```tsx
 <Image
   src={coverPath}
-  loader={({ src, width, quality }) => 
-    `https://${domain}/cover?url=${src}&width=${width}&quality=${quality || 75}`
+  loader={({ src, width, quality }) =>
+    `https://${domain}/${src}?twic=v1/cover=${width}/quality=${quality || 75}`
   }
-  // ...
-/>
-```
-
-### 5. Responsive Images
-Use srcset for different screen sizes:
-
-```tsx
-<Image
-  src={coverPath}
-  srcSet={`
-    ${buildUrl(coverPath, 200)} 200w,
-    ${buildUrl(coverPath, 400)} 400w,
-    ${buildUrl(coverPath, 800)} 800w
-  `}
   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  // ...
 />
 ```
 
 ## Troubleshooting
 
-### Image Not Loading
-- Check path is correct in database
-- Verify TwicPics domain is configured
-- Ensure source (your storage) is accessible to TwicPics
+### Image Not Loading via TwicPics
+- Verify the file exists in Firebase Storage (`editorial/covers/filename.jpg`)
+- Check TwicPics source is configured to point to your Firebase Storage bucket
+- Verify storage rules allow public reads on `editorial/**`
+
+### Image Not Loading Directly
+- Check `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` is set correctly
+- Verify storage rules are deployed: `firebase deploy --only storage`
+- Test direct URL: `https://storage.googleapis.com/BUCKET/editorial/covers/filename.jpg`
+
+### Upload Failing
+- Ensure `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` are set
+- Check the service account has `Storage Admin` or `Storage Object Creator` role
+- Verify file type (JPG, PNG, WebP) and size (<5MB)
 
 ### Poor Quality
-- Increase quality parameter: `&quality=90`
+- Increase quality parameter: `quality=90`
 - Use larger source images (minimum 800px width for covers)
 
-### Slow Loading
+### Slow First Load
 - TwicPics caches transformed images after first request
-- First load may be slower, subsequent loads are fast
+- First load fetches from Firebase Storage and transforms -- subsequent loads are instant
 - Consider preloading critical images
 
-## Migration from Cloudinary
+## Migration from Local Filesystem
 
-If you were using Cloudinary before:
+If you previously had images in `public/images/`:
 
-**Database:**
-```sql
--- Rename columns
-ALTER TABLE contributors RENAME COLUMN photo_cloudinary_id TO photo_twicpics_path;
-ALTER TABLE catalog_volumes RENAME COLUMN cover_cloudinary_id TO cover_twicpics_path;
-ALTER TABLE books RENAME COLUMN temp_cover_cloudinary_id TO temp_cover_twicpics_path;
-```
-
-**Code:**
-- Replace Cloudinary SDK calls with simple fetch or path construction
-- Update environment variables
-- Regenerate image URLs with TwicPics domain
-
-## Resources
-
-- [TwicPics Documentation](https://www.twicpics.com/docs)
-- [TwicPics API Reference](https://www.twicpics.com/docs/api)
-- [TwicPics Pricing](https://www.twicpics.com/pricing)
+1. Upload existing images to Firebase Storage (see migration script below)
+2. The storage paths match the old TwicPics paths, so no database changes needed
+3. Remove tracked images from git:
+   ```bash
+   git rm --cached apps/editorial/public/images/covers/*
+   git rm --cached apps/editorial/public/images/contributors/*
+   ```
 
 ---
 
-**Last Updated:** January 30, 2025  
-**Status:** Ready for Phase 2 Implementation
-
+**Last Updated:** February 12, 2026
+**Status:** Firebase Storage integration complete

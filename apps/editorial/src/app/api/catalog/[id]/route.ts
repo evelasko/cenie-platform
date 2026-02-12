@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
+import { getBookCoverUrl } from '@/lib/twicpics'
 import type { CatalogVolumeUpdateInput } from '@/types/books'
 
 /**
@@ -102,6 +103,12 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         }
       }
 
+      // Compute the denormalized cover_url from the TwicPics path
+      // This is the URL used by public-facing pages to display the cover
+      const coverUrl = body.cover_twicpics_path
+        ? getBookCoverUrl(body.cover_twicpics_path, 'medium')
+        : null
+
       // Update the volume
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data, error } = await (supabase.from('catalog_volumes') as any)
@@ -117,6 +124,7 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
           language: body.language,
           page_count: body.page_count,
           cover_twicpics_path: body.cover_twicpics_path,
+          cover_url: coverUrl,
           cover_fallback_url: body.cover_fallback_url,
           categories: body.categories,
           tags: body.tags,

@@ -3,6 +3,16 @@
  *
  * Utility functions for generating TwicPics CDN URLs with transformations
  * for optimized image delivery.
+ *
+ * Architecture:
+ *   Firebase Storage (origin) → TwicPics CDN (transform & cache) → Browser
+ *
+ * Images are stored in Firebase Storage under paths like:
+ *   editorial/covers/slug.jpg
+ *   editorial/contributors/timestamp-name.jpg
+ *
+ * TwicPics is configured with Firebase Storage as the source origin,
+ * so a path like "editorial/covers/slug.jpg" maps to the Storage public URL.
  */
 
 export const TWICPICS_DOMAIN = 'cenie.twic.pics'

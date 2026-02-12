@@ -65,6 +65,7 @@ export function initializeAdminApp() {
       adminApp = admin.initializeApp({
         credential,
         projectId: process.env.FIREBASE_PROJECT_ID || 'cenie-platform',
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || undefined,
       })
       console.log('✅ [initializeAdminApp] Firebase Admin initialized successfully!')
       console.log('✅ [initializeAdminApp] Project ID:', adminApp.options.projectId)

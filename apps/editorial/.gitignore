@@ -1,1 +1,5 @@
 .vercel
+
+# Uploaded images (stored in Firebase Storage, not in git)
+public/images/covers/
+public/images/contributors/

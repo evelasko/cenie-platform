@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
+import { getBookCoverUrl } from '@/lib/twicpics'
+
+/**
+ * Ensure cover_url is populated from cover_twicpics_path if missing.
+ * Handles volumes saved before cover_url was computed server-side.
+ */
+function enrichCoverUrl(volume: Record<string, unknown>): Record<string, unknown> {
+  if (!volume.cover_url && volume.cover_twicpics_path) {
+    return {
+      ...volume,
+      cover_url: getBookCoverUrl(volume.cover_twicpics_path as string, 'medium'),
+    }
+  }
+  return volume
+}
 
 /**
  * GET /api/public/catalog/[slug]
@@ -46,18 +61,18 @@ export async function GET(
       const { data: related } = await supabase
         .from('catalog_volumes')
         .select(
-          'id, title, subtitle, slug, authors_display, cover_url, cover_fallback_url, publication_year, categories'
+          'id, title, subtitle, slug, authors_display, cover_url, cover_twicpics_path, cover_fallback_url, publication_year, categories'
         )
         .eq('publication_status', 'published')
         .overlaps('categories', (volume as any).categories)
         .neq('id', (volume as any).id)
         .limit(5)
 
-      relatedVolumes = related || []
+      relatedVolumes = (related || []).map(enrichCoverUrl)
     }
 
     return NextResponse.json({
-      volume,
+      volume: enrichCoverUrl(volume as Record<string, unknown>),
       contributors: contributors || [],
       related: relatedVolumes,
     })

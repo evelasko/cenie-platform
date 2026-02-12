@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
+import { getBookCoverUrl } from '@/lib/twicpics'
+
+/**
+ * Ensure cover_url is populated from cover_twicpics_path if missing.
+ * Handles volumes saved before cover_url was computed server-side.
+ */
+function enrichCoverUrl(volume: Record<string, unknown>): Record<string, unknown> {
+  if (!volume.cover_url && volume.cover_twicpics_path) {
+    return {
+      ...volume,
+      cover_url: getBookCoverUrl(volume.cover_twicpics_path as string, 'medium'),
+    }
+  }
+  return volume
+}
 
 /**
  * GET /api/public/catalog
@@ -76,7 +91,7 @@ export async function GET(request: NextRequest) {
       const paginatedResults = results.slice(start, end)
 
       return NextResponse.json({
-        volumes: paginatedResults,
+        volumes: paginatedResults.map(enrichCoverUrl),
         pagination: {
           page,
           per_page: perPage,
@@ -107,7 +122,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      volumes: data || [],
+      volumes: (data || []).map(enrichCoverUrl),
       pagination: {
         page,
         per_page: perPage,

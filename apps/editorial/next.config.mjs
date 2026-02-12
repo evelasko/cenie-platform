@@ -49,6 +49,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'books.google.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cenie.twic.pics',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
     ],
   },
   // MDX support

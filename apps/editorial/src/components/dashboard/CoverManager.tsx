@@ -332,7 +332,7 @@ export function CoverManager({
               <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
                 {searchQuery
                   ? 'Try a different search term'
-                  : 'Upload a cover or add files to public/images/covers/'}
+                  : 'Upload a cover using the Upload tab'}
               </p>
             </div>
           ) : (
@@ -411,9 +411,7 @@ export function CoverManager({
             </>
           ) : (
             <>
-              Select an existing cover from your{' '}
-              <code className="font-mono">public/images/covers/</code> folder, or switch to Upload
-              to add a new one.
+              Select an existing cover from Firebase Storage, or switch to Upload to add a new one.
             </>
           )}
         </p>
