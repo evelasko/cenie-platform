@@ -49,7 +49,7 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
   async (request, context) => {
     try {
       // User is authenticated and has editor role or higher
-      const { params, user } = context
+      const { params } = context
       if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
       const { id } = await params
       const supabase = createNextServerClient()
@@ -83,8 +83,8 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         }
       }
 
-      const { data, error } = await supabase
-        .from('books')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- books table Update type mismatch with DB schema
+      const { data, error } = await (supabase.from('books') as any)
         .update(updatePayload)
         .eq('id', id)
         .select()
