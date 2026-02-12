@@ -53,6 +53,7 @@ export default function NewOriginalPublicationPage() {
   const [categories, setCategories] = useState('')
   const [tags, setTags] = useState('')
   const [excerpt, setExcerpt] = useState('')
+  const [tableOfContents, setTableOfContents] = useState('')
   const [coverPath, setCoverPath] = useState('')
   const [coverUrl, setCoverUrl] = useState('')
 
@@ -132,6 +133,7 @@ export default function NewOriginalPublicationPage() {
                 .map((t) => t.trim())
                 .filter(Boolean)
             : undefined,
+          table_of_contents: tableOfContents ? JSON.parse(tableOfContents) : undefined,
           excerpt: excerpt || undefined,
           slug,
         }),
@@ -491,6 +493,26 @@ export default function NewOriginalPublicationPage() {
         </div>
 
         <div className="space-y-6">
+          {/* Table of Contents */}
+          <div>
+            <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
+              Table of Contents (JSON)
+            </label>
+            <textarea
+              value={tableOfContents}
+              onChange={(e) => setTableOfContents(e.target.value)}
+              rows={8}
+              placeholder='{"chapters": [{"title": "Capítulo 1", "page": 1}]}'
+              className={clsx(
+                TYPOGRAPHY.bodyBase,
+                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary font-mono'
+              )}
+            />
+            <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mt-1')}>
+              Enter structured table of contents as JSON (optional)
+            </p>
+          </div>
+
           {/* Excerpt */}
           <div>
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>

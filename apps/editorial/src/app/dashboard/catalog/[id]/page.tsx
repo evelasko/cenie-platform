@@ -46,6 +46,7 @@ export default function CatalogVolumeDetailPage({ params }: { params: Promise<{ 
   const [featured, setFeatured] = useState(false)
   const [slug, setSlug] = useState('')
   const [excerpt, setExcerpt] = useState('')
+  const [tableOfContents, setTableOfContents] = useState('')
   const [coverPath, setCoverPath] = useState('')
   const [coverUrl, setCoverUrl] = useState('')
 
@@ -86,6 +87,7 @@ export default function CatalogVolumeDetailPage({ params }: { params: Promise<{ 
       setFeatured(vol.featured)
       setSlug(vol.slug || '')
       setExcerpt(vol.excerpt || '')
+      setTableOfContents(vol.table_of_contents ? JSON.stringify(vol.table_of_contents, null, 2) : '')
       setCoverPath(vol.cover_twicpics_path || '')
       setCoverUrl(vol.cover_url || '')
 
@@ -136,6 +138,7 @@ export default function CatalogVolumeDetailPage({ params }: { params: Promise<{ 
             : null,
           featured,
           slug: slug || null,
+          table_of_contents: tableOfContents ? JSON.parse(tableOfContents) : null,
           excerpt: excerpt || null,
           cover_twicpics_path: coverPath || null,
           cover_url: coverUrl || null,
@@ -565,6 +568,26 @@ export default function CatalogVolumeDetailPage({ params }: { params: Promise<{ 
         </div>
 
         <div className="space-y-6">
+          {/* Table of Contents */}
+          <div>
+            <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
+              Table of Contents (JSON)
+            </label>
+            <textarea
+              value={tableOfContents}
+              onChange={(e) => setTableOfContents(e.target.value)}
+              rows={8}
+              placeholder='{"chapters": [{"title": "Capítulo 1", "page": 1}]}'
+              className={clsx(
+                TYPOGRAPHY.bodyBase,
+                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary font-mono'
+              )}
+            />
+            <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mt-1')}>
+              Enter structured table of contents as JSON (optional)
+            </p>
+          </div>
+
           {/* Excerpt */}
           <div>
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>

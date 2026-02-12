@@ -108,6 +108,11 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
       setTitleEs(bookData.translated_title || '')
       setDescriptionEs(bookData.publication_description_es || '')
       setExcerptEs(bookData.publication_excerpt_es || '')
+      setTableOfContents(
+        bookData.publication_table_of_contents
+          ? JSON.stringify(bookData.publication_table_of_contents, null, 2)
+          : ''
+      )
       setIsbn13(bookData.isbn_13 || '')
       setIsbn10(bookData.isbn_10 || '')
 
