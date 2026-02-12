@@ -28,5 +28,5 @@ export type { ErrorCode, ErrorSeverity, ErrorMetadata, ErrorOptions, SerializedE
 // Utilities
 export { classifyError, shouldReportError } from './utils/error-classifier'
 
-// Handlers (also exported via subpaths)
+// Handlers - next-handler only (react-handler via @cenie/errors/react subpath)
 export * from './handlers'

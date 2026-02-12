@@ -25,7 +25,8 @@ export class ConsoleTransport implements Transport {
     if (entry.level === 'error' || entry.level === 'fatal') {
       console.error(output)
     } else {
-      console.log(output)
+      // eslint-disable-next-line no-console
+      console.info(output)
     }
   }
 }
