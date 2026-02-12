@@ -7,7 +7,7 @@
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@10.19.0",
+  "packageManager": "pnpm@10.29.3",
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
@@ -73,6 +73,11 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.50.0",
     "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "overrides": {
+      "next": "16.1.6"
+    }
   },
   "workspaces": [
     "apps/*",

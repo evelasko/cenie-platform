@@ -87,7 +87,8 @@ const withMDXPlugin = withMDX({
   },
 })
 
-export default withSentryConfig(withMDXPlugin(nextConfig), {
+/** @type {import('next').NextConfig} */
+const sentryNextConfig = withSentryConfig(withMDXPlugin(nextConfig), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT || 'cenie-editorial',
 
@@ -102,3 +103,5 @@ export default withSentryConfig(withMDXPlugin(nextConfig), {
   hideSourceMaps: true,
   disableLogger: true,
 })
+
+export default sentryNextConfig

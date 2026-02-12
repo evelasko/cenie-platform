@@ -1,4 +1,4 @@
-import { compareTwoStrings } from 'string-similarity'
+import { CmpStr } from 'cmpstr'
 import { logger } from './logger'
 import { googleBooks } from './google-books'
 import type {
@@ -7,6 +7,9 @@ import type {
   ConfidenceBreakdown,
   TranslationInvestigationResult,
 } from '@/types/books'
+
+// Use Dice coefficient (same algorithm as string-similarity) for title similarity
+const stringComparator = CmpStr.create().setMetric('dice').setFlags('i')
 
 // Known Spanish performing arts publishers (can be extended easily)
 const SPANISH_PUBLISHERS = [
@@ -264,7 +267,7 @@ function calculateConfidence(
   // Factor 2: Title Similarity (40 points max)
   const originalTitle = original.title.toLowerCase()
   const candidateTitle = candidate.volumeInfo.title.toLowerCase()
-  const similarity = compareTwoStrings(originalTitle, candidateTitle)
+  const similarity = stringComparator.compare(originalTitle, candidateTitle)
 
   if (similarity > 0.9) {
     breakdown.titleSimilarity = 40
