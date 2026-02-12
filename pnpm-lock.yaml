@@ -374,6 +374,9 @@ importers:
       '@cenie/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@cenie/oauth-handlers':
+        specifier: workspace:*
+        version: link:../../packages/oauth-handlers
       '@cenie/supabase':
         specifier: workspace:*
         version: link:../../packages/supabase

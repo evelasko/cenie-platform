@@ -20,6 +20,7 @@
     "@cenie/email": "workspace:*",
     "@cenie/errors": "workspace:*",
     "@cenie/firebase": "workspace:*",
+    "@cenie/oauth-handlers": "workspace:*",
     "@cenie/logger": "workspace:*",
     "@cenie/supabase": "workspace:*",
     "@cenie/ui": "workspace:*",
