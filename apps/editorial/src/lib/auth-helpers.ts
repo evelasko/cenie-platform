@@ -1,3 +1,15 @@
+/**
+ * @deprecated This module is deprecated. Use the shared packages instead:
+ *
+ * - For role-based route protection: `@cenie/auth-server/middleware` (withAuth, withRole)
+ *   See `@/lib/auth.ts` for the editorial wrappers (requireViewer, requireEditor, etc.)
+ * - For app access checks: `@cenie/auth-server/helpers` (checkAppAccess, getAuthenticatedUser)
+ * - For role utilities: `@cenie/auth-utils/roles` (hasRole, ROLE_HIERARCHY)
+ *
+ * This file is kept temporarily for backward compatibility with existing API routes.
+ * TODO: Migrate API routes to use `@/lib/auth.ts` wrappers and remove this file.
+ */
+
 import { NextResponse } from 'next/server'
 import { getServerSession, initializeAdminApp } from '@cenie/firebase/server'
 import { logger } from './logger'

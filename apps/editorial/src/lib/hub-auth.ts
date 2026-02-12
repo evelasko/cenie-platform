@@ -1,3 +1,15 @@
+/**
+ * @deprecated This module is deprecated. Use the shared packages instead:
+ *
+ * - For client-side auth API calls: `@cenie/auth-client` (authClient)
+ * - For server-side session/middleware: `@cenie/auth-server`
+ * - For app access checks (server): `@cenie/auth-server/helpers` (checkAppAccess)
+ * - For OAuth sign-in: `@cenie/oauth-handlers/hooks` (useOAuth)
+ *
+ * This file is kept temporarily for backward compatibility with sign-up page.
+ * TODO: Migrate sign-up page to shared packages and remove this file.
+ */
+
 // Use local API in development (Editorial app), Hub API in production
 const HUB_API_URL =
   process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_HUB_API_URL : '/api' // Use Editorial app's local API endpoints
