@@ -29,6 +29,9 @@ function CatalogoContent() {
   const selectedType = (searchParams.get('type') || 'all') as VolumeType | 'all'
   const selectedCategories = searchParams.get('categories')?.split(',').filter(Boolean) || []
 
+  // Use stable string for dependency to avoid infinite loop ([] !== [] on each render)
+  const categoriesKey = selectedCategories.join(',')
+
   useEffect(() => {
     fetchCategories()
     fetchFeatured()
@@ -36,7 +39,7 @@ function CatalogoContent() {
 
   useEffect(() => {
     fetchVolumes()
-  }, [page, searchQuery, selectedType, selectedCategories])
+  }, [page, searchQuery, selectedType, categoriesKey])
 
   const fetchCategories = async () => {
     try {

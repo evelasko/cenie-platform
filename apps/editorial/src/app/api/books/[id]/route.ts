@@ -55,19 +55,36 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
       const supabase = createNextServerClient()
       const body: BookUpdateInput = await request.json()
 
-      const updatePayload = {
-        title: body.title,
-        subtitle: body.subtitle,
-        authors: body.authors,
-        selected_for_translation: body.selected_for_translation,
-        status: body.status,
-        source_language: body.source_language,
-        target_language: body.target_language,
-        translation_notes: body.translation_notes,
-        updated_by: user.uid,
+      // Build update payload from allowed fields only (books table has no updated_by column)
+      const updatePayload: Record<string, unknown> = {}
+      const allowedFields = [
+        'title',
+        'subtitle',
+        'authors',
+        'selected_for_translation',
+        'status',
+        'translated_title',
+        'translation_priority',
+        'marketability_score',
+        'relevance_score',
+        'internal_notes',
+        'rejection_reason',
+        'publication_description_es',
+        'publication_excerpt_es',
+        'publication_table_of_contents',
+        'temp_cover_twicpics_path',
+        'temp_authors',
+        'temp_translators',
+      ] as const
+
+      for (const field of allowedFields) {
+        if (field in body && body[field] !== undefined) {
+          updatePayload[field] = body[field]
+        }
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error } = await (supabase.from('books') as any)
+
+      const { data, error } = await supabase
+        .from('books')
         .update(updatePayload)
         .eq('id', id)
         .select()

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Loader2, AlertCircle, Plus, BookOpen, Eye, Edit } from 'lucide-react'
+import { Loader2, AlertCircle, Plus, BookOpen, Eye, Edit, BookMarked } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -233,6 +233,16 @@ export default function CatalogManagementPage() {
                     >
                       {typeLabels[volume.volume_type]}
                     </span>
+                    {(volume as { _source?: string })._source === 'book' && (
+                      <span
+                        className={clsx(
+                          TYPOGRAPHY.bodySmall,
+                          'px-2 py-0.5 rounded-full bg-blue-100 text-blue-800'
+                        )}
+                      >
+                        In Preparation
+                      </span>
+                    )}
                   </div>
 
                   {volume.subtitle && (
@@ -271,27 +281,44 @@ export default function CatalogManagementPage() {
 
                 {/* Actions */}
                 <div className="flex flex-col gap-2">
-                  {volume.publication_status === 'draft' && (
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      leadingIcon={Eye}
-                      onClick={() => handlePublish(volume.id, volume.title)}
-                    >
-                      Publish
-                    </Button>
-                  )}
-                  <Link href={`/dashboard/catalog/${volume.id}`}>
-                    <Button variant="outlined" size="sm" leadingIcon={Edit}>
-                      Edit
-                    </Button>
-                  </Link>
-                  {volume.slug && volume.publication_status === 'published' && (
-                    <Link href={`/catalogo/${volume.slug}`} target="_blank">
-                      <Button variant="outlined" size="sm" leadingIcon={BookOpen}>
-                        View Public
-                      </Button>
-                    </Link>
+                  {(volume as { _source?: string })._source === 'book' ? (
+                    <>
+                      <Link href={`/dashboard/books/${volume.id}/prepare`}>
+                        <Button variant="primary" size="sm" leadingIcon={BookMarked}>
+                          Prepare for Publication
+                        </Button>
+                      </Link>
+                      <Link href={`/proximamente/${volume.slug}`} target="_blank">
+                        <Button variant="outlined" size="sm" leadingIcon={Eye}>
+                          View on Próximamente
+                        </Button>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {volume.publication_status === 'draft' && (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          leadingIcon={Eye}
+                          onClick={() => handlePublish(volume.id, volume.title)}
+                        >
+                          Publish
+                        </Button>
+                      )}
+                      <Link href={`/dashboard/catalog/${volume.id}`}>
+                        <Button variant="outlined" size="sm" leadingIcon={Edit}>
+                          Edit
+                        </Button>
+                      </Link>
+                      {volume.slug && volume.publication_status === 'published' && (
+                        <Link href={`/catalogo/${volume.slug}`} target="_blank">
+                          <Button variant="outlined" size="sm" leadingIcon={BookOpen}>
+                            View Public
+                          </Button>
+                        </Link>
+                      )}
+                    </>
                   )}
                 </div>
               </div>

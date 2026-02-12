@@ -5,64 +5,125 @@ import { DatabaseError, ValidationError, ConflictError } from '@cenie/errors'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import { logger } from '@/lib/logger'
+import { getBookCoverUrl } from '@/lib/twicpics'
 import type { CatalogVolumeCreateInput } from '@/types/books'
 
 /**
  * GET /api/catalog
- * List catalog volumes (admin view - includes drafts)
+ * List catalog volumes (admin view - includes drafts and books selected for translation)
  * Query params:
  * - status: filter by publication_status (optional)
  * - type: filter by volume_type (optional)
  * - limit: number of results (optional, default: 50)
+ *
+ * Books selected for translation (not yet promoted) appear as future catalog volumes
+ * when status is 'all' or 'draft' and type is 'all' or 'translated'.
  */
 export const GET = withErrorHandling(
   withLogging(
     requireViewer(async (request: NextRequest) => {
-      // User is authenticated and has viewer role or higher
       const supabase = createNextServerClient()
-    const searchParams = request.nextUrl.searchParams
+      const searchParams = request.nextUrl.searchParams
 
-    const status = searchParams.get('status')
-    const type = searchParams.get('type')
-    const limitParam = searchParams.get('limit')
-    const limit = limitParam ? parseInt(limitParam) : 50
+      const status = searchParams.get('status')
+      const type = searchParams.get('type')
+      const limitParam = searchParams.get('limit')
+      const limit = limitParam ? parseInt(limitParam) : 50
 
-    if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
-      throw new ValidationError('Invalid limit parameter', {
-        userMessage: 'Limit must be between 1 and 100',
-        metadata: { limit: limitParam },
+      if (limitParam && (isNaN(limit) || limit < 1 || limit > 100)) {
+        throw new ValidationError('Invalid limit parameter', {
+          userMessage: 'Limit must be between 1 and 100',
+          metadata: { limit: limitParam },
+        })
+      }
+
+      let query = supabase
+        .from('catalog_volumes')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(limit)
+
+      if (status) {
+        query = query.eq('publication_status', status)
+      }
+
+      if (type) {
+        query = query.eq('volume_type', type)
+      }
+
+      const { data: volumesData, error } = await query
+
+      if (error) {
+        throw new DatabaseError('Failed to fetch catalog volumes', {
+          cause: error,
+          metadata: {
+            status,
+            type,
+            limit,
+          },
+        })
+      }
+
+      let volumes = (volumesData || []) as Record<string, unknown>[]
+
+      // Include books selected for translation (future catalog volumes) when filters allow
+      const includeBooks =
+        (!status || status === 'all' || status === 'draft') &&
+        (!type || type === 'all' || type === 'translated')
+
+      if (includeBooks) {
+        const { data: selectedBooks, error: booksError } = await supabase
+          .from('books')
+          .select(
+            'id, title, subtitle, translated_title, spanish_title, spanish_subtitle, authors, spanish_authors, temp_cover_twicpics_path, publication_description_es, added_at'
+          )
+          .eq('selected_for_translation', true)
+          .eq('promoted_to_catalog', false)
+          .order('added_at', { ascending: false })
+
+        if (!booksError && selectedBooks?.length) {
+          const bookItems = selectedBooks.map((b: Record<string, unknown>) => {
+            const displayTitle =
+              (b.spanish_title as string) || (b.translated_title as string) || (b.title as string)
+            const authors = (b.spanish_authors as string[]) || (b.authors as string[])
+            const authorsDisplay = authors?.length ? authors.join(', ') : null
+            const coverPath = b.temp_cover_twicpics_path as string | null
+            const coverUrl = coverPath ? getBookCoverUrl(coverPath, 'medium') : null
+
+            return {
+              id: b.id,
+              title: displayTitle,
+              subtitle: (b.spanish_subtitle as string) || (b.subtitle as string) || null,
+              authors_display: authorsDisplay,
+              description: (b.publication_description_es as string) || null,
+              cover_url: coverUrl,
+              cover_fallback_url: null,
+              slug: `book-${b.id}`,
+              publication_status: 'draft',
+              volume_type: 'translated',
+              publisher_name: 'CENIE Editorial',
+              created_at: b.added_at,
+              _source: 'book',
+            }
+          })
+
+          volumes = [...volumes, ...bookItems].sort((a, b) => {
+            const dateA = new Date((a.created_at as string) || 0).getTime()
+            const dateB = new Date((b.created_at as string) || 0).getTime()
+            return dateB - dateA
+          })
+
+          volumes = volumes.slice(0, limit)
+        }
+      }
+
+      logger.debug('[Catalog] Listed volumes', {
+        count: volumes.length,
+        status,
+        type,
+        includesBooks: includeBooks,
       })
-    }
-
-    let query = supabase
-      .from('catalog_volumes')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(limit)
-
-    if (status) {
-      query = query.eq('publication_status', status)
-    }
-
-    if (type) {
-      query = query.eq('volume_type', type)
-    }
-
-    const { data, error } = await query
-
-    if (error) {
-      throw new DatabaseError('Failed to fetch catalog volumes', {
-        cause: error,
-        metadata: {
-          status,
-          type,
-          limit,
-        },
-      })
-    }
-
-      logger.debug('[Catalog] Listed volumes', { count: data?.length, status, type })
-      return NextResponse.json({ volumes: data })
+      return NextResponse.json({ volumes })
     })
   )
 )

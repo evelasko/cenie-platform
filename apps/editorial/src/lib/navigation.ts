@@ -9,6 +9,10 @@ export const navigation: NavigationItem[] = [
   {
     label: 'Catálogo',
     href: '/catalogo',
+    items: [
+      { label: 'Publicaciones', href: '/catalogo' },
+      { label: 'Próximamente', href: '/proximamente' },
+    ],
   },
   {
     label: 'Tecnología',
@@ -41,6 +45,7 @@ export const footerNavigation: NavigationItem[] = [
     href: '/producto',
     items: [
       { label: 'Explorar Catálogo', href: '/catalogo' },
+      { label: 'Próximamente', href: '/proximamente' },
       { label: 'Nuestra Tecnología IA', href: '/tecnologia' },
       { label: 'Traducciones al Español', href: '/nosotros/traducciones' },
       { label: 'Publicaciones Destacadas', href: '/destacados' },
