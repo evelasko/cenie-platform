@@ -7,6 +7,7 @@ import { TYPOGRAPHY } from '@/lib/typography'
 import { getContributorPhotoUrl } from '@/lib/twicpics'
 import type { ContributorRole } from '@/types/books'
 import Link from 'next/link'
+import { logger } from '@/lib/logger-client'
 
 interface ContributorSuggestion {
   id: string
@@ -95,7 +96,7 @@ export function ContributorAutocomplete({
         setShowSuggestions(true)
       }
     } catch (error) {
-      console.error('Failed to fetch suggestions:', error)
+      logger.error('Failed to fetch suggestions', { error })
     } finally {
       setLoading(false)
     }

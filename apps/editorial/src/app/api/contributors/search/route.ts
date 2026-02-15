@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/contributors/search
@@ -44,13 +45,13 @@ export async function GET(request: NextRequest) {
     const { data, error } = await dbQuery
 
     if (error) {
-      console.error('Search error:', error)
+      logger.error('Search error', { error, query, role })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ contributors: data })
   } catch (error) {
-    console.error('Search contributors error:', error)
+    logger.error('Search contributors error', { error })
     return NextResponse.json(
       {
         error: 'Failed to search contributors',

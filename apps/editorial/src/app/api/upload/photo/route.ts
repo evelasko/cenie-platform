@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireRole } from '@/lib/auth-helpers'
 import { getContributorPhotoUrl } from '@/lib/twicpics'
 import { uploadToStorage } from '@/lib/firebase-storage'
+import { logger } from '@/lib/logger'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
       display_url: displayUrl,
     })
   } catch (error) {
-    console.error('Photo upload error:', error)
+    logger.error('Photo upload error', { error })
     return NextResponse.json(
       {
         error: 'Failed to upload photo',

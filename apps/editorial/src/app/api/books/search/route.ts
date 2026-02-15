@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireViewer } from '@/lib/auth'
 import { googleBooks } from '@/lib/google-books'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/books/search
@@ -26,7 +27,7 @@ export const GET = requireViewer(async (request: NextRequest) => {
 
     return NextResponse.json(results)
   } catch (error) {
-    console.error('Book search error:', error)
+    logger.error('Book search error', { error })
     return NextResponse.json(
       {
         error: 'Failed to search books',

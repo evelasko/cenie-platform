@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { logger } from '@/lib/logger'
 
 /**
  * Ensure cover_url is populated from cover_twicpics_path if missing.
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
       )
 
       if (searchError) {
-        console.error('Search error:', searchError)
+        logger.error('Search error', { error: searchError, searchQuery })
         return NextResponse.json({ error: searchError.message }, { status: 500 })
       }
 
@@ -117,7 +118,7 @@ export async function GET(request: NextRequest) {
     const { data, error, count } = await query
 
     if (error) {
-      console.error('Database error:', error)
+      logger.error('Database error', { error })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
@@ -131,7 +132,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('List public catalog error:', error)
+    logger.error('List public catalog error', { error })
     return NextResponse.json(
       {
         error: 'Failed to list catalog volumes',

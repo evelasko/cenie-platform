@@ -10,6 +10,7 @@ import { LogoEditorial } from '@cenie/ui'
 import { TYPOGRAPHY } from '@/lib/typography'
 import Link from 'next/link'
 import type { NavigationItem } from '@/lib/navigation'
+import { logger } from '@/lib/logger-client'
 
 interface NavbarProps {
   navigationItems: NavigationItem[]
@@ -32,7 +33,7 @@ export default function Navbar({
       await signOut(auth)
       router.push('/sign-in')
     } catch (error) {
-      console.error('Sign out error:', error)
+      logger.error('Sign out error', { error })
     }
   }
 

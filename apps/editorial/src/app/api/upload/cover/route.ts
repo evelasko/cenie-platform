@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireRole } from '@/lib/auth-helpers'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import { uploadToStorage, fileExistsInStorage } from '@/lib/firebase-storage'
+import { logger } from '@/lib/logger'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
       overwritten: fileExists,
     })
   } catch (error) {
-    console.error('Cover upload error:', error)
+    logger.error('Cover upload error', { error })
     return NextResponse.json(
       {
         error: 'Failed to upload cover image',

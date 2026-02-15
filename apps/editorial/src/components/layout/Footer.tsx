@@ -6,6 +6,7 @@ import { TYPOGRAPHY } from '@/lib/typography'
 import Link from 'next/link'
 import type { NavigationItem } from '@/lib/navigation'
 import { defaultSocialLinks, type SocialLink } from '@/lib/social'
+import { logger } from '@/lib/logger-client'
 
 interface FooterProps {
   navigationSections: NavigationItem[]
@@ -29,7 +30,7 @@ export default function Footer({
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // TODO: Implement newsletter subscription
-    console.log('Newsletter signup:', email)
+    logger.debug('Newsletter signup', { email })
     setEmail('')
   }
 

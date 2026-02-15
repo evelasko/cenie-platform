@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireEditorialAccess } from '@/lib/auth-helpers'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import { listStorageFiles } from '@/lib/firebase-storage'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/files/covers
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
       total_count: fileData.length,
     })
   } catch (error) {
-    console.error('List covers error:', error)
+    logger.error('List covers error', { error })
     return NextResponse.json(
       {
         error: 'Failed to list cover files',

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 
 /**
  * POST /api/catalog/[id]/contributors
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       .insert(body.contributors as any)
 
     if (contributorsError) {
-      console.error('Database insert error:', contributorsError)
+      logger.error('Database insert error', { error: contributorsError, volumeId: id })
       return NextResponse.json({ error: contributorsError.message }, { status: 500 })
     }
 
@@ -43,13 +44,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     )
 
     if (displayError) {
-      console.error('Display fields error:', displayError)
+      logger.error('Display fields error', { error: displayError, volumeId: id })
       // Don't fail the request, just log the error
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Link contributors error:', error)
+    logger.error('Link contributors error', { error })
     return NextResponse.json(
       {
         error: 'Failed to link contributors',

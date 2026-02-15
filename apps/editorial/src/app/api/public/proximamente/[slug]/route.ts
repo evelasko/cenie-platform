@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/public/proximamente/[slug]
@@ -80,7 +81,7 @@ export async function GET(
       if (volumeError.code === 'PGRST116') {
         return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
       }
-      console.error('Database error:', volumeError)
+      logger.error('Database error', { error: volumeError, slug })
       return NextResponse.json({ error: volumeError.message }, { status: 500 })
     }
 
@@ -91,7 +92,7 @@ export async function GET(
     )
 
     if (contributorsError) {
-      console.error('Contributors fetch error:', contributorsError)
+      logger.error('Contributors fetch error', { error: contributorsError, volumeId: (volume as any).id })
       // Don't fail, just return empty
     }
 
@@ -117,7 +118,7 @@ export async function GET(
       related: relatedVolumes,
     })
   } catch (error) {
-    console.error('Get proximamente volume error:', error)
+    logger.error('Get proximamente volume error', { error })
     return NextResponse.json(
       {
         error: 'Failed to get volume',

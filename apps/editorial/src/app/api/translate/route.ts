@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 
 /**
  * POST /api/translate
@@ -26,12 +27,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 })
     }
 
-    console.log('text', text)
+    logger.debug('Translation request received', { textLength: text.length })
 
     const apiKey = process.env.GOOGLE_CLOUD_TRANSLATION_API_KEY
 
     if (!apiKey) {
-      console.error('Google Cloud Translation API key not configured')
+      logger.error('Google Cloud Translation API key not configured')
       return NextResponse.json({ error: 'Translation service not configured' }, { status: 500 })
     }
 
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const error = await response.text()
-      console.error('Google Translate API error:', error)
+      logger.error('Google Translate API error', { error })
       return NextResponse.json(
         { error: 'Translation service error', details: error },
         { status: 500 }
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
       detected_source_language: translateData.data.translations[0].detectedSourceLanguage,
     })
   } catch (error) {
-    console.error('Translation error:', error)
+    logger.error('Translation error', { error })
     return NextResponse.json(
       {
         error: 'Failed to translate text',

@@ -10,6 +10,7 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { hubAuth } from '../../lib/hub-auth'
 import { Loader2 } from 'lucide-react'
+import { logger } from '@/lib/logger-client'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -65,7 +66,7 @@ export default function SignUpPage() {
         router.push('/sign-in')
       }, 3000)
     } catch (error: any) {
-      console.error('Sign-up error:', error)
+      logger.error('Sign-up error', { error, code: error.code })
 
       // Handle common Firebase Auth errors
       switch (error.code) {
@@ -118,7 +119,7 @@ export default function SignUpPage() {
 
       router.push('/')
     } catch (error: any) {
-      console.error('Google sign-up error:', error)
+      logger.error('Google sign-up error', { error, code: error.code })
 
       if (error.code !== 'auth/popup-closed-by-user') {
         setError('Failed to sign up with Google. Please try again.')

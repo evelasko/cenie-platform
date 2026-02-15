@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Upload, Image as ImageIcon, Loader2, X, Check, Search } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
+import { logger } from '@/lib/logger-client'
 
 interface CoverFile {
   filename: string
@@ -66,7 +67,7 @@ export function CoverManager({
         setAvailableFiles(data.files || [])
       }
     } catch (error) {
-      console.error('Failed to load covers:', error)
+      logger.error('Failed to load covers', { error })
     } finally {
       setLoadingFiles(false)
     }

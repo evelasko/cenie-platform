@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initializeAdminApp } from '@cenie/firebase/server'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/users/apps/[appName]/access
@@ -9,44 +10,44 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ appName: string }> }
 ) {
-  console.log('=== CHECK APP ACCESS DEBUG ===')
+  const log = logger.child({ route: 'check-app-access' })
+
   try {
     // Get ID token from Authorization header
     const authHeader = request.headers.get('authorization')
-    console.log('Auth header:', {
-      exists: !!authHeader,
-      value: authHeader?.substring(0, 20) + '...',
+    log.debug('Request received', {
+      hasAuthHeader: !!authHeader,
     })
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.error('❌ No valid authorization header')
+      log.error('No valid authorization header')
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
     const idToken = authHeader.replace('Bearer ', '')
-    console.log('ID token extracted, length:', idToken.length)
+    log.debug('ID token extracted', { tokenLength: idToken.length })
 
     // Verify the ID token with Firebase Admin
-    console.log('🔑 Verifying ID token with Firebase Admin...')
+    log.debug('Verifying ID token with Firebase Admin')
     const adminApp = initializeAdminApp()
     const auth = adminApp.auth()
 
     let decodedToken
     try {
       decodedToken = await auth.verifyIdToken(idToken)
-      console.log('✅ Token verified, user ID:', decodedToken.uid)
+      log.debug('Token verified', { userId: decodedToken.uid })
     } catch (error) {
-      console.error('❌ Token verification failed:', error)
+      log.error('Token verification failed', { error })
       return NextResponse.json({ success: false, error: 'Invalid token' }, { status: 401 })
     }
 
     const userId = decodedToken.uid
     const { appName } = await params
-    console.log('Checking access for:', { userId, appName })
+    log.info('Checking access', { userId, appName })
 
     // Check Firestore for user app access
     const firestore = adminApp.firestore()
-    console.log('📚 Querying Firestore for user_app_access...')
+    log.debug('Querying Firestore for user_app_access')
 
     const accessSnapshot = await firestore
       .collection('user_app_access')
@@ -56,13 +57,13 @@ export async function GET(
       .limit(1)
       .get()
 
-    console.log('Query result:', {
+    log.debug('Query result', {
       empty: accessSnapshot.empty,
       size: accessSnapshot.size,
     })
 
     if (accessSnapshot.empty) {
-      console.log('❌ No access found for user')
+      log.info('No access found for user', { userId, appName })
       return NextResponse.json({
         success: true,
         data: [], // Return empty array to indicate no access
@@ -71,7 +72,9 @@ export async function GET(
 
     const accessDoc = accessSnapshot.docs[0]
     const accessData = accessDoc.data()
-    console.log('✅ Access found:', {
+    log.info('Access found', {
+      userId,
+      appName,
       role: accessData.role,
       isActive: accessData.isActive,
     })
@@ -92,7 +95,7 @@ export async function GET(
       ],
     })
   } catch (error) {
-    console.error('❌ Error checking app access:', error)
+    log.error('Error checking app access', { error })
     return NextResponse.json(
       {
         success: false,

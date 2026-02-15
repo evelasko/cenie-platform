@@ -11,6 +11,7 @@ import { useToast } from '@/components/ui/ToastContainer'
 import { CoverManager } from '@/components/dashboard/CoverManager'
 import { ContributorAutocomplete } from '@/components/dashboard/ContributorAutocomplete'
 import type { VolumeType, ContributorRole } from '@/types/books'
+import { logger } from '@/lib/logger-client'
 
 interface ContributorSelection {
   id: string
@@ -176,7 +177,7 @@ export default function NewOriginalPublicationPage() {
 
         if (!contributorsResponse.ok) {
           const errorData = await contributorsResponse.json()
-          console.error('Contributors link error:', errorData)
+          logger.error('Contributors link error', { error: errorData })
           toast.error('Volume created but failed to link contributors')
         }
       }

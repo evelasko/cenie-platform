@@ -23,6 +23,7 @@ import { ContributorAutocomplete } from '@/components/dashboard/ContributorAutoc
 import { CoverManager } from '@/components/dashboard/CoverManager'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import type { Book, ContributorRole } from '@/types/books'
+import { logger } from '@/lib/logger-client'
 
 interface ContributorSelection {
   id: string
@@ -210,7 +211,7 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
         throw new Error(data.error || 'Failed to save cover')
       }
     } catch (err) {
-      console.error('Failed to save cover:', err)
+      logger.error('Failed to save cover', { error: err })
       // Error toast is handled by ImageUpload component
     }
   }

@@ -3,6 +3,7 @@ import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import type { CatalogVolumeUpdateInput } from '@/types/books'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/catalog/[id]
@@ -28,7 +29,7 @@ export const GET = requireViewer<Promise<{ id: string }>>(
         if (volumeError.code === 'PGRST116') {
           return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
         }
-        console.error('Database error:', volumeError)
+        logger.error('Database error', { error: volumeError, volumeId: id })
         return NextResponse.json({ error: volumeError.message }, { status: 500 })
       }
 
@@ -39,7 +40,7 @@ export const GET = requireViewer<Promise<{ id: string }>>(
       )
 
       if (contributorsError) {
-        console.error('Contributors fetch error:', contributorsError)
+        logger.error('Contributors fetch error', { error: contributorsError, volumeId: id })
         // Don't fail, just return empty array
       }
 
@@ -48,7 +49,7 @@ export const GET = requireViewer<Promise<{ id: string }>>(
         contributors: contributors || [],
       })
     } catch (error) {
-      console.error('Get volume error:', error)
+      logger.error('Get volume error', { error })
       return NextResponse.json(
         {
           error: 'Failed to get volume',
@@ -85,7 +86,7 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
           .single()
 
         if (checkError && checkError.code !== 'PGRST116') {
-          console.error('Slug check error:', checkError)
+          logger.error('Slug check error', { error: checkError, volumeId: id, slug: body.slug })
           return NextResponse.json(
             { error: 'Failed to validate slug uniqueness' },
             { status: 500 }
@@ -146,13 +147,13 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         if (error.code === 'PGRST116') {
           return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
         }
-        console.error('Database error:', error)
+        logger.error('Database error', { error, volumeId: id })
         return NextResponse.json({ error: error.message }, { status: 500 })
       }
 
       return NextResponse.json({ volume: data })
     } catch (error) {
-      console.error('Update volume error:', error)
+      logger.error('Update volume error', { error })
       return NextResponse.json(
         {
           error: 'Failed to update volume',
@@ -181,13 +182,13 @@ export const DELETE = requireEditor<Promise<{ id: string }>>(
       const { error } = await supabase.from('catalog_volumes').delete().eq('id', id)
 
       if (error) {
-        console.error('Database error:', error)
+        logger.error('Database error', { error, volumeId: id })
         return NextResponse.json({ error: error.message }, { status: 500 })
       }
 
       return NextResponse.json({ success: true })
     } catch (error) {
-      console.error('Delete volume error:', error)
+      logger.error('Delete volume error', { error })
       return NextResponse.json(
         {
           error: 'Failed to delete volume',

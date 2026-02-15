@@ -3,6 +3,7 @@ import type {
   GoogleBooksSearchResponse,
   BookCoverSize,
 } from '@/types/books'
+import { logger } from '@/lib/logger-client'
 
 /**
  * Google Books API Client
@@ -53,7 +54,7 @@ export class GoogleBooksAPI {
 
       return response.json()
     } catch (error) {
-      console.error('Google Books search error:', error)
+      logger.error('Google Books search error', { error, query })
       throw error
     }
   }
@@ -78,7 +79,7 @@ export class GoogleBooksAPI {
 
       return response.json()
     } catch (error) {
-      console.error('Google Books get book error:', error)
+      logger.error('Google Books get book error', { error, volumeId })
       throw error
     }
   }

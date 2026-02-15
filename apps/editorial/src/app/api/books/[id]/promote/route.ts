@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditor } from '@/lib/auth'
 import type { Book, PromoteToCatalogInput } from '@/types/books'
+import { logger } from '@/lib/logger'
 
 /**
  * POST /api/books/[id]/promote
@@ -66,7 +67,7 @@ export const POST = requireEditor<Promise<{ id: string }>>(
       )
 
       if (promoteError) {
-        console.error('Promote error:', promoteError)
+        logger.error('Promote error', { error: promoteError, bookId: id })
         return NextResponse.json(
           { error: 'Failed to promote book to catalog', details: promoteError.message },
           { status: 500 }
@@ -90,9 +91,9 @@ export const POST = requireEditor<Promise<{ id: string }>>(
           .insert(contributorInserts as any)
 
         if (contributorsError) {
-          console.error('Contributors link error:', contributorsError)
+          logger.error('Contributors link error', { error: contributorsError, volumeId })
           // Don't fail the whole operation, just log the error
-          console.warn('Volume created but contributors failed to link')
+          logger.warn('Volume created but contributors failed to link', { volumeId })
         }
 
         // Update display fields
@@ -104,7 +105,7 @@ export const POST = requireEditor<Promise<{ id: string }>>(
         )
 
         if (displayError) {
-          console.error('Display fields update error:', displayError)
+          logger.error('Display fields update error', { error: displayError, volumeId })
           // Non-critical error, continue
         }
       }
@@ -117,7 +118,7 @@ export const POST = requireEditor<Promise<{ id: string }>>(
         .single()
 
       if (volumeError) {
-        console.error('Volume fetch error:', volumeError)
+        logger.error('Volume fetch error', { error: volumeError, volumeId })
       }
 
       return NextResponse.json({
@@ -127,7 +128,7 @@ export const POST = requireEditor<Promise<{ id: string }>>(
         message: 'Book successfully promoted to catalog',
       })
     } catch (error) {
-      console.error('Promote to catalog error:', error)
+      logger.error('Promote to catalog error', { error })
       return NextResponse.json(
         {
           error: 'Failed to promote book to catalog',

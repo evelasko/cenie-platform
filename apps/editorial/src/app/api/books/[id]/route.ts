@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import type { BookUpdateInput } from '@/types/books'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/books/[id]
@@ -22,13 +23,13 @@ export const GET = requireViewer<Promise<{ id: string }>>(
         if (error.code === 'PGRST116') {
           return NextResponse.json({ error: 'Book not found' }, { status: 404 })
         }
-        console.error('Database error:', error)
+        logger.error('Database error', { error, bookId: id })
         return NextResponse.json({ error: error.message }, { status: 500 })
       }
 
       return NextResponse.json({ book: data })
     } catch (error) {
-      console.error('Get book error:', error)
+      logger.error('Get book error', { error })
       return NextResponse.json(
         {
           error: 'Failed to get book',
@@ -94,13 +95,13 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         if (error.code === 'PGRST116') {
           return NextResponse.json({ error: 'Book not found' }, { status: 404 })
         }
-        console.error('Database error:', error)
+        logger.error('Database error', { error, bookId: id })
         return NextResponse.json({ error: error.message }, { status: 500 })
       }
 
       return NextResponse.json({ book: data })
     } catch (error) {
-      console.error('Update book error:', error)
+      logger.error('Update book error', { error })
       return NextResponse.json(
         {
           error: 'Failed to update book',
@@ -129,13 +130,13 @@ export const DELETE = requireEditor<Promise<{ id: string }>>(
       const { error } = await supabase.from('books').delete().eq('id', id)
 
       if (error) {
-        console.error('Database error:', error)
+        logger.error('Database error', { error, bookId: id })
         return NextResponse.json({ error: error.message }, { status: 500 })
       }
 
       return NextResponse.json({ success: true })
     } catch (error) {
-      console.error('Delete book error:', error)
+      logger.error('Delete book error', { error })
       return NextResponse.json(
         {
           error: 'Failed to delete book',

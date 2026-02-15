@@ -10,6 +10,7 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
+import { logger } from '@/lib/logger-client'
 
 export default function ProximamenteContent() {
   const router = useRouter()
@@ -41,7 +42,7 @@ export default function ProximamenteContent() {
         setTotalPages(data.pagination?.total_pages || 1)
       }
     } catch (error) {
-      console.error('Failed to fetch upcoming volumes:', error)
+      logger.error('Failed to fetch upcoming volumes', { error })
     } finally {
       setLoading(false)
     }

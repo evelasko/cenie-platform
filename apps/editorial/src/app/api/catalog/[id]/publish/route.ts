@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireRole } from '@/lib/auth-helpers'
+import { logger } from '@/lib/logger'
 
 /**
  * POST /api/catalog/[id]/publish
@@ -36,13 +37,13 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Volume not found' }, { status: 404 })
       }
-      console.error('Database update error:', error)
+      logger.error('Database update error', { error, volumeId: id })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ volume: data })
   } catch (error) {
-    console.error('Publish volume error:', error)
+    logger.error('Publish volume error', { error })
     return NextResponse.json(
       {
         error: 'Failed to publish volume',

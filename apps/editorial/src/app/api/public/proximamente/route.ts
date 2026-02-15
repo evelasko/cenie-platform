@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/public/proximamente
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
 
     if (volumesError) {
-      console.error('Proximamente list error:', volumesError)
+      logger.error('Proximamente list error', { error: volumesError })
       return NextResponse.json({ error: volumesError.message }, { status: 500 })
     }
 
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
       .order('added_at', { ascending: false })
 
     if (booksError) {
-      console.error('Proximamente books error:', booksError)
+      logger.error('Proximamente books error', { error: booksError })
       // Non-fatal: continue with volumes only
     }
 
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('List proximamente error:', error)
+    logger.error('List proximamente error', { error })
     return NextResponse.json(
       {
         error: 'Failed to list upcoming volumes',

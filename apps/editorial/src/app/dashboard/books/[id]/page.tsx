@@ -35,6 +35,7 @@ import { ConfidenceBreakdownComponent } from '@/components/dashboard/ConfidenceB
 import { useToast } from '@/components/ui/ToastContainer'
 import AddContributorModal from '@/components/dashboard/AddContributorModal'
 import { Plus } from 'lucide-react'
+import { logger } from '@/lib/logger-client'
 
 const statusOptions: { value: BookStatus; label: string }[] = [
   { value: 'discovered', label: 'Discovered' },
@@ -116,7 +117,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
         const googleBookData = await googleBooks.getBook(bookData.google_books_id)
         setGoogleData(googleBookData)
       } catch (err) {
-        console.error('Failed to fetch Google Books data:', err)
+        logger.error('Failed to fetch Google Books data', { error: err })
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch book')
@@ -156,7 +157,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       )
       setExistingContributors(existing)
     } catch (err) {
-      console.error('Failed to check existing contributors:', err)
+      logger.error('Failed to check existing contributors', { error: err })
     }
   }
 

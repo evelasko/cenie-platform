@@ -11,6 +11,7 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import type { CatalogVolume, VolumeType } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
+import { logger } from '@/lib/logger-client'
 
 export default function CatalogoContent() {
   const router = useRouter()
@@ -48,7 +49,7 @@ export default function CatalogoContent() {
         setCategories(data.categories || [])
       }
     } catch (error) {
-      console.error('Failed to fetch categories:', error)
+      logger.error('Failed to fetch categories', { error })
     }
   }
 
@@ -60,7 +61,7 @@ export default function CatalogoContent() {
         setFeatured(data.volumes || [])
       }
     } catch (error) {
-      console.error('Failed to fetch featured:', error)
+      logger.error('Failed to fetch featured', { error })
     }
   }
 
@@ -84,7 +85,7 @@ export default function CatalogoContent() {
         setTotalPages(data.pagination?.total_pages || 1)
       }
     } catch (error) {
-      console.error('Failed to fetch volumes:', error)
+      logger.error('Failed to fetch volumes', { error })
     } finally {
       setLoading(false)
     }

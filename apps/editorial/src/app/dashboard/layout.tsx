@@ -9,6 +9,7 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { BookOpen, Search, Library, LogOut, Home, BarChart, Users } from 'lucide-react'
 import { ToastProvider } from '@/components/ui/ToastContainer'
+import { logger } from '@/lib/logger-client'
 
 interface NavItem {
   href: string
@@ -41,16 +42,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     async function ensureSession() {
       if (user) {
         try {
-          console.log('📝 [Dashboard] User authenticated, ensuring session cookie exists...')
+          logger.debug('User authenticated, ensuring session cookie exists')
           const idToken = await getIdToken()
-          
+
           if (!idToken) {
-            console.error('❌ [Dashboard] Failed to get ID token')
+            logger.error('Failed to get ID token')
             return
           }
-          
-          console.log('📝 [Dashboard] Got ID token, length:', idToken.length)
-          
+
+          logger.debug('Got ID token', { tokenLength: idToken.length })
+
           // Try to create/refresh session cookie
           const response = await fetch('/api/auth/session', {
             method: 'POST',
@@ -60,13 +61,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           })
 
           if (response.ok) {
-            console.log('✅ [Dashboard] Session cookie ensured')
+            logger.info('Session cookie ensured')
           } else {
             const errorData = await response.json()
-            console.error('❌ [Dashboard] Failed to create session cookie:', errorData)
+            logger.error('Failed to create session cookie', { error: errorData })
           }
         } catch (error) {
-          console.error('❌ [Dashboard] Error ensuring session:', error)
+          logger.error('Error ensuring session', { error })
         }
       }
     }
@@ -87,7 +88,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       router.push('/sign-in')
     } catch (error) {
-      console.error('Sign out error:', error)
+      logger.error('Sign out error', { error })
     }
   }
 

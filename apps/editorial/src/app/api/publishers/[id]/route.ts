@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
 import type { PublisherUpdateInput } from '@/types/books'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/publishers/[id]
@@ -24,13 +25,13 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Publisher not found' }, { status: 404 })
       }
-      console.error('Database error:', error)
+      logger.error('Database error', { error, publisherId: id })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ publisher: data })
   } catch (error) {
-    console.error('Get publisher error:', error)
+    logger.error('Get publisher error', { error })
     return NextResponse.json(
       {
         error: 'Failed to get publisher',
@@ -88,13 +89,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Publisher not found' }, { status: 404 })
       }
-      console.error('Database update error:', error)
+      logger.error('Database update error', { error, publisherId: id })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ publisher: data })
   } catch (error) {
-    console.error('Update publisher error:', error)
+    logger.error('Update publisher error', { error })
     return NextResponse.json(
       {
         error: 'Failed to update publisher',
@@ -137,13 +138,13 @@ export async function DELETE(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Publisher not found' }, { status: 404 })
       }
-      console.error('Database update error:', error)
+      logger.error('Database update error', { error, publisherId: id })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, publisher: data })
   } catch (error) {
-    console.error('Delete publisher error:', error)
+    logger.error('Delete publisher error', { error })
     return NextResponse.json(
       {
         error: 'Failed to delete publisher',

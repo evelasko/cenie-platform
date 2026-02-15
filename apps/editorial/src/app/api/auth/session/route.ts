@@ -87,7 +87,7 @@ export async function DELETE() {
     cookieStore.delete('session')
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Session deletion error:', error)
+    logger.error('Session deletion error', { error })
     return NextResponse.json(
       {
         error: 'Failed to clear session',

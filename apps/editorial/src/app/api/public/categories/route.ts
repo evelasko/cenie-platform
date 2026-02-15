@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
+import { logger } from '@/lib/logger'
 
 /**
  * GET /api/public/categories
@@ -16,7 +17,7 @@ export async function GET() {
       .eq('publication_status', 'published')
 
     if (error) {
-      console.error('Database error:', error)
+      logger.error('Database error', { error })
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
@@ -32,7 +33,7 @@ export async function GET() {
 
     return NextResponse.json({ categories })
   } catch (error) {
-    console.error('Get categories error:', error)
+    logger.error('Get categories error', { error })
     return NextResponse.json(
       {
         error: 'Failed to get categories',
