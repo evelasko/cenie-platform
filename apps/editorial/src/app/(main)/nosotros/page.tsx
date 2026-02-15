@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
 import { TYPOGRAPHY } from '@/lib/typography'
+
+export const metadata: Metadata = {
+  title: 'Acerca de Nosotros',
+  description:
+    'Conoce la misión y visión de CENIE Editorial: publicación académica potenciada por IA para la investigación en artes escénicas a nivel global.',
+}
 
 export default function NosotrosPage() {
   return (

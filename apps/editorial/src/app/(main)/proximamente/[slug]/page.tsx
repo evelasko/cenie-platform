@@ -1,9 +1,8 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { use } from 'react'
 import { notFound } from 'next/navigation'
-import Head from 'next/head'
+import type { Metadata } from 'next'
+import { createNextServerClient } from '@cenie/supabase/server'
+import { getBookCoverUrl } from '@/lib/twicpics'
+import { logger } from '@/lib/logger'
 import { PageContainer, Section, Prose } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
 import { VolumeHero } from '@/components/catalog/VolumeHero'
@@ -11,7 +10,6 @@ import { TableOfContentsDisplay } from '@/components/catalog/TableOfContentsDisp
 import { TranslationInfo } from '@/components/catalog/TranslationInfo'
 import BookPraiseItem from '@/components/items/BookPraiseItem'
 import BookForeword from '@/components/sections/BookForeword'
-import { Loader2 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import type { CatalogVolume } from '@/types/books'
@@ -25,63 +23,158 @@ interface VolumeContributor {
   photo_url?: string
 }
 
-export default function ProximamenteVolumePage({
+async function getProximamenteVolumeData(slug: string) {
+  const supabase = createNextServerClient()
+
+  // Books selected for translation: slug format "book-{uuid}"
+  if (slug.startsWith('book-')) {
+    const bookId = slug.replace(/^book-/, '')
+    const { data: book, error: bookError } = await supabase
+      .from('books')
+      .select('*')
+      .eq('id', bookId)
+      .eq('selected_for_translation', true)
+      .eq('promoted_to_catalog', false)
+      .single()
+
+    if (bookError || !book) {
+      return null
+    }
+
+    const b = book as Record<string, unknown>
+    const displayTitle =
+      (b.spanish_title as string) || (b.translated_title as string) || (b.title as string)
+    const authors = (b.spanish_authors as string[]) || (b.authors as string[])
+    const authorsDisplay = authors?.length ? authors.join(', ') : 'CENIE Editorial'
+    const coverPath = b.temp_cover_twicpics_path as string | null
+    const coverUrl = coverPath ? getBookCoverUrl(coverPath, 'medium') : null
+
+    const volume = {
+      id: b.id,
+      title: displayTitle,
+      subtitle: (b.spanish_subtitle as string) || (b.subtitle as string) || null,
+      authors_display: authorsDisplay,
+      description: (b.publication_description_es as string) || null,
+      cover_url: coverUrl,
+      cover_fallback_url: null,
+      slug: `book-${b.id}`,
+      publication_status: 'draft',
+      volume_type: 'translated',
+      original_title: b.title as string,
+      original_language: (b.language as string) || 'en',
+      original_publisher: null,
+      original_publication_year: b.published_date
+        ? parseInt(String(b.published_date).slice(0, 4))
+        : null,
+      table_of_contents: b.publication_table_of_contents as object | null,
+      excerpt: b.publication_excerpt_es as string | null,
+    } as unknown as CatalogVolume
+
+    return { volume, contributors: [] as VolumeContributor[], related: [] as CatalogVolume[] }
+  }
+
+  // Catalog volume (draft)
+  const { data: volume, error: volumeError } = await supabase
+    .from('catalog_volumes')
+    .select('*')
+    .eq('slug', slug)
+    .eq('publication_status', 'draft')
+    .single()
+
+  if (volumeError) {
+    if (volumeError.code === 'PGRST116') {
+      return null
+    }
+    logger.error('Database error fetching proximamente volume', { error: volumeError, slug })
+    return null
+  }
+
+  const { data: contributors, error: contributorsError } = await supabase.rpc(
+    'get_volume_contributors' as any,
+    { volume_uuid: (volume as any).id } as any
+  )
+
+  if (contributorsError) {
+    logger.error('Contributors fetch error', { error: contributorsError, slug })
+  }
+
+  let relatedVolumes: any[] = []
+  if ((volume as any).categories && (volume as any).categories.length > 0) {
+    const { data: related } = await supabase
+      .from('catalog_volumes')
+      .select(
+        'id, title, subtitle, slug, authors_display, cover_url, cover_fallback_url, publication_year, categories'
+      )
+      .eq('publication_status', 'draft')
+      .overlaps('categories', (volume as any).categories)
+      .neq('id', (volume as any).id)
+      .limit(5)
+
+    relatedVolumes = related || []
+  }
+
+  return {
+    volume: volume as unknown as CatalogVolume,
+    contributors: (contributors || []) as VolumeContributor[],
+    related: relatedVolumes as CatalogVolume[],
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const data = await getProximamenteVolumeData(slug)
+
+  if (!data) {
+    return { title: 'Volumen no encontrado' }
+  }
+
+  const { volume } = data
+  const pageTitle = `${volume.title} | Próximamente`
+  const pageDescription =
+    volume.seo_description || volume.description?.substring(0, 160) || `Próximamente: ${volume.title}`
+  const coverImage = volume.cover_url || volume.cover_fallback_url
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    keywords: volume.seo_keywords?.length ? volume.seo_keywords : undefined,
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      type: 'book' as const,
+      images: coverImage ? [{ url: coverImage }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: pageDescription,
+      images: coverImage ? [coverImage] : undefined,
+    },
+    other: {
+      ...(volume.isbn_13 ? { 'book:isbn': volume.isbn_13 } : {}),
+      ...(volume.publication_year ? { 'book:release_date': volume.publication_year.toString() } : {}),
+      ...(volume.authors_display ? { 'book:author': volume.authors_display } : {}),
+    },
+  }
+}
+
+export default async function ProximamenteVolumePage({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
-  const resolvedParams = use(params)
-  const slug = resolvedParams.slug
+  const { slug } = await params
+  const data = await getProximamenteVolumeData(slug)
 
-  const [volume, setVolume] = useState<CatalogVolume | null>(null)
-  const [contributors, setContributors] = useState<VolumeContributor[]>([])
-  const [related, setRelated] = useState<CatalogVolume[]>([])
-  const [loading, setLoading] = useState(true)
-  const [notFoundError, setNotFoundError] = useState(false)
-
-  useEffect(() => {
-    fetchVolume()
-  }, [slug])
-
-  const fetchVolume = async () => {
-    setLoading(true)
-
-    try {
-      const response = await fetch(`/api/public/proximamente/${slug}`)
-      const data = await response.json()
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          setNotFoundError(true)
-        }
-        return
-      }
-
-      setVolume(data.volume)
-      setContributors(data.contributors || [])
-      setRelated(data.related || [])
-    } catch (error) {
-      console.error('Failed to fetch volume:', error)
-      setNotFoundError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  if (loading) {
-    return (
-      <PageContainer>
-        <div className="flex flex-col items-center justify-center py-24">
-          <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
-          <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/60')}>Cargando...</p>
-        </div>
-      </PageContainer>
-    )
-  }
-
-  if (notFoundError || !volume) {
+  if (!data) {
     notFound()
   }
+
+  const { volume, contributors, related } = data
 
   const authors = contributors.filter((c) => c.role === 'author')
   const translators = contributors.filter((c) => c.role === 'translator')
@@ -93,34 +186,8 @@ export default function ProximamenteVolumePage({
     link: `/proximamente/${v.slug}`,
   }))
 
-  const pageTitle = `${volume.title} | Próximamente | CENIE Editorial`
-  const pageDescription =
-    volume.seo_description || volume.description?.substring(0, 160) || `Próximamente: ${volume.title}`
-  const coverImage = volume.cover_url || volume.cover_fallback_url
-
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        {coverImage && <meta property="og:image" content={coverImage} />}
-        <meta property="og:type" content="book" />
-        {volume.isbn_13 && <meta property="book:isbn" content={volume.isbn_13} />}
-        {volume.publication_year && (
-          <meta property="book:release_date" content={volume.publication_year.toString()} />
-        )}
-        {volume.authors_display && <meta property="book:author" content={volume.authors_display} />}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        {coverImage && <meta name="twitter:image" content={coverImage} />}
-        {volume.seo_keywords && volume.seo_keywords.length > 0 && (
-          <meta name="keywords" content={volume.seo_keywords.join(', ')} />
-        )}
-      </Head>
-
       {/* Hero - no access link for upcoming books */}
       <VolumeHero
         title={volume.title}
@@ -203,12 +270,14 @@ export default function ProximamenteVolumePage({
           <Section spacing="large">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Autores</h2>
             <div className="space-y-6">
-              {authors.filter((a) => a.bio_es).map((author) => (
-                <div key={author.contributor_id}>
-                  <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{author.full_name}</h3>
-                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{author.bio_es}</p>
-                </div>
-              ))}
+              {authors
+                .filter((a) => a.bio_es)
+                .map((author) => (
+                  <div key={author.contributor_id}>
+                    <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{author.full_name}</h3>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{author.bio_es}</p>
+                  </div>
+                ))}
             </div>
           </Section>
         )}
@@ -218,12 +287,18 @@ export default function ProximamenteVolumePage({
           <Section spacing="large">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Traductores</h2>
             <div className="space-y-6">
-              {translators.filter((t) => t.bio_es).map((translator) => (
-                <div key={translator.contributor_id}>
-                  <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{translator.full_name}</h3>
-                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{translator.bio_es}</p>
-                </div>
-              ))}
+              {translators
+                .filter((t) => t.bio_es)
+                .map((translator) => (
+                  <div key={translator.contributor_id}>
+                    <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>
+                      {translator.full_name}
+                    </h3>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>
+                      {translator.bio_es}
+                    </p>
+                  </div>
+                ))}
             </div>
           </Section>
         )}
@@ -231,11 +306,7 @@ export default function ProximamenteVolumePage({
         {/* Related Upcoming Volumes */}
         {relatedBooks.length > 0 && (
           <Section spacing="large">
-            <BooksGrid
-              title="Otras Próximas Publicaciones"
-              books={relatedBooks}
-              overflow={true}
-            />
+            <BooksGrid title="Otras Próximas Publicaciones" books={relatedBooks} overflow={true} />
           </Section>
         )}
       </PageContainer>

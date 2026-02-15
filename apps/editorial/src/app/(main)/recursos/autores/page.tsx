@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
+
+export const metadata: Metadata = {
+  title: 'Para Autores',
+  description:
+    'Publica con CENIE Editorial. Proceso de envío de manuscritos, revisión por pares y publicación académica en artes escénicas con tecnología IA.',
+}
 
 export default function AutoresPage() {
   return (

@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
+
+export const metadata: Metadata = {
+  title: 'Programa de Traducciones',
+  description:
+    'Programa de traducciones al español de investigación en artes escénicas. Obras fundamentales de teatro, danza y performance accesibles para la comunidad hispanohablante.',
+}
 
 export default function TraduccionesPage() {
   return (

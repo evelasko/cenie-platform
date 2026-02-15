@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
+
+export const metadata: Metadata = {
+  title: 'Acceso y Herramientas',
+  description:
+    'Herramientas interactivas de investigación potenciadas por IA. Búsqueda conversacional, descubrimiento guiado y gestión de citas para artes escénicas.',
+}
 
 export default function AccesoPage() {
   return (

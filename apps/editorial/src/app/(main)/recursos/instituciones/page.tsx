@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
+
+export const metadata: Metadata = {
+  title: 'Para Instituciones',
+  description:
+    'Integración bibliotecaria e institucional con CENIE Editorial. Licenciamiento, acceso SSO, analíticas COUNTER y descubrimiento potenciado por IA.',
+}
 
 export default function InstitucionesPage() {
   return (

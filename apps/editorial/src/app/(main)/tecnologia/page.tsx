@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { PageContainer, PageHero, Prose, Section, CTAButton } from '@/components/content'
+
+export const metadata: Metadata = {
+  title: 'Tecnología',
+  description:
+    'Plataforma interactiva con IA para investigación en artes escénicas. Búsqueda conversacional, Protocolo de Modelo de Contexto y kits RAG institucionales.',
+}
 
 export default function TecnologiaPage() {
   return (
