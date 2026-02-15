@@ -1,9 +1,8 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { use } from 'react'
 import { notFound } from 'next/navigation'
-import Head from 'next/head'
+import type { Metadata } from 'next'
+import { createNextServerClient } from '@cenie/supabase/server'
+import { getBookCoverUrl } from '@/lib/twicpics'
+import { logger } from '@/lib/logger'
 import { PageContainer, Section, Prose } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
 import { VolumeHero } from '@/components/catalog/VolumeHero'
@@ -11,7 +10,6 @@ import { TableOfContentsDisplay } from '@/components/catalog/TableOfContentsDisp
 import { TranslationInfo } from '@/components/catalog/TranslationInfo'
 import BookPraiseItem from '@/components/items/BookPraiseItem'
 import BookForeword from '@/components/sections/BookForeword'
-import { Loader2 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import type { CatalogVolume } from '@/types/books'
@@ -25,65 +23,125 @@ interface VolumeContributor {
   photo_url?: string
 }
 
-export default function VolumePage({ params }: { params: Promise<{ volumeUid: string }> }) {
-  const resolvedParams = use(params)
-  const slug = resolvedParams.volumeUid
-
-  const [volume, setVolume] = useState<CatalogVolume | null>(null)
-  const [contributors, setContributors] = useState<VolumeContributor[]>([])
-  const [related, setRelated] = useState<CatalogVolume[]>([])
-  const [loading, setLoading] = useState(true)
-  const [notFoundError, setNotFoundError] = useState(false)
-
-  useEffect(() => {
-    fetchVolume()
-  }, [slug])
-
-  const fetchVolume = async () => {
-    setLoading(true)
-
-    try {
-      const response = await fetch(`/api/public/catalog/${slug}`)
-      const data = await response.json()
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          setNotFoundError(true)
-        }
-        return
-      }
-
-      setVolume(data.volume)
-      setContributors(data.contributors || [])
-      setRelated(data.related || [])
-    } catch (error) {
-      console.error('Failed to fetch volume:', error)
-      setNotFoundError(true)
-    } finally {
-      setLoading(false)
+function enrichCoverUrl(volume: Record<string, unknown>): Record<string, unknown> {
+  if (!volume.cover_url && volume.cover_twicpics_path) {
+    return {
+      ...volume,
+      cover_url: getBookCoverUrl(volume.cover_twicpics_path as string, 'medium'),
     }
   }
+  return volume
+}
 
-  if (loading) {
-    return (
-      <PageContainer>
-        <div className="flex flex-col items-center justify-center py-24">
-          <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
-          <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/60')}>Cargando...</p>
-        </div>
-      </PageContainer>
-    )
+async function getVolumeData(slug: string) {
+  const supabase = createNextServerClient()
+
+  const { data: volume, error: volumeError } = await supabase
+    .from('catalog_volumes')
+    .select('*')
+    .eq('slug', slug)
+    .eq('publication_status', 'published')
+    .single()
+
+  if (volumeError) {
+    if (volumeError.code === 'PGRST116') {
+      return null
+    }
+    logger.error('Database error fetching volume', { error: volumeError, slug })
+    return null
   }
 
-  if (notFoundError || !volume) {
+  const { data: contributors, error: contributorsError } = await supabase.rpc(
+    'get_volume_contributors' as any,
+    { volume_uuid: (volume as any).id } as any
+  )
+
+  if (contributorsError) {
+    logger.error('Contributors fetch error', { error: contributorsError, slug })
+  }
+
+  let relatedVolumes: any[] = []
+  if ((volume as any).categories && (volume as any).categories.length > 0) {
+    const { data: related } = await supabase
+      .from('catalog_volumes')
+      .select(
+        'id, title, subtitle, slug, authors_display, cover_url, cover_twicpics_path, cover_fallback_url, publication_year, categories'
+      )
+      .eq('publication_status', 'published')
+      .overlaps('categories', (volume as any).categories)
+      .neq('id', (volume as any).id)
+      .limit(5)
+
+    relatedVolumes = (related || []).map(enrichCoverUrl)
+  }
+
+  return {
+    volume: enrichCoverUrl(volume as Record<string, unknown>) as unknown as CatalogVolume,
+    contributors: (contributors || []) as VolumeContributor[],
+    related: relatedVolumes as CatalogVolume[],
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ volumeUid: string }>
+}): Promise<Metadata> {
+  const { volumeUid } = await params
+  const data = await getVolumeData(volumeUid)
+
+  if (!data) {
+    return { title: 'Volumen no encontrado | CENIE Editorial' }
+  }
+
+  const { volume } = data
+  const pageTitle = `${volume.title} | CENIE Editorial`
+  const pageDescription = volume.seo_description || volume.description?.substring(0, 160)
+  const coverImage = volume.cover_url || volume.cover_fallback_url
+
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    keywords: volume.seo_keywords?.length ? volume.seo_keywords : undefined,
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      type: 'book' as const,
+      images: coverImage ? [{ url: coverImage }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: pageDescription,
+      images: coverImage ? [coverImage] : undefined,
+    },
+    other: {
+      ...(volume.isbn_13 ? { 'book:isbn': volume.isbn_13 } : {}),
+      ...(volume.authors_display ? { 'book:author': volume.authors_display } : {}),
+      ...(volume.publication_year
+        ? { 'book:release_date': volume.publication_year.toString() }
+        : {}),
+    },
+  }
+}
+
+export default async function VolumePage({
+  params,
+}: {
+  params: Promise<{ volumeUid: string }>
+}) {
+  const { volumeUid } = await params
+  const data = await getVolumeData(volumeUid)
+
+  if (!data) {
     notFound()
   }
 
-  // Get authors and translators
+  const { volume, contributors, related } = data
+
   const authors = contributors.filter((c) => c.role === 'author')
   const translators = contributors.filter((c) => c.role === 'translator')
 
-  // Transform related volumes
   const relatedBooks: bookData[] = related.map((v) => ({
     title: v.title,
     author: v.authors_display || 'CENIE Editorial',
@@ -91,35 +149,8 @@ export default function VolumePage({ params }: { params: Promise<{ volumeUid: st
     link: `/catalogo/${v.slug}`,
   }))
 
-  // SEO metadata
-  const pageTitle = `${volume.title} | CENIE Editorial`
-  const pageDescription = volume.seo_description || volume.description.substring(0, 160)
-  const coverImage = volume.cover_url || volume.cover_fallback_url
-
   return (
     <>
-      {/* SEO Meta Tags */}
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        {coverImage && <meta property="og:image" content={coverImage} />}
-        <meta property="og:type" content="book" />
-        {volume.isbn_13 && <meta property="book:isbn" content={volume.isbn_13} />}
-        {volume.publication_year && (
-          <meta property="book:release_date" content={volume.publication_year.toString()} />
-        )}
-        {volume.authors_display && <meta property="book:author" content={volume.authors_display} />}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        {coverImage && <meta name="twitter:image" content={coverImage} />}
-        {volume.seo_keywords && volume.seo_keywords.length > 0 && (
-          <meta name="keywords" content={volume.seo_keywords.join(', ')} />
-        )}
-      </Head>
-
       {/* Hero Section */}
       <VolumeHero
         title={volume.title}
