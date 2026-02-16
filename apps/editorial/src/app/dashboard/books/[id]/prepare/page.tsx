@@ -35,6 +35,20 @@ const ContributorAutocomplete = dynamic(
   }
 )
 
+const MarkdownEditor = dynamic(
+  () =>
+    import('@/components/dashboard/MarkdownEditor').then((mod) => ({
+      default: mod.MarkdownEditor,
+    })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
+
 const CoverManager = dynamic(
   () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
   {
@@ -534,15 +548,11 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
               Spanish Description <span className="text-destructive">*</span>
             </label>
             <div className="space-y-2">
-              <textarea
+              <MarkdownEditor
                 value={descriptionEs}
-                onChange={(e) => setDescriptionEs(e.target.value)}
-                rows={6}
+                onChange={setDescriptionEs}
+                height={250}
                 placeholder="Descripción del libro en español para el catálogo público..."
-                className={clsx(
-                  TYPOGRAPHY.bodyBase,
-                  'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-                )}
               />
               <Button
                 variant="outlined"
@@ -629,15 +639,11 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
               Excerpt / Sample Chapter
             </label>
-            <textarea
+            <MarkdownEditor
               value={excerptEs}
-              onChange={(e) => setExcerptEs(e.target.value)}
-              rows={6}
+              onChange={setExcerptEs}
+              height={250}
               placeholder="Fragmento o capítulo de muestra en español..."
-              className={clsx(
-                TYPOGRAPHY.bodyBase,
-                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-              )}
             />
           </div>
         </div>

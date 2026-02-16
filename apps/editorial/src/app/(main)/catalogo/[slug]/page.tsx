@@ -6,6 +6,7 @@ import { logger } from '@/lib/logger'
 import { PageContainer, Section, Prose } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
 import { VolumeHero } from '@/components/catalog/VolumeHero'
+import { MarkdownContent } from '@/components/catalog/MarkdownContent'
 import { TableOfContentsDisplay } from '@/components/catalog/TableOfContentsDisplay'
 import { TranslationInfo } from '@/components/catalog/TranslationInfo'
 import BookPraiseItem from '@/components/items/BookPraiseItem'
@@ -189,11 +190,13 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
       <PageContainer>
         {/* Description */}
-        <Section spacing="large">
-          <Prose>
-            <div dangerouslySetInnerHTML={{ __html: volume.description }} />
-          </Prose>
-        </Section>
+        {volume.description && (
+          <Section spacing="large">
+            <Prose>
+              <MarkdownContent content={volume.description} />
+            </Prose>
+          </Section>
+        )}
 
         {/* Table of Contents */}
         {volume.table_of_contents && (

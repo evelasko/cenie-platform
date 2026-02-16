@@ -10,6 +10,20 @@ import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { useToast } from '@/components/ui/ToastContainer'
 
+const MarkdownEditor = dynamic(
+  () =>
+    import('@/components/dashboard/MarkdownEditor').then((mod) => ({
+      default: mod.MarkdownEditor,
+    })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
+
 const CoverManager = dynamic(
   () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
   {
@@ -321,15 +335,11 @@ export default function NewOriginalPublicationPage() {
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
               Description (Spanish) <span className="text-destructive">*</span>
             </label>
-            <textarea
+            <MarkdownEditor
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={6}
+              onChange={setDescription}
+              height={250}
               placeholder="Descripción del libro para el catálogo público..."
-              className={clsx(
-                TYPOGRAPHY.bodyBase,
-                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-              )}
             />
           </div>
         </div>
@@ -543,15 +553,11 @@ export default function NewOriginalPublicationPage() {
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
               Excerpt / Sample Chapter
             </label>
-            <textarea
+            <MarkdownEditor
               value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              rows={8}
+              onChange={setExcerpt}
+              height={300}
               placeholder="Fragmento o capítulo de muestra..."
-              className={clsx(
-                TYPOGRAPHY.bodyBase,
-                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-              )}
             />
           </div>
         </div>
