@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: 'Contacto',
   description:
     'Contacta con CENIE Editorial. Consultas sobre publicaciones, colaboraciones institucionales, propuestas de manuscritos y soporte técnico.',
+  alternates: {
+    canonical: '/nosotros/contacto',
+  },
 }
 
 export default function ContactoPage() {

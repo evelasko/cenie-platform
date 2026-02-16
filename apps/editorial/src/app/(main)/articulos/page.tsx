@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'Artículos Académicos',
   description:
     'Explore nuestra colección de artículos académicos sobre investigación, metodología y publicación científica.',
+  alternates: {
+    canonical: '/articulos',
+  },
 }
 
 export default async function ArticulosPage() {

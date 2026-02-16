@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Catálogo',
   description:
     'Explora nuestra colección de publicaciones sobre artes escénicas. Traducciones y obras originales de investigación académica en teatro, danza y performance.',
+  alternates: {
+    canonical: '/catalogo',
+  },
 }
 
 export default function CatalogoPage() {

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Para Instituciones',
   description:
     'Integración bibliotecaria e institucional con CENIE Editorial. Licenciamiento, acceso SSO, analíticas COUNTER y descubrimiento potenciado por IA.',
+  alternates: {
+    canonical: '/recursos/instituciones',
+  },
 }
 
 export default function InstitucionesPage() {

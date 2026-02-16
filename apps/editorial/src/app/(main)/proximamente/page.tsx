@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Próximamente',
   description:
     'Descubre las próximas publicaciones de CENIE Editorial. Traducciones y obras originales en preparación sobre teatro, danza y artes escénicas.',
+  alternates: {
+    canonical: '/proximamente',
+  },
 }
 
 export default function ProximamentePage() {

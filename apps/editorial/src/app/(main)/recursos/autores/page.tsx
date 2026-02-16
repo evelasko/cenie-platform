@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Para Autores',
   description:
     'Publica con CENIE Editorial. Proceso de envío de manuscritos, revisión por pares y publicación académica en artes escénicas con tecnología IA.',
+  alternates: {
+    canonical: '/recursos/autores',
+  },
 }
 
 export default function AutoresPage() {

@@ -29,6 +29,9 @@ export async function generateMetadata({
     title: article.frontmatter.title,
     description: article.frontmatter.description,
     authors: article.frontmatter.author ? [{ name: article.frontmatter.author }] : undefined,
+    alternates: {
+      canonical: `/articulos/${slug}`,
+    },
     openGraph: {
       title: article.frontmatter.title,
       description: article.frontmatter.description,

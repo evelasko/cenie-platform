@@ -142,6 +142,9 @@ export async function generateMetadata({
     title: pageTitle,
     description: pageDescription,
     keywords: volume.seo_keywords?.length ? volume.seo_keywords : undefined,
+    alternates: {
+      canonical: `/proximamente/${slug}`,
+    },
     openGraph: {
       title: pageTitle,
       description: pageDescription,

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Acceso y Herramientas',
   description:
     'Herramientas interactivas de investigación potenciadas por IA. Búsqueda conversacional, descubrimiento guiado y gestión de citas para artes escénicas.',
+  alternates: {
+    canonical: '/recursos/acceso',
+  },
 }
 
 export default function AccesoPage() {

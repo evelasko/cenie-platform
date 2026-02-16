@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'Noticias',
   description:
     'Mantente al día con las últimas novedades, anuncios y eventos de CENIE Editorial.',
+  alternates: {
+    canonical: '/noticias',
+  },
 }
 
 export default async function NoticiasPage() {

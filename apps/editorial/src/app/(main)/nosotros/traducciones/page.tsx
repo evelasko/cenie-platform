@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Programa de Traducciones',
   description:
     'Programa de traducciones al español de investigación en artes escénicas. Obras fundamentales de teatro, danza y performance accesibles para la comunidad hispanohablante.',
+  alternates: {
+    canonical: '/nosotros/traducciones',
+  },
 }
 
 export default function TraduccionesPage() {

@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: 'Comunidad',
   description:
     'Únete a la comunidad académica de CENIE Editorial. Investigadores, educadores y estudiantes de artes escénicas conectados globalmente.',
+  alternates: {
+    canonical: '/nosotros/comunidad',
+  },
 }
 
 export default function ComunidadPage() {

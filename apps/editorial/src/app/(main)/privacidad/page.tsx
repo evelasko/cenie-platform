@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: 'Política de Privacidad',
   description:
     'Política de privacidad de CENIE Editorial. Información sobre el tratamiento de datos personales, cookies y derechos de los usuarios.',
+  alternates: {
+    canonical: '/privacidad',
+  },
 }
 
 export default function PrivacidadPage() {

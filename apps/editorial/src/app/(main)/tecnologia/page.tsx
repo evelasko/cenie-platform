@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Tecnología',
   description:
     'Plataforma interactiva con IA para investigación en artes escénicas. Búsqueda conversacional, Protocolo de Modelo de Contexto y kits RAG institucionales.',
+  alternates: {
+    canonical: '/tecnologia',
+  },
 }
 
 export default function TecnologiaPage() {

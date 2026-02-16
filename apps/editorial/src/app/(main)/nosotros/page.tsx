@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'Acerca de Nosotros',
   description:
     'Conoce la misión y visión de CENIE Editorial: publicación académica potenciada por IA para la investigación en artes escénicas a nivel global.',
+  alternates: {
+    canonical: '/nosotros',
+  },
 }
 
 export default function NosotrosPage() {

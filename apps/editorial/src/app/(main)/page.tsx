@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     locale: 'es_ES',
   },
   alternates: {
-    canonical: 'https://editorial.cenie.org',
+    canonical: '/',
   },
 }
 
