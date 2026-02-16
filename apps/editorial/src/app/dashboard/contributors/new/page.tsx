@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Save, ArrowLeft } from 'lucide-react'
 import Button from '@/components/ui/Button'
+import { MarkdownEditor } from '@/components/dashboard/MarkdownEditor'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { useToast } from '@/components/ui/ToastContainer'
@@ -205,15 +206,11 @@ export default function NewContributorPage() {
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
               Biography (Spanish)
             </label>
-            <textarea
+            <MarkdownEditor
               value={bioEs}
-              onChange={(e) => setBioEs(e.target.value)}
-              rows={4}
-              placeholder="Biografía del contribuidor en español..."
-              className={clsx(
-                TYPOGRAPHY.bodyBase,
-                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-              )}
+              onChange={setBioEs}
+              height={200}
+              placeholder="Biografía del contribuidor en español... (Markdown supported)"
             />
           </div>
 
@@ -222,15 +219,11 @@ export default function NewContributorPage() {
             <label className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground mb-2')}>
               Biography (English)
             </label>
-            <textarea
+            <MarkdownEditor
               value={bioEn}
-              onChange={(e) => setBioEn(e.target.value)}
-              rows={4}
-              placeholder="Contributor biography in English..."
-              className={clsx(
-                TYPOGRAPHY.bodyBase,
-                'w-full px-3 py-2 border border-border rounded-none focus:outline-none focus:ring-2 focus:ring-primary'
-              )}
+              onChange={setBioEn}
+              height={200}
+              placeholder="Contributor biography in English... (Markdown supported)"
             />
           </div>
 

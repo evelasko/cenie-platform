@@ -248,7 +248,10 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
                 .map((author) => (
                   <div key={author.contributor_id}>
                     <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{author.full_name}</h3>
-                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{author.bio_es}</p>
+                    <MarkdownContent
+                      content={author.bio_es ?? ''}
+                      className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80 [&_p]:my-2')}
+                    />
                   </div>
                 ))}
             </div>
@@ -267,9 +270,10 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
                     <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>
                       {translator.full_name}
                     </h3>
-                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>
-                      {translator.bio_es}
-                    </p>
+                    <MarkdownContent
+                      content={translator.bio_es ?? ''}
+                      className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80 [&_p]:my-2')}
+                    />
                   </div>
                 ))}
             </div>
