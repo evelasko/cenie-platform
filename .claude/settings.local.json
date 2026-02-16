@@ -43,7 +43,10 @@
       "Bash(pnpm --filter=@cenie/errors lint:*)",
       "Bash(pnpm eslint:*)",
       "Bash(pnpm --filter=@cenie/email type-check:*)",
-      "Bash(pnpm --filter=@cenie/email lint:*)"
+      "Bash(pnpm --filter=@cenie/email lint:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }
