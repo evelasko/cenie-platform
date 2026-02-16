@@ -1,12 +1,31 @@
+import dynamic from 'next/dynamic'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import BookDetails from '@/components/sections/BookDetails'
-import BookForeword from '@/components/sections/BookForeword'
-import BooksGrid from '@/components/sections/BooksGrid'
-import TabbedContent from '@/components/sections/TabbedContent'
-import BooksCarouselBanner from '@/components/banners/BooksCarouselBanner'
-import SingleBookBanner from '@/components/banners/SingleBookBanner'
 import BookPraiseItem from '@/components/items/BookPraiseItem'
+
+const BookDetails = dynamic(() => import('@/components/sections/BookDetails'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const BookForeword = dynamic(() => import('@/components/sections/BookForeword'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const BooksGrid = dynamic(() => import('@/components/sections/BooksGrid'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const TabbedContent = dynamic(() => import('@/components/sections/TabbedContent'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const BooksCarouselBanner = dynamic(() => import('@/components/banners/BooksCarouselBanner'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const SingleBookBanner = dynamic(() => import('@/components/banners/SingleBookBanner'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
 
 export default function BookSectionsDemoPage() {
   // Sample book data

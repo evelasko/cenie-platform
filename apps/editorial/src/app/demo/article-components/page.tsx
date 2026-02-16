@@ -1,9 +1,22 @@
+import dynamic from 'next/dynamic'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import ArticleHero from '@/components/sections/ArticleHero'
-import ArticleImageRow from '@/components/sections/ArticleImageRow'
-import ArticleMetadataRow from '@/components/sections/ArticleMetadataRow'
-import ArticleQuoteRow from '@/components/sections/ArticleQuoteRow'
+
+const ArticleHero = dynamic(() => import('@/components/sections/ArticleHero'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const ArticleImageRow = dynamic(() => import('@/components/sections/ArticleImageRow'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const ArticleMetadataRow = dynamic(() => import('@/components/sections/ArticleMetadataRow'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const ArticleQuoteRow = dynamic(() => import('@/components/sections/ArticleQuoteRow'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
 
 export default function ArticleComponentsDemoPage() {
   return (

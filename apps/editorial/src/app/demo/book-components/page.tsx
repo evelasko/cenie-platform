@@ -1,10 +1,23 @@
+import dynamic from 'next/dynamic'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
-import BookCardItem from '@/components/items/BookCardItem'
-import BookListItem from '@/components/items/BookListItem'
-import BookPraiseItem from '@/components/items/BookPraiseItem'
-import InLineMenuCard from '@/components/items/InLineMenuCard'
 import Button from '@/components/ui/Button'
+
+const BookCardItem = dynamic(() => import('@/components/items/BookCardItem'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const BookListItem = dynamic(() => import('@/components/items/BookListItem'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const BookPraiseItem = dynamic(() => import('@/components/items/BookPraiseItem'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
+
+const InLineMenuCard = dynamic(() => import('@/components/items/InLineMenuCard'), {
+  loading: () => <div className="flex items-center justify-center p-8">Loading...</div>,
+})
 
 export default function BookComponentsDemoPage() {
   return (

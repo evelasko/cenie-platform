@@ -3,13 +3,37 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Save, ArrowLeft, Users, BookOpen } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { Save, ArrowLeft, Users, BookOpen, Loader2 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { useToast } from '@/components/ui/ToastContainer'
-import { CoverManager } from '@/components/dashboard/CoverManager'
-import { ContributorAutocomplete } from '@/components/dashboard/ContributorAutocomplete'
+
+const CoverManager = dynamic(
+  () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
+
+const ContributorAutocomplete = dynamic(
+  () =>
+    import('@/components/dashboard/ContributorAutocomplete').then((mod) => ({
+      default: mod.ContributorAutocomplete,
+    })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
 import type { VolumeType, ContributorRole } from '@/types/books'
 import { logger } from '@/lib/logger-client'
 

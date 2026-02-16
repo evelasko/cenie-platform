@@ -8,8 +8,19 @@ import { Loader2, AlertCircle, Save, ArrowLeft, Eye, Archive, Users, BookOpen } 
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
+import dynamic from 'next/dynamic'
 import { useToast } from '@/components/ui/ToastContainer'
-import { CoverManager } from '@/components/dashboard/CoverManager'
+
+const CoverManager = dynamic(
+  () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
 import type { CatalogVolume, VolumeType, PublicationStatus, ContributorRole } from '@/types/books'
 
 interface VolumeContributor {

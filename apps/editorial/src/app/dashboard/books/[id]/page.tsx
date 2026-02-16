@@ -32,8 +32,19 @@ import type {
 } from '@/types/books'
 import { googleBooks } from '@/lib/google-books'
 import { ConfidenceBreakdownComponent } from '@/components/dashboard/ConfidenceBreakdown'
+import dynamic from 'next/dynamic'
 import { useToast } from '@/components/ui/ToastContainer'
-import AddContributorModal from '@/components/dashboard/AddContributorModal'
+
+const AddContributorModal = dynamic(
+  () => import('@/components/dashboard/AddContributorModal'),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
 import { Plus } from 'lucide-react'
 import { logger } from '@/lib/logger-client'
 

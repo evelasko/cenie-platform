@@ -18,9 +18,33 @@ import {
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
+import dynamic from 'next/dynamic'
 import { useToast } from '@/components/ui/ToastContainer'
-import { ContributorAutocomplete } from '@/components/dashboard/ContributorAutocomplete'
-import { CoverManager } from '@/components/dashboard/CoverManager'
+
+const ContributorAutocomplete = dynamic(
+  () =>
+    import('@/components/dashboard/ContributorAutocomplete').then((mod) => ({
+      default: mod.ContributorAutocomplete,
+    })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
+
+const CoverManager = dynamic(
+  () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+)
 import { getBookCoverUrl } from '@/lib/twicpics'
 import type { Book, ContributorRole } from '@/types/books'
 import { logger } from '@/lib/logger-client'
