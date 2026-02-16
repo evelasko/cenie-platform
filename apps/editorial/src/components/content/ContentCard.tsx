@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Frontmatter } from '@/lib/mdx'
 
@@ -21,10 +22,12 @@ export function ContentCard({ slug, frontmatter, readingTime, type }: ContentCar
       {/* Cover Image */}
       {frontmatter.coverImage && (
         <div className="relative w-full h-48 bg-muted overflow-hidden">
-          <img
+          <Image
             src={frontmatter.coverImage}
             alt={frontmatter.coverImageAlt || frontmatter.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
           {frontmatter.featured && (
             <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">

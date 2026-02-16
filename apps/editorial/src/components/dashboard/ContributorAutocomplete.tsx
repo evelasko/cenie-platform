@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { Search, User, Plus, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -151,11 +152,15 @@ export function ContributorAutocomplete({
                 ? getContributorPhotoUrl(selectedContributors[0].photo_twicpics_path, 200)
                 : selectedContributors[0].photo_url
               return photoUrl ? (
-                <img
-                  src={photoUrl}
-                  alt={selectedContributors[0].full_name}
-                  className="h-10 w-10 rounded-full object-cover"
-                />
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={photoUrl}
+                    alt={selectedContributors[0].full_name}
+                    fill
+                    className="object-cover"
+                    sizes="40px"
+                  />
+                </div>
               ) : (
                 <div className="h-10 w-10 rounded-full bg-muted-foreground/10 flex items-center justify-center">
                   <User className="h-5 w-5 text-muted-foreground" />
@@ -241,11 +246,15 @@ export function ContributorAutocomplete({
                         ? getContributorPhotoUrl(suggestion.photo_twicpics_path, 200)
                         : suggestion.photo_url
                       return photoUrl ? (
-                        <img
-                          src={photoUrl}
-                          alt={suggestion.full_name}
-                          className="h-10 w-10 rounded-full object-cover"
-                        />
+                        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                          <Image
+                            src={photoUrl}
+                            alt={suggestion.full_name}
+                            fill
+                            className="object-cover"
+                            sizes="40px"
+                          />
+                        </div>
                       ) : (
                         <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                           <User className="h-5 w-5 text-muted-foreground" />

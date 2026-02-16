@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { Upload, Image as ImageIcon, Loader2, X, Check, Search } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -201,11 +202,15 @@ export function CoverManager({
         <div className="border border-border rounded-none p-4 bg-muted">
           <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mb-2')}>Current Cover:</p>
           <div className="flex items-start gap-4">
-            <img
-              src={currentCoverUrl}
-              alt="Current cover"
-              className="w-32 h-48 object-cover rounded-none border border-border"
-            />
+            <div className="relative w-32 h-48 shrink-0 overflow-hidden rounded-none border border-border">
+              <Image
+                src={currentCoverUrl}
+                alt="Current cover"
+                fill
+                className="object-cover"
+                sizes="128px"
+              />
+            </div>
             <div className="flex-1">
               <p className={clsx(TYPOGRAPHY.bodySmall, 'text-foreground font-mono')}>
                 {currentCoverPath}
@@ -360,10 +365,12 @@ export function CoverManager({
 
                     {/* Thumbnail */}
                     <div className="aspect-2/3 relative">
-                      <img
+                      <Image
                         src={file.thumbnail_url}
                         alt={file.filename}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="200px"
                       />
                       {/* Hover Overlay */}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

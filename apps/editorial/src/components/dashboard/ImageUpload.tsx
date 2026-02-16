@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
+import Image from 'next/image'
 import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -157,10 +158,13 @@ export function ImageUpload({ onUpload, currentImageUrl, type, label }: ImageUpl
               isCover ? 'w-32 h-48' : 'w-32 h-32'
             )}
           >
-            <img
+            <Image
               src={preview}
               alt={isCover ? 'Book cover preview' : 'Contributor photo preview'}
-              className={clsx('w-full h-full object-cover', isCover ? '' : 'rounded-full')}
+              fill
+              className={clsx('object-cover', isCover ? '' : 'rounded-full')}
+              unoptimized={preview.startsWith('data:')}
+              sizes="128px"
             />
           </div>
           {!uploading && (

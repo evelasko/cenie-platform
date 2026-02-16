@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Loader2, AlertCircle, Plus, User, Search, Edit, Trash2 } from 'lucide-react'
 import Button from '@/components/ui/Button'
@@ -242,11 +243,15 @@ export default function ContributorsListPage() {
                             ? getContributorPhotoUrl(contributor.photo_twicpics_path, 200)
                             : contributor.photo_url
                           return photoUrl ? (
-                            <img
-                              src={photoUrl}
-                              alt={contributor.full_name}
-                              className="h-10 w-10 rounded-full object-cover"
-                            />
+                            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                              <Image
+                                src={photoUrl}
+                                alt={contributor.full_name}
+                                fill
+                                className="object-cover"
+                                sizes="40px"
+                              />
+                            </div>
                           ) : (
                             <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                               <User className="h-5 w-5 text-muted-foreground" />

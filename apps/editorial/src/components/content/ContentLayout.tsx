@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import Image from 'next/image'
 import { Prose } from './Prose'
 import type { Frontmatter } from '@/lib/mdx'
 
@@ -73,11 +74,15 @@ export function ContentLayout({
       {frontmatter.coverImage && (
         <div className="w-full bg-muted">
           <div className="container mx-auto px-4 max-w-6xl">
-            <img
-              src={frontmatter.coverImage}
-              alt={frontmatter.coverImageAlt || frontmatter.title}
-              className="w-full h-auto max-h-[600px] object-cover"
-            />
+            <div className="relative w-full min-h-[200px] max-h-[600px] aspect-video">
+              <Image
+                src={frontmatter.coverImage}
+                alt={frontmatter.coverImageAlt || frontmatter.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 1024px"
+              />
+            </div>
           </div>
         </div>
       )}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { use } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Loader2, AlertCircle, Save, ArrowLeft } from 'lucide-react'
 import Button from '@/components/ui/Button'
@@ -208,11 +209,15 @@ export default function ContributorDetailPage({ params }: { params: Promise<{ id
           {/* Photo Preview */}
           {contributor.photo_url && (
             <div className="flex items-center gap-4">
-              <img
-                src={contributor.photo_url}
-                alt={contributor.full_name}
-                className="h-24 w-24 rounded-full object-cover border-2 border-border"
-              />
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 border-border">
+                <Image
+                  src={contributor.photo_url}
+                  alt={contributor.full_name}
+                  fill
+                  className="object-cover"
+                  sizes="96px"
+                />
+              </div>
               <div>
                 <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>Current Photo</p>
                 <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground italic')}>
