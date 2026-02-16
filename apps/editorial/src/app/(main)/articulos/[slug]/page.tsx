@@ -37,15 +37,13 @@ export async function generateMetadata({
       modifiedTime: article.frontmatter.updatedDate,
       authors: article.frontmatter.author ? [article.frontmatter.author] : undefined,
       tags: article.frontmatter.tags,
-      images: article.frontmatter.coverImage
-        ? [{ url: article.frontmatter.coverImage, alt: article.frontmatter.coverImageAlt }]
-        : undefined,
+      // Dynamic OG image from opengraph-image.tsx
     },
     twitter: {
       card: 'summary_large_image',
       title: article.frontmatter.title,
       description: article.frontmatter.description,
-      images: article.frontmatter.coverImage ? [article.frontmatter.coverImage] : undefined,
+      // Dynamic OG image from opengraph-image.tsx
     },
   }
 }

@@ -116,7 +116,6 @@ export async function generateMetadata({
   const { volume } = data
   const pageTitle = `${volume.title} | CENIE Editorial`
   const pageDescription = volume.seo_description || volume.description?.substring(0, 160)
-  const coverImage = volume.cover_url || volume.cover_fallback_url
 
   return {
     title: pageTitle,
@@ -126,13 +125,13 @@ export async function generateMetadata({
       title: pageTitle,
       description: pageDescription,
       type: 'book' as const,
-      images: coverImage ? [{ url: coverImage }] : undefined,
+      // Dynamic OG image from opengraph-image.tsx
     },
     twitter: {
       card: 'summary_large_image',
       title: pageTitle,
       description: pageDescription,
-      images: coverImage ? [coverImage] : undefined,
+      // Dynamic OG image from opengraph-image.tsx
     },
     other: {
       ...(volume.isbn_13 ? { 'book:isbn': volume.isbn_13 } : {}),
