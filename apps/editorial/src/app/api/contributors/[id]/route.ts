@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireEditorialAccess, requireRole } from '@/lib/auth-helpers'
+import { requireViewer, requireEditor, requireEditorialAdmin } from '@/lib/auth'
 import type { ContributorUpdateInput } from '@/types/books'
 import { logger } from '@/lib/logger'
 
@@ -8,149 +8,140 @@ import { logger } from '@/lib/logger'
  * GET /api/contributors/[id]
  * Get a single contributor by ID
  */
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const GET = requireViewer<Promise<{ id: string }>>(
+  async (_request, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+    try {
+      const { id } = await params
+      const supabase = createNextServerClient()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
+      const { data, error } = await supabase.from('contributors').select('*').eq('id', id).single()
 
-    const { data, error } = await supabase.from('contributors').select('*').eq('id', id).single()
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
+        }
+        logger.error('Database error', { error, contributorId: id })
+        return NextResponse.json({ error: error.message }, { status: 500 })
       }
-      logger.error('Database error', { error, contributorId: id })
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
 
-    return NextResponse.json({ contributor: data })
-  } catch (error) {
-    logger.error('Get contributor error', { error })
-    return NextResponse.json(
-      {
-        error: 'Failed to get contributor',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
+      return NextResponse.json({ contributor: data })
+    } catch (error) {
+      logger.error('Get contributor error', { error })
+      return NextResponse.json(
+        {
+          error: 'Failed to get contributor',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
+    }
   }
-}
+)
 
 /**
  * PATCH /api/contributors/[id]
  * Update a contributor
  * Requires: editor or admin role
  */
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const PATCH = requireEditor<Promise<{ id: string }>>(
+  async (request: NextRequest, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+    try {
+      const { id } = await params
+      const supabase = createNextServerClient()
+      const body: ContributorUpdateInput = await request.json()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
-    const body: ContributorUpdateInput = await request.json()
+      // If slug is being changed, check it's unique
+      if (body.slug) {
+        const { data: existingContributor } = await supabase
+          .from('contributors')
+          .select('id')
+          .eq('slug', body.slug)
+          .neq('id', id)
+          .single()
 
-    // If slug is being changed, check it's unique
-    if (body.slug) {
-      const { data: existingContributor } = await supabase
+        if (existingContributor) {
+          return NextResponse.json(
+            { error: 'A contributor with this slug already exists' },
+            { status: 409 }
+          )
+        }
+      }
+
+      // Update contributor
+      const { data, error } = await supabase
         .from('contributors')
-        .select('id')
-        .eq('slug', body.slug)
-        .neq('id', id)
+        // @ts-expect-error - contributors table not in auto-generated types
+        .update(body)
+        .eq('id', id)
+        .select()
         .single()
 
-      if (existingContributor) {
-        return NextResponse.json(
-          { error: 'A contributor with this slug already exists' },
-          { status: 409 }
-        )
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
+        }
+        logger.error('Database update error', { error, contributorId: id })
+        return NextResponse.json({ error: error.message }, { status: 500 })
       }
+
+      return NextResponse.json({ contributor: data })
+    } catch (error) {
+      logger.error('Update contributor error', { error })
+      return NextResponse.json(
+        {
+          error: 'Failed to update contributor',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
     }
-
-    // Update contributor
-    const { data, error } = await supabase
-      .from('contributors')
-      // @ts-expect-error - contributors table not in auto-generated types
-      .update(body)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
-      }
-      logger.error('Database update error', { error, contributorId: id })
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    return NextResponse.json({ contributor: data })
-  } catch (error) {
-    logger.error('Update contributor error', { error })
-    return NextResponse.json(
-      {
-        error: 'Failed to update contributor',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
   }
-}
+)
 
 /**
  * DELETE /api/contributors/[id]
  * Soft delete a contributor (set is_active = false)
  * Requires: admin role
  */
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    // Require admin role
-    const authResult = await requireRole('admin')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
+export const DELETE = requireEditorialAdmin<Promise<{ id: string }>>(
+  async (_request, context) => {
+    const { params } = context
+    if (!params) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+    try {
+      const { id } = await params
+      const supabase = createNextServerClient()
 
-    const { id } = await params
-    const supabase = createNextServerClient()
+      // Soft delete by setting is_active to false
+      const { data, error } = await supabase
+        .from('contributors')
+        // @ts-expect-error - contributors table not in auto-generated types
+        .update({ is_active: false })
+        .eq('id', id)
+        .select()
+        .single()
 
-    // Soft delete by setting is_active to false
-    const { data, error } = await supabase
-      .from('contributors')
-      // @ts-expect-error - contributors table not in auto-generated types
-      .update({ is_active: false })
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return NextResponse.json({ error: 'Contributor not found' }, { status: 404 })
+        }
+        logger.error('Database update error', { error, contributorId: id })
+        return NextResponse.json({ error: error.message }, { status: 500 })
       }
-      logger.error('Database update error', { error, contributorId: id })
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
 
-    return NextResponse.json({ success: true, contributor: data })
-  } catch (error) {
-    logger.error('Delete contributor error', { error })
-    return NextResponse.json(
-      {
-        error: 'Failed to delete contributor',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    )
+      return NextResponse.json({ success: true, contributor: data })
+    } catch (error) {
+      logger.error('Delete contributor error', { error })
+      return NextResponse.json(
+        {
+          error: 'Failed to delete contributor',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        },
+        { status: 500 }
+      )
+    }
   }
-}
+)

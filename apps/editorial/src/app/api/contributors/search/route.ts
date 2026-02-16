@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireEditorialAccess } from '@/lib/auth-helpers'
+import { requireViewer } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 
 /**
@@ -11,14 +11,8 @@ import { logger } from '@/lib/logger'
  * - role: filter by role (optional)
  * - limit: number of results (optional, default: 10)
  */
-export async function GET(request: NextRequest) {
+export const GET = requireViewer(async (request: NextRequest) => {
   try {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q')
     const role = searchParams.get('role')
@@ -60,4 +54,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
-import { requireRole } from '@/lib/auth-helpers'
+import { requireEditor } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 
 /**
@@ -12,14 +12,8 @@ import { logger } from '@/lib/logger'
  * - targetLanguage: target language code (optional, default: 'es')
  * - useGlossary: whether to use translation glossary (optional, default: true)
  */
-export async function POST(request: NextRequest) {
+export const POST = requireEditor(async (request: NextRequest) => {
   try {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
     const body = await request.json()
     const { text, sourceLanguage = 'en', targetLanguage = 'es', useGlossary = true } = body
 
@@ -123,4 +117,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

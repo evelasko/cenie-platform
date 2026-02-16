@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireRole } from '@/lib/auth-helpers'
+import { requireEditor } from '@/lib/auth'
 import { getContributorPhotoUrl } from '@/lib/twicpics'
 import { uploadToStorage } from '@/lib/firebase-storage'
 import { logger } from '@/lib/logger'
@@ -12,14 +12,8 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
  * Upload a contributor photo to Firebase Storage
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
+export const POST = requireEditor(async (request: NextRequest) => {
   try {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
     const formData = await request.formData()
     const file = formData.get('file') as File | null
 
@@ -77,4 +71,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

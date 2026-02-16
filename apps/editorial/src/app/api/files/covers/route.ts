@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireEditorialAccess } from '@/lib/auth-helpers'
+import { requireViewer } from '@/lib/auth'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import { listStorageFiles } from '@/lib/firebase-storage'
 import { logger } from '@/lib/logger'
@@ -11,14 +11,8 @@ import { logger } from '@/lib/logger'
  * - search: filter by filename (optional)
  * Returns: Array of cover files with TwicPics URLs
  */
-export async function GET(request: NextRequest) {
+export const GET = requireViewer(async (request: NextRequest) => {
   try {
-    // Require authentication and editorial access
-    const authResult = await requireEditorialAccess()
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
     const searchParams = request.nextUrl.searchParams
     const searchQuery = searchParams.get('search')?.toLowerCase()
 
@@ -57,4 +51,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})

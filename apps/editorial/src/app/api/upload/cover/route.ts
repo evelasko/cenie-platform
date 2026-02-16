@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireRole } from '@/lib/auth-helpers'
+import { requireEditor } from '@/lib/auth'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import { uploadToStorage, fileExistsInStorage } from '@/lib/firebase-storage'
 import { logger } from '@/lib/logger'
@@ -15,14 +15,8 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
  * - slug: Publication slug for filename (required)
  * Requires: editor or admin role
  */
-export async function POST(request: NextRequest) {
+export const POST = requireEditor(async (request: NextRequest) => {
   try {
-    // Require editor or admin role
-    const authResult = await requireRole('editor')
-    if (authResult instanceof NextResponse) {
-      return authResult
-    }
-
     const formData = await request.formData()
     const file = formData.get('file') as File | null
     const slug = formData.get('slug') as string | null
@@ -95,4 +89,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
+})
