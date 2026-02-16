@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { createNextServerClient } from '@cenie/supabase/server'
+import { createStaticClient } from '@cenie/supabase/static'
 import { getContentSlugs } from '@/lib/mdx'
 import { logger } from '@/lib/logger'
 
@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 async function getCatalogRoutes(): Promise<MetadataRoute.Sitemap> {
   try {
-    const supabase = createNextServerClient()
+    const supabase = createStaticClient()
     const { data, error } = await supabase
       .from('catalog_volumes')
       .select('*')
@@ -98,7 +98,7 @@ function getNewsRoutes(): MetadataRoute.Sitemap {
 
 async function getProximamenteRoutes(): Promise<MetadataRoute.Sitemap> {
   try {
-    const supabase = createNextServerClient()
+    const supabase = createStaticClient()
 
     const [draftResult, booksResult] = await Promise.all([
       supabase

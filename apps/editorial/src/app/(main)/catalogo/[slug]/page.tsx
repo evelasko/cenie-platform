@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { createNextServerClient } from '@cenie/supabase/server'
+import { createStaticClient } from '@cenie/supabase/static'
 import { getBookCoverUrl } from '@/lib/twicpics'
 import { logger } from '@/lib/logger'
 import { PageContainer, Section, Prose } from '@/components/content'
@@ -18,7 +18,7 @@ import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
 
 export async function generateStaticParams() {
-  const supabase = createNextServerClient()
+  const supabase = createStaticClient()
 
   const { data: volumes, error } = await supabase
     .from('catalog_volumes')
@@ -53,7 +53,7 @@ function enrichCoverUrl(volume: Record<string, unknown>): Record<string, unknown
 }
 
 async function getVolumeData(slug: string) {
-  const supabase = createNextServerClient()
+  const supabase = createStaticClient()
 
   const { data: volume, error: volumeError } = await supabase
     .from('catalog_volumes')

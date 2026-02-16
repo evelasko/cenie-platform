@@ -10,6 +10,7 @@
     "./client": "./src/client.ts",
     "./auth": "./src/auth/index.ts",
     "./server": "./src/server.ts",
+    "./static": "./src/static.ts",
     "./middleware": "./src/middleware.ts"
   },
   "scripts": {
