@@ -16,6 +16,23 @@ import { generateBookJsonLd } from '@/lib/structured-data'
 import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
 
+export async function generateStaticParams() {
+  const supabase = createNextServerClient()
+
+  const { data: volumes, error } = await supabase
+    .from('catalog_volumes')
+    .select('slug')
+    .eq('publication_status', 'published')
+    .not('slug', 'is', null)
+
+  if (error) {
+    logger.error('Failed to generate static params for catalog', { error })
+    return []
+  }
+
+  return (volumes as { slug: string }[]).map((v) => ({ slug: v.slug }))
+}
+
 interface VolumeContributor {
   contributor_id: string
   full_name: string
@@ -86,10 +103,10 @@ async function getVolumeData(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ volumeUid: string }>
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { volumeUid } = await params
-  const data = await getVolumeData(volumeUid)
+  const { slug } = await params
+  const data = await getVolumeData(slug)
 
   if (!data) {
     return { title: 'Volumen no encontrado | CENIE Editorial' }
@@ -126,13 +143,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function VolumePage({
-  params,
-}: {
-  params: Promise<{ volumeUid: string }>
-}) {
-  const { volumeUid } = await params
-  const data = await getVolumeData(volumeUid)
+export default async function VolumePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const data = await getVolumeData(slug)
 
   if (!data) {
     notFound()
@@ -227,12 +240,14 @@ export default async function VolumePage({
           <Section spacing="large">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Autores</h2>
             <div className="space-y-6">
-              {authors.filter((a) => a.bio_es).map((author) => (
-                <div key={author.contributor_id}>
-                  <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{author.full_name}</h3>
-                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{author.bio_es}</p>
-                </div>
-              ))}
+              {authors
+                .filter((a) => a.bio_es)
+                .map((author) => (
+                  <div key={author.contributor_id}>
+                    <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{author.full_name}</h3>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{author.bio_es}</p>
+                  </div>
+                ))}
             </div>
           </Section>
         )}
@@ -242,12 +257,18 @@ export default async function VolumePage({
           <Section spacing="large">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Traductores</h2>
             <div className="space-y-6">
-              {translators.filter((t) => t.bio_es).map((translator) => (
-                <div key={translator.contributor_id}>
-                  <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>{translator.full_name}</h3>
-                  <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>{translator.bio_es}</p>
-                </div>
-              ))}
+              {translators
+                .filter((t) => t.bio_es)
+                .map((translator) => (
+                  <div key={translator.contributor_id}>
+                    <h3 className={clsx(TYPOGRAPHY.h4, 'text-black mb-2')}>
+                      {translator.full_name}
+                    </h3>
+                    <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/80')}>
+                      {translator.bio_es}
+                    </p>
+                  </div>
+                ))}
             </div>
           </Section>
         )}
@@ -255,11 +276,7 @@ export default async function VolumePage({
         {/* Related Volumes */}
         {relatedBooks.length > 0 && (
           <Section spacing="large">
-            <BooksGrid
-              title="Publicaciones Relacionadas"
-              books={relatedBooks}
-              overflow={true}
-            />
+            <BooksGrid title="Publicaciones Relacionadas" books={relatedBooks} overflow={true} />
           </Section>
         )}
       </PageContainer>
