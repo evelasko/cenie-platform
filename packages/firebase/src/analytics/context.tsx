@@ -4,7 +4,12 @@
 import { type Analytics } from 'firebase/analytics'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
-import { initializeAnalytics, getAppName, type AnalyticsEventParams } from '../analytics-utils'
+import {
+  initializeAnalytics,
+  setAnalyticsConsent,
+  getAppName,
+  type AnalyticsEventParams,
+} from '../analytics-utils'
 
 interface AnalyticsContextType {
   analytics: Analytics | null
@@ -21,9 +26,15 @@ const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefin
 interface AnalyticsProviderProps {
   children: ReactNode
   enableDebug?: boolean
+  /** Whether the user has granted analytics consent. Defaults to `false`. */
+  consentGranted?: boolean
 }
 
-export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsProviderProps) {
+export function AnalyticsProvider({
+  children,
+  enableDebug = false,
+  consentGranted = false,
+}: AnalyticsProviderProps) {
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const [isInitialized, setIsInitialized] = useState(false)
   const appName = getAppName()
@@ -33,7 +44,7 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
 
     async function initialize() {
       try {
-        const analyticsInstance = await initializeAnalytics()
+        const analyticsInstance = await initializeAnalytics({ consentGranted })
 
         if (mounted) {
           setAnalytics(analyticsInstance)
@@ -42,7 +53,8 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
           if (enableDebug || process.env.NODE_ENV === 'development') {
             console.log(
               `[Analytics] Initialized for app: ${appName}`,
-              analyticsInstance ? '✅' : '❌'
+              analyticsInstance ? '✅' : '❌',
+              `(consent: ${consentGranted ? 'granted' : 'denied'})`
             )
           }
         }
@@ -59,7 +71,14 @@ export function AnalyticsProvider({ children, enableDebug = false }: AnalyticsPr
     return () => {
       mounted = false
     }
-  }, [appName, enableDebug])
+  }, [appName, enableDebug, consentGranted])
+
+  // Update consent state live when user accepts/rejects after initial load
+  useEffect(() => {
+    if (isInitialized) {
+      setAnalyticsConsent(consentGranted)
+    }
+  }, [consentGranted, isInitialized])
 
   // Import analytics functions dynamically to ensure they use the initialized instance
   const contextValue: AnalyticsContextType = {

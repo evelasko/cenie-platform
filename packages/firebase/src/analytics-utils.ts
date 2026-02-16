@@ -1,4 +1,10 @@
-import { getAnalytics, type Analytics, logEvent as firebaseLogEvent, isSupported } from 'firebase/analytics'
+import {
+  getAnalytics,
+  type Analytics,
+  logEvent as firebaseLogEvent,
+  isSupported,
+  setConsent as firebaseSetConsent,
+} from 'firebase/analytics'
 
 import { initializeFirebase } from './client'
 import { type AnalyticsEventParams, type CustomEventParams } from './types'
@@ -20,10 +26,41 @@ function isClient(): boolean {
 }
 
 /**
- * Initialize Firebase Analytics with app context
- * SSR-safe - only initializes on client side
+ * Set Firebase Analytics consent state (Consent Mode v2).
+ *
+ * Call this before `getAnalytics()` on first init to ensure no tracking
+ * cookies are written when consent has not been granted.  Can also be
+ * called later to update consent (e.g. after the user accepts/rejects).
+ *
+ * @param granted - `true` to grant all analytics consent types,
+ *                  `false` to deny them.
  */
-export async function initializeAnalytics(): Promise<Analytics | null> {
+export function setAnalyticsConsent(granted: boolean): void {
+  const status = granted ? 'granted' : 'denied'
+  firebaseSetConsent({
+    analytics_storage: status,
+    ad_storage: status,
+    ad_user_data: status,
+    ad_personalization: status,
+  })
+}
+
+export interface InitializeAnalyticsOptions {
+  /** Whether the user has granted analytics consent. Defaults to `false` (denied). */
+  consentGranted?: boolean
+}
+
+/**
+ * Initialize Firebase Analytics with app context.
+ * SSR-safe - only initializes on client side.
+ *
+ * When `options.consentGranted` is omitted or `false`, Firebase Consent
+ * Mode is set to "denied" **before** `getAnalytics()` is called, so no
+ * tracking cookies are created until consent is explicitly granted.
+ */
+export async function initializeAnalytics(
+  options?: InitializeAnalyticsOptions
+): Promise<Analytics | null> {
   // Only initialize on client side
   if (!isClient()) {
     return null
@@ -39,6 +76,7 @@ export async function initializeAnalytics(): Promise<Analytics | null> {
   if (!analytics) {
     try {
       const app = initializeFirebase()
+      setAnalyticsConsent(options?.consentGranted ?? false)
       analytics = getAnalytics(app)
     } catch (error) {
       console.error('Failed to initialize Firebase Analytics:', error)
