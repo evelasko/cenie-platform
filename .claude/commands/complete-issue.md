@@ -27,12 +27,13 @@ Where `CSS-XX` is the Linear issue identifier.
 
 ### 3. Update Linear
 
-- Update the issue status to `Done` in Linear using the Linear MCP server
+- To get the issue UUID, run `python3 scripts/linear.py get-issue-id CSS-XX`
+- Update the issue status to `Done` using the MCP `update_issue` tool
 - Add a comment on the issue summarizing what was implemented and any decisions made
 
 ### 4. Suggest next issue
 
-- Query Linear for the next available issue (same criteria as `/pick-issue`)
+- Run `python3 scripts/linear.py list-todo` to find the next available issue
 - Suggest it to the user as the next task
 
 ## Important

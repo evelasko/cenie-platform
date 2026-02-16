@@ -4,19 +4,15 @@ Start a work session by finding and claiming the next available issue from the C
 
 ## Instructions
 
-1. **Query Linear** for issues in the **CENIE Editorial Web** project on the **CincoSeiSiete** team that are:
-   - Status: `Todo`
-   - Not blocked by other incomplete issues
-   - In the current or next cycle (prefer current cycle first)
-   - Sort by priority (Urgent > High > Medium > Low), then by estimate (lower first)
+1. **Query Linear** by running `python3 scripts/linear.py list-todo` to get available issues sorted by priority and estimate.
 
-2. **Present the available issues** to the user in a table showing: identifier, title, priority, estimate, labels, and cycle.
+2. **Present the available issues** to the user — the script outputs a markdown table with: identifier, title, priority, estimate, labels, cycle, and blocked status.
 
 3. **Let the user choose** which issue to work on (or suggest the top candidate).
 
 4. **Once an issue is selected:**
-   a. Update the issue status to `In Progress` in Linear
-   b. Read the full issue description
+   a. Update the issue status to `In Progress` in Linear using the MCP `update_issue` tool. To get the UUID needed for MCP, run `python3 scripts/linear.py get-issue-id CSS-XX`.
+   b. Run `python3 scripts/linear.py get-issue CSS-XX` for full issue details with description
    c. Read all **target files** listed in the issue's Scope section
    d. Read all **reference files** listed in the issue's Scope section
    e. Summarize the issue requirements and technical approach

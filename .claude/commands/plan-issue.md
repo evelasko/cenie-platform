@@ -10,8 +10,8 @@ $ARGUMENTS — The Linear issue identifier (e.g., CSS-20) or issue title keyword
 
 ### 1. Fetch the issue from Linear
 
-- Use the Linear MCP server to get the issue by its identifier: `$ARGUMENTS`
-- If not found by identifier, search by title keywords in the CENIE Editorial Web project
+- Run `python3 scripts/linear.py get-issue $ARGUMENTS` to fetch the full issue details
+- If not found (script exits with error), fall back to the MCP `list_issues` tool with a query search in the CENIE Editorial Web project
 
 ### 2. Parse the issue description
 
