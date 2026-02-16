@@ -12,6 +12,7 @@ import BookPraiseItem from '@/components/items/BookPraiseItem'
 import BookForeword from '@/components/sections/BookForeword'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
+import { generateBookJsonLd } from '@/lib/structured-data'
 import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
 
@@ -149,8 +150,16 @@ export default async function VolumePage({
     link: `/catalogo/${v.slug}`,
   }))
 
+  const bookJsonLd = generateBookJsonLd(volume)
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(bookJsonLd).replace(/</g, '\u003c'),
+        }}
+      />
       {/* Hero Section */}
       <VolumeHero
         title={volume.title}

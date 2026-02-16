@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { getCompiledMDXBySlug, getContentSlugs, type ArticleFrontmatter } from '@/lib/mdx'
+import { generateArticleJsonLd } from '@/lib/structured-data'
 import { ContentLayout } from '@/components/content'
 
 // Generate static params for all articles
@@ -57,13 +58,23 @@ export default async function ArticuloPage({ params }: { params: Promise<{ slug:
     notFound()
   }
 
+  const articleJsonLd = generateArticleJsonLd(article.frontmatter, slug)
+
   return (
-    <ContentLayout
-      frontmatter={article.frontmatter}
-      readingTime={article.readingTime}
-      type="article"
-    >
-      {article.content}
-    </ContentLayout>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd).replace(/</g, '\u003c'),
+        }}
+      />
+      <ContentLayout
+        frontmatter={article.frontmatter}
+        readingTime={article.readingTime}
+        type="article"
+      >
+        {article.content}
+      </ContentLayout>
+    </>
   )
 }

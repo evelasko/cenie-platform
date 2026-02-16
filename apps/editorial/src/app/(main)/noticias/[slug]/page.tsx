@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { getCompiledMDXBySlug, getContentSlugs, type NewsFrontmatter } from '@/lib/mdx'
+import { generateNewsArticleJsonLd } from '@/lib/structured-data'
 import { ContentLayout } from '@/components/content'
 
 // Generate static params for all news
@@ -54,9 +55,23 @@ export default async function NoticiaPage({ params }: { params: Promise<{ slug: 
     notFound()
   }
 
+  const newsJsonLd = generateNewsArticleJsonLd(news.frontmatter, slug)
+
   return (
-    <ContentLayout frontmatter={news.frontmatter} readingTime={news.readingTime} type="news">
-      {news.content}
-    </ContentLayout>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(newsJsonLd).replace(/</g, '\u003c'),
+        }}
+      />
+      <ContentLayout
+        frontmatter={news.frontmatter}
+        readingTime={news.readingTime}
+        type="news"
+      >
+        {news.content}
+      </ContentLayout>
+    </>
   )
 }
