@@ -54,3 +54,6 @@ firebase-serviceaccount.json
 *.temp
 
 prompt.md
+
+# Audit outputs (local, may contain DB content)
+audit-descriptions-report.json
