@@ -1,24 +1,14 @@
 'use client'
 
-import { useAuth } from '@cenie/firebase/auth'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@cenie/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@cenie/ui'
 
 import { Calendar, Mail, CheckCircle } from 'lucide-react'
 
 export default function EditorialComingSoon() {
-  const { user, loading } = useAuth()
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.push('/dashboard')
-    }
-  }, [user, loading, router])
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,21 +18,6 @@ export default function EditorialComingSoon() {
       setEmail('')
       setTimeout(() => setSubscribed(false), 3000)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-primary/5 via-background to-accent/5">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 type-body-base text-muted-foreground">Cargando...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (user) {
-    return null
   }
 
   return (
