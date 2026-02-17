@@ -1,16 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@cenie/firebase/auth'
 import Button from '@/components/ui/Button'
 import { signOut } from 'firebase/auth'
 import { getFirebaseAuth } from '@cenie/firebase/client'
 import { useRouter } from 'next/navigation'
 import { LogoEditorial } from '@cenie/ui'
+import { cn } from '@cenie/ui/lib'
 import { TYPOGRAPHY } from '@/lib/typography'
 import Link from 'next/link'
 import type { NavigationItem } from '@/lib/navigation'
 import { logger } from '@/lib/logger-client'
+import clsx from 'clsx'
 
 interface NavbarProps {
   navigationItems: NavigationItem[]
@@ -26,6 +28,48 @@ export default function Navbar({
   const { user, loading } = useAuth()
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [overlayVisible, setOverlayVisible] = useState(false)
+  const [overlayMounted, setOverlayMounted] = useState(false)
+
+  // Open overlay: mount then animate in (double rAF ensures initial opacity-0 is painted before transition)
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      setOverlayMounted(true)
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setOverlayVisible(true))
+      })
+      return () => cancelAnimationFrame(id)
+    }
+    return undefined
+  }, [mobileMenuOpen])
+
+  // Close overlay with fade-out, then unmount
+  function closeMenu() {
+    setOverlayVisible(false)
+    setTimeout(() => {
+      setOverlayMounted(false)
+      setMobileMenuOpen(false)
+    }, 300)
+  }
+
+  // Escape key and body scroll lock
+  useEffect(() => {
+    if (!overlayMounted) return
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMenu()
+    }
+    document.addEventListener('keydown', handleEscape)
+
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = ''
+    }
+  }, [overlayMounted, mobileMenuOpen])
 
   const handleSignOut = async () => {
     try {
@@ -39,9 +83,9 @@ export default function Navbar({
 
   if (loading) {
     return (
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-24">
+      <header className="h-16 lg:h-24 bg-white/80 backdrop-blur-md border-b border-border/40 shadow-sm">
+        <div className="container mx-auto px-6 h-full">
+          <div className="flex items-center justify-between h-full">
             <div className="flex items-center">
               <div className="animate-pulse bg-gray-300 h-8 w-48 rounded"></div>
             </div>
@@ -56,11 +100,19 @@ export default function Navbar({
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-24">
+      <header
+        className={clsx(
+          overlayVisible ? 'bg-white' : 'bg-white/80',
+          'sticky top-0 z-50 h-16 lg:h-24 backdrop-blur-md border-b border-border/40 shadow-sm'
+        )}
+      >
+        <div className="container mx-auto px-6 h-full">
+          <div className="flex items-center justify-between h-full">
             {/* Logo */}
-            <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity">
+            <Link
+              href="/"
+              className="shrink-0 hover:opacity-80 transition-opacity flex items-center"
+            >
               <LogoEditorial color={logoColor} />
             </Link>
 
@@ -144,15 +196,16 @@ export default function Navbar({
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden text-gray-900"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => (mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true))}
               aria-label="Menú"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth="0.1em"
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
@@ -161,7 +214,7 @@ export default function Navbar({
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth="0.1em"
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
@@ -169,64 +222,74 @@ export default function Navbar({
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 bg-white">
-            <nav className="container mx-auto px-6 py-6">
-              <ul className="space-y-4">
-                {navigationItems.map((item) => (
-                  <li key={item.href}>
-                    {item.items ? (
-                      <>
-                        <div className={`${TYPOGRAPHY.bodyBase} py-2 text-gray-500 font-semibold`}>
-                          {item.label}
-                        </div>
-                        <ul className="ml-4 space-y-2 mt-2">
-                          {item.items.map((subItem) => (
-                            <li key={subItem.href}>
-                              <Link
-                                href={subItem.href}
-                                className={`${TYPOGRAPHY.bodySmall} block py-1 text-gray-700 hover:text-gray-900`}
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {subItem.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={`${TYPOGRAPHY.bodyBase} block py-2 text-gray-900 hover:text-gray-600`}
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-                {showAuth && user && (
-                  <li className="pt-4 border-t border-gray-200">
-                    <Button
-                      onClick={() => {
-                        handleSignOut()
-                        setMobileMenuOpen(false)
-                      }}
-                      variant="outlined"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Cerrar Sesión
-                    </Button>
-                  </li>
-                )}
-              </ul>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* Mobile Menu - Fullscreen Overlay (outside header to avoid backdrop-filter containing block) */}
+      {overlayMounted && (
+        <div
+          className={cn(
+            'fixed inset-0 top-16 lg:top-24 z-100 lg:hidden',
+            'bg-white',
+            'transition-opacity duration-500 ease-in-out',
+            overlayVisible ? 'opacity-100' : 'opacity-0'
+          )}
+          onClick={closeMenu}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menú de navegación"
+          aria-hidden={!overlayVisible}
+        >
+          <nav className="container mx-auto px-8 py-8" onClick={(e) => e.stopPropagation()}>
+            <ul className="space-y-4">
+              {navigationItems.map((item) => (
+                <li key={item.href}>
+                  {item.items ? (
+                    <>
+                      <div className="type-menu-large py-2 text-gray-900">{item.label}</div>
+                      {/* <ul className="ml-4 space-y-2 mt-2">
+                        {item.items.map((subItem) => (
+                          <li key={subItem.href}>
+                            <Link
+                              href={subItem.href}
+                              className={`${TYPOGRAPHY.bodySmall} block py-1 text-gray-700 hover:text-gray-900`}
+                              onClick={closeMenu}
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul> */}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="type-menu-large block py-2 text-gray-900"
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+              {showAuth && user && (
+                <li className="mt-12 pt-12 border-t border-gray-200">
+                  <Button
+                    onClick={() => {
+                      handleSignOut()
+                      closeMenu()
+                    }}
+                    variant="outlined"
+                    size="sm"
+                    className="w-full"
+                  >
+                    Cerrar Sesión
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </nav>
+        </div>
+      )}
     </>
   )
 }
