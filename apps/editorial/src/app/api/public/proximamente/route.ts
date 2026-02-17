@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     const { data: selectedBooks, error: booksError } = await supabase
       .from('books')
       .select(
-        'id, title, subtitle, translated_title, spanish_title, spanish_subtitle, authors, spanish_authors, temp_cover_twicpics_path, publication_description_es, added_at'
+        'id, title, subtitle, translated_title, spanish_title, spanish_subtitle, authors, spanish_authors, temp_cover_twicpics_path, publication_description_es, translation_slug, added_at'
       )
       .eq('selected_for_translation', true)
       .eq('promoted_to_catalog', false)
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
         description: (b.publication_description_es as string) || null,
         cover_url: coverUrl,
         cover_fallback_url: null,
-        slug: `book-${b.id}`,
+        slug: (b.translation_slug as string) || `book-${b.id}`,
         publication_status: 'draft',
         volume_type: 'translated',
         created_at: b.added_at,

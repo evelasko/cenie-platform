@@ -50,7 +50,8 @@ const MarkdownEditor = dynamic(
 )
 
 const CoverManager = dynamic(
-  () => import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
+  () =>
+    import('@/components/dashboard/CoverManager').then((mod) => ({ default: mod.CoverManager })),
   {
     loading: () => (
       <div className="flex items-center justify-center p-8">
@@ -60,6 +61,7 @@ const CoverManager = dynamic(
   }
 )
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { generateSlug } from '@/lib/slug'
 import type { Book, ContributorRole } from '@/types/books'
 import { logger } from '@/lib/logger-client'
 
@@ -106,14 +108,7 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
   const [coverUrl, setCoverUrl] = useState<string | null>(null)
 
   // Generate slug from Spanish title for cover naming
-  const publicationSlug = titleEs
-    ? titleEs
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-    : ''
+  const publicationSlug = titleEs ? generateSlug(titleEs) : ''
 
   useEffect(() => {
     fetchBook()
@@ -323,12 +318,7 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
 
     try {
       // Generate slug from Spanish title
-      const slug = titleEs
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
+      const slug = generateSlug(titleEs)
 
       // Prepare catalog data
       const catalogData = {
@@ -466,6 +456,7 @@ export default function PreparePublicationPage({ params }: { params: Promise<{ i
         <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
           {book.authors?.join(', ')} ({book.published_date})
         </p>
+        <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>{book.id}</p>
       </div>
 
       {/* Step 1: Spanish Metadata */}

@@ -19,6 +19,10 @@ import {
   FileEdit,
   Building2,
   Star,
+  BookCheck,
+  BookX,
+  Copy,
+  Link as LinkIcon,
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { clsx } from 'clsx'
@@ -79,6 +83,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [status, setStatus] = useState<BookStatus>('discovered')
   const [translatedTitle, setTranslatedTitle] = useState('')
   const [selectedForTranslation, setSelectedForTranslation] = useState(false)
+  const [translationSlug, setTranslationSlug] = useState<string | null>(null)
+  const [togglingTranslation, setTogglingTranslation] = useState(false)
   const [translationPriority, setTranslationPriority] = useState<number | null>(null)
   const [marketabilityScore, setMarketabilityScore] = useState<number | null>(null)
   const [relevanceScore, setRelevanceScore] = useState<number | null>(null)
@@ -117,6 +123,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       setStatus(bookData.status)
       setTranslatedTitle(bookData.translated_title || '')
       setSelectedForTranslation(bookData.selected_for_translation)
+      setTranslationSlug(bookData.translation_slug ?? null)
       setTranslationPriority(bookData.translation_priority ?? null)
       setMarketabilityScore(bookData.marketability_score ?? null)
       setRelevanceScore(bookData.relevance_score ?? null)
@@ -194,7 +201,6 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
         body: JSON.stringify({
           status,
           translated_title: translatedTitle || null,
-          selected_for_translation: selectedForTranslation,
           translation_priority: translationPriority,
           marketability_score: marketabilityScore,
           relevance_score: relevanceScore,
@@ -215,6 +221,68 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       toast.error(err instanceof Error ? err.message : 'Failed to save book')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleToggleTranslation = async () => {
+    if (!book) return
+
+    const newValue = !selectedForTranslation
+
+    // Validate: require a Spanish title before selecting
+    if (newValue) {
+      const spanishTitle = book.spanish_title || translatedTitle
+      if (!spanishTitle) {
+        toast.error(
+          'A Spanish title (from translation investigation or manual entry) is required before selecting a book for translation'
+        )
+        return
+      }
+    }
+
+    setTogglingTranslation(true)
+
+    try {
+      const payload: Record<string, unknown> = {
+        selected_for_translation: newValue,
+      }
+
+      // Also send the translated_title so the API can use it for slug generation
+      if (newValue && translatedTitle) {
+        payload.translated_title = translatedTitle
+      }
+
+      const response = await fetch(`/api/books/${resolvedParams.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update translation status')
+      }
+
+      const updatedBook = data.book
+      setBook(updatedBook)
+      setSelectedForTranslation(updatedBook.selected_for_translation)
+      setTranslationSlug(updatedBook.translation_slug ?? null)
+
+      if (newValue) {
+        toast.success(
+          updatedBook.translation_slug
+            ? `Selected for translation. Slug: ${updatedBook.translation_slug}`
+            : 'Selected for translation!'
+        )
+      } else {
+        toast.success('Removed from translation selection')
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to update translation status')
+    } finally {
+      setTogglingTranslation(false)
     }
   }
 
@@ -495,20 +563,59 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
             </div>
 
             {/* Selected for Translation */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="selected"
-                checked={selectedForTranslation}
-                onChange={(e) => setSelectedForTranslation(e.target.checked)}
-                className="h-4 w-4 text-primary focus:ring-primary border-border rounded-none"
-              />
+            <div className="space-y-3">
               <label
-                htmlFor="selected"
-                className={clsx(TYPOGRAPHY.bodyBase, 'ml-2 block text-foreground')}
+                className={clsx(TYPOGRAPHY.bodySmall, 'block font-medium text-foreground')}
               >
-                Selected for Translation
+                Translation Selection
               </label>
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={handleToggleTranslation}
+                  disabled={togglingTranslation || saving}
+                  variant={selectedForTranslation ? 'outlined' : 'primary'}
+                  leadingIcon={selectedForTranslation ? BookX : BookCheck}
+                >
+                  {togglingTranslation
+                    ? 'Updating...'
+                    : selectedForTranslation
+                      ? 'Deselect from Translation'
+                      : 'Select for Translation'}
+                </Button>
+                {selectedForTranslation && (
+                  <span
+                    className={clsx(
+                      TYPOGRAPHY.bodySmall,
+                      'inline-flex items-center px-2.5 py-0.5 rounded-full bg-green-100 text-green-800'
+                    )}
+                  >
+                    Selected
+                  </span>
+                )}
+              </div>
+              {selectedForTranslation && translationSlug && (
+                <div className="flex items-center gap-2 bg-muted/50 border border-border rounded-none px-3 py-2">
+                  <LinkIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground')}>
+                    /proximamente/
+                  </span>
+                  <code className={clsx(TYPOGRAPHY.bodySmall, 'font-mono text-foreground')}>
+                    {translationSlug}
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `${window.location.origin}/proximamente/${translationSlug}`
+                      )
+                      toast.success('URL copied to clipboard')
+                    }}
+                    className="ml-auto p-1 hover:bg-muted rounded-none transition-colors"
+                    title="Copy URL"
+                  >
+                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Priority */}

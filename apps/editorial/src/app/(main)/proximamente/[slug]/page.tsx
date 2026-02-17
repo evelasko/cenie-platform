@@ -27,22 +27,32 @@ interface VolumeContributor {
 async function getProximamenteVolumeData(slug: string) {
   const supabase = createNextServerClient()
 
-  // Books selected for translation: slug format "book-{uuid}"
-  if (slug.startsWith('book-')) {
+  // Try SEO slug first (new format: e.g., "el-titulo-en-espanol")
+  const { data: seoBook } = await supabase
+    .from('books')
+    .select('*')
+    .eq('translation_slug', slug)
+    .eq('selected_for_translation', true)
+    .eq('promoted_to_catalog', false)
+    .maybeSingle()
+
+  // Fall back to legacy "book-{uuid}" format
+  let bookData = seoBook
+  if (!bookData && slug.startsWith('book-')) {
     const bookId = slug.replace(/^book-/, '')
-    const { data: book, error: bookError } = await supabase
+    const { data: legacyBook } = await supabase
       .from('books')
       .select('*')
       .eq('id', bookId)
       .eq('selected_for_translation', true)
       .eq('promoted_to_catalog', false)
-      .single()
+      .maybeSingle()
 
-    if (bookError || !book) {
-      return null
-    }
+    bookData = legacyBook
+  }
 
-    const b = book as Record<string, unknown>
+  if (bookData) {
+    const b = bookData as Record<string, unknown>
     const displayTitle =
       (b.spanish_title as string) || (b.translated_title as string) || (b.title as string)
     const authors = (b.spanish_authors as string[]) || (b.authors as string[])
@@ -58,7 +68,7 @@ async function getProximamenteVolumeData(slug: string) {
       description: (b.publication_description_es as string) || null,
       cover_url: coverUrl,
       cover_fallback_url: null,
-      slug: `book-${b.id}`,
+      slug: (b.translation_slug as string) || `book-${b.id}`,
       publication_status: 'draft',
       volume_type: 'translated',
       original_title: b.title as string,

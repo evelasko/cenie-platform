@@ -318,6 +318,13 @@ export default function CatalogManagementPage() {
                           </Button>
                         </Link>
                       )}
+                      {volume.slug && volume.publication_status === 'draft' && (
+                        <Link href={`/proximamente/${volume.slug}`} target="_blank">
+                          <Button variant="outlined" size="sm" leadingIcon={Eye}>
+                            View on Próximamente
+                          </Button>
+                        </Link>
+                      )}
                     </>
                   )}
                 </div>

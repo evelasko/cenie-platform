@@ -6,6 +6,7 @@ import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { generateSlug } from '@/lib/slug'
 import type { CatalogVolumeCreateInput } from '@/types/books'
 
 /**
@@ -75,7 +76,7 @@ export const GET = withErrorHandling(
         const { data: selectedBooks, error: booksError } = await supabase
           .from('books')
           .select(
-            'id, title, subtitle, translated_title, spanish_title, spanish_subtitle, authors, spanish_authors, temp_cover_twicpics_path, publication_description_es, added_at'
+            'id, title, subtitle, translated_title, spanish_title, spanish_subtitle, authors, spanish_authors, temp_cover_twicpics_path, publication_description_es, translation_slug, added_at'
           )
           .eq('selected_for_translation', true)
           .eq('promoted_to_catalog', false)
@@ -98,7 +99,7 @@ export const GET = withErrorHandling(
               description: (b.publication_description_es as string) || null,
               cover_url: coverUrl,
               cover_fallback_url: null,
-              slug: `book-${b.id}`,
+              slug: (b.translation_slug as string) || `book-${b.id}`,
               publication_status: 'draft',
               volume_type: 'translated',
               publisher_name: 'CENIE Editorial',
@@ -160,14 +161,7 @@ export const POST = withErrorHandling(
     }
 
     // Generate slug if not provided
-    const slug =
-      body.slug ||
-      body.title
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
+    const slug = body.slug || generateSlug(body.title)
 
     // Check if slug already exists
     const { data: existingVolume, error: checkError } = await supabase

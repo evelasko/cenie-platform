@@ -156,6 +156,9 @@ export interface Book {
   last_checked_at?: string | null
   checked_by?: string | null // Firebase UID (text)
 
+  // SEO slug for /proximamente pages
+  translation_slug?: string | null
+
   // Promotion to catalog
   promoted_to_catalog: boolean
   catalog_volume_id?: string | null
@@ -188,6 +191,7 @@ export interface BookUpdateInput {
   source_language?: string | null
   target_language?: string | null
   translation_notes?: string | null
+  translation_slug?: string | null
   publication_description_es?: string | null
   publication_excerpt_es?: string | null
   publication_table_of_contents?: TableOfContents | null

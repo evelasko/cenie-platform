@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { requireViewer, requireEditor } from '@/lib/auth'
 import type { BookUpdateInput } from '@/types/books'
+import { generateSlug } from '@/lib/slug'
 import { logger } from '@/lib/logger'
 
 /**
@@ -63,6 +64,7 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         'subtitle',
         'authors',
         'selected_for_translation',
+        'translation_slug',
         'status',
         'translated_title',
         'translation_priority',
@@ -82,6 +84,51 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
         if (field in body && body[field] !== undefined) {
           updatePayload[field] = body[field]
         }
+      }
+
+      // Auto-generate translation_slug when selecting for translation
+      if (
+        updatePayload.selected_for_translation === true &&
+        !updatePayload.translation_slug
+      ) {
+        // Fetch the book to get spanish_title / translated_title for slug generation
+        const { data: currentBook } = await supabase
+          .from('books')
+          .select('spanish_title, translated_title')
+          .eq('id', id)
+          .single()
+
+        const spanishTitle =
+          (currentBook as Record<string, unknown>)?.spanish_title as string | null ||
+          (updatePayload.translated_title as string | null) ||
+          (currentBook as Record<string, unknown>)?.translated_title as string | null
+
+        if (spanishTitle) {
+          let baseSlug = generateSlug(spanishTitle)
+          let slug = baseSlug
+          let suffix = 2
+
+          // Ensure uniqueness by checking for conflicts
+          while (true) {
+            const { data: existing } = await supabase
+              .from('books')
+              .select('id')
+              .eq('translation_slug', slug)
+              .neq('id', id)
+              .maybeSingle()
+
+            if (!existing) break
+            slug = `${baseSlug}-${suffix}`
+            suffix++
+          }
+
+          updatePayload.translation_slug = slug
+        }
+      }
+
+      // Clear slug when deselecting from translation
+      if (updatePayload.selected_for_translation === false) {
+        updatePayload.translation_slug = null
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- books table Update type mismatch with DB schema
