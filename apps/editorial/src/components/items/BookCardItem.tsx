@@ -20,7 +20,7 @@ export default function BookCardItem({ title, subtitle, imageSrc, imageAlt }: Bo
   return (
     <div className="flex flex-col gap-3">
       {/* Image in original aspect ratio */}
-      <div className="relative w-full aspect-2/3">
+      <div className="relative w-full aspect-2/3 shadow-medium">
         <Image
           src={imageSrc}
           alt={imageAlt}

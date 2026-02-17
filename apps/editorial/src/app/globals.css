@@ -105,7 +105,7 @@
   --color-card-foreground: oklch(0.2686 0 0);
   --color-popover: oklch(1 0 0);
   --color-popover-foreground: oklch(0.2686 0 0);
-  --color-primary: oklch(0.4732 0.1247 46.2007);
+  --color-primary: oklch(65.13% 0.235 26.55);
   --color-primary-foreground: oklch(1 0 0);
   --color-secondary: oklch(0.3469 0.0733 234.7352);
   --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
@@ -554,4 +554,27 @@
 .prose-content pre code {
   background-color: transparent;
   padding: 0;
+}
+
+/* Shadows */
+
+.shadow-large {
+  box-shadow:
+    0 0 #0000,
+    0 0 #0000,
+    4px 4px 48px 0px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-medium {
+  box-shadow:
+    0 0 #0000,
+    0 0 #0000,
+    0px 2px 8px 0px rgba(0, 0, 0, 0.32);
+}
+
+.shadow-small {
+  box-shadow:
+    0 0 #0000,
+    0 0 #0000,
+    0px 1px 6px 0px rgba(0, 0, 0, 0.1);
 }
