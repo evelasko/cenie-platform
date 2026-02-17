@@ -326,6 +326,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* Apply font antialiasing globally for consistent rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground;
@@ -335,11 +339,6 @@
     letter-spacing: var(--type-body-base-tracking);
     font-weight: var(--type-body-base-weight);
     transition: var(--type-transition);
-
-    /* Improve text rendering */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
     font-variant-ligatures: common-ligatures;
   }
 }
