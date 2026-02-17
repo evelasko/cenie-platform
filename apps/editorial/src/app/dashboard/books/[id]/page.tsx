@@ -7,7 +7,6 @@ import Link from 'next/link'
 import {
   Loader2,
   AlertCircle,
-  Book as BookIcon,
   ExternalLink,
   Save,
   ArrowLeft,
@@ -47,6 +46,7 @@ const AddContributorModal = dynamic(
 )
 import { Plus } from 'lucide-react'
 import { logger } from '@/lib/logger-client'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
 
 const statusOptions: { value: BookStatus; label: string }[] = [
   { value: 'discovered', label: 'Discovered' },
@@ -251,7 +251,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   }
 
   const coverUrl =
-    googleData?.volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') || null
+    googleData?.volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') ||
+    getCoverPlaceholder()
 
   if (loading) {
     return (
@@ -321,20 +322,14 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           <div className="flex gap-6">
             {/* Cover */}
             <div className="shrink-0">
-              {coverUrl ? (
-                <Image
-                  src={coverUrl}
-                  alt={book.title}
-                  width={160}
-                  height={240}
-                  className="rounded-none shadow-lg"
-                  unoptimized
-                />
-              ) : (
-                <div className="w-40 h-60 bg-muted rounded-none flex items-center justify-center">
-                  <BookIcon className="h-16 w-16 text-muted-foreground" />
-                </div>
-              )}
+              <Image
+                src={coverUrl}
+                alt={book.title}
+                width={160}
+                height={240}
+                className="rounded-none shadow-lg object-cover"
+                unoptimized
+              />
             </div>
 
             {/* Details */}

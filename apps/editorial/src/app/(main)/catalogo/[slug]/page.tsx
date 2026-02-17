@@ -14,6 +14,7 @@ import BookForeword from '@/components/sections/BookForeword'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import { generateBookJsonLd } from '@/lib/structured-data'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
 import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
 
@@ -162,7 +163,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
   const relatedBooks: bookData[] = related.map((v) => ({
     title: v.title,
     author: v.authors_display || 'CENIE Editorial',
-    coverSrc: v.cover_url || v.cover_fallback_url || '/images/placeholder-cover.jpg',
+    coverSrc: v.cover_url || v.cover_fallback_url || getCoverPlaceholder(),
     link: `/catalogo/${v.slug}`,
   }))
 
@@ -182,7 +183,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
         subtitle={volume.subtitle || undefined}
         authors={volume.authors_display || 'CENIE Editorial'}
         translator={volume.translator_display || undefined}
-        coverUrl={volume.cover_url || volume.cover_fallback_url || '/images/placeholder-cover.jpg'}
+        coverUrl={volume.cover_url || volume.cover_fallback_url || getCoverPlaceholder()}
         publicationYear={volume.publication_year || undefined}
         isbn={volume.isbn_13 || volume.isbn_10 || undefined}
         pageCount={volume.page_count || undefined}

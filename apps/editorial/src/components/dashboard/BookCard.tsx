@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import { Book, Calendar, User, ExternalLink, Building2 } from 'lucide-react'
+import { Calendar, User, ExternalLink, Building2 } from 'lucide-react'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
 import Button from '@/components/ui/Button'
@@ -14,7 +15,8 @@ interface BookCardProps {
 
 export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) {
   const { volumeInfo } = book
-  const coverUrl = volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') || null
+  const coverUrl =
+    volumeInfo.imageLinks?.thumbnail?.replace('http://', 'https://') || getCoverPlaceholder()
 
   const formatAuthors = (authors?: string[]) => {
     if (!authors || authors.length === 0) return 'Unknown Author'
@@ -28,20 +30,14 @@ export function BookCard({ book, onAddBook, isAdding, isAdded }: BookCardProps) 
       <div className="flex gap-4">
         {/* Book Cover */}
         <div className="shrink-0">
-          {coverUrl ? (
-            <Image
-              src={coverUrl}
-              alt={volumeInfo.title}
-              width={80}
-              height={120}
-              className="rounded-none shadow-sm"
-              unoptimized
-            />
-          ) : (
-            <div className="w-20 h-30 bg-muted rounded-none flex items-center justify-center">
-              <Book className="h-8 w-8 text-muted-foreground" />
-            </div>
-          )}
+          <Image
+            src={coverUrl}
+            alt={volumeInfo.title}
+            width={80}
+            height={120}
+            className="rounded-none shadow-sm object-cover"
+            unoptimized
+          />
         </div>
 
         {/* Book Info */}

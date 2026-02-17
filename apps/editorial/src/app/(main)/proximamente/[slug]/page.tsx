@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { createNextServerClient } from '@cenie/supabase/server'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
 import { logger } from '@/lib/logger'
 import { PageContainer, Section, Prose } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
@@ -185,7 +186,7 @@ export default async function ProximamenteVolumePage({
   const relatedBooks: bookData[] = related.map((v) => ({
     title: v.title,
     author: v.authors_display || 'CENIE Editorial',
-    coverSrc: v.cover_url || v.cover_fallback_url || '/images/placeholder-cover.jpg',
+    coverSrc: v.cover_url || v.cover_fallback_url || getCoverPlaceholder(),
     link: `/proximamente/${v.slug}`,
   }))
 
@@ -197,7 +198,7 @@ export default async function ProximamenteVolumePage({
         subtitle={volume.subtitle || undefined}
         authors={volume.authors_display || 'CENIE Editorial'}
         translator={volume.translator_display || undefined}
-        coverUrl={volume.cover_url || volume.cover_fallback_url || '/images/placeholder-cover.jpg'}
+        coverUrl={volume.cover_url || volume.cover_fallback_url || getCoverPlaceholder()}
         publicationYear={volume.publication_year || undefined}
         isbn={volume.isbn_13 || volume.isbn_10 || undefined}
         pageCount={volume.page_count || undefined}

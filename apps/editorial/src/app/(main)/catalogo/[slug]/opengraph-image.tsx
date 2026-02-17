@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { createStaticClient } from '@cenie/supabase/static'
 import { getBookCoverUrl } from '@/lib/twicpics'
+import { getCoverPlaceholderUrl } from '@/lib/cover-placeholder'
 
 // Standard OG image dimensions
 export const size = {
@@ -31,7 +32,8 @@ async function getVolumeForOg(slug: string) {
     (volume as { cover_fallback_url?: string }).cover_fallback_url ||
     ((volume as { cover_twicpics_path?: string }).cover_twicpics_path
       ? getBookCoverUrl((volume as { cover_twicpics_path: string }).cover_twicpics_path, 'large')
-      : null)
+      : null) ||
+    getCoverPlaceholderUrl()
 
   return {
     title: (volume as { title: string }).title,
@@ -102,34 +104,17 @@ export default async function BookOgImage({
             background: '#f3f4f6',
           }}
         >
-          {coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={coverUrl}
-              alt=""
-              width={280}
-              height={420}
-              style={{
-                objectFit: 'cover',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                width: 280,
-                height: 420,
-                background: '#e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 48,
-                color: '#9ca3af',
-              }}
-            >
-              📖
-            </div>
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={coverUrl}
+            alt=""
+            width={280}
+            height={420}
+            style={{
+              objectFit: 'cover',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+            }}
+          />
         </div>
 
         {/* Right: Title, author, branding */}

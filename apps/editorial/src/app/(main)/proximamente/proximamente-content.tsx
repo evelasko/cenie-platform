@@ -11,6 +11,7 @@ import { TYPOGRAPHY } from '@/lib/typography'
 import type { CatalogVolume } from '@/types/books'
 import type { bookData } from '@/components/sections/BooksGrid'
 import { logger } from '@/lib/logger-client'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
 
 export default function ProximamenteContent() {
   const router = useRouter()
@@ -51,7 +52,7 @@ export default function ProximamenteContent() {
   const catalogBooks: bookData[] = volumes.map((v) => ({
     title: v.title,
     author: v.authors_display || 'CENIE Editorial',
-    coverSrc: v.cover_url || v.cover_fallback_url || '/images/placeholder-cover.jpg',
+    coverSrc: v.cover_url || v.cover_fallback_url || getCoverPlaceholder(),
     link: `/proximamente/${v.slug}`,
   }))
 
