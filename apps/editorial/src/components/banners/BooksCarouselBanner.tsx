@@ -32,12 +32,12 @@ export default function BooksCarouselBanner({
     <div className="w-full bg-secondary/10 py-16">
       <div className="container mx-auto px-4">
         {/* Title */}
-        <h2 className={clsx(TYPOGRAPHY.h2, 'text-black mb-12')}>{title}</h2>
+        <h2 className={clsx(TYPOGRAPHY.h2, 'text-black mb-0')}>{title}</h2>
 
-        {/* Carousel */}
+        {/* Carousel — pt-16 compensates for overflow-y clipping caused by overflow-x-auto */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+          className="flex gap-6 overflow-x-auto pt-16 pb-4 scrollbar-hide snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {books.map((book, index) => (
