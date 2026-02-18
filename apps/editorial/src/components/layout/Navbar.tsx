@@ -83,7 +83,7 @@ export default function Navbar({
 
   if (loading) {
     return (
-      <header className="h-16 lg:h-24 bg-white/80 backdrop-blur-md border-b border-border/40 shadow-sm">
+      <header className="h-16 lg:h-24 bg-white/80 backdrop-blur-md border-b border-border/40">
         <div className="container mx-auto px-6 h-full">
           <div className="flex items-center justify-between h-full">
             <div className="flex items-center">
@@ -103,7 +103,7 @@ export default function Navbar({
       <header
         className={clsx(
           overlayVisible ? 'bg-white' : 'bg-white/80',
-          'sticky top-0 z-50 h-16 lg:h-24 backdrop-blur-md border-b border-border/40 shadow-sm'
+          'sticky top-0 z-50 h-16 lg:h-24 backdrop-blur-md border-b border-border/40'
         )}
       >
         <div className="container mx-auto px-6 h-full">
