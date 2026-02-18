@@ -1,9 +1,107 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Search, Library } from 'lucide-react'
+import Image from 'next/image'
+import { Search, Library, BookHeart, Loader2, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
+import { getCoverPlaceholder } from '@/lib/cover-placeholder'
+import type { CatalogVolume } from '@/types/books'
 
 export default function DashboardPage() {
+  // Hero selector state
+  const [publishedVolumes, setPublishedVolumes] = useState<CatalogVolume[]>([])
+  const [currentHero, setCurrentHero] = useState<CatalogVolume | null>(null)
+  const [selectedVolumeId, setSelectedVolumeId] = useState<string>('')
+  const [heroLoading, setHeroLoading] = useState(true)
+  const [heroSaving, setHeroSaving] = useState(false)
+  const [heroError, setHeroError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchPublishedVolumes()
+    fetchCurrentHero()
+  }, [])
+
+  const fetchPublishedVolumes = async () => {
+    try {
+      const response = await fetch('/api/catalog?status=published&limit=100', {
+        credentials: 'include',
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setPublishedVolumes(data.volumes || [])
+      }
+    } catch {
+      // Non-critical; selector will just be empty
+    }
+  }
+
+  const fetchCurrentHero = async () => {
+    setHeroLoading(true)
+    try {
+      const response = await fetch('/api/catalog/hero', { credentials: 'include' })
+      const data = await response.json()
+      if (response.ok && data.volume) {
+        setCurrentHero(data.volume)
+        setSelectedVolumeId(data.volume.id)
+      } else {
+        setCurrentHero(null)
+      }
+    } catch {
+      setCurrentHero(null)
+    } finally {
+      setHeroLoading(false)
+    }
+  }
+
+  const saveHero = async () => {
+    if (!selectedVolumeId) return
+    setHeroSaving(true)
+    setHeroError(null)
+    try {
+      const response = await fetch('/api/catalog/hero', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ volume_id: selectedVolumeId }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to set hero')
+      }
+      setCurrentHero(data.volume)
+    } catch (err) {
+      setHeroError(err instanceof Error ? err.message : 'Failed to save hero')
+    } finally {
+      setHeroSaving(false)
+    }
+  }
+
+  const clearHero = async () => {
+    setHeroSaving(true)
+    setHeroError(null)
+    try {
+      const response = await fetch('/api/catalog/hero', {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to clear hero')
+      }
+      setCurrentHero(null)
+      setSelectedVolumeId('')
+    } catch (err) {
+      setHeroError(err instanceof Error ? err.message : 'Failed to clear hero')
+    } finally {
+      setHeroSaving(false)
+    }
+  }
+
+  const coverSrc =
+    currentHero?.cover_url || currentHero?.cover_fallback_url || getCoverPlaceholder()
+
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
@@ -12,6 +110,118 @@ export default function DashboardPage() {
         <p className={clsx(TYPOGRAPHY.bodyBase, 'text-muted-foreground')}>
           Manage and curate performing arts books for translation from English to Spanish.
         </p>
+      </div>
+
+      {/* Hero Book Selector */}
+      <div className="bg-card rounded-none shadow-sm border border-border p-6">
+        <div className="flex items-center space-x-3 mb-5">
+          <div className="p-2 bg-primary/10 rounded-none">
+            <BookHeart className="h-5 w-5 text-primary" />
+          </div>
+          <h3 className={clsx(TYPOGRAPHY.h4, 'text-foreground')}>Hero Book</h3>
+        </div>
+
+        <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground mb-4')}>
+          Select the published book to feature prominently on the homepage hero section.
+        </p>
+
+        {heroLoading ? (
+          <div className="flex items-center space-x-2 text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span className={TYPOGRAPHY.bodySmall}>Loading…</span>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* Selector row */}
+            <div className="flex flex-col lg:flex-row gap-3">
+              <select
+                value={selectedVolumeId}
+                onChange={(e) => setSelectedVolumeId(e.target.value)}
+                disabled={heroSaving}
+                className={clsx(
+                  TYPOGRAPHY.bodySmall,
+                  'flex-1 border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50'
+                )}
+              >
+                <option value="">— Select a published volume —</option>
+                {publishedVolumes.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.title}
+                    {v.authors_display ? ` — ${v.authors_display}` : ''}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={saveHero}
+                disabled={!selectedVolumeId || heroSaving}
+                className={clsx(
+                  TYPOGRAPHY.bodySmall,
+                  'px-5 py-2 bg-primary text-white hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                )}
+              >
+                {heroSaving ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Saving…
+                  </span>
+                ) : (
+                  'Save'
+                )}
+              </button>
+
+              {currentHero && (
+                <button
+                  onClick={clearHero}
+                  disabled={heroSaving}
+                  className={clsx(
+                    TYPOGRAPHY.bodySmall,
+                    'flex items-center gap-1.5 px-4 py-2 border border-border text-muted-foreground hover:border-destructive hover:text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                  )}
+                >
+                  <X className="h-3 w-3" />
+                  Clear Hero
+                </button>
+              )}
+            </div>
+
+            {/* Error */}
+            {heroError && (
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-destructive')}>{heroError}</p>
+            )}
+
+            {/* Current hero preview */}
+            {currentHero && (
+              <div className="flex items-center gap-4 pt-2 border-t border-border">
+                <div className="relative w-10 aspect-2/3 shrink-0">
+                  <Image
+                    src={coverSrc}
+                    alt={currentHero.title}
+                    fill
+                    className="object-contain"
+                    sizes="40px"
+                  />
+                </div>
+                <div>
+                  <p className={clsx(TYPOGRAPHY.bodySmall, 'font-medium text-foreground')}>
+                    {currentHero.title}
+                  </p>
+                  {currentHero.authors_display && (
+                    <p className={clsx(TYPOGRAPHY.caption, 'text-muted-foreground')}>
+                      {currentHero.authors_display}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!currentHero && !heroLoading && (
+              <p className={clsx(TYPOGRAPHY.bodySmall, 'text-muted-foreground italic')}>
+                No hero book is currently set.
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}

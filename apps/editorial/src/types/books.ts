@@ -282,6 +282,7 @@ export interface CatalogVolume {
   categories?: string[] | null
   tags?: string[] | null
   featured: boolean
+  hero: boolean
   display_order?: number | null
 
   // Content Previews
@@ -388,6 +389,7 @@ export interface CatalogVolumeUpdateInput {
   categories?: string[]
   tags?: string[]
   featured?: boolean
+  hero?: boolean
   table_of_contents?: TableOfContents
   excerpt?: string
   reviews_quotes?: ReviewQuote[]

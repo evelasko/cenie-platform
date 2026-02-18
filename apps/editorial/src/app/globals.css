@@ -111,6 +111,8 @@
   --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
   --color-muted: oklch(0.9846 0.0017 247.8389);
   --color-muted-foreground: oklch(0.551 0.0234 264.3637);
+  --color-muted-background-light: oklch(0.9417 0.0085 225.08);
+  --color-muted-background-dark: oklch(0.8853 0.0128 228.94);
   --color-accent: oklch(0.8954 0.0304 65.8126);
   --color-accent-foreground: oklch(0.4732 0.1247 46.2007);
   --color-destructive: oklch(0.6368 0.2078 25.3313);
@@ -290,6 +292,19 @@
     line-height: var(--type-button-line);
     letter-spacing: var(--type-button-tracking);
     font-weight: var(--type-button-weight);
+  }
+
+  .type-button-link {
+    font-family: var(--font-body);
+    font-size: clamp(1.3rem, 0.4vw + 0.9rem, 1rem);
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    text-decoration: none;
+    text-decoration-thickness: 0.0625em;
+    text-underline-offset: 0.125em;
+    transition: opacity 0.2s ease;
+    color: oklch(0.2686 0 0);
   }
 
   .type-link {
@@ -567,9 +582,9 @@
 
 .shadow-large {
   box-shadow:
-    0 0 #0000,
-    0 0 #0000,
-    4px 4px 48px 0px rgba(0, 0, 0, 0.3);
+    2px 2px 18px 0px rgba(0, 0, 0, 0.15),
+    2px 2px 32px 0px rgba(0, 0, 0, 0.25),
+    2px 2px 64px 0px rgba(0, 0, 0, 0.35);
 }
 
 .shadow-medium {
