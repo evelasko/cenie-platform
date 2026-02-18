@@ -29,19 +29,19 @@ export default function BooksGrid({
   overflow: boolean
 }) {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col">
       {/* Title */}
       <h2 className={clsx(TYPOGRAPHY.h2, 'text-black')}>{title}</h2>
 
-      {/* Books Grid */}
+      {/* Books Grid — pt-16 compensates for overflow-y clipping on hover animation */}
       <div
         className={clsx(
-          'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6',
+          'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 pt-16',
           !overflow && 'overflow-hidden'
         )}
       >
         {books.map((book, index) => (
-          <Link key={index} href={book.link} className="block hover:opacity-80 transition-opacity">
+          <Link key={index} href={book.link} className="group block">
             <BookCardItem
               title={book.title}
               subtitle={book.author}
