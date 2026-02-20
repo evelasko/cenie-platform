@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { PageContainer, PageHero, Section } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
+import BooksSwiperCarousel from '@/components/banners/BooksSwiperCarousel'
 import { Loader2 } from 'lucide-react'
 import { clsx } from 'clsx'
 import { TYPOGRAPHY } from '@/lib/typography'
@@ -62,6 +63,13 @@ export default function ProximamenteContent() {
         title="Próximamente"
         subtitle="Publicaciones en preparación. Descubre las traducciones y obras originales que pronto estarán disponibles en nuestro catálogo."
       />
+
+      {/* Swiper Carousel */}
+      {catalogBooks.length > 0 && !loading && (
+        <Section spacing="large">
+          <BooksSwiperCarousel books={catalogBooks} />
+        </Section>
+      )}
 
       <Section spacing="large">
         {loading ? (

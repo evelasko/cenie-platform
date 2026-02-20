@@ -10,9 +10,9 @@ interface HeadingProps {
 // Custom heading components with anchor links
 export function H1({ children, id }: HeadingProps) {
   return (
-    <h1 id={id} className="type-heading-1 scroll-mt-24">
+    <p id={id} className="prose-display-quote">
       {children}
-    </h1>
+    </p>
   )
 }
 
@@ -76,11 +76,7 @@ export function LI({ children }: { children: ReactNode }) {
 
 // Blockquote
 export function Blockquote({ children }: { children: ReactNode }) {
-  return (
-    <blockquote className="border-l-4 border-primary/30 pl-6 my-6 italic text-foreground/80">
-      {children}
-    </blockquote>
-  )
+  return <blockquote className="p-6 my-6">{children}</blockquote>
 }
 
 // Code blocks

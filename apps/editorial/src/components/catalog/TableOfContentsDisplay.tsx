@@ -14,7 +14,7 @@ export function TableOfContentsDisplay({ toc }: TableOfContentsDisplayProps) {
   return (
     <div className="space-y-4">
       <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Tabla de Contenidos</h2>
-      
+
       <ol className="space-y-4">
         {toc.chapters.map((chapter, index) => (
           <li key={index} className="space-y-2">
@@ -26,10 +26,16 @@ export function TableOfContentsDisplay({ toc }: TableOfContentsDisplayProps) {
                   {chapter.title}
                 </span>
               </div>
-              {chapter.page && (
-                <span className={clsx(TYPOGRAPHY.bodySmall, 'text-black/60 ml-4')}>
-                  {chapter.page}
-                </span>
+              {chapter.page ? (
+                chapter.page !== 0 ? (
+                  <span className={clsx(TYPOGRAPHY.bodySmall, 'text-black/60 ml-4')}>
+                    {chapter.page > 0 && chapter.page}
+                  </span>
+                ) : (
+                  <span>_</span>
+                )
+              ) : (
+                <div />
               )}
             </div>
 
@@ -43,7 +49,7 @@ export function TableOfContentsDisplay({ toc }: TableOfContentsDisplayProps) {
                     </span>
                     {section.page && (
                       <span className={clsx(TYPOGRAPHY.bodySmall, 'text-black/60 ml-4')}>
-                        {section.page}
+                        {section.page > 0 ? section.page : ''}
                       </span>
                     )}
                   </li>
@@ -56,4 +62,3 @@ export function TableOfContentsDisplay({ toc }: TableOfContentsDisplayProps) {
     </div>
   )
 }
-

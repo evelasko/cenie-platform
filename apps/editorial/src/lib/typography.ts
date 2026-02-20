@@ -27,6 +27,7 @@ export const TYPOGRAPHY = {
   h4: 'type-heading-4',
   h5: 'type-heading-5',
   h6: 'type-heading-6',
+  subheading: 'type-subheading',
 
   // Body Styles
   bodyLarge: 'type-body-large',

@@ -10,7 +10,7 @@
 
   /* DISPLAY STYLES - Hero sections, major headings */
   --type-display-1-size: clamp(1.75rem, 3.5vw + 1.25rem, 2.5rem);
-  --type-display-1-line: 1.3;
+  --type-display-1-line: 1.1;
   --type-display-1-tracking: -0.03em;
   --type-display-1-weight: 400;
 
@@ -51,7 +51,7 @@
   --type-heading-6-weight: 400;
 
   /* BODY STYLES - Reading content */
-  --type-body-large-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --type-body-large-size: clamp(1.2rem, 0.55vw + 0.9rem, 1.125rem);
   --type-body-large-line: 1.5;
   --type-body-large-tracking: -0.01em;
   --type-body-large-weight: 400;
@@ -111,6 +111,8 @@
   --color-secondary-foreground: oklch(0.9635 0.0341 183.0511);
   --color-muted: oklch(0.9846 0.0017 247.8389);
   --color-muted-foreground: oklch(0.551 0.0234 264.3637);
+  --color-muted-quote: oklch(0.5653 0.002 247.86);
+  --color-muted-background: oklch(0.9605 0.0046 258.32);
   --color-muted-background-light: oklch(0.9417 0.0085 225.08);
   --color-muted-background-dark: oklch(0.8853 0.0128 228.94);
   --color-accent: oklch(0.8954 0.0304 65.8126);
@@ -240,6 +242,14 @@
     font-size: var(--type-heading-6-size);
     line-height: var(--type-heading-6-line);
     letter-spacing: var(--type-heading-6-tracking);
+    font-weight: var(--type-heading-6-weight);
+  }
+
+  .type-subheading {
+    font-family: var(--font-body);
+    font-size: var(--type-heading-3-size);
+    line-height: var(--type-heading-3-line);
+    letter-spacing: var(--type-heading-3-tracking);
     font-weight: var(--type-heading-6-weight);
   }
 
@@ -409,15 +419,20 @@
   max-width: none;
 }
 
-.prose-content h1 {
+.prose-content .prose-display-quote {
   font-family: var(--font-display);
-  font-size: var(--type-heading-1-size);
-  line-height: var(--type-heading-1-line);
-  letter-spacing: var(--type-heading-1-tracking);
-  font-weight: var(--type-heading-1-weight);
+  font-size: clamp(1.5rem, 2.5vw + 0.95rem, 2.05rem);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  font-weight: var(--type-display-2-weight);
   color: rgb(17 24 39);
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+}
+
+.prose-content .prose-display-quote strong {
+  color: var(--color-muted-foreground);
+  font-weight: 400;
 }
 
 .prose-content h2 {
@@ -432,11 +447,11 @@
 }
 
 .prose-content h3 {
-  font-family: var(--font-body);
-  font-size: var(--type-heading-3-size);
-  line-height: var(--type-heading-3-line);
-  letter-spacing: var(--type-heading-3-tracking);
-  font-weight: var(--type-heading-3-weight);
+  font-family: var(--font-display);
+  font-size: var(--type-heading-2-size);
+  line-height: var(--type-heading-2-line);
+  letter-spacing: var(--type-heading-2-tracking);
+  font-weight: var(--type-heading-2-weight);
   color: rgb(17 24 39);
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -481,7 +496,7 @@
   line-height: var(--type-body-large-line);
   letter-spacing: var(--type-body-large-tracking);
   font-weight: var(--type-body-large-weight);
-  color: rgb(55 65 81);
+  color: var(--color-foreground);
   margin-bottom: 1.5rem;
 }
 
@@ -541,12 +556,21 @@
 }
 
 .prose-content blockquote {
-  border-left: 4px solid rgb(209 213 219);
   padding-left: 1.5rem;
-  font-style: italic;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  color: rgb(75 85 99);
+  color: var(--color-muted-quote);
+  background-color: var(--color-muted-background);
+}
+
+.prose-content blockquote p {
+  color: var(--color-muted-quote);
+  margin-bottom: 0;
+}
+
+.prose-content blockquote strong {
+  color: var(--color-foreground);
+  font-weight: 500;
 }
 
 .prose-content hr {
@@ -599,4 +623,63 @@
     0 0 #0000,
     0 0 #0000,
     0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Books Swiper Carousel */
+.books-swiper {
+  --swiper-navigation-size: 16px;
+  --swiper-navigation-color: #000;
+  padding-bottom: 3rem;
+}
+
+/* Navigation arrows — white circles with black arrows */
+.books-swiper .swiper-button-prev,
+.books-swiper .swiper-button-next {
+  padding: 12px;
+  background: #fff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.books-swiper .swiper-button-prev::after,
+.books-swiper .swiper-button-next::after {
+  font-weight: 600;
+}
+
+.books-swiper:hover .swiper-button-prev:not(.swiper-button-disabled),
+.books-swiper:hover .swiper-button-next:not(.swiper-button-disabled) {
+  opacity: 1;
+}
+
+.books-swiper .swiper-button-prev.swiper-button-disabled,
+.books-swiper .swiper-button-next.swiper-button-disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Pagination — horizontal thin lines */
+.books-swiper .swiper-pagination {
+  bottom: 0 !important;
+  display: flex;
+  justify-content: center;
+  gap: 0px;
+  padding: 0 64px;
+}
+
+.books-swiper .swiper-pagination-bullet {
+  width: 82px;
+  height: 1px;
+  border-radius: 1px;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 1;
+  margin: 0 0 !important;
+  transition: background 0.25s ease;
+}
+
+.books-swiper .swiper-pagination-bullet-active {
+  background: rgba(0, 0, 0, 0.5);
 }

@@ -35,7 +35,7 @@ export function VolumeHero({
         <div className="relative flex aspect-343/468 items-center justify-center bg-muted md:aspect-square lg:aspect-460/620 xl:aspect-638/680">
           {/* Book Cover */}
           <div className="w-11/25">
-            <div className="relative aspect-2/3 flex items-center">
+            <div className="relative aspect-2/3 flex items-center shadow-large">
               <Image
                 src={coverUrl}
                 alt={title}
@@ -53,12 +53,10 @@ export function VolumeHero({
       <div className="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-6 lg:col-start-7 lg:flex lg:items-center lg:justify-center lg:py-11">
         <div className="w-full lg:ml-6 lg:max-w-[360px]">
           {/* Title */}
-          <h1 className={clsx(TYPOGRAPHY.display1, 'mb-3 text-black')}>{title}</h1>
+          <h1 className={clsx(TYPOGRAPHY.display1, 'mb-6 text-black')}>{title}</h1>
 
           {/* Subtitle */}
-          {subtitle && (
-            <p className={clsx(TYPOGRAPHY.h4, 'mb-3 text-black/70')}>{subtitle}</p>
-          )}
+          {subtitle && <p className={clsx(TYPOGRAPHY.subheading, 'mb-6 text-black')}>{subtitle}</p>}
 
           {/* Authors */}
           <p className={clsx(TYPOGRAPHY.h3, 'text-black/60 mb-1')}>{authors}</p>
@@ -69,7 +67,7 @@ export function VolumeHero({
           )}
 
           {/* Publisher */}
-          <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>{publisher}</p>
+          <p className={clsx(TYPOGRAPHY.h6, 'text-black/40')}>{publisher}</p>
 
           {/* Access CTA */}
           {accessLink && (
@@ -88,18 +86,12 @@ export function VolumeHero({
 
           {/* Metadata */}
           <div className="mt-10 space-y-1">
-            {isbn && (
-              <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>ISBN {isbn}</p>
-            )}
+            {isbn && <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>ISBN {isbn}</p>}
             {publicationYear && (
-              <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>
-                Publicación: {publicationYear}
-              </p>
+              <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>Publicación: {publicationYear}</p>
             )}
             {pageCount && (
-              <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>
-                {pageCount} páginas
-              </p>
+              <p className={clsx(TYPOGRAPHY.h5, 'text-black/60')}>{pageCount} páginas</p>
             )}
           </div>
         </div>
@@ -107,4 +99,3 @@ export function VolumeHero({
     </header>
   )
 }
-

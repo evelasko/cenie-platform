@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { PageContainer, PageHero, Section } from '@/components/content'
 import BooksGrid from '@/components/sections/BooksGrid'
 import BooksCarouselBanner from '@/components/banners/BooksCarouselBanner'
+import BooksSwiperCarousel from '@/components/banners/BooksSwiperCarousel'
 import { CatalogFilters } from '@/components/catalog/CatalogFilters'
 import { Loader2 } from 'lucide-react'
 import { clsx } from 'clsx'
@@ -158,6 +159,16 @@ export default function CatalogoContent() {
         selectedType === 'all' && (
           <Section spacing="large">
             <BooksCarouselBanner title="Publicaciones Destacadas" books={featuredBooks} />
+          </Section>
+        )}
+
+      {/* Featured Swiper Carousel */}
+      {featured.length > 0 &&
+        !searchQuery &&
+        selectedCategories.length === 0 &&
+        selectedType === 'all' && (
+          <Section spacing="large">
+            <BooksSwiperCarousel books={featuredBooks} />
           </Section>
         )}
 

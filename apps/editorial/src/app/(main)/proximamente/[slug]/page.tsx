@@ -146,7 +146,9 @@ export async function generateMetadata({
   const { volume } = data
   const pageTitle = `${volume.title} | Próximamente`
   const pageDescription =
-    volume.seo_description || volume.description?.substring(0, 160) || `Próximamente: ${volume.title}`
+    volume.seo_description ||
+    volume.description?.substring(0, 160) ||
+    `Próximamente: ${volume.title}`
   const coverImage = volume.cover_url || volume.cover_fallback_url
 
   return {
@@ -170,7 +172,9 @@ export async function generateMetadata({
     },
     other: {
       ...(volume.isbn_13 ? { 'book:isbn': volume.isbn_13 } : {}),
-      ...(volume.publication_year ? { 'book:release_date': volume.publication_year.toString() } : {}),
+      ...(volume.publication_year
+        ? { 'book:release_date': volume.publication_year.toString() }
+        : {}),
       ...(volume.authors_display ? { 'book:author': volume.authors_display } : {}),
     },
   }
@@ -232,10 +236,11 @@ export default async function ProximamenteVolumePage({
       <PageContainer>
         {/* Description */}
         {volume.description && (
-          <Section spacing="large">
-            <Prose>
-              <div dangerouslySetInnerHTML={{ __html: volume.description }} />
-            </Prose>
+          <Section spacing="large" className="px-16">
+            <Prose
+              content={volume.description}
+              className={clsx(TYPOGRAPHY.bodyLarge, 'text-black/90')}
+            />
           </Section>
         )}
 
