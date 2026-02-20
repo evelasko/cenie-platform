@@ -683,3 +683,16 @@
 .books-swiper .swiper-pagination-bullet-active {
   background: rgba(0, 0, 0, 0.5);
 }
+
+/* QuickProse expand/collapse animation */
+.prose-rest {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+.prose-rest > div {
+  overflow: hidden;
+}
+.prose-rest.expanded {
+  grid-template-rows: 1fr;
+}
