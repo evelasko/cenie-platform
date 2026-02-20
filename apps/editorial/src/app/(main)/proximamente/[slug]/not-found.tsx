@@ -10,7 +10,7 @@ export default function NotFound() {
         title="Publicación no encontrada"
         subtitle="La publicación próxima que buscas no existe o ya está disponible en el catálogo."
       />
-      <Section spacing="large">
+      <Section spacing="lg">
         <div className="min-h-[40vh] flex flex-col items-center justify-center px-4 text-center">
           <p className={clsx(TYPOGRAPHY.bodyLarge, 'text-black/70 mb-8 max-w-xl')}>
             Es posible que esta publicación ya haya sido publicada o que la URL no sea correcta.

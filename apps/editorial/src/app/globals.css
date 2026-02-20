@@ -92,6 +92,18 @@
   --type-link-underline-offset: 0.125em;
   --type-link-weight: 300;
 
+  /* Layout System */
+  --layout-max-width: 84rem;
+  --layout-gutter: 0.5rem;
+  --layout-margin-mobile: 1rem;
+  --layout-margin-desktop: 3rem;
+  --layout-cols: 12;
+
+  /* Section Spacing */
+  --section-gap-sm: 4rem;
+  --section-gap-md: 6rem;
+  --section-gap-lg: 7.5rem;
+
   --type-quote-size: clamp(1.125rem, 1vw + 0.875rem, 1.375rem);
   --type-quote-line: 1.45;
   --type-quote-tracking: -0.03em;
@@ -175,6 +187,48 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Layout Utility Classes */
+@layer utilities {
+  /* Site container — replaces inconsistent "container mx-auto px-6" */
+  .site-container {
+    width: 100%;
+    max-width: var(--layout-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--layout-margin-mobile);
+    padding-right: var(--layout-margin-mobile);
+  }
+  @media (min-width: 768px) {
+    .site-container {
+      padding-left: var(--layout-margin-desktop);
+      padding-right: var(--layout-margin-desktop);
+    }
+  }
+
+  /* 12-column grid */
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--layout-gutter);
+  }
+
+  /* Content width variants (centered within 12-col grid) */
+  .content-wide    { grid-column: 1 / -1; }
+  .content-standard { grid-column: 2 / 12; }
+  .content-narrow  { grid-column: 3 / 11; }
+  .content-prose   { grid-column: 4 / 10; }
+
+  @media (max-width: 1023px) {
+    .content-prose   { grid-column: 3 / 11; }
+    .content-narrow  { grid-column: 2 / 12; }
+  }
+  @media (max-width: 767px) {
+    .content-standard,
+    .content-narrow,
+    .content-prose   { grid-column: 1 / -1; }
+  }
 }
 
 /* Typography Utility Classes */

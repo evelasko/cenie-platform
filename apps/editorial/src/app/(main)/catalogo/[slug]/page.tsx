@@ -194,7 +194,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
       <PageContainer>
         {/* Description */}
         {volume.description && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <Prose>
               <MarkdownContent content={volume.description} />
             </Prose>
@@ -203,21 +203,21 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
         {/* Table of Contents */}
         {volume.table_of_contents && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <TableOfContentsDisplay toc={volume.table_of_contents} />
           </Section>
         )}
 
         {/* Excerpt */}
         {volume.excerpt && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <BookForeword quote="Fragmento" foreword={volume.excerpt} />
           </Section>
         )}
 
         {/* Translation Info (only for translated books) */}
         {volume.volume_type === 'translated' && volume.original_title && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <TranslationInfo
               originalTitle={volume.original_title}
               originalLanguage={volume.original_language || undefined}
@@ -231,7 +231,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
         {/* Reviews/Praise */}
         {volume.reviews_quotes && volume.reviews_quotes.length > 0 && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Elogios y Reseñas</h2>
             <div className="space-y-4">
               {volume.reviews_quotes.map((quote, index) => (
@@ -243,7 +243,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
         {/* Contributors Bios */}
         {authors.length > 0 && authors.some((a) => a.bio_es) && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Autores</h2>
             <div className="space-y-6">
               {authors
@@ -263,7 +263,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
         {/* Translator Bios */}
         {translators.length > 0 && translators.some((t) => t.bio_es) && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <h2 className={clsx(TYPOGRAPHY.h3, 'text-black mb-6')}>Sobre los Traductores</h2>
             <div className="space-y-6">
               {translators
@@ -285,7 +285,7 @@ export default async function VolumePage({ params }: { params: Promise<{ slug: s
 
         {/* Related Volumes */}
         {relatedBooks.length > 0 && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <BooksGrid title="Publicaciones Relacionadas" books={relatedBooks} overflow={true} />
           </Section>
         )}

@@ -36,7 +36,7 @@ export default function Footer({
 
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
-      <div className="container mx-auto px-6 py-12">
+      <div className="site-container py-12">
         {/* Main Footer Content */}
         <div
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${showNewsletter ? '4' : '3'} gap-12 pb-12 border-b border-gray-200`}

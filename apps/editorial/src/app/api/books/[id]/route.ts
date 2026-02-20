@@ -98,10 +98,11 @@ export const PATCH = requireEditor<Promise<{ id: string }>>(
           .eq('id', id)
           .single()
 
+        const bookRecord = currentBook as Record<string, unknown> | null
         const spanishTitle =
-          (currentBook as Record<string, unknown>)?.spanish_title as string | null ||
+          (bookRecord?.spanish_title as string | null) ||
           (updatePayload.translated_title as string | null) ||
-          (currentBook as Record<string, unknown>)?.translated_title as string | null
+          (bookRecord?.translated_title as string | null)
 
         if (spanishTitle) {
           let baseSlug = generateSlug(spanishTitle)

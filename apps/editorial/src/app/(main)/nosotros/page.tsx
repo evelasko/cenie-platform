@@ -149,7 +149,7 @@ export default function NosotrosPage() {
         </ul>
       </Prose>
 
-      <Section spacing="large" className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Section spacing="lg" className="flex flex-col sm:flex-row gap-4 justify-center">
         <CTAButton href="/recursos/autores">Publica con Nosotros</CTAButton>
         <CTAButton href="/nosotros/comite" variant="secondary">
           Conoce Nuestro Consejo Editorial

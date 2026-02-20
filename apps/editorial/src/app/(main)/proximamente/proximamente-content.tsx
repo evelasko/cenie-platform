@@ -66,12 +66,12 @@ export default function ProximamenteContent() {
 
       {/* Swiper Carousel */}
       {catalogBooks.length > 0 && !loading && (
-        <Section spacing="large">
+        <Section spacing="lg">
           <BooksSwiperCarousel books={catalogBooks} />
         </Section>
       )}
 
-      <Section spacing="large">
+      <Section spacing="lg">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />

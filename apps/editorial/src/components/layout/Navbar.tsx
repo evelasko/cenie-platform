@@ -84,7 +84,7 @@ export default function Navbar({
   if (loading) {
     return (
       <header className="h-16 lg:h-24 bg-white/80 backdrop-blur-md border-b border-border/40">
-        <div className="container mx-auto px-6 h-full">
+        <div className="site-container h-full">
           <div className="flex items-center justify-between h-full">
             <div className="flex items-center">
               <div className="animate-pulse bg-gray-300 h-8 w-48 rounded"></div>
@@ -106,7 +106,7 @@ export default function Navbar({
           'sticky top-0 z-50 h-16 lg:h-24 backdrop-blur-md border-b border-border/40'
         )}
       >
-        <div className="container mx-auto px-6 h-full">
+        <div className="site-container h-full">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
             <Link
@@ -239,7 +239,7 @@ export default function Navbar({
           aria-label="Menú de navegación"
           aria-hidden={!overlayVisible}
         >
-          <nav className="container mx-auto px-8 py-8" onClick={(e) => e.stopPropagation()}>
+          <nav className="site-container py-8" onClick={(e) => e.stopPropagation()}>
             <ul className="space-y-4">
               {navigationItems.map((item) => (
                 <li key={item.href}>

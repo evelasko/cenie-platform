@@ -17,7 +17,7 @@ interface ProseProps {
 export function Prose({ content, children, className = '' }: ProseProps) {
   return (
     <MDXProvider components={mdxComponents}>
-      <article className={`prose-content max-w-4xl mx-auto ${className}`}>
+      <article className={`prose-content ${className}`}>
         {content ? (
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdxComponents as any}>

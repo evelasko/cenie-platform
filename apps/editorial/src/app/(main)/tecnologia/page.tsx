@@ -155,7 +155,7 @@ export default function TecnologiaPage() {
         </ul>
       </Prose>
 
-      <Section spacing="large" className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Section spacing="lg" className="flex flex-col sm:flex-row gap-4 justify-center">
         <CTAButton href="/catalogo">Comienza a Investigar</CTAButton>
         <CTAButton href="/nosotros/contacto" variant="secondary">
           Programa una Consulta Técnica

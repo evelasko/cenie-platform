@@ -3,14 +3,15 @@ import { ReactNode } from 'react'
 interface SectionProps {
   children: ReactNode
   className?: string
-  spacing?: 'normal' | 'large' | 'small'
+  spacing?: 'sm' | 'md' | 'lg' | 'none'
 }
 
-export function Section({ children, className = '', spacing = 'normal' }: SectionProps) {
+export function Section({ children, className = '', spacing = 'md' }: SectionProps) {
   const spacingClasses = {
-    small: 'py-8',
-    normal: 'py-12',
-    large: 'py-16',
+    sm: 'py-16',
+    md: 'py-24',
+    lg: 'py-30',
+    none: '',
   }
 
   return <section className={`${spacingClasses[spacing]} ${className}`}>{children}</section>

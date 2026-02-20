@@ -8,7 +8,7 @@ interface PageHeroProps {
 
 export function PageHero({ title, subtitle, category }: PageHeroProps) {
   return (
-    <header className="text-center mb-16">
+    <header className="text-center mb-24">
       {category && (
         <div className={`${TYPOGRAPHY.caption} text-gray-500 uppercase tracking-wide mb-4`}>
           {category}

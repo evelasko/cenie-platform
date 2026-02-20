@@ -1,4 +1,6 @@
 import { ReactNode } from 'react'
+import { SiteContainer } from '@/components/layout/SiteContainer'
+import { GridLayout } from '@/components/layout/GridLayout'
 
 interface PageContainerProps {
   children: ReactNode
@@ -6,5 +8,11 @@ interface PageContainerProps {
 }
 
 export function PageContainer({ children, className = '' }: PageContainerProps) {
-  return <div className={`container mx-auto px-6 py-12 max-w-4xl ${className}`}>{children}</div>
+  return (
+    <SiteContainer className={className}>
+      <GridLayout>
+        <div className="content-narrow">{children}</div>
+      </GridLayout>
+    </SiteContainer>
+  )
 }

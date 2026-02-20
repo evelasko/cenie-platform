@@ -10,7 +10,7 @@ export default function CatalogoLoading() {
       </header>
 
       {/* Books grid skeleton - matches BooksGrid: grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 */}
-      <Section spacing="large">
+      <Section spacing="lg">
         <div className="flex flex-col gap-8">
           <div className="h-8 w-48 bg-muted animate-pulse rounded" />
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">

@@ -22,32 +22,34 @@ export function HeroFeaturedBook({ title, authors, coverUrl, catalogLink }: Hero
 
   return (
     <section
-      className="flex h-screen flex-col items-center gap-6 overflow-hidden px-6 py-12 text-center"
+      className="flex h-screen flex-col items-center gap-6 overflow-hidden py-12 text-center"
       style={{ backgroundColor: 'var(--color-muted-background-light)' }}
     >
-      {/* Title */}
-      <h1 className={clsx(TYPOGRAPHY.display1, 'shrink-0 max-w-2xl text-black mt-4')}>{title}</h1>
+      <div className="site-container flex flex-col items-center gap-6 flex-1 min-h-0">
+        {/* Title */}
+        <h1 className={clsx(TYPOGRAPHY.display1, 'shrink-0 max-w-2xl text-black mt-4')}>{title}</h1>
 
-      {/* Author(s) */}
-      <p className={clsx(TYPOGRAPHY.bodyLarge, 'shrink-0 text-black/70 mb-8')}>{authors}</p>
+        {/* Author(s) */}
+        <p className={clsx(TYPOGRAPHY.bodyLarge, 'shrink-0 text-black/70 mb-8')}>{authors}</p>
 
-      {/* Book Cover — grows to fill remaining vertical space, width derived from height via 2:3 ratio */}
-      <div className="flex min-h-0 flex-1 items-center justify-center">
-        <div className="relative h-full aspect-2/3">
-          <Image
-            src={src}
-            alt={title}
-            fill
-            className="object-contain shadow-large"
-            sizes="(max-width: 768px) 50vw, 33vw"
-            priority
-          />
+        {/* Book Cover — grows to fill remaining vertical space, width derived from height via 2:3 ratio */}
+        <div className="flex min-h-0 flex-1 items-center justify-center">
+          <div className="relative h-full aspect-2/3">
+            <Image
+              src={src}
+              alt={title}
+              fill
+              className="object-contain shadow-large"
+              sizes="(max-width: 768px) 50vw, 33vw"
+              priority
+            />
+          </div>
         </div>
-      </div>
 
-      {/* CTA */}
-      <div className="my-8">
-        <LinkButton href={catalogLink} label="descubre el libro" />
+        {/* CTA */}
+        <div className="my-8">
+          <LinkButton href={catalogLink} label="descubre el libro" />
+        </div>
       </div>
     </section>
   )

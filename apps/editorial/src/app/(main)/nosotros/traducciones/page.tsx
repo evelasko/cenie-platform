@@ -215,7 +215,7 @@ export default function TraduccionesPage() {
         </ul>
       </Prose>
 
-      <Section spacing="large" className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Section spacing="lg" className="flex flex-col sm:flex-row gap-4 justify-center">
         <CTAButton href="/catalogo">Explorar Catálogo en Español</CTAButton>
         <CTAButton href="/nosotros/contacto" variant="secondary">
           Solicitar una Traducción

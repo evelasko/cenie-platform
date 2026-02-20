@@ -157,7 +157,7 @@ export default function CatalogoContent() {
         !searchQuery &&
         selectedCategories.length === 0 &&
         selectedType === 'all' && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <BooksCarouselBanner title="Publicaciones Destacadas" books={featuredBooks} />
           </Section>
         )}
@@ -167,13 +167,13 @@ export default function CatalogoContent() {
         !searchQuery &&
         selectedCategories.length === 0 &&
         selectedType === 'all' && (
-          <Section spacing="large">
+          <Section spacing="lg">
             <BooksSwiperCarousel books={featuredBooks} />
           </Section>
         )}
 
       {/* Main Catalog with Filters */}
-      <Section spacing="large">
+      <Section spacing="lg">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">

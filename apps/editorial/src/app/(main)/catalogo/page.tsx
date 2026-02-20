@@ -63,7 +63,7 @@ export default async function CatalogoPage() {
               title="Catálogo CENIE Editorial"
               subtitle="Descubre nuestra colección de publicaciones y traducciones sobre artes escénicas"
             />
-            <Section spacing="large">
+            <Section spacing="lg">
               <div className="flex flex-col items-center justify-center py-12">
                 <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
                 <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/60')}>Cargando catálogo...</p>

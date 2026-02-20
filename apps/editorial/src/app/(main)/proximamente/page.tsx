@@ -24,7 +24,7 @@ export default function ProximamentePage() {
             title="Próximamente"
             subtitle="Publicaciones en preparación. Descubre las traducciones y obras originales que pronto estarán disponibles."
           />
-          <Section spacing="large">
+          <Section spacing="lg">
             <div className="flex flex-col items-center justify-center py-12">
               <Loader2 className="h-12 w-12 text-primary mb-4 animate-spin" />
               <p className={clsx(TYPOGRAPHY.bodyBase, 'text-black/60')}>Cargando...</p>

@@ -29,7 +29,7 @@ export function VolumeHero({
   accessLink,
 }: VolumeHeroProps) {
   return (
-    <header className="container grid grid-cols-12 gap-y-12 md:gap-y-16 pt-4 md:pt-12">
+    <header className="site-container grid-layout gap-y-12 md:gap-y-16 pt-4 md:pt-12">
       {/* Cover Image Column */}
       <div className="col-span-12 md:col-span-10 md:col-start-2 lg:col-span-6 lg:col-start-1">
         <div className="relative flex aspect-343/468 items-center justify-center bg-muted md:aspect-square lg:aspect-460/620 xl:aspect-638/680">

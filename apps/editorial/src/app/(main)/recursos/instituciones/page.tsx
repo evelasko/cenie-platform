@@ -160,7 +160,7 @@ export default function InstitucionesPage() {
         </ul>
       </Prose>
 
-      <Section spacing="large" className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Section spacing="lg" className="flex flex-col sm:flex-row gap-4 justify-center">
         <CTAButton href="/recursos/instituciones">Solicita un Acceso de Prueba</CTAButton>
         <CTAButton href="/nosotros/contacto" variant="secondary">
           Agenda una Demo

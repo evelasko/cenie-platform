@@ -28,7 +28,7 @@ export default function VolumeLoading() {
 
       {/* PageContainer with prose skeletons */}
       <PageContainer>
-        <Section spacing="large">
+        <Section spacing="lg">
           <div className="space-y-4">
             <div className="h-4 w-full bg-muted animate-pulse rounded" />
             <div className="h-4 w-full bg-muted animate-pulse rounded" />
@@ -36,7 +36,7 @@ export default function VolumeLoading() {
             <div className="h-4 w-4/6 bg-muted animate-pulse rounded" />
           </div>
         </Section>
-        <Section spacing="large">
+        <Section spacing="lg">
           <div className="space-y-4">
             <div className="h-4 w-full bg-muted animate-pulse rounded" />
             <div className="h-4 w-full bg-muted animate-pulse rounded" />

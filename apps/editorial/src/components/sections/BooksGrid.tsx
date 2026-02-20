@@ -36,7 +36,7 @@ export default function BooksGrid({
       {/* Books Grid — pt-16 compensates for overflow-y clipping on hover animation */}
       <div
         className={clsx(
-          'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 pt-16',
+          'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-12 md:gap-x-12 md:gap-y-12 lg:gap-x-20 lg:gap-y-16 pt-16',
           !overflow && 'overflow-hidden'
         )}
       >

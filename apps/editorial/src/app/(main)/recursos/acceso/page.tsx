@@ -195,7 +195,7 @@ export default function AccesoPage() {
         </p>
       </Prose>
 
-      <Section spacing="large" className="flex flex-col sm:flex-row gap-4 justify-center">
+      <Section spacing="lg" className="flex flex-col sm:flex-row gap-4 justify-center">
         <CTAButton href="/recursos/acceso">Iniciar Membresía Individual</CTAButton>
         <CTAButton href="/catalogo" variant="secondary">
           Comenzar a Explorar
